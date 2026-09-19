@@ -1,0 +1,1237 @@
+{
+  "name": "MZ1_Worli_Hero_Tower",
+  "zone": "MZ-1",
+  "ground_elevation": 8.5,
+  "height": 68.0,
+  "floor_count": 20,
+  "total_volume": 423788.544,
+  "volume_count": 135,
+  "classes_exercised": [
+    "A",
+    "B",
+    "C",
+    "I",
+    "L",
+    "P",
+    "S",
+    "T",
+    "U"
+  ],
+  "volumes": [
+    {
+      "label": "MZ1_Worli_Hero_Tower_Parcel_Column",
+      "cls": "S",
+      "z_min": -31.5,
+      "z_max": 116.5,
+      "volume": 260480.0,
+      "parent_label": null,
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Envelope",
+      "cls": "B",
+      "z_min": 8.5,
+      "z_max": 76.5,
+      "volume": 45696.0,
+      "parent_label": "MZ1_Worli_Hero_Tower_Parcel_Column",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_00",
+      "cls": "L",
+      "z_min": 8.5,
+      "z_max": 11.9,
+      "volume": 2284.8,
+      "parent_label": "MZ1_Worli_Hero_Tower_Envelope",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_00_CommonCorridor",
+      "cls": "C",
+      "z_min": 8.5,
+      "z_max": 11.9,
+      "volume": 195.84,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_00",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_00_Unit_01",
+      "cls": "U",
+      "z_min": 8.5,
+      "z_max": 11.9,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_00",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_00_Unit_02",
+      "cls": "U",
+      "z_min": 8.5,
+      "z_max": 11.9,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_00",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_00_Unit_03",
+      "cls": "U",
+      "z_min": 8.5,
+      "z_max": 11.9,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_00",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_00_Unit_04",
+      "cls": "U",
+      "z_min": 8.5,
+      "z_max": 11.9,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_00",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_01",
+      "cls": "L",
+      "z_min": 11.9,
+      "z_max": 15.3,
+      "volume": 2284.8,
+      "parent_label": "MZ1_Worli_Hero_Tower_Envelope",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_01_CommonCorridor",
+      "cls": "C",
+      "z_min": 11.9,
+      "z_max": 15.3,
+      "volume": 195.84,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_01",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_01_Unit_01",
+      "cls": "U",
+      "z_min": 11.9,
+      "z_max": 15.3,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_01",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_01_Unit_02",
+      "cls": "U",
+      "z_min": 11.9,
+      "z_max": 15.3,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_01",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_01_Unit_03",
+      "cls": "U",
+      "z_min": 11.9,
+      "z_max": 15.3,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_01",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_01_Unit_04",
+      "cls": "U",
+      "z_min": 11.9,
+      "z_max": 15.3,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_01",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_02",
+      "cls": "L",
+      "z_min": 15.3,
+      "z_max": 18.7,
+      "volume": 2284.8,
+      "parent_label": "MZ1_Worli_Hero_Tower_Envelope",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_02_CommonCorridor",
+      "cls": "C",
+      "z_min": 15.3,
+      "z_max": 18.7,
+      "volume": 195.84,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_02",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_02_Unit_01",
+      "cls": "U",
+      "z_min": 15.3,
+      "z_max": 18.7,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_02",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_02_Unit_02",
+      "cls": "U",
+      "z_min": 15.3,
+      "z_max": 18.7,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_02",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_02_Unit_03",
+      "cls": "U",
+      "z_min": 15.3,
+      "z_max": 18.7,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_02",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_02_Unit_04",
+      "cls": "U",
+      "z_min": 15.3,
+      "z_max": 18.7,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_02",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_03",
+      "cls": "L",
+      "z_min": 18.7,
+      "z_max": 22.1,
+      "volume": 2284.8,
+      "parent_label": "MZ1_Worli_Hero_Tower_Envelope",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_03_CommonCorridor",
+      "cls": "C",
+      "z_min": 18.7,
+      "z_max": 22.1,
+      "volume": 195.84,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_03",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_03_Unit_01",
+      "cls": "U",
+      "z_min": 18.7,
+      "z_max": 22.1,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_03",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_03_Unit_02",
+      "cls": "U",
+      "z_min": 18.7,
+      "z_max": 22.1,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_03",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_03_Unit_03",
+      "cls": "U",
+      "z_min": 18.7,
+      "z_max": 22.1,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_03",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_03_Unit_04",
+      "cls": "U",
+      "z_min": 18.7,
+      "z_max": 22.1,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_03",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_04",
+      "cls": "L",
+      "z_min": 22.1,
+      "z_max": 25.5,
+      "volume": 2284.8,
+      "parent_label": "MZ1_Worli_Hero_Tower_Envelope",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_04_CommonCorridor",
+      "cls": "C",
+      "z_min": 22.1,
+      "z_max": 25.5,
+      "volume": 195.84,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_04",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_04_Unit_01",
+      "cls": "U",
+      "z_min": 22.1,
+      "z_max": 25.5,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_04",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_04_Unit_02",
+      "cls": "U",
+      "z_min": 22.1,
+      "z_max": 25.5,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_04",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_04_Unit_03",
+      "cls": "U",
+      "z_min": 22.1,
+      "z_max": 25.5,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_04",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_04_Unit_04",
+      "cls": "U",
+      "z_min": 22.1,
+      "z_max": 25.5,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_04",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_05",
+      "cls": "L",
+      "z_min": 25.5,
+      "z_max": 28.9,
+      "volume": 2284.8,
+      "parent_label": "MZ1_Worli_Hero_Tower_Envelope",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_05_CommonCorridor",
+      "cls": "C",
+      "z_min": 25.5,
+      "z_max": 28.9,
+      "volume": 195.84,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_05",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_05_Unit_01",
+      "cls": "U",
+      "z_min": 25.5,
+      "z_max": 28.9,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_05",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_05_Unit_02",
+      "cls": "U",
+      "z_min": 25.5,
+      "z_max": 28.9,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_05",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_05_Unit_03",
+      "cls": "U",
+      "z_min": 25.5,
+      "z_max": 28.9,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_05",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_05_Unit_04",
+      "cls": "U",
+      "z_min": 25.5,
+      "z_max": 28.9,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_05",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_06",
+      "cls": "L",
+      "z_min": 28.9,
+      "z_max": 32.3,
+      "volume": 2284.8,
+      "parent_label": "MZ1_Worli_Hero_Tower_Envelope",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_06_CommonCorridor",
+      "cls": "C",
+      "z_min": 28.9,
+      "z_max": 32.3,
+      "volume": 195.84,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_06",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_06_Unit_01",
+      "cls": "U",
+      "z_min": 28.9,
+      "z_max": 32.3,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_06",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_06_Unit_02",
+      "cls": "U",
+      "z_min": 28.9,
+      "z_max": 32.3,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_06",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_06_Unit_03",
+      "cls": "U",
+      "z_min": 28.9,
+      "z_max": 32.3,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_06",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_06_Unit_04",
+      "cls": "U",
+      "z_min": 28.9,
+      "z_max": 32.3,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_06",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_07",
+      "cls": "L",
+      "z_min": 32.3,
+      "z_max": 35.7,
+      "volume": 2284.8,
+      "parent_label": "MZ1_Worli_Hero_Tower_Envelope",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_07_CommonCorridor",
+      "cls": "C",
+      "z_min": 32.3,
+      "z_max": 35.7,
+      "volume": 195.84,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_07",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_07_Unit_01",
+      "cls": "U",
+      "z_min": 32.3,
+      "z_max": 35.7,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_07",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_07_Unit_02",
+      "cls": "U",
+      "z_min": 32.3,
+      "z_max": 35.7,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_07",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_07_Unit_03",
+      "cls": "U",
+      "z_min": 32.3,
+      "z_max": 35.7,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_07",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_07_Unit_04",
+      "cls": "U",
+      "z_min": 32.3,
+      "z_max": 35.7,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_07",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_08",
+      "cls": "L",
+      "z_min": 35.7,
+      "z_max": 39.1,
+      "volume": 2284.8,
+      "parent_label": "MZ1_Worli_Hero_Tower_Envelope",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_08_CommonCorridor",
+      "cls": "C",
+      "z_min": 35.7,
+      "z_max": 39.1,
+      "volume": 195.84,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_08",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_08_Unit_01",
+      "cls": "U",
+      "z_min": 35.7,
+      "z_max": 39.1,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_08",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_08_Unit_02",
+      "cls": "U",
+      "z_min": 35.7,
+      "z_max": 39.1,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_08",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_08_Unit_03",
+      "cls": "U",
+      "z_min": 35.7,
+      "z_max": 39.1,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_08",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_08_Unit_04",
+      "cls": "U",
+      "z_min": 35.7,
+      "z_max": 39.1,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_08",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_09",
+      "cls": "L",
+      "z_min": 39.1,
+      "z_max": 42.5,
+      "volume": 2284.8,
+      "parent_label": "MZ1_Worli_Hero_Tower_Envelope",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_09_CommonCorridor",
+      "cls": "C",
+      "z_min": 39.1,
+      "z_max": 42.5,
+      "volume": 195.84,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_09",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_09_Unit_01",
+      "cls": "U",
+      "z_min": 39.1,
+      "z_max": 42.5,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_09",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_09_Unit_02",
+      "cls": "U",
+      "z_min": 39.1,
+      "z_max": 42.5,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_09",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_09_Unit_03",
+      "cls": "U",
+      "z_min": 39.1,
+      "z_max": 42.5,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_09",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_09_Unit_04",
+      "cls": "U",
+      "z_min": 39.1,
+      "z_max": 42.5,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_09",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_10",
+      "cls": "L",
+      "z_min": 42.5,
+      "z_max": 45.9,
+      "volume": 2284.8,
+      "parent_label": "MZ1_Worli_Hero_Tower_Envelope",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_10_CommonCorridor",
+      "cls": "C",
+      "z_min": 42.5,
+      "z_max": 45.9,
+      "volume": 195.84,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_10",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_10_Unit_01",
+      "cls": "U",
+      "z_min": 42.5,
+      "z_max": 45.9,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_10",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_10_Unit_02",
+      "cls": "U",
+      "z_min": 42.5,
+      "z_max": 45.9,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_10",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_10_Unit_03",
+      "cls": "U",
+      "z_min": 42.5,
+      "z_max": 45.9,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_10",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_10_Unit_04",
+      "cls": "U",
+      "z_min": 42.5,
+      "z_max": 45.9,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_10",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_11",
+      "cls": "L",
+      "z_min": 45.9,
+      "z_max": 49.3,
+      "volume": 2284.8,
+      "parent_label": "MZ1_Worli_Hero_Tower_Envelope",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_11_CommonCorridor",
+      "cls": "C",
+      "z_min": 45.9,
+      "z_max": 49.3,
+      "volume": 195.84,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_11",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_11_Unit_01",
+      "cls": "U",
+      "z_min": 45.9,
+      "z_max": 49.3,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_11",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_11_Unit_02",
+      "cls": "U",
+      "z_min": 45.9,
+      "z_max": 49.3,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_11",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_11_Unit_03",
+      "cls": "U",
+      "z_min": 45.9,
+      "z_max": 49.3,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_11",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_11_Unit_04",
+      "cls": "U",
+      "z_min": 45.9,
+      "z_max": 49.3,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_11",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_12",
+      "cls": "L",
+      "z_min": 49.3,
+      "z_max": 52.7,
+      "volume": 2284.8,
+      "parent_label": "MZ1_Worli_Hero_Tower_Envelope",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_12_CommonCorridor",
+      "cls": "C",
+      "z_min": 49.3,
+      "z_max": 52.7,
+      "volume": 195.84,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_12",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_12_Unit_01",
+      "cls": "U",
+      "z_min": 49.3,
+      "z_max": 52.7,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_12",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_12_Unit_02",
+      "cls": "U",
+      "z_min": 49.3,
+      "z_max": 52.7,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_12",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_12_Unit_03",
+      "cls": "U",
+      "z_min": 49.3,
+      "z_max": 52.7,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_12",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_12_Unit_04",
+      "cls": "U",
+      "z_min": 49.3,
+      "z_max": 52.7,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_12",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_13",
+      "cls": "L",
+      "z_min": 52.7,
+      "z_max": 56.1,
+      "volume": 2284.8,
+      "parent_label": "MZ1_Worli_Hero_Tower_Envelope",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_13_CommonCorridor",
+      "cls": "C",
+      "z_min": 52.7,
+      "z_max": 56.1,
+      "volume": 195.84,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_13",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_13_Unit_01",
+      "cls": "U",
+      "z_min": 52.7,
+      "z_max": 56.1,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_13",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_13_Unit_02",
+      "cls": "U",
+      "z_min": 52.7,
+      "z_max": 56.1,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_13",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_13_Unit_03",
+      "cls": "U",
+      "z_min": 52.7,
+      "z_max": 56.1,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_13",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_13_Unit_04",
+      "cls": "U",
+      "z_min": 52.7,
+      "z_max": 56.1,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_13",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_14",
+      "cls": "L",
+      "z_min": 56.1,
+      "z_max": 59.5,
+      "volume": 2284.8,
+      "parent_label": "MZ1_Worli_Hero_Tower_Envelope",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_14_CommonCorridor",
+      "cls": "C",
+      "z_min": 56.1,
+      "z_max": 59.5,
+      "volume": 195.84,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_14",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_14_Unit_01",
+      "cls": "U",
+      "z_min": 56.1,
+      "z_max": 59.5,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_14",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_14_Unit_02",
+      "cls": "U",
+      "z_min": 56.1,
+      "z_max": 59.5,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_14",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_14_Unit_03",
+      "cls": "U",
+      "z_min": 56.1,
+      "z_max": 59.5,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_14",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_14_Unit_04",
+      "cls": "U",
+      "z_min": 56.1,
+      "z_max": 59.5,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_14",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_15",
+      "cls": "L",
+      "z_min": 59.5,
+      "z_max": 62.9,
+      "volume": 2284.8,
+      "parent_label": "MZ1_Worli_Hero_Tower_Envelope",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_15_CommonCorridor",
+      "cls": "C",
+      "z_min": 59.5,
+      "z_max": 62.9,
+      "volume": 195.84,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_15",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_15_Unit_01",
+      "cls": "U",
+      "z_min": 59.5,
+      "z_max": 62.9,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_15",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_15_Unit_02",
+      "cls": "U",
+      "z_min": 59.5,
+      "z_max": 62.9,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_15",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_15_Unit_03",
+      "cls": "U",
+      "z_min": 59.5,
+      "z_max": 62.9,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_15",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_15_Unit_04",
+      "cls": "U",
+      "z_min": 59.5,
+      "z_max": 62.9,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_15",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_16",
+      "cls": "L",
+      "z_min": 62.9,
+      "z_max": 66.3,
+      "volume": 2284.8,
+      "parent_label": "MZ1_Worli_Hero_Tower_Envelope",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_16_CommonCorridor",
+      "cls": "C",
+      "z_min": 62.9,
+      "z_max": 66.3,
+      "volume": 195.84,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_16",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_16_Unit_01",
+      "cls": "U",
+      "z_min": 62.9,
+      "z_max": 66.3,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_16",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_16_Unit_02",
+      "cls": "U",
+      "z_min": 62.9,
+      "z_max": 66.3,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_16",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_16_Unit_03",
+      "cls": "U",
+      "z_min": 62.9,
+      "z_max": 66.3,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_16",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_16_Unit_04",
+      "cls": "U",
+      "z_min": 62.9,
+      "z_max": 66.3,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_16",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_17",
+      "cls": "L",
+      "z_min": 66.3,
+      "z_max": 69.7,
+      "volume": 2284.8,
+      "parent_label": "MZ1_Worli_Hero_Tower_Envelope",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_17_CommonCorridor",
+      "cls": "C",
+      "z_min": 66.3,
+      "z_max": 69.7,
+      "volume": 195.84,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_17",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_17_Unit_01",
+      "cls": "U",
+      "z_min": 66.3,
+      "z_max": 69.7,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_17",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_17_Unit_02",
+      "cls": "U",
+      "z_min": 66.3,
+      "z_max": 69.7,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_17",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_17_Unit_03",
+      "cls": "U",
+      "z_min": 66.3,
+      "z_max": 69.7,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_17",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_17_Unit_04",
+      "cls": "U",
+      "z_min": 66.3,
+      "z_max": 69.7,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_17",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_18",
+      "cls": "L",
+      "z_min": 69.7,
+      "z_max": 73.1,
+      "volume": 2284.8,
+      "parent_label": "MZ1_Worli_Hero_Tower_Envelope",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_18_CommonCorridor",
+      "cls": "C",
+      "z_min": 69.7,
+      "z_max": 73.1,
+      "volume": 195.84,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_18",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_18_Unit_01",
+      "cls": "U",
+      "z_min": 69.7,
+      "z_max": 73.1,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_18",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_18_Unit_02",
+      "cls": "U",
+      "z_min": 69.7,
+      "z_max": 73.1,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_18",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_18_Unit_03",
+      "cls": "U",
+      "z_min": 69.7,
+      "z_max": 73.1,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_18",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_18_Unit_04",
+      "cls": "U",
+      "z_min": 69.7,
+      "z_max": 73.1,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_18",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_19",
+      "cls": "L",
+      "z_min": 73.1,
+      "z_max": 76.5,
+      "volume": 2284.8,
+      "parent_label": "MZ1_Worli_Hero_Tower_Envelope",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_19_CommonCorridor",
+      "cls": "C",
+      "z_min": 73.1,
+      "z_max": 76.5,
+      "volume": 195.84,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_19",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_19_Unit_01",
+      "cls": "U",
+      "z_min": 73.1,
+      "z_max": 76.5,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_19",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_19_Unit_02",
+      "cls": "U",
+      "z_min": 73.1,
+      "z_max": 76.5,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_19",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_19_Unit_03",
+      "cls": "U",
+      "z_min": 73.1,
+      "z_max": 76.5,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_19",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_19_Unit_04",
+      "cls": "U",
+      "z_min": 73.1,
+      "z_max": 76.5,
+      "volume": 522.24,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_19",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Basement_B1",
+      "cls": "T",
+      "z_min": 5.0,
+      "z_max": 8.5,
+      "volume": 3136.0,
+      "parent_label": "MZ1_Worli_Hero_Tower_Parcel_Column",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Basement_B1_Parking_Slot_01",
+      "cls": "P",
+      "z_min": 5.35,
+      "z_max": 8.15,
+      "volume": 40.768,
+      "parent_label": "MZ1_Worli_Hero_Tower_Basement_B1",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Basement_B1_Parking_Slot_02",
+      "cls": "P",
+      "z_min": 5.35,
+      "z_max": 8.15,
+      "volume": 40.768,
+      "parent_label": "MZ1_Worli_Hero_Tower_Basement_B1",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Basement_B1_Parking_Slot_03",
+      "cls": "P",
+      "z_min": 5.35,
+      "z_max": 8.15,
+      "volume": 40.768,
+      "parent_label": "MZ1_Worli_Hero_Tower_Basement_B1",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Basement_B1_Parking_Slot_04",
+      "cls": "P",
+      "z_min": 5.35,
+      "z_max": 8.15,
+      "volume": 40.768,
+      "parent_label": "MZ1_Worli_Hero_Tower_Basement_B1",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Basement_B2",
+      "cls": "T",
+      "z_min": 1.5,
+      "z_max": 5.0,
+      "volume": 3136.0,
+      "parent_label": "MZ1_Worli_Hero_Tower_Parcel_Column",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Basement_B2_Parking_Slot_01",
+      "cls": "P",
+      "z_min": 1.85,
+      "z_max": 4.65,
+      "volume": 40.768,
+      "parent_label": "MZ1_Worli_Hero_Tower_Basement_B2",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Basement_B2_Parking_Slot_02",
+      "cls": "P",
+      "z_min": 1.85,
+      "z_max": 4.65,
+      "volume": 40.768,
+      "parent_label": "MZ1_Worli_Hero_Tower_Basement_B2",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Basement_B2_Parking_Slot_03",
+      "cls": "P",
+      "z_min": 1.85,
+      "z_max": 4.65,
+      "volume": 40.768,
+      "parent_label": "MZ1_Worli_Hero_Tower_Basement_B2",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Basement_B2_Parking_Slot_04",
+      "cls": "P",
+      "z_min": 1.85,
+      "z_max": 4.65,
+      "volume": 40.768,
+      "parent_label": "MZ1_Worli_Hero_Tower_Basement_B2",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Airspace_Lot",
+      "cls": "A",
+      "z_min": 76.5,
+      "z_max": 101.5,
+      "volume": 16800.0,
+      "parent_label": "MZ1_Worli_Hero_Tower_Parcel_Column",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Metro_Tunnel_Alignment",
+      "cls": "T",
+      "z_min": -13.5,
+      "z_max": -7.5,
+      "volume": 2664.0,
+      "parent_label": "MZ1_Worli_Hero_Tower_Parcel_Column",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Subsurface_Utility_Corridor",
+      "cls": "I",
+      "z_min": 5.1,
+      "z_max": 6.9,
+      "volume": 158.4,
+      "parent_label": "MZ1_Worli_Hero_Tower_Parcel_Column",
+      "data_provenance": "SYNTHETIC"
+    }
+  ]
+}

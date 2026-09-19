@@ -1,0 +1,923 @@
+{
+  "name": "BZ1_MGRoad_Hero_Tower",
+  "zone": "BZ-1",
+  "ground_elevation": 920.5,
+  "height": 49.5,
+  "floor_count": 15,
+  "total_volume": 310696.272,
+  "volume_count": 100,
+  "classes_exercised": [
+    "A",
+    "B",
+    "C",
+    "E",
+    "I",
+    "L",
+    "P",
+    "S",
+    "T",
+    "U"
+  ],
+  "volumes": [
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Parcel_Column",
+      "cls": "S",
+      "z_min": 880.5,
+      "z_max": 1010.0,
+      "volume": 206682.0,
+      "parent_label": null,
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Envelope",
+      "cls": "B",
+      "z_min": 920.5,
+      "z_max": 970.0,
+      "volume": 28314.0,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Parcel_Column",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_00",
+      "cls": "L",
+      "z_min": 920.5,
+      "z_max": 923.8,
+      "volume": 1887.6,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Envelope",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_00_CommonCorridor",
+      "cls": "C",
+      "z_min": 920.5,
+      "z_max": 923.8,
+      "volume": 174.24,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_00",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_00_Unit_01",
+      "cls": "U",
+      "z_min": 920.5,
+      "z_max": 923.8,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_00",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_00_Unit_02",
+      "cls": "U",
+      "z_min": 920.5,
+      "z_max": 923.8,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_00",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_00_Unit_03",
+      "cls": "U",
+      "z_min": 920.5,
+      "z_max": 923.8,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_00",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_00_Unit_04",
+      "cls": "U",
+      "z_min": 920.5,
+      "z_max": 923.8,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_00",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_01",
+      "cls": "L",
+      "z_min": 923.8,
+      "z_max": 927.1,
+      "volume": 1887.6,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Envelope",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_01_CommonCorridor",
+      "cls": "C",
+      "z_min": 923.8,
+      "z_max": 927.1,
+      "volume": 174.24,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_01",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_01_Unit_01",
+      "cls": "U",
+      "z_min": 923.8,
+      "z_max": 927.1,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_01",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_01_Unit_02",
+      "cls": "U",
+      "z_min": 923.8,
+      "z_max": 927.1,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_01",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_01_Unit_03",
+      "cls": "U",
+      "z_min": 923.8,
+      "z_max": 927.1,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_01",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_01_Unit_04",
+      "cls": "U",
+      "z_min": 923.8,
+      "z_max": 927.1,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_01",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_02",
+      "cls": "L",
+      "z_min": 927.1,
+      "z_max": 930.4,
+      "volume": 1887.6,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Envelope",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_02_CommonCorridor",
+      "cls": "C",
+      "z_min": 927.1,
+      "z_max": 930.4,
+      "volume": 174.24,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_02",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_02_Unit_01",
+      "cls": "U",
+      "z_min": 927.1,
+      "z_max": 930.4,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_02",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_02_Unit_02",
+      "cls": "U",
+      "z_min": 927.1,
+      "z_max": 930.4,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_02",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_02_Unit_03",
+      "cls": "U",
+      "z_min": 927.1,
+      "z_max": 930.4,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_02",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_02_Unit_04",
+      "cls": "U",
+      "z_min": 927.1,
+      "z_max": 930.4,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_02",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_03",
+      "cls": "L",
+      "z_min": 930.4,
+      "z_max": 933.7,
+      "volume": 1887.6,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Envelope",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_03_CommonCorridor",
+      "cls": "C",
+      "z_min": 930.4,
+      "z_max": 933.7,
+      "volume": 174.24,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_03",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_03_Unit_01",
+      "cls": "U",
+      "z_min": 930.4,
+      "z_max": 933.7,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_03",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_03_Unit_02",
+      "cls": "U",
+      "z_min": 930.4,
+      "z_max": 933.7,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_03",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_03_Unit_03",
+      "cls": "U",
+      "z_min": 930.4,
+      "z_max": 933.7,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_03",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_03_Unit_04",
+      "cls": "U",
+      "z_min": 930.4,
+      "z_max": 933.7,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_03",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_04",
+      "cls": "L",
+      "z_min": 933.7,
+      "z_max": 937.0,
+      "volume": 1887.6,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Envelope",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_04_CommonCorridor",
+      "cls": "C",
+      "z_min": 933.7,
+      "z_max": 937.0,
+      "volume": 174.24,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_04",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_04_Unit_01",
+      "cls": "U",
+      "z_min": 933.7,
+      "z_max": 937.0,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_04",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_04_Unit_02",
+      "cls": "U",
+      "z_min": 933.7,
+      "z_max": 937.0,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_04",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_04_Unit_03",
+      "cls": "U",
+      "z_min": 933.7,
+      "z_max": 937.0,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_04",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_04_Unit_04",
+      "cls": "U",
+      "z_min": 933.7,
+      "z_max": 937.0,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_04",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_05",
+      "cls": "L",
+      "z_min": 937.0,
+      "z_max": 940.3,
+      "volume": 1887.6,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Envelope",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_05_CommonCorridor",
+      "cls": "C",
+      "z_min": 937.0,
+      "z_max": 940.3,
+      "volume": 174.24,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_05",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_05_Unit_01",
+      "cls": "U",
+      "z_min": 937.0,
+      "z_max": 940.3,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_05",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_05_Unit_02",
+      "cls": "U",
+      "z_min": 937.0,
+      "z_max": 940.3,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_05",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_05_Unit_03",
+      "cls": "U",
+      "z_min": 937.0,
+      "z_max": 940.3,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_05",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_05_Unit_04",
+      "cls": "U",
+      "z_min": 937.0,
+      "z_max": 940.3,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_05",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_06",
+      "cls": "L",
+      "z_min": 940.3,
+      "z_max": 943.6,
+      "volume": 1887.6,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Envelope",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_06_CommonCorridor",
+      "cls": "C",
+      "z_min": 940.3,
+      "z_max": 943.6,
+      "volume": 174.24,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_06",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_06_Unit_01",
+      "cls": "U",
+      "z_min": 940.3,
+      "z_max": 943.6,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_06",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_06_Unit_02",
+      "cls": "U",
+      "z_min": 940.3,
+      "z_max": 943.6,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_06",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_06_Unit_03",
+      "cls": "U",
+      "z_min": 940.3,
+      "z_max": 943.6,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_06",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_06_Unit_04",
+      "cls": "U",
+      "z_min": 940.3,
+      "z_max": 943.6,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_06",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_07",
+      "cls": "L",
+      "z_min": 943.6,
+      "z_max": 946.9,
+      "volume": 1887.6,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Envelope",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_07_CommonCorridor",
+      "cls": "C",
+      "z_min": 943.6,
+      "z_max": 946.9,
+      "volume": 174.24,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_07",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_07_Unit_01",
+      "cls": "U",
+      "z_min": 943.6,
+      "z_max": 946.9,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_07",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_07_Unit_02",
+      "cls": "U",
+      "z_min": 943.6,
+      "z_max": 946.9,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_07",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_07_Unit_03",
+      "cls": "U",
+      "z_min": 943.6,
+      "z_max": 946.9,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_07",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_07_Unit_04",
+      "cls": "U",
+      "z_min": 943.6,
+      "z_max": 946.9,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_07",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_08",
+      "cls": "L",
+      "z_min": 946.9,
+      "z_max": 950.2,
+      "volume": 1887.6,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Envelope",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_08_CommonCorridor",
+      "cls": "C",
+      "z_min": 946.9,
+      "z_max": 950.2,
+      "volume": 174.24,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_08",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_08_Unit_01",
+      "cls": "U",
+      "z_min": 946.9,
+      "z_max": 950.2,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_08",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_08_Unit_02",
+      "cls": "U",
+      "z_min": 946.9,
+      "z_max": 950.2,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_08",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_08_Unit_03",
+      "cls": "U",
+      "z_min": 946.9,
+      "z_max": 950.2,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_08",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_08_Unit_04",
+      "cls": "U",
+      "z_min": 946.9,
+      "z_max": 950.2,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_08",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_09",
+      "cls": "L",
+      "z_min": 950.2,
+      "z_max": 953.5,
+      "volume": 1887.6,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Envelope",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_09_CommonCorridor",
+      "cls": "C",
+      "z_min": 950.2,
+      "z_max": 953.5,
+      "volume": 174.24,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_09",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_09_Unit_01",
+      "cls": "U",
+      "z_min": 950.2,
+      "z_max": 953.5,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_09",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_09_Unit_02",
+      "cls": "U",
+      "z_min": 950.2,
+      "z_max": 953.5,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_09",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_09_Unit_03",
+      "cls": "U",
+      "z_min": 950.2,
+      "z_max": 953.5,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_09",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_09_Unit_04",
+      "cls": "U",
+      "z_min": 950.2,
+      "z_max": 953.5,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_09",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_10",
+      "cls": "L",
+      "z_min": 953.5,
+      "z_max": 956.8,
+      "volume": 1887.6,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Envelope",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_10_CommonCorridor",
+      "cls": "C",
+      "z_min": 953.5,
+      "z_max": 956.8,
+      "volume": 174.24,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_10",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_10_Unit_01",
+      "cls": "U",
+      "z_min": 953.5,
+      "z_max": 956.8,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_10",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_10_Unit_02",
+      "cls": "U",
+      "z_min": 953.5,
+      "z_max": 956.8,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_10",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_10_Unit_03",
+      "cls": "U",
+      "z_min": 953.5,
+      "z_max": 956.8,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_10",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_10_Unit_04",
+      "cls": "U",
+      "z_min": 953.5,
+      "z_max": 956.8,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_10",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_11",
+      "cls": "L",
+      "z_min": 956.8,
+      "z_max": 960.1,
+      "volume": 1887.6,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Envelope",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_11_CommonCorridor",
+      "cls": "C",
+      "z_min": 956.8,
+      "z_max": 960.1,
+      "volume": 174.24,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_11",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_11_Unit_01",
+      "cls": "U",
+      "z_min": 956.8,
+      "z_max": 960.1,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_11",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_11_Unit_02",
+      "cls": "U",
+      "z_min": 956.8,
+      "z_max": 960.1,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_11",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_11_Unit_03",
+      "cls": "U",
+      "z_min": 956.8,
+      "z_max": 960.1,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_11",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_11_Unit_04",
+      "cls": "U",
+      "z_min": 956.8,
+      "z_max": 960.1,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_11",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_12",
+      "cls": "L",
+      "z_min": 960.1,
+      "z_max": 963.4,
+      "volume": 1887.6,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Envelope",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_12_CommonCorridor",
+      "cls": "C",
+      "z_min": 960.1,
+      "z_max": 963.4,
+      "volume": 174.24,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_12",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_12_Unit_01",
+      "cls": "U",
+      "z_min": 960.1,
+      "z_max": 963.4,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_12",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_12_Unit_02",
+      "cls": "U",
+      "z_min": 960.1,
+      "z_max": 963.4,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_12",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_12_Unit_03",
+      "cls": "U",
+      "z_min": 960.1,
+      "z_max": 963.4,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_12",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_12_Unit_04",
+      "cls": "U",
+      "z_min": 960.1,
+      "z_max": 963.4,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_12",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_13",
+      "cls": "L",
+      "z_min": 963.4,
+      "z_max": 966.7,
+      "volume": 1887.6,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Envelope",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_13_CommonCorridor",
+      "cls": "C",
+      "z_min": 963.4,
+      "z_max": 966.7,
+      "volume": 174.24,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_13",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_13_Unit_01",
+      "cls": "U",
+      "z_min": 963.4,
+      "z_max": 966.7,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_13",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_13_Unit_02",
+      "cls": "U",
+      "z_min": 963.4,
+      "z_max": 966.7,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_13",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_13_Unit_03",
+      "cls": "U",
+      "z_min": 963.4,
+      "z_max": 966.7,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_13",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_13_Unit_04",
+      "cls": "U",
+      "z_min": 963.4,
+      "z_max": 966.7,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_13",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_14",
+      "cls": "L",
+      "z_min": 966.7,
+      "z_max": 970.0,
+      "volume": 1887.6,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Envelope",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_14_CommonCorridor",
+      "cls": "C",
+      "z_min": 966.7,
+      "z_max": 970.0,
+      "volume": 174.24,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_14",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_14_Unit_01",
+      "cls": "U",
+      "z_min": 966.7,
+      "z_max": 970.0,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_14",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_14_Unit_02",
+      "cls": "U",
+      "z_min": 966.7,
+      "z_max": 970.0,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_14",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_14_Unit_03",
+      "cls": "U",
+      "z_min": 966.7,
+      "z_max": 970.0,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_14",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_14_Unit_04",
+      "cls": "U",
+      "z_min": 966.7,
+      "z_max": 970.0,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_14",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Basement_B1",
+      "cls": "T",
+      "z_min": 917.0,
+      "z_max": 920.5,
+      "volume": 2730.0,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Parcel_Column",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Basement_B1_Parking_Slot_01",
+      "cls": "P",
+      "z_min": 917.35,
+      "z_max": 920.15,
+      "volume": 40.768,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Basement_B1",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Basement_B1_Parking_Slot_02",
+      "cls": "P",
+      "z_min": 917.35,
+      "z_max": 920.15,
+      "volume": 40.768,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Basement_B1",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Basement_B1_Parking_Slot_03",
+      "cls": "P",
+      "z_min": 917.35,
+      "z_max": 920.15,
+      "volume": 40.768,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Basement_B1",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Basement_B1_Parking_Slot_04",
+      "cls": "P",
+      "z_min": 917.35,
+      "z_max": 920.15,
+      "volume": 40.768,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Basement_B1",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Airspace_Lot",
+      "cls": "A",
+      "z_min": 970.0,
+      "z_max": 995.0,
+      "volume": 14300.0,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Parcel_Column",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Elevated_Metro_Viaduct",
+      "cls": "E",
+      "z_min": 933.0,
+      "z_max": 936.0,
+      "volume": 1728.0,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Parcel_Column",
+      "data_provenance": "SYNTHETIC"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Subsurface_Utility_Corridor",
+      "cls": "I",
+      "z_min": 917.1,
+      "z_max": 918.9,
+      "volume": 151.2,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Parcel_Column",
+      "data_provenance": "SYNTHETIC"
+    }
+  ]
+}
