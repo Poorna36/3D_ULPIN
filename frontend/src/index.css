@@ -1,0 +1,326 @@
+/* ============================================================
+   3D ULPIN — Design System  (Voyage-matched theme)
+   Pure black/near-black · Syne display · Space Grotesk UI
+   #000 background · white text · #38bdf8 cyan + #2563eb blue accents
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Space+Grotesk:wght@300..700&family=Plus+Jakarta+Sans:wght@300..800&family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* ── Design Tokens ─────────────────────────────────────────── */
+:root {
+  /* Voyage-matched backgrounds */
+  --bg-void:       #050507;
+  --bg-deep:       #080a0f;
+  --bg-surface:    #0d0f17;
+  --bg-elevated:   #111420;
+  --bg-card:       rgba(11, 13, 20, 0.82);
+  --bg-card-hover: rgba(15, 18, 28, 0.95);
+
+  /* Voyage accent — sky blue */
+  --cyan:          #38bdf8;
+  --cyan-bright:   #7dd3fc;
+  --cyan-dim:      rgba(56, 189, 248, 0.12);
+  --cyan-glow:     0 0 18px rgba(56, 189, 248, 0.3);
+
+  /* Voyage CTA blue */
+  --blue:          #2563eb;
+  --blue-dim:      rgba(37, 99, 235, 0.15);
+  --blue-glow:     0 0 18px rgba(37, 99, 235, 0.4);
+
+  /* Secondary accent — kept subtle violet */
+  --violet:        #6366f1;
+  --violet-dim:    rgba(99, 102, 241, 0.14);
+  --violet-glow:   0 0 18px rgba(99, 102, 241, 0.35);
+
+  /* Gradients */
+  --grad-primary:  linear-gradient(135deg, #2563eb 0%, #38bdf8 100%);
+  --grad-text:     linear-gradient(90deg, #ffffff 0%, #38bdf8 100%);
+  --grad-card:     linear-gradient(135deg, rgba(37,99,235,0.06) 0%, rgba(56,189,248,0.04) 100%);
+
+  /* Status */
+  --green:         #10d97e;
+  --amber:         #f59e0b;
+  --red:           #ef4444;
+  --synthetic:     #a855f7;
+
+  /* Borders — very subtle like Voyage */
+  --border:        rgba(255, 255, 255, 0.07);
+  --border-strong: rgba(255, 255, 255, 0.13);
+  --border-accent: rgba(56, 189, 248, 0.25);
+
+  /* Text — white primary, gray secondary */
+  --text-primary:   #F9FAFB;
+  --text-secondary: #9ca3af;
+  --text-dim:       #4b5563;
+  --text-mono:      #38bdf8;
+
+  /* Typography — Voyage fonts */
+  --font-display: 'Syne', 'Space Grotesk', system-ui, sans-serif;
+  --font-ui:      'Space Grotesk', 'Inter', system-ui, sans-serif;
+  --font-body:    'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono', monospace;
+
+  /* Spacing */
+  --gap-xs: 4px;  --gap-sm: 8px;  --gap-md: 16px;
+  --gap-lg: 24px; --gap-xl: 32px; --gap-2xl: 48px;
+
+  /* Radius */
+  --r-sm: 6px;  --r-md: 10px;  --r-lg: 14px;
+  --r-xl: 18px; --r-pill: 999px;
+
+  /* Transitions */
+  --t-fast:   150ms ease;
+  --t-normal: 220ms cubic-bezier(0.4, 0, 0.2, 1);
+  --t-slow:   380ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Layout */
+  --panel-w:  300px;
+  --topbar-h: 52px;
+}
+
+/* ── Reset ─────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body, #root {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  background: var(--bg-void);
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Scrollbar ─────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(56, 189, 248, 0.25);
+  border-radius: var(--r-pill);
+}
+::-webkit-scrollbar-thumb:hover { background: rgba(56, 189, 248, 0.45); }
+
+/* ── Glassmorphism card ────────────────────────────────────── */
+.glass {
+  background: var(--bg-card);
+  backdrop-filter: blur(20px) saturate(1.6);
+  -webkit-backdrop-filter: blur(20px) saturate(1.6);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+}
+.glass:hover { border-color: var(--border-strong); }
+
+/* ── Typography ────────────────────────────────────────────── */
+h1 {
+  font-family: var(--font-display);
+  font-size: 20px; font-weight: 800; letter-spacing: -0.5px;
+}
+h2 {
+  font-family: var(--font-display);
+  font-size: 15px; font-weight: 700; letter-spacing: -0.3px;
+}
+h3 {
+  font-size: 10px; font-weight: 600; color: var(--text-dim);
+  text-transform: uppercase; letter-spacing: 1.2px;
+}
+.mono { font-family: var(--font-mono); color: var(--text-mono); font-size: 12px; }
+
+/* Gradient text */
+.grad-text {
+  background: var(--grad-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Buttons ───────────────────────────────────────────────── */
+.btn {
+  display: inline-flex; align-items: center; gap: var(--gap-sm);
+  padding: 7px 15px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-pill);
+  background: transparent;
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  font-size: 12px; font-weight: 600;
+  cursor: pointer;
+  transition: all var(--t-fast);
+  letter-spacing: '0.2px';
+}
+.btn:hover {
+  background: var(--cyan-dim);
+  border-color: var(--cyan);
+  box-shadow: var(--cyan-glow);
+}
+.btn-primary {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: #fff;
+  font-weight: 700;
+  box-shadow: 0 2px 14px rgba(37, 99, 235, 0.35);
+}
+.btn-primary:hover {
+  background: #1d4ed8;
+  box-shadow: 0 4px 24px rgba(37, 99, 235, 0.55);
+  border-color: #1d4ed8;
+}
+.btn-white {
+  background: #ffffff;
+  border: none;
+  color: #000000;
+  font-weight: 700;
+}
+.btn-white:hover {
+  background: #e5e7eb;
+  box-shadow: none;
+}
+.btn-icon {
+  padding: 6px; border-radius: var(--r-md);
+  min-width: 32px; min-height: 32px; justify-content: center;
+}
+
+/* ── Toggle switch ─────────────────────────────────────────── */
+.toggle-wrap {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: var(--gap-sm) var(--gap-md);
+  border-radius: var(--r-md);
+  transition: background var(--t-fast);
+  cursor: pointer;
+}
+.toggle-wrap:hover { background: rgba(56, 189, 248, 0.06); }
+.toggle { position: relative; width: 38px; height: 20px; flex-shrink: 0; }
+.toggle input { opacity: 0; width: 0; height: 0; }
+.toggle-track {
+  position: absolute; inset: 0;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  border-radius: var(--r-pill);
+  transition: all var(--t-normal);
+}
+.toggle input:checked ~ .toggle-track {
+  background: rgba(37, 99, 235, 0.2);
+  border-color: var(--blue);
+  box-shadow: var(--blue-glow);
+}
+.toggle-thumb {
+  position: absolute; top: 2px; left: 2px;
+  width: 14px; height: 14px;
+  background: var(--text-dim);
+  border-radius: 50%;
+  transition: transform var(--t-normal), background var(--t-normal);
+}
+.toggle input:checked ~ .toggle-thumb {
+  transform: translateX(18px);
+  background: var(--cyan);
+}
+
+/* ── Status badges ─────────────────────────────────────────── */
+.badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 3px 10px;
+  border-radius: var(--r-pill);
+  font-size: 11px; font-weight: 600; letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.badge-valid     { background: rgba(16,217,126,0.10); color: var(--green);    border: 1px solid rgba(16,217,126,0.25); }
+.badge-review    { background: rgba(245,158,11,0.10); color: var(--amber);    border: 1px solid rgba(245,158,11,0.25); }
+.badge-invalid   { background: rgba(239,68,68,0.10);  color: var(--red);      border: 1px solid rgba(239,68,68,0.25); }
+.badge-draft     { background: rgba(156,163,175,0.07); color: var(--text-secondary); border: 1px solid rgba(156,163,175,0.15); }
+.badge-synthetic { background: rgba(168,85,247,0.10); color: var(--synthetic); border: 1px solid rgba(168,85,247,0.25); }
+.badge-dot::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: currentColor; display: inline-block;
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.5; transform: scale(0.7); }
+}
+
+/* ── Divider ───────────────────────────────────────────────── */
+.divider { height: 1px; background: var(--border); margin: var(--gap-md) 0; }
+
+/* ── Section label ─────────────────────────────────────────── */
+.section-label {
+  font-size: 10px; font-weight: 600;
+  color: var(--text-dim);
+  text-transform: uppercase; letter-spacing: 1.3px;
+  margin-bottom: var(--gap-sm);
+}
+
+/* ── Shimmer ───────────────────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+.shimmer {
+  background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.07) 50%, rgba(255,255,255,0.03) 75%);
+  background-size: 800px 100%;
+  animation: shimmer 1.6s infinite;
+  border-radius: var(--r-sm);
+}
+
+/* ── Animations ────────────────────────────────────────────── */
+@keyframes slideInRight {
+  from { transform: translateX(24px); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+@keyframes slideInLeft {
+  from { transform: translateX(-24px); opacity: 0; }
+  to   { transform: translateX(0);     opacity: 1; }
+}
+@keyframes fadeInUp {
+  from { transform: translateY(12px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.anim-slide-right { animation: slideInRight var(--t-normal) forwards; }
+.anim-slide-left  { animation: slideInLeft  var(--t-normal) forwards; }
+.anim-fade-up     { animation: fadeInUp     var(--t-normal) forwards; }
+.anim-fade-in     { animation: fadeIn       var(--t-normal) forwards; }
+
+/* ── Tooltip ───────────────────────────────────────────────── */
+.tooltip-wrap { position: relative; display: inline-flex; }
+.tooltip-tip {
+  position: absolute; bottom: calc(100% + 6px);
+  left: 50%; transform: translateX(-50%);
+  white-space: nowrap;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-sm);
+  padding: 5px 10px;
+  font-size: 12px; color: var(--text-primary);
+  pointer-events: none; opacity: 0; transition: opacity var(--t-fast); z-index: 200;
+}
+.tooltip-wrap:hover .tooltip-tip { opacity: 1; }
+
+/* ── Copy button ───────────────────────────────────────────── */
+.copy-btn {
+  background: none; border: none; cursor: pointer;
+  color: var(--text-dim); padding: 3px 6px; border-radius: var(--r-sm);
+  transition: color var(--t-fast), background var(--t-fast);
+}
+.copy-btn:hover { color: var(--cyan); background: var(--cyan-dim); }
+.copy-btn.copied { color: var(--green); }
+
+/* ── Progress bar ──────────────────────────────────────────── */
+.progress-bar {
+  height: 2px; background: rgba(255,255,255,0.05);
+  border-radius: var(--r-pill); overflow: hidden;
+}
+.progress-fill {
+  height: 100%; border-radius: var(--r-pill);
+  background: var(--grad-primary);
+  transition: width 0.8s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* ── Scroll area ───────────────────────────────────────────── */
+.scroll-area {
+  overflow-y: auto; overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(56, 189, 248, 0.2) transparent;
+}
