@@ -995,6 +995,8 @@ export default function CesiumViewer({
   const googleTilesetRef     = useRef(null);
   const interiorEntRef       = useRef([]);
   const singleFloorEntRef    = useRef([]);  // on-demand floor BIM entities (current floor only)
+  const cityEntitiesRef      = useRef([]);  // all ULPIN entities for the active city view
+  const tileReadyRef         = useRef(false); // true once Google 3D tiles have initially loaded
   const flyToFloorRef        = useRef(null);
   // ── Stable callback refs — prevent stale-closure in the one-time setup effect ──
   const onBuildingClickRef   = useRef(onBuildingClick);
@@ -1246,8 +1248,35 @@ export default function CesiumViewer({
         viewer.scene.primitives.add(googleTileset);
         googleTilesetRef.current = googleTileset;
         googleTileset.show = layers.google3d ?? true;
+
+        // ── Reveal ULPIN entities once the first batch of map tiles are visible ──
+        // initialTilesLoaded fires when the visible-area tiles reach their
+        // intended LOD for the first time — the map looks "real" at that point.
+        googleTileset.initialTilesLoaded.addEventListener(() => {
+          if (tileReadyRef.current) return; // already revealed
+          tileReadyRef.current = true;
+
+          // Smooth fade-in over ~600ms using postRender
+          const startTime = Date.now();
+          const fadeDuration = 600;
+          const removeListener = viewer.scene.postRender.addEventListener(() => {
+            if (viewer.isDestroyed()) { removeListener(); return; }
+            const t = Math.min((Date.now() - startTime) / fadeDuration, 1.0);
+            // Drive entity collection alpha via scene transparency override
+            // The simplest approach: just show entities (they were already created)
+            cityEntitiesRef.current.forEach(e => {
+              if (e && !e.isDestroyed?.()) e.show = true;
+            });
+            if (t >= 1.0) removeListener();
+          });
+        });
       } catch (err) {
         console.warn('Google 3D Tiles init:', err?.message);
+        // Fallback: show entities immediately if Google tiles fail to load
+        tileReadyRef.current = true;
+        cityEntitiesRef.current.forEach(e => {
+          if (e && !e.isDestroyed?.()) e.show = true;
+        });
       }
     }
     initGoogle3DTiles();
@@ -1704,6 +1733,55 @@ export default function CesiumViewer({
       });
     }
   }, [city, targetBuildings, targetParcels, layers, selectedBuilding, explodedFloor, interiorMode]);
+
+  // ── Show entities: if tiles already cached/ready → immediately, else wait for initialTilesLoaded
+  useEffect(() => {
+    const viewer = viewerRef.current;
+    if (!viewer || viewer.isDestroyed()) return;
+
+    // Collect all non-singleFloor entities added in this render cycle
+    // We track by snapshot: anything in entities that isn't a singleFloor entity
+    const all = [];
+    viewer.entities.values.forEach(e => {
+      const isBimFloor = e.properties?.bim_floor?.getValue?.();
+      if (!isBimFloor) all.push(e);
+    });
+    cityEntitiesRef.current = all;
+
+    if (tileReadyRef.current) {
+      // Tiles already loaded (cached, subsequent city visits) — show instantly
+      all.forEach(e => { if (e && !e.isDestroyed?.()) e.show = true; });
+    } else {
+      // Tiles haven't loaded yet — hide entities and wait for initialTilesLoaded
+      // to reveal them (handled in initGoogle3DTiles listener above).
+      // Safety fallback: if Google tileset never fires (e.g. token error), reveal after 5s.
+      all.forEach(e => { if (e && !e.isDestroyed?.()) e.show = false; });
+      const fallbackTimer = setTimeout(() => {
+        if (!tileReadyRef.current) {
+          tileReadyRef.current = true;
+          cityEntitiesRef.current.forEach(e => {
+            if (e && !e.isDestroyed?.()) e.show = true;
+          });
+        }
+      }, 5000);
+      return () => clearTimeout(fallbackTimer);
+    }
+  }, [city, targetBuildings, targetParcels, layers, selectedBuilding, explodedFloor, interiorMode]);
+
+  // Reset tile-ready flag when switching cities (so new city waits for fresh tiles)
+  useEffect(() => {
+    if (!city) {
+      // Back to globe — no tiles needed, show everything
+      tileReadyRef.current = true;
+      return;
+    }
+    // Only reset if tileset is not yet registered (first time loading)
+    // If tileset exists and tiles are cached, keep tileReadyRef true for instant reveal
+    if (!googleTilesetRef.current) {
+      tileReadyRef.current = false;
+    }
+    // If already loaded, keep true so subsequent city switches are instant
+  }, [city]);
 
   // ── On-demand single-floor BIM geometry ──────────────────────────────────
   // When in interior mode, renders only the current floor's full 3D BIM
