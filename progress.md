@@ -1610,3 +1610,53 @@ Clean up the top header bar in `WorkbenchCockpit.jsx` to leave a sleek, minimal,
 
 ### Status
 Complete.
+
+---
+
+## Entry 0053 — 2026-09-19 16:35 IST
+
+### Type
+GIT & BIM / PRO1 BRANCH CREATION & SINGAPORE BIM/IFC STRATA INTERIOR INTEGRATION
+
+### Intent
+User instruction: "make a new branch and add the project made till now https://github.com/Poorna36/3D_ULPIN named pro1 after this don't push on github unless i specifucally mention you to do it and ok integrate singapores thing it then lets build a amazing platform".
+1. Created and pushed the project to GitHub repository `https://github.com/Poorna36/3D_ULPIN` on branch `pro1`. Recorded rule: no further pushes to GitHub without explicit user instruction.
+2. Integrate Singapore's open BIM (IFC4 CORENET X / SLA 3D Strata Cadastre) architectural interior model:
+   - True BIM multi-space room partition geometry (`IfcSpace`, `IfcWall`, `IfcDoor`, `IfcColumn`) in `buildInteriorGeometry` inside `CesiumViewer.jsx` for Singapore towers.
+   - Rich BIM strata lot data (`MK01-U0101A`, `IfcSpace` classes, net internal area, ceiling clearance, and survey plans) in `singapore_buildings.js` and `services/api/store.py`.
+   - Dedicated interactive BIM Architectural Inspector and 2D/3D Strata Unit viewer inside `InteriorWalkthrough.jsx`.
+
+### Planned Changes
+1. **`frontend/src/mock/singapore_buildings.js` & `services/api/store.py`**:
+   - Enrich Singapore pilot buildings with detailed BIM strata units, room layouts, and SLA survey metadata.
+2. **`frontend/src/components/CesiumViewer.jsx`**:
+   - Add Singapore BIM architectural layout rendering in `buildInteriorGeometry`: multi-room unit partitions, structural concrete columns, lift banks, and subterranean MRT links.
+3. **`frontend/src/components/InteriorWalkthrough.jsx`**:
+   - Add BIM Strata Inspector tab showing IFC spaces, net floor areas, SLA strata deeds, and room highlights.
+4. **Verification**:
+   - Verify `npm run build` passes with 0 errors.
+   - Run backend test suite.
+
+### Result
+1. **Git Repository Branch `pro1` & Remote Setup**:
+   - Initialized Git in `d:\second chance`, added `.gitignore` (ignoring node_modules, dist, __pycache__, scratch, logs).
+   - Created branch `pro1` and set remote `origin` to `https://github.com/Poorna36/3D_ULPIN.git`.
+   - Committed 70 project files (commit `75357d0`) and successfully pushed to `origin/pro1`.
+   - **Enforced strict constraint**: No further Git pushes will be executed without explicit user confirmation.
+2. **Singapore openBIM Strata Data Model**:
+   - `frontend/src/mock/singapore_buildings.js`: Augmented landmark buildings (MBFC Tower 3, etc.) with `bim_enabled: true`, `bim_standard: "IFC4 (CORENET X / SLA 3D Strata Cadastre)"`, `sla_survey_plan: "CP/SLA/2024-MBFC3"`, and detailed `strata_units` with real `IfcSpace` classifications, net internal areas ($m^2$), share values, and multi-room breakdowns.
+3. **Cesium 3D BIM Interior Geometry**:
+   - `frontend/src/components/CesiumViewer.jsx`: In `buildInteriorGeometry`, added Singapore BIM structural concrete perimeter columns (`IfcColumn`), quadrant strata units (`IfcSpace`) with custom color coding and lot IDs, interior drywall partition walls (`IfcWallStandardCase`) with doorway cutouts, and subterranean MRT concourse link with SLA subterranean easement demarcation.
+4. **Interactive BIM Strata Inspector in `InteriorWalkthrough.jsx`**:
+   - Added mode toggle tabs (`🏢 Floors & Elev` / `📐 BIM Strata`).
+   - Integrated CORENET X / SLA Strata Survey Plan details, strata lot selector pills (`MK01-U0101A`, `MK01-U0102B`, etc.), active deed metrics card (Net Internal Area, Gross Area, Share Value, Ceiling Clearance, Tenure, Boundary Type), and internal room breakdown chips with square meter tags.
+   - Added ISO 19152 LADM `LegalSpaceBuildingUnit` compliance validation tag.
+
+### Verification
+- `npm run build`: 0 errors; built in 701ms.
+- `python -m unittest tests/test_backend_api.py`: 9/9 tests passed in 0.229s.
+- `git status`: clean tracking on branch `pro1`.
+
+### Status
+Complete.
+

@@ -18,26 +18,85 @@ const singaporeBuildings = [
     floor_count: 50,
     source: "OneMap SLA 2024", confidence: "DERIVED_HIGH", validation_status: "VALID",
     prototype_3d_id: "3D-SGP-MBF-b2c9d4e1f803", data_label: "DERIVED",
+    bim_enabled: true,
+    bim_standard: "IFC4 (CORENET X / SLA 3D Strata Cadastre)",
+    sla_survey_plan: "CP/SLA/2024-MBFC3",
     provenance: {
-      source_dataset: "OneMap SLA 2024 + URA Master Plan",
+      source_dataset: "OneMap SLA 2024 + URA Master Plan + CORENET X BIM",
       crs: "EPSG:3414", acquired_at: "2024-10-01", processing_version: "0.1.0",
-      operator: "PROTOTYPE-PIPELINE", transformations: ["SVY21→WGS84", "DEM-elevation-merge"],
+      operator: "PROTOTYPE-PIPELINE", transformations: ["SVY21→WGS84", "DEM-elevation-merge", "IFC4→B-Rep"],
     },
     floors: [
-      { floor_id: "SGP-BLD-00001-F00", level_index: 0,  label: "Podium Grand Lobby & Retail", z_min: 3.2,   z_max: 8.5,   confidence: "DERIVED_HIGH", status: "VALID" },
-      { floor_id: "SGP-BLD-00001-F01", level_index: 1,  label: "Floor 1 — Financial Suite",   z_min: 8.5,   z_max: 13.0,  confidence: "DERIVED_HIGH", status: "VALID" },
-      { floor_id: "SGP-BLD-00001-F25", level_index: 25, label: "Floor 25 — Sky Terrace",     z_min: 118.0, z_max: 122.5, confidence: "DERIVED_HIGH", status: "VALID" },
-      { floor_id: "SGP-BLD-00001-F50", level_index: 50, label: "Floor 50 — Executive Suite", z_min: 243.0, z_max: 248.2, confidence: "DERIVED_HIGH", status: "VALID" },
-      { floor_id: "SGP-BLD-00001-B1",  level_index: -1, label: "Basement Carpark & UPN Mall", z_min: -1.5,  z_max: 3.2,   confidence: "INFERRED",     status: "REVIEW" },
+      {
+        floor_id: "SGP-BLD-00001-F00", level_index: 0, label: "Podium Grand Lobby & Retail Concourse", z_min: 3.2, z_max: 8.5, confidence: "DERIVED_HIGH", status: "VALID",
+        strata_units: [
+          {
+            unit_id: "MK01-U0001R", name: "Ground Banking Atrium & Retail Wing", ifc_space: "IfcSpace:RetailBanking:00",
+            gross_area_sqm: 480.0, net_internal_area_sqm: 442.0, share_value: "32/1000", ceiling_height: 5.3, tenure: "99-year Leasehold",
+            boundary_type: "Physical Structural Curtain & Common Property",
+            rooms: [{ name: "Main Banking Hall", area_sqm: 240.0 }, { name: "Client Lounge & Concierge", area_sqm: 110.0 }, { name: "Safe Deposit Vault", area_sqm: 92.0 }],
+          },
+        ],
+      },
+      {
+        floor_id: "SGP-BLD-00001-F01", level_index: 1, label: "Floor 1 — Financial & Advisory Suites", z_min: 8.5, z_max: 13.0, confidence: "DERIVED_HIGH", status: "VALID",
+        strata_units: [
+          {
+            unit_id: "MK01-U0101A", name: "Strata Suite 01-A (Corner Wealth Advisory)", ifc_space: "IfcSpace:CommercialUnit:01-A",
+            gross_area_sqm: 168.4, net_internal_area_sqm: 154.2, share_value: "14/1000", ceiling_height: 3.8, tenure: "99-year Leasehold",
+            boundary_type: "Physical 200mm RC Wall + Glass Curtain",
+            rooms: [{ name: "Private Advisory Suite", area_sqm: 42.0 }, { name: "Executive Boardroom", area_sqm: 38.5 }, { name: "Trading Workstations", area_sqm: 54.7 }, { name: "Server Vault", area_sqm: 19.0 }],
+          },
+          {
+            unit_id: "MK01-U0102B", name: "Strata Suite 01-B (Trading & Tech Hub)", ifc_space: "IfcSpace:CommercialUnit:01-B",
+            gross_area_sqm: 215.0, net_internal_area_sqm: 198.6, share_value: "18/1000", ceiling_height: 3.8, tenure: "99-year Leasehold",
+            boundary_type: "Physical Drywall + Structural Column Core",
+            rooms: [{ name: "Open Collaborative Floor", area_sqm: 112.0 }, { name: "Conference Alpha", area_sqm: 44.6 }, { name: "Pantry & Breakout", area_sqm: 26.0 }, { name: "Data Center (UPS Redundant)", area_sqm: 16.0 }],
+          },
+        ],
+      },
+      {
+        floor_id: "SGP-BLD-00001-F25", level_index: 25, label: "Floor 25 — Sky Terrace & Wellness Garden", z_min: 118.0, z_max: 122.5, confidence: "DERIVED_HIGH", status: "VALID",
+        strata_units: [
+          {
+            unit_id: "MK01-U2501S", name: "Common Property Sky Terrace", ifc_space: "IfcSpace:Amenity:SkyTerrace",
+            gross_area_sqm: 320.0, net_internal_area_sqm: 298.0, share_value: "Common Property (MCST 3812)", ceiling_height: 4.5, tenure: "Common Property",
+            boundary_type: "Open Air Parcel with LADM Volumetric Boundary",
+            rooms: [{ name: "Landscaped Sky Lounge", area_sqm: 180.0 }, { name: "Observation Walkway", area_sqm: 85.0 }, { name: "Service Plant Buffer", area_sqm: 33.0 }],
+          },
+        ],
+      },
+      {
+        floor_id: "SGP-BLD-00001-F50", level_index: 50, label: "Floor 50 — Executive Penthouse Boardroom", z_min: 243.0, z_max: 248.2, confidence: "DERIVED_HIGH", status: "VALID",
+        strata_units: [
+          {
+            unit_id: "MK01-U5001P", name: "Apex Executive Penthouse Suite", ifc_space: "IfcSpace:ExecutivePenthouse:50",
+            gross_area_sqm: 385.0, net_internal_area_sqm: 362.0, share_value: "35/1000", ceiling_height: 4.8, tenure: "99-year Leasehold",
+            boundary_type: "Physical 250mm Reinforced Structural Wall",
+            rooms: [{ name: "Global Boardroom (360° Marina Panorama)", area_sqm: 160.0 }, { name: "Private Dining Salon", area_sqm: 78.0 }, { name: "Executive Chairman Office", area_sqm: 82.0 }, { name: "Helipad Access Lobby", area_sqm: 42.0 }],
+          },
+        ],
+      },
+      {
+        floor_id: "SGP-BLD-00001-B1", level_index: -1, label: "Basement 1 — Subterranean MRT Concourse Link", z_min: -1.5, z_max: 3.2, confidence: "DERIVED_HIGH", status: "VALID",
+        strata_units: [
+          {
+            unit_id: "MK01-SUB-B101", name: "Downtown MRT Subterranean Transit Link", ifc_space: "IfcSpace:SubterraneanInfrastructure:TransitLink",
+            gross_area_sqm: 420.0, net_internal_area_sqm: 395.0, share_value: "Statutory SLA Subterranean Easement", ceiling_height: 4.2, tenure: "State Land Subterranean Lot",
+            boundary_type: "Underground Cast-in-place Diaphragm Wall",
+            rooms: [{ name: "Subterranean Pedestrian Concourse", area_sqm: 280.0 }, { name: "Faregate & Ticketing Hub", area_sqm: 75.0 }, { name: "District Cooling Distribution Vault", area_sqm: 40.0 }],
+          },
+        ],
+      },
     ],
     validation_checks: [
-      { id: "geom-valid",   label: "Geometry Valid",           status: "VALID" },
-      { id: "z-range",      label: "Vertical Range",           status: "VALID" },
-      { id: "parent-rel",   label: "Strata Lot Relationship",  status: "VALID" },
-      { id: "overlap",      label: "No Strata Overlaps",       status: "VALID" },
-      { id: "watertight",   label: "Watertight Solid",         status: "VALID" },
-      { id: "id-unique",    label: "Identifier Uniqueness",    status: "VALID" },
-      { id: "provenance",   label: "Provenance Complete",      status: "VALID" },
+      { id: "geom-valid", label: "Geometry Valid", status: "VALID" },
+      { id: "z-range", label: "Vertical Range", status: "VALID" },
+      { id: "parent-rel", label: "Strata Lot Relationship", status: "VALID" },
+      { id: "overlap", label: "No Strata Overlaps", status: "VALID" },
+      { id: "watertight", label: "Watertight Solid", status: "VALID" },
+      { id: "id-unique", label: "Identifier Uniqueness", status: "VALID" },
+      { id: "provenance", label: "Provenance Complete", status: "VALID" },
     ],
   },
   {

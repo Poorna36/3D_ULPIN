@@ -441,32 +441,154 @@ function buildInteriorGeometry(b, viewer) {
       properties: { building_id: b.building_id },
     }));
 
-    // Strata partitioned office / apartment suites
-    [-1, 1].forEach((side, si) => {
-      const rX = lon + side * (bW * 0.55);
-      const roomPts = [
-        Cartesian3.fromDegrees(rX - bW * 0.33, lat - bD * 0.90, 0),
-        Cartesian3.fromDegrees(rX + bW * 0.33, lat - bD * 0.90, 0),
-        Cartesian3.fromDegrees(rX + bW * 0.33, lat + bD * 0.90, 0),
-        Cartesian3.fromDegrees(rX - bW * 0.33, lat + bD * 0.90, 0),
+    // ── Singapore BIM Architectural Subdivisions (CORENET X / SLA 3D Strata Cadastre) ──
+    const isSgBim = b.city === 'singapore' || !!b.bim_enabled;
+
+    if (isSgBim) {
+      // 1. Structural Concrete Columns (IfcColumn) — 4 perimeter load-bearing columns
+      [-0.65, 0.65].forEach(cx => {
+        [-0.65, 0.65].forEach(cy => {
+          const colSize = bW * 0.08;
+          const colPts = [
+            Cartesian3.fromDegrees(lon + cx * bW - colSize, lat + cy * bD - colSize, 0),
+            Cartesian3.fromDegrees(lon + cx * bW + colSize, lat + cy * bD - colSize, 0),
+            Cartesian3.fromDegrees(lon + cx * bW + colSize, lat + cy * bD + colSize, 0),
+            Cartesian3.fromDegrees(lon + cx * bW - colSize, lat + cy * bD + colSize, 0),
+          ];
+          entities.push(viewer.entities.add({
+            name: `${b.name} · Column (IfcColumn) F${fi + 1}`,
+            polygon: {
+              hierarchy: new ConstantProperty(new PolygonHierarchy(colPts)),
+              height: zBase + 0.35,
+              extrudedHeight: zBase + floorH - 0.20,
+              heightReference: HeightReference.RELATIVE_TO_GROUND,
+              extrudedHeightReference: HeightReference.RELATIVE_TO_GROUND,
+              material: new ColorMaterialProperty(Color.fromCssColorString('#334155').withAlpha(0.95)),
+              outline: true,
+              outlineColor: Color.fromCssColorString('#64748b').withAlpha(0.80),
+              outlineWidth: 1.0,
+              shadows: ShadowMode.DISABLED,
+            },
+            properties: { building_id: b.building_id },
+          }));
+        });
+      });
+
+      // 2. BIM Strata Units (IfcSpace) — 4 Quadrants per floor
+      const quadrants = [
+        { name: 'NW Suite · Wealth Advisory', dx: -0.55, dy:  0.48, color: '#0284c7', lot: `MK01-U${String(fi + 1).padStart(2, '0')}01A` },
+        { name: 'NE Suite · Trading Floor',   dx:  0.55, dy:  0.48, color: '#10b981', lot: `MK01-U${String(fi + 1).padStart(2, '0')}02B` },
+        { name: 'SW Suite · Executive Office',dx: -0.55, dy: -0.48, color: '#8b5cf6', lot: `MK01-U${String(fi + 1).padStart(2, '0')}03C` },
+        { name: 'SE Suite · Client Concourse',dx:  0.55, dy: -0.48, color: '#f59e0b', lot: `MK01-U${String(fi + 1).padStart(2, '0')}04D` },
       ];
-      entities.push(viewer.entities.add({
-        name: `${b.name} · Strata Suite ${si === 0 ? 'West' : 'East'} F${fi + 1}`,
-        polygon: {
-          hierarchy: new ConstantProperty(new PolygonHierarchy(roomPts)),
-          height: zBase + 0.35,
-          extrudedHeight: zBase + floorH - 0.20,
-          heightReference: HeightReference.RELATIVE_TO_GROUND,
-          extrudedHeightReference: HeightReference.RELATIVE_TO_GROUND,
-          material: new ColorMaterialProperty(roomFill),
-          outline: true,
-          outlineColor: Color.fromCssColorString('#0284c7').withAlpha(0.70),
-          outlineWidth: 1.0,
-          shadows: ShadowMode.DISABLED,
-        },
-        properties: { building_id: b.building_id },
-      }));
-    });
+
+      quadrants.forEach((q) => {
+        const qX = lon + q.dx * bW;
+        const qY = lat + q.dy * bD;
+        const qW = bW * 0.35;
+        const qD = bD * 0.38;
+        const qPts = [
+          Cartesian3.fromDegrees(qX - qW, qY - qD, 0),
+          Cartesian3.fromDegrees(qX + qW, qY - qD, 0),
+          Cartesian3.fromDegrees(qX + qW, qY + qD, 0),
+          Cartesian3.fromDegrees(qX - qW, qY + qD, 0),
+        ];
+        entities.push(viewer.entities.add({
+          name: `${b.name} · ${q.name} (${q.lot})`,
+          polygon: {
+            hierarchy: new ConstantProperty(new PolygonHierarchy(qPts)),
+            height: zBase + 0.35,
+            extrudedHeight: zBase + floorH - 0.20,
+            heightReference: HeightReference.RELATIVE_TO_GROUND,
+            extrudedHeightReference: HeightReference.RELATIVE_TO_GROUND,
+            material: new ColorMaterialProperty(Color.fromCssColorString(q.color).withAlpha(0.26)),
+            outline: true,
+            outlineColor: Color.fromCssColorString(q.color).withAlpha(0.90),
+            outlineWidth: 1.5,
+            shadows: ShadowMode.DISABLED,
+          },
+          properties: { building_id: b.building_id, unit_id: q.lot, ifc_type: 'IfcSpace' },
+        }));
+
+        // Interior drywall partition (IfcWallStandardCase)
+        const wallPts = [
+          Cartesian3.fromDegrees(qX - qW * 0.95, qY, 0),
+          Cartesian3.fromDegrees(qX + qW * 0.40, qY, 0), // leaves doorway opening
+          Cartesian3.fromDegrees(qX + qW * 0.40, qY + 0.00001, 0),
+          Cartesian3.fromDegrees(qX - qW * 0.95, qY + 0.00001, 0),
+        ];
+        entities.push(viewer.entities.add({
+          name: `${b.name} · Internal Partition (IfcWall) ${q.lot}`,
+          polygon: {
+            hierarchy: new ConstantProperty(new PolygonHierarchy(wallPts)),
+            height: zBase + 0.35,
+            extrudedHeight: zBase + floorH - 0.20,
+            heightReference: HeightReference.RELATIVE_TO_GROUND,
+            extrudedHeightReference: HeightReference.RELATIVE_TO_GROUND,
+            material: new ColorMaterialProperty(Color.fromCssColorString('#cbd5e1').withAlpha(0.75)),
+            outline: true,
+            outlineColor: Color.fromCssColorString('#94a3b8').withAlpha(0.90),
+            outlineWidth: 1.0,
+            shadows: ShadowMode.DISABLED,
+          },
+          properties: { building_id: b.building_id },
+        }));
+      });
+
+      // Subterranean MRT concourse connection if basement
+      if (f.level_index < 0 || fi === 0) {
+        const mrtPts = [
+          Cartesian3.fromDegrees(lon - bW * 1.8, lat - bD * 0.4, 0),
+          Cartesian3.fromDegrees(lon - bW,        lat - bD * 0.4, 0),
+          Cartesian3.fromDegrees(lon - bW,        lat + bD * 0.4, 0),
+          Cartesian3.fromDegrees(lon - bW * 1.8, lat + bD * 0.4, 0),
+        ];
+        entities.push(viewer.entities.add({
+          name: `${b.name} · Downtown MRT Subterranean Pedestrian Link`,
+          polygon: {
+            hierarchy: new ConstantProperty(new PolygonHierarchy(mrtPts)),
+            height: zBase + 0.2,
+            extrudedHeight: zBase + floorH - 0.1,
+            heightReference: HeightReference.RELATIVE_TO_GROUND,
+            extrudedHeightReference: HeightReference.RELATIVE_TO_GROUND,
+            material: new ColorMaterialProperty(Color.fromCssColorString('#7c3aed').withAlpha(0.35)),
+            outline: true,
+            outlineColor: Color.fromCssColorString('#c084fc').withAlpha(0.95),
+            outlineWidth: 2.0,
+            shadows: ShadowMode.DISABLED,
+          },
+          properties: { building_id: b.building_id, easement: 'SLA Subterranean Transit Easement' },
+        }));
+      }
+
+    } else {
+      // Standard Strata partitioned office / apartment suites (General cities)
+      [-1, 1].forEach((side, si) => {
+        const rX = lon + side * (bW * 0.55);
+        const roomPts = [
+          Cartesian3.fromDegrees(rX - bW * 0.33, lat - bD * 0.90, 0),
+          Cartesian3.fromDegrees(rX + bW * 0.33, lat - bD * 0.90, 0),
+          Cartesian3.fromDegrees(rX + bW * 0.33, lat + bD * 0.90, 0),
+          Cartesian3.fromDegrees(rX - bW * 0.33, lat + bD * 0.90, 0),
+        ];
+        entities.push(viewer.entities.add({
+          name: `${b.name} · Strata Suite ${si === 0 ? 'West' : 'East'} F${fi + 1}`,
+          polygon: {
+            hierarchy: new ConstantProperty(new PolygonHierarchy(roomPts)),
+            height: zBase + 0.35,
+            extrudedHeight: zBase + floorH - 0.20,
+            heightReference: HeightReference.RELATIVE_TO_GROUND,
+            extrudedHeightReference: HeightReference.RELATIVE_TO_GROUND,
+            material: new ColorMaterialProperty(roomFill),
+            outline: true,
+            outlineColor: Color.fromCssColorString('#0284c7').withAlpha(0.70),
+            outlineWidth: 1.0,
+            shadows: ShadowMode.DISABLED,
+          },
+          properties: { building_id: b.building_id },
+        }));
+      });
+    }
 
     // Floor label badge
     if (fi === 0 || fi === floors.length - 1 || fi % 4 === 0) {

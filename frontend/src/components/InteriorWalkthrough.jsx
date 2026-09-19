@@ -51,13 +51,51 @@ export function buildFullFloorList(building) {
         : i === totalAboveGround - 1
         ? `Floor ${i} — Rooftop`
         : `Floor ${i}`;
+
+      const fIdxPad = String(i).padStart(2, '0');
+      const strataUnits = building.bim_enabled ? [
+        {
+          unit_id: `MK01-U${fIdxPad}01A`,
+          name: `Strata Suite ${fIdxPad}-A (East Wing)`,
+          ifc_space: `IfcSpace:CommercialUnit:${fIdxPad}-A`,
+          gross_area_sqm: 184.5,
+          net_internal_area_sqm: 168.2,
+          share_value: "15/1000",
+          ceiling_height: +(floorH * 0.85).toFixed(1),
+          tenure: "99-year Leasehold",
+          boundary_type: "Physical 200mm RC Core + Curtain Glazing",
+          rooms: [
+            { name: "Primary Commercial Suite", area_sqm: 112.0 },
+            { name: "Executive Meeting Room", area_sqm: 36.2 },
+            { name: "IT Server Alcove", area_sqm: 20.0 }
+          ]
+        },
+        {
+          unit_id: `MK01-U${fIdxPad}02B`,
+          name: `Strata Suite ${fIdxPad}-B (West Wing)`,
+          ifc_space: `IfcSpace:CommercialUnit:${fIdxPad}-B`,
+          gross_area_sqm: 198.0,
+          net_internal_area_sqm: 181.4,
+          share_value: "16/1000",
+          ceiling_height: +(floorH * 0.85).toFixed(1),
+          tenure: "99-year Leasehold",
+          boundary_type: "Physical Drywall + Structural Column Core",
+          rooms: [
+            { name: "Collaborative Open Office", area_sqm: 126.4 },
+            { name: "Conference Room Alpha", area_sqm: 39.0 },
+            { name: "Breakout Lounge", area_sqm: 16.0 }
+          ]
+        }
+      ] : [];
+
       result.push({
         floor_id:    `${building.building_id}_GEN_F${i}`,
         level_index: i,
         label,
         z_min: gElev + i * floorH,
         z_max: gElev + (i + 1) * floorH,
-        unit_count: 0,
+        unit_count: strataUnits.length,
+        strata_units: strataUnits,
         confidence: 'INFERRED',
         status: 'REVIEW',
       });
@@ -73,6 +111,8 @@ export default function InteriorWalkthrough({ building, currentFloorIdx, onFloor
   const [jumpInput, setJumpInput]   = useState('');
   const [jumpError, setJumpError]   = useState('');
   const [jumpPreview, setJumpPreview] = useState(null);
+  const [activeTab, setActiveTab]   = useState('nav'); // 'nav' | 'bim'
+  const [selectedUnitIdx, setSelectedUnitIdx] = useState(0);
   const jumpRef = useRef(null);
 
   // Build full floor list — always from floor_count, overlay named floors where defined
@@ -87,8 +127,13 @@ export default function InteriorWalkthrough({ building, currentFloorIdx, onFloor
   const floorH = absH / Math.max(totalFloors, 1);
   const elevPct = totalFloors > 1 ? (clampedIdx / (totalFloors - 1)) * 100 : 0;
 
+  // Strata units on current floor
+  const strataUnits = currentFloor?.strata_units || [];
+  const activeUnit = strataUnits[selectedUnitIdx] || strataUnits[0] || null;
+
   const doFloorChange = useCallback((idx) => {
     setAnimating(true);
+    setSelectedUnitIdx(0);
     setTimeout(() => setAnimating(false), 300);
     onFloorChange(idx);
   }, [onFloorChange]);
@@ -222,10 +267,34 @@ export default function InteriorWalkthrough({ building, currentFloorIdx, onFloor
             <div className="ihud-subtitle">
               Interior Walkthrough · {totalFloors} floors · {absH.toFixed(0)}m
             </div>
+            {building.bim_enabled && (
+              <div className="ihud-bim-badge">
+                <span className="ihud-bim-dot" />
+                <span>CORENET X · IFC4 BIM</span>
+              </div>
+            )}
             <button className="ihud-exit-btn" onClick={onExit} title="Exit interior mode (Esc)">
               ✕ Exit
             </button>
           </div>
+
+          {/* Tab Switcher if BIM is enabled */}
+          {building.bim_enabled && (
+            <div className="ihud-tabs">
+              <button
+                className={`ihud-tab ${activeTab === 'nav' ? 'active' : ''}`}
+                onClick={() => setActiveTab('nav')}
+              >
+                🏢 Floors & Elev
+              </button>
+              <button
+                className={`ihud-tab ${activeTab === 'bim' ? 'active' : ''}`}
+                onClick={() => setActiveTab('bim')}
+              >
+                📐 BIM Strata ({strataUnits.length})
+              </button>
+            </div>
+          )}
 
           {/* Current floor readout */}
           <div className={`ihud-floor-display ${animating ? 'floor-animating' : ''}`}>
@@ -245,128 +314,235 @@ export default function InteriorWalkthrough({ building, currentFloorIdx, onFloor
             </div>
           </div>
 
-          {/* ── Floor Jump Textbox ──────────────────────────────────────── */}
-          <div className="ihud-jump-section">
-            <div className="ihud-jump-row">
-              <div className="ihud-jump-input-wrap">
-                <span className="ihud-jump-icon">⌨</span>
-                <input
-                  ref={jumpRef}
-                  id="floor-jump-input"
-                  className="ihud-jump-input"
-                  type="text"
-                  value={jumpInput}
-                  onChange={handleJumpInput}
-                  onKeyDown={(e) => { if (e.key === 'Enter') executeJump(); }}
-                  placeholder={`Floor 1–${totalFloors} or G / B1 / R`}
-                  maxLength={6}
-                  autoComplete="off"
-                  spellCheck={false}
-                  aria-label="Jump to floor number"
-                />
+          {/* VIEW A: Navigation & Elevator Controls */}
+          {activeTab === 'nav' && (
+            <>
+              {/* ── Floor Jump Textbox ──────────────────────────────────────── */}
+              <div className="ihud-jump-section">
+                <div className="ihud-jump-row">
+                  <div className="ihud-jump-input-wrap">
+                    <span className="ihud-jump-icon">⌨</span>
+                    <input
+                      ref={jumpRef}
+                      id="floor-jump-input"
+                      className="ihud-jump-input"
+                      type="text"
+                      value={jumpInput}
+                      onChange={handleJumpInput}
+                      onKeyDown={(e) => { if (e.key === 'Enter') executeJump(); }}
+                      placeholder={`Floor 1–${totalFloors} or G / B1 / R`}
+                      maxLength={6}
+                      autoComplete="off"
+                      spellCheck={false}
+                      aria-label="Jump to floor number"
+                    />
+                  </div>
+                  <button
+                    className={`ihud-jump-btn ${jumpPreview !== null ? 'ready' : ''}`}
+                    onClick={executeJump}
+                    disabled={!jumpInput.trim()}
+                    title="Go to floor (Enter)"
+                  >
+                    Go ↵
+                  </button>
+                </div>
+                {/* Live preview */}
+                {jumpPreview !== null && !jumpError && (
+                  <div className="ihud-jump-preview">
+                    → {jumpPreview.label}
+                  </div>
+                )}
+                {jumpError && (
+                  <div className="ihud-jump-error">{jumpError}</div>
+                )}
+                {/* Quick-jump landmark buttons */}
+                <div className="ihud-quickjump-row">
+                  {quickFloors.map(qf => (
+                    <button
+                      key={qf.idx}
+                      className={`ihud-qjump-btn ${qf.idx === clampedIdx ? 'active' : ''}`}
+                      onClick={() => doFloorChange(qf.idx)}
+                      title={qf.title}
+                    >
+                      {qf.label}
+                    </button>
+                  ))}
+                </div>
               </div>
-              <button
-                className={`ihud-jump-btn ${jumpPreview !== null ? 'ready' : ''}`}
-                onClick={executeJump}
-                disabled={!jumpInput.trim()}
-                title="Go to floor (Enter)"
-              >
-                Go ↵
-              </button>
-            </div>
-            {/* Live preview */}
-            {jumpPreview !== null && !jumpError && (
-              <div className="ihud-jump-preview">
-                → {jumpPreview.label}
-              </div>
-            )}
-            {jumpError && (
-              <div className="ihud-jump-error">{jumpError}</div>
-            )}
-            {/* Quick-jump landmark buttons */}
-            <div className="ihud-quickjump-row">
-              {quickFloors.map(qf => (
-                <button
-                  key={qf.idx}
-                  className={`ihud-qjump-btn ${qf.idx === clampedIdx ? 'active' : ''}`}
-                  onClick={() => doFloorChange(qf.idx)}
-                  title={qf.title}
-                >
-                  {qf.label}
-                </button>
-              ))}
-            </div>
-          </div>
 
-          {/* Elevator column + step nav */}
-          <div className="ihud-elevator-row">
-            <div className="ihud-nav-col">
-              <button
-                className="ihud-nav-btn ihud-nav-up"
-                onClick={goUp}
-                disabled={clampedIdx >= totalFloors - 1}
-                title="Go up one floor (↑)"
-              >▲</button>
+              {/* Elevator column + step nav */}
+              <div className="ihud-elevator-row">
+                <div className="ihud-nav-col">
+                  <button
+                    className="ihud-nav-btn ihud-nav-up"
+                    onClick={goUp}
+                    disabled={clampedIdx >= totalFloors - 1}
+                    title="Go up one floor (↑)"
+                  >▲</button>
 
-              <div className="ihud-shaft">
-                <div className="ihud-shaft-track">
-                  {floors.map((f, fi) =>
-                    (fi === 0 || fi === totalFloors - 1 || fi % Math.max(1, Math.floor(totalFloors / 6)) === 0) ? (
-                      <button
-                        key={f.floor_id}
-                        className={`ihud-shaft-marker ${fi === clampedIdx ? 'active' : ''}`}
-                        style={{ bottom: `${(fi / Math.max(totalFloors - 1, 1)) * 100}%` }}
-                        onClick={() => doFloorChange(fi)}
-                        title={f.label}
+                  <div className="ihud-shaft">
+                    <div className="ihud-shaft-track">
+                      {floors.map((f, fi) =>
+                        (fi === 0 || fi === totalFloors - 1 || fi % Math.max(1, Math.floor(totalFloors / 6)) === 0) ? (
+                          <button
+                            key={f.floor_id}
+                            className={`ihud-shaft-marker ${fi === clampedIdx ? 'active' : ''}`}
+                            style={{ bottom: `${(fi / Math.max(totalFloors - 1, 1)) * 100}%` }}
+                            onClick={() => doFloorChange(fi)}
+                            title={f.label}
+                          />
+                        ) : null
+                      )}
+                      <div
+                        className="ihud-cabin"
+                        style={{ bottom: `${elevPct}%`, backgroundColor: meta?.color ?? '#06b6d4' }}
                       />
-                    ) : null
-                  )}
-                  <div
-                    className="ihud-cabin"
-                    style={{ bottom: `${elevPct}%`, backgroundColor: meta?.color ?? '#06b6d4' }}
-                  />
+                    </div>
+                    <div className="ihud-shaft-labels">
+                      <span>R</span>
+                      <span>G</span>
+                    </div>
+                  </div>
+
+                  <button
+                    className="ihud-nav-btn ihud-nav-down"
+                    onClick={goDown}
+                    disabled={clampedIdx <= 0}
+                    title="Go down one floor (↓)"
+                  >▼</button>
                 </div>
-                <div className="ihud-shaft-labels">
-                  <span>R</span>
-                  <span>G</span>
+
+                {/* Collapsible full floor list */}
+                <div className="ihud-floor-list-wrap">
+                  <button className="ihud-list-toggle" onClick={() => setExpanded(v => !v)}>
+                    {expanded ? '▾ Hide floors' : '▸ All floors'}
+                  </button>
+                  {expanded && (
+                    <div className="ihud-floor-list">
+                      {[...floors].reverse().map((f, ri) => {
+                        const fi = totalFloors - 1 - ri;
+                        const fm = floorMeta(f.label, fi, totalFloors);
+                        return (
+                          <button
+                            key={f.floor_id}
+                            className={`ihud-floor-item ${fi === clampedIdx ? 'active' : ''}`}
+                            style={fi === clampedIdx ? { borderColor: fm.color, color: fm.color } : {}}
+                            onClick={() => doFloorChange(fi)}
+                          >
+                            <span>{fm.icon}</span>
+                            <span className="ihud-fi-label">{f.label}</span>
+                            <span className="ihud-fi-elev">{(floorH * fi).toFixed(0)}m</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </>
+          )}
+
+          {/* VIEW B: BIM Strata Inspector (CORENET X / SLA 3D Strata Cadastre) */}
+          {activeTab === 'bim' && (
+            <div className="ihud-bim-panel">
+              <div className="ihud-bim-cadastre-meta">
+                <div className="ihud-bim-meta-row">
+                  <span className="ihud-bim-meta-label">Survey Plan:</span>
+                  <span className="ihud-bim-meta-val">{building.sla_survey_plan || 'CP/SLA/2024'}</span>
+                </div>
+                <div className="ihud-bim-meta-row">
+                  <span className="ihud-bim-meta-label">Standard:</span>
+                  <span className="ihud-bim-meta-val">IFC4 / ISO 19152 LADM</span>
                 </div>
               </div>
 
-              <button
-                className="ihud-nav-btn ihud-nav-down"
-                onClick={goDown}
-                disabled={clampedIdx <= 0}
-                title="Go down one floor (↓)"
-              >▼</button>
-            </div>
-
-            {/* Collapsible full floor list */}
-            <div className="ihud-floor-list-wrap">
-              <button className="ihud-list-toggle" onClick={() => setExpanded(v => !v)}>
-                {expanded ? '▾ Hide floors' : '▸ All floors'}
-              </button>
-              {expanded && (
-                <div className="ihud-floor-list">
-                  {[...floors].reverse().map((f, ri) => {
-                    const fi = totalFloors - 1 - ri;
-                    const fm = floorMeta(f.label, fi, totalFloors);
-                    return (
+              {/* Strata Unit Selector */}
+              {strataUnits.length > 0 ? (
+                <>
+                  <div className="ihud-bim-unit-tabs">
+                    {strataUnits.map((u, ui) => (
                       <button
-                        key={f.floor_id}
-                        className={`ihud-floor-item ${fi === clampedIdx ? 'active' : ''}`}
-                        style={fi === clampedIdx ? { borderColor: fm.color, color: fm.color } : {}}
-                        onClick={() => doFloorChange(fi)}
+                        key={u.unit_id}
+                        className={`ihud-bim-unit-tab ${ui === selectedUnitIdx ? 'active' : ''}`}
+                        onClick={() => setSelectedUnitIdx(ui)}
                       >
-                        <span>{fm.icon}</span>
-                        <span className="ihud-fi-label">{f.label}</span>
-                        <span className="ihud-fi-elev">{(floorH * fi).toFixed(0)}m</span>
+                        {u.unit_id}
                       </button>
-                    );
-                  })}
+                    ))}
+                  </div>
+
+                  {/* Active Unit Deed Card */}
+                  {activeUnit && (
+                    <div className="ihud-bim-card">
+                      <div className="ihud-bim-card-head">
+                        <div className="ihud-bim-lot-id">{activeUnit.unit_id}</div>
+                        <div className="ihud-bim-ifc-tag">{activeUnit.ifc_space || 'IfcSpace'}</div>
+                      </div>
+                      <div className="ihud-bim-unit-name">{activeUnit.name}</div>
+
+                      <div className="ihud-bim-metrics-grid">
+                        <div className="ihud-bim-metric-cell">
+                          <span className="bim-m-label">Net Area (NIA)</span>
+                          <span className="bim-m-val highlight">{activeUnit.net_internal_area_sqm} m²</span>
+                        </div>
+                        <div className="ihud-bim-metric-cell">
+                          <span className="bim-m-label">Gross Area</span>
+                          <span className="bim-m-val">{activeUnit.gross_area_sqm} m²</span>
+                        </div>
+                        <div className="ihud-bim-metric-cell">
+                          <span className="bim-m-label">Share Value</span>
+                          <span className="bim-m-val">{activeUnit.share_value}</span>
+                        </div>
+                        <div className="ihud-bim-metric-cell">
+                          <span className="bim-m-label">Ceiling Ht</span>
+                          <span className="bim-m-val">{activeUnit.ceiling_height} m</span>
+                        </div>
+                      </div>
+
+                      {activeUnit.tenure && (
+                        <div className="ihud-bim-row">
+                          <span className="bim-m-label">Tenure:</span>
+                          <span className="bim-m-subval">{activeUnit.tenure}</span>
+                        </div>
+                      )}
+
+                      {activeUnit.boundary_type && (
+                        <div className="ihud-bim-row">
+                          <span className="bim-m-label">Boundary:</span>
+                          <span className="bim-m-subval">{activeUnit.boundary_type}</span>
+                        </div>
+                      )}
+
+                      {/* Room Breakdown */}
+                      {activeUnit.rooms && activeUnit.rooms.length > 0 && (
+                        <div className="ihud-bim-rooms">
+                          <div className="ihud-bim-rooms-title">IFC Internal Room Spaces</div>
+                          <div className="ihud-bim-room-list">
+                            {activeUnit.rooms.map((rm, ri) => (
+                              <div key={ri} className="ihud-bim-room-item">
+                                <span className="ihud-bim-room-dot" />
+                                <span className="ihud-bim-room-name">{rm.name}</span>
+                                <span className="ihud-bim-room-area">{rm.area_sqm} m²</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      <div className="ihud-bim-compliance">
+                        <span className="ihud-bim-check">✓</span>
+                        <span>ISO 19152 LADM LegalSpaceBuildingUnit Validated</span>
+                      </div>
+                    </div>
+                  )}
+                </>
+              ) : (
+                <div className="ihud-bim-empty">
+                  No discrete strata units recorded for this floor elevation.
                 </div>
               )}
             </div>
-          </div>
+          )}
 
           {/* Keyboard hint */}
           <div className="ihud-hint">
@@ -422,10 +598,10 @@ export default function InteriorWalkthrough({ building, currentFloorIdx, onFloor
           right: calc(var(--panel-w) + 14px);
           bottom: 70px;
           z-index: 160;
-          width: 290px;
+          width: 315px;
           border-radius: 16px;
           border: 1px solid rgba(6, 182, 212, 0.35);
-          background: rgba(2, 8, 23, 0.92);
+          background: rgba(2, 8, 23, 0.94);
           backdrop-filter: blur(24px);
           box-shadow:
             0 0 0 1px rgba(6,182,212,0.08),
@@ -452,6 +628,28 @@ export default function InteriorWalkthrough({ building, currentFloorIdx, onFloor
           white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
         }
         .ihud-subtitle { font-size: 10px; color: #475569; font-weight: 500; }
+        .ihud-bim-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 5px;
+          margin-top: 3px;
+          padding: 2px 7px;
+          border-radius: 4px;
+          background: rgba(168, 85, 247, 0.15);
+          border: 1px solid rgba(168, 85, 247, 0.40);
+          color: #c084fc;
+          font-size: 9.5px;
+          font-weight: 700;
+          letter-spacing: 0.3px;
+          width: fit-content;
+        }
+        .ihud-bim-dot {
+          width: 5px;
+          height: 5px;
+          border-radius: 50%;
+          background: #c084fc;
+          box-shadow: 0 0 6px #c084fc;
+        }
         .ihud-exit-btn {
           position: absolute; top: 12px; right: 10px;
           background: rgba(239,68,68,0.12);
@@ -461,6 +659,42 @@ export default function InteriorWalkthrough({ building, currentFloorIdx, onFloor
           cursor: pointer; font-family: inherit; transition: all 0.2s;
         }
         .ihud-exit-btn:hover { background: rgba(239,68,68,0.25); box-shadow: 0 0 12px rgba(239,68,68,0.3); }
+
+        /* ── BIM / Nav Tabs ───────────────────────────────────────── */
+        .ihud-tabs {
+          display: flex;
+          background: rgba(0, 0, 0, 0.25);
+          border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+          padding: 4px 8px;
+          gap: 4px;
+        }
+        .ihud-tab {
+          flex: 1;
+          padding: 5px 8px;
+          font-size: 11px;
+          font-weight: 600;
+          font-family: inherit;
+          color: #64748b;
+          background: none;
+          border: 1px solid transparent;
+          border-radius: 6px;
+          cursor: pointer;
+          transition: all 0.15s ease;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 4px;
+        }
+        .ihud-tab:hover {
+          color: #94a3b8;
+          background: rgba(255, 255, 255, 0.04);
+        }
+        .ihud-tab.active {
+          color: #38bdf8;
+          background: rgba(56, 189, 248, 0.12);
+          border-color: rgba(56, 189, 248, 0.35);
+          box-shadow: 0 0 8px rgba(56, 189, 248, 0.15);
+        }
 
         .ihud-floor-display {
           display: flex; align-items: center; gap: 12px;
@@ -474,6 +708,213 @@ export default function InteriorWalkthrough({ building, currentFloorIdx, onFloor
         .ihud-floor-label { font-size: 14px; font-weight: 700; color: #f1f5f9; letter-spacing: -0.2px; }
         .ihud-floor-type { font-size: 11px; font-weight: 600; letter-spacing: 0.3px; text-transform: uppercase; margin-top: 1px; }
         .ihud-floor-elev { font-size: 10px; color: #475569; margin-top: 3px; font-variant-numeric: tabular-nums; }
+
+        /* ── BIM Panel & Cadastre Deed Card ───────────────────────── */
+        .ihud-bim-panel {
+          padding: 10px 14px 12px;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+          max-height: 290px;
+          overflow-y: auto;
+          scrollbar-width: thin;
+          scrollbar-color: rgba(168, 85, 247, 0.35) transparent;
+        }
+        .ihud-bim-cadastre-meta {
+          background: rgba(15, 23, 42, 0.65);
+          border: 1px solid rgba(255, 255, 255, 0.06);
+          border-radius: 6px;
+          padding: 6px 8px;
+          display: flex;
+          flex-direction: column;
+          gap: 3px;
+        }
+        .ihud-bim-meta-row {
+          display: flex;
+          justify-content: space-between;
+          font-size: 10px;
+        }
+        .ihud-bim-meta-label { color: #64748b; font-weight: 500; }
+        .ihud-bim-meta-val { color: #94a3b8; font-weight: 600; font-family: monospace; }
+
+        .ihud-bim-unit-tabs {
+          display: flex;
+          gap: 5px;
+          overflow-x: auto;
+          padding-bottom: 2px;
+          scrollbar-width: none;
+        }
+        .ihud-bim-unit-tab {
+          padding: 4px 8px;
+          font-size: 10px;
+          font-weight: 700;
+          font-family: monospace;
+          background: rgba(255, 255, 255, 0.04);
+          border: 1px solid rgba(255, 255, 255, 0.10);
+          border-radius: 6px;
+          color: #94a3b8;
+          cursor: pointer;
+          white-space: nowrap;
+          transition: all 0.15s;
+        }
+        .ihud-bim-unit-tab:hover {
+          color: #c084fc;
+          border-color: rgba(168, 85, 247, 0.4);
+        }
+        .ihud-bim-unit-tab.active {
+          background: rgba(168, 85, 247, 0.18);
+          border-color: rgba(168, 85, 247, 0.7);
+          color: #e9d5ff;
+          box-shadow: 0 0 8px rgba(168, 85, 247, 0.25);
+        }
+
+        .ihud-bim-card {
+          background: rgba(15, 23, 42, 0.85);
+          border: 1px solid rgba(168, 85, 247, 0.25);
+          border-radius: 8px;
+          padding: 8px 10px;
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+        }
+        .ihud-bim-card-head {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+        .ihud-bim-lot-id {
+          font-size: 12px;
+          font-weight: 800;
+          color: #c084fc;
+          letter-spacing: 0.5px;
+          font-family: monospace;
+        }
+        .ihud-bim-ifc-tag {
+          font-size: 9px;
+          font-weight: 600;
+          padding: 1px 5px;
+          background: rgba(56, 189, 248, 0.12);
+          border: 1px solid rgba(56, 189, 248, 0.3);
+          border-radius: 4px;
+          color: #38bdf8;
+        }
+        .ihud-bim-unit-name {
+          font-size: 11px;
+          font-weight: 600;
+          color: #e2e8f0;
+        }
+
+        .ihud-bim-metrics-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 5px;
+          margin-top: 2px;
+        }
+        .ihud-bim-metric-cell {
+          background: rgba(0, 0, 0, 0.25);
+          border-radius: 5px;
+          padding: 4px 6px;
+          display: flex;
+          flex-direction: column;
+          gap: 1px;
+        }
+        .bim-m-label {
+          font-size: 9px;
+          color: #64748b;
+          font-weight: 500;
+        }
+        .bim-m-val {
+          font-size: 11px;
+          font-weight: 700;
+          color: #cbd5e1;
+          font-variant-numeric: tabular-nums;
+        }
+        .bim-m-val.highlight {
+          color: #38bdf8;
+        }
+        .ihud-bim-row {
+          display: flex;
+          justify-content: space-between;
+          font-size: 10px;
+          padding: 2px 0;
+          border-top: 1px dashed rgba(255, 255, 255, 0.05);
+        }
+        .bim-m-subval {
+          color: #94a3b8;
+          font-size: 10px;
+          text-align: right;
+          max-width: 170px;
+        }
+
+        .ihud-bim-rooms {
+          margin-top: 4px;
+          display: flex;
+          flex-direction: column;
+          gap: 3px;
+        }
+        .ihud-bim-rooms-title {
+          font-size: 9.5px;
+          font-weight: 700;
+          color: #94a3b8;
+          text-transform: uppercase;
+          letter-spacing: 0.4px;
+        }
+        .ihud-bim-room-list {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+        }
+        .ihud-bim-room-item {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          background: rgba(255, 255, 255, 0.03);
+          border-radius: 4px;
+          padding: 3px 6px;
+          font-size: 10px;
+        }
+        .ihud-bim-room-dot {
+          width: 4px;
+          height: 4px;
+          border-radius: 50%;
+          background: #a855f7;
+          margin-right: 5px;
+          flex-shrink: 0;
+        }
+        .ihud-bim-room-name {
+          color: #cbd5e1;
+          flex: 1;
+        }
+        .ihud-bim-room-area {
+          color: #38bdf8;
+          font-weight: 600;
+          font-family: monospace;
+        }
+
+        .ihud-bim-compliance {
+          margin-top: 4px;
+          padding: 4px 6px;
+          background: rgba(16, 185, 129, 0.10);
+          border: 1px solid rgba(16, 185, 129, 0.25);
+          border-radius: 5px;
+          display: flex;
+          align-items: center;
+          gap: 5px;
+          font-size: 9px;
+          color: #6ee7b7;
+          font-weight: 600;
+        }
+        .ihud-bim-check {
+          font-weight: 900;
+          color: #34d399;
+        }
+        .ihud-bim-empty {
+          font-size: 11px;
+          color: #64748b;
+          text-align: center;
+          padding: 12px 6px;
+        }
 
         /* ── Floor Jump Section ──────────────────────────────────── */
         .ihud-jump-section {
