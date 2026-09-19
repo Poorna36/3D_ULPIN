@@ -1,4 +1,5 @@
 import { useEffect, useRef, useCallback } from 'react';
+import { buildFullFloorList } from './InteriorWalkthrough.jsx';
 import {
   Viewer, Ion, Cartesian3, Cartographic, Color, HeightReference,
   VerticalOrigin, HorizontalOrigin, LabelStyle, Cartesian2,
@@ -731,9 +732,257 @@ function buildAmbientFloorsAndCorridors(b, viewer) {
   return ents;
 }
 
+// ── Per-floor BIM geometry (one floor at a time) ────────────────────────────
+// Generates 3D architectural entities for a single floor: concrete slab, BIM
+// strata unit partitions (IfcSpace), structural columns, corridors, and walls.
+function buildSingleFloorBIM(b, f, fi, viewer) {
+  const ents = [];
+  const floorH = 3.4;
+  const { lon, lat } = b;
+  const latRad   = (lat * Math.PI) / 180;
+  const lonScale = 1 / Math.max(0.2, Math.cos(latRad));
+  const baseScale = 0.00010 + (Math.min(b.floor_count || 10, 45) / 45) * 0.00007;
+  const bW = baseScale * lonScale;
+  const bD = baseScale;
+
+  const zBase = isFinite(f.z_min)
+    ? Math.max(0, f.z_min - (b.ground_elevation || 0))
+    : fi * floorH;
+  const progress = fi / Math.max((b.floor_count || 10) - 1, 1);
+  const hue = 0.50 + progress * 0.16;
+  const slabFill = Color.fromCssColorString('#f8fafc').withAlpha(0.85);
+
+  // Concrete floor slab (0.35m thick)
+  const slabPts = [
+    Cartesian3.fromDegrees(lon - bW, lat - bD, 0),
+    Cartesian3.fromDegrees(lon + bW, lat - bD, 0),
+    Cartesian3.fromDegrees(lon + bW, lat + bD, 0),
+    Cartesian3.fromDegrees(lon - bW, lat + bD, 0),
+  ];
+  ents.push(viewer.entities.add({
+    name: `${b.name} · Slab F${fi + 1}`,
+    polygon: {
+      hierarchy: new ConstantProperty(new PolygonHierarchy(slabPts)),
+      height: zBase,
+      extrudedHeight: zBase + 0.35,
+      heightReference: HeightReference.RELATIVE_TO_GROUND,
+      extrudedHeightReference: HeightReference.RELATIVE_TO_GROUND,
+      material: new ColorMaterialProperty(slabFill),
+      outline: true,
+      outlineColor: Color.fromCssColorString('#0284c7').withAlpha(0.75),
+      outlineWidth: 1.2,
+      shadows: ShadowMode.DISABLED,
+    },
+    properties: { building_id: b.building_id, bim_floor: true },
+  }));
+
+  // Central illuminated corridor
+  const corrW = bW * 0.15;
+  const corrPts = [
+    Cartesian3.fromDegrees(lon - corrW, lat - bD * 0.92, 0),
+    Cartesian3.fromDegrees(lon + corrW, lat - bD * 0.92, 0),
+    Cartesian3.fromDegrees(lon + corrW, lat + bD * 0.92, 0),
+    Cartesian3.fromDegrees(lon - corrW, lat + bD * 0.92, 0),
+  ];
+  ents.push(viewer.entities.add({
+    name: `${b.name} · Corridor F${fi + 1}`,
+    polygon: {
+      hierarchy: new ConstantProperty(new PolygonHierarchy(corrPts)),
+      height: zBase + 0.35,
+      extrudedHeight: zBase + floorH - 0.20,
+      heightReference: HeightReference.RELATIVE_TO_GROUND,
+      extrudedHeightReference: HeightReference.RELATIVE_TO_GROUND,
+      material: new ColorMaterialProperty(Color.fromCssColorString('#fef08a').withAlpha(0.50)),
+      outline: true,
+      outlineColor: Color.fromCssColorString('#f59e0b').withAlpha(0.90),
+      outlineWidth: 1.8,
+      shadows: ShadowMode.DISABLED,
+    },
+    properties: { building_id: b.building_id, bim_floor: true },
+  }));
+
+  const isBim = b.bim_enabled || b.city === 'singapore';
+
+  if (isBim) {
+    // Structural concrete columns (IfcColumn) — 4 perimeter load-bearing columns
+    [-0.65, 0.65].forEach(cx => {
+      [-0.65, 0.65].forEach(cy => {
+        const colSize = bW * 0.08;
+        const colPts = [
+          Cartesian3.fromDegrees(lon + cx * bW - colSize, lat + cy * bD - colSize, 0),
+          Cartesian3.fromDegrees(lon + cx * bW + colSize, lat + cy * bD - colSize, 0),
+          Cartesian3.fromDegrees(lon + cx * bW + colSize, lat + cy * bD + colSize, 0),
+          Cartesian3.fromDegrees(lon + cx * bW - colSize, lat + cy * bD + colSize, 0),
+        ];
+        ents.push(viewer.entities.add({
+          name: `${b.name} · Column (IfcColumn) F${fi + 1}`,
+          polygon: {
+            hierarchy: new ConstantProperty(new PolygonHierarchy(colPts)),
+            height: zBase + 0.35,
+            extrudedHeight: zBase + floorH - 0.20,
+            heightReference: HeightReference.RELATIVE_TO_GROUND,
+            extrudedHeightReference: HeightReference.RELATIVE_TO_GROUND,
+            material: new ColorMaterialProperty(Color.fromCssColorString('#334155').withAlpha(0.95)),
+            outline: true,
+            outlineColor: Color.fromCssColorString('#64748b').withAlpha(0.80),
+            outlineWidth: 1.0,
+            shadows: ShadowMode.DISABLED,
+          },
+          properties: { building_id: b.building_id, bim_floor: true },
+        }));
+      });
+    });
+
+    // Strata units — use units from floor data, else synthesise 4 quadrant defaults
+    const units = f.strata_units && f.strata_units.length > 0
+      ? f.strata_units.slice(0, 4).map((u, i) => {
+          const qs = [[-0.55, 0.48], [0.55, 0.48], [-0.55, -0.48], [0.55, -0.48]];
+          const cols = ['#0284c7', '#10b981', '#f59e0b', '#a855f7'];
+          return { ...qs[i] ? { dx: qs[i][0], dy: qs[i][1] } : { dx: 0, dy: 0 }, color: cols[i % 4], lot: u.unit_id, name: u.name };
+        })
+      : [
+          { dx: -0.55, dy:  0.48, color: '#0284c7', lot: `MK01-U${String(fi + 1).padStart(2, '0')}01A`, name: 'Suite A (NW)' },
+          { dx:  0.55, dy:  0.48, color: '#10b981', lot: `MK01-U${String(fi + 1).padStart(2, '0')}02B`, name: 'Suite B (NE)' },
+          { dx: -0.55, dy: -0.48, color: '#f59e0b', lot: `MK01-U${String(fi + 1).padStart(2, '0')}03C`, name: 'Suite C (SW)' },
+          { dx:  0.55, dy: -0.48, color: '#a855f7', lot: `MK01-U${String(fi + 1).padStart(2, '0')}04D`, name: 'Suite D (SE)' },
+        ];
+
+    units.forEach(q => {
+      const qW = bW * 0.42;
+      const qD = bD * 0.42;
+      const qX = lon + q.dx * bW * 0.52;
+      const qY = lat + q.dy * bD * 0.52;
+      const qPts = [
+        Cartesian3.fromDegrees(qX - qW, qY - qD, 0),
+        Cartesian3.fromDegrees(qX + qW, qY - qD, 0),
+        Cartesian3.fromDegrees(qX + qW, qY + qD, 0),
+        Cartesian3.fromDegrees(qX - qW, qY + qD, 0),
+      ];
+      ents.push(viewer.entities.add({
+        name: `${b.name} · ${q.name} (${q.lot})`,
+        polygon: {
+          hierarchy: new ConstantProperty(new PolygonHierarchy(qPts)),
+          height: zBase + 0.35,
+          extrudedHeight: zBase + floorH - 0.20,
+          heightReference: HeightReference.RELATIVE_TO_GROUND,
+          extrudedHeightReference: HeightReference.RELATIVE_TO_GROUND,
+          material: new ColorMaterialProperty(Color.fromCssColorString(q.color).withAlpha(0.26)),
+          outline: true,
+          outlineColor: Color.fromCssColorString(q.color).withAlpha(0.90),
+          outlineWidth: 1.5,
+          shadows: ShadowMode.DISABLED,
+        },
+        properties: { building_id: b.building_id, unit_id: q.lot, ifc_type: 'IfcSpace', bim_floor: true },
+      }));
+
+      // Interior drywall partition (IfcWallStandardCase)
+      const wallPts = [
+        Cartesian3.fromDegrees(qX - qW * 0.95, qY, 0),
+        Cartesian3.fromDegrees(qX + qW * 0.40, qY, 0),
+        Cartesian3.fromDegrees(qX + qW * 0.40, qY + 0.00001, 0),
+        Cartesian3.fromDegrees(qX - qW * 0.95, qY + 0.00001, 0),
+      ];
+      ents.push(viewer.entities.add({
+        name: `${b.name} · Partition Wall (IfcWall) ${q.lot}`,
+        polygon: {
+          hierarchy: new ConstantProperty(new PolygonHierarchy(wallPts)),
+          height: zBase + 0.35,
+          extrudedHeight: zBase + floorH - 0.20,
+          heightReference: HeightReference.RELATIVE_TO_GROUND,
+          extrudedHeightReference: HeightReference.RELATIVE_TO_GROUND,
+          material: new ColorMaterialProperty(Color.fromCssColorString('#cbd5e1').withAlpha(0.75)),
+          outline: true,
+          outlineColor: Color.fromCssColorString('#94a3b8').withAlpha(0.90),
+          outlineWidth: 1.0,
+          shadows: ShadowMode.DISABLED,
+        },
+        properties: { building_id: b.building_id, bim_floor: true },
+      }));
+    });
+
+    // Subterranean MRT link (basement / ground floors only)
+    if (f.level_index < 0 || fi === 0) {
+      const mrtPts = [
+        Cartesian3.fromDegrees(lon - bW * 1.8, lat - bD * 0.4, 0),
+        Cartesian3.fromDegrees(lon - bW,        lat - bD * 0.4, 0),
+        Cartesian3.fromDegrees(lon - bW,        lat + bD * 0.4, 0),
+        Cartesian3.fromDegrees(lon - bW * 1.8,  lat + bD * 0.4, 0),
+      ];
+      ents.push(viewer.entities.add({
+        name: `${b.name} · Subterranean MRT Concourse Link`,
+        polygon: {
+          hierarchy: new ConstantProperty(new PolygonHierarchy(mrtPts)),
+          height: zBase + 0.2,
+          extrudedHeight: zBase + floorH - 0.1,
+          heightReference: HeightReference.RELATIVE_TO_GROUND,
+          extrudedHeightReference: HeightReference.RELATIVE_TO_GROUND,
+          material: new ColorMaterialProperty(Color.fromCssColorString('#7c3aed').withAlpha(0.35)),
+          outline: true,
+          outlineColor: Color.fromCssColorString('#c084fc').withAlpha(0.95),
+          outlineWidth: 2.0,
+          shadows: ShadowMode.DISABLED,
+        },
+        properties: { building_id: b.building_id, easement: 'SLA Subterranean Transit Easement', bim_floor: true },
+      }));
+    }
+  } else {
+    // Non-BIM buildings: two room suites per floor
+    const roomFill = Color.fromHsl(hue, 0.85, 0.50).withAlpha(0.22);
+    [-1, 1].forEach((side, si) => {
+      const rX = lon + side * (bW * 0.55);
+      const roomPts = [
+        Cartesian3.fromDegrees(rX - bW * 0.33, lat - bD * 0.90, 0),
+        Cartesian3.fromDegrees(rX + bW * 0.33, lat - bD * 0.90, 0),
+        Cartesian3.fromDegrees(rX + bW * 0.33, lat + bD * 0.90, 0),
+        Cartesian3.fromDegrees(rX - bW * 0.33, lat + bD * 0.90, 0),
+      ];
+      ents.push(viewer.entities.add({
+        name: `${b.name} · Suite ${si === 0 ? 'West' : 'East'} F${fi + 1}`,
+        polygon: {
+          hierarchy: new ConstantProperty(new PolygonHierarchy(roomPts)),
+          height: zBase + 0.35,
+          extrudedHeight: zBase + floorH - 0.20,
+          heightReference: HeightReference.RELATIVE_TO_GROUND,
+          extrudedHeightReference: HeightReference.RELATIVE_TO_GROUND,
+          material: new ColorMaterialProperty(roomFill),
+          outline: true,
+          outlineColor: Color.fromCssColorString('#0284c7').withAlpha(0.70),
+          outlineWidth: 1.0,
+          shadows: ShadowMode.DISABLED,
+        },
+        properties: { building_id: b.building_id, bim_floor: true },
+      }));
+    });
+  }
+
+  // Floor label
+  ents.push(viewer.entities.add({
+    position: Cartesian3.fromDegrees(lon + bW * 1.05, lat - bD * 0.95, zBase + floorH * 0.5),
+    label: {
+      text: f.label || `F${fi + 1}`,
+      font: '600 11px Inter, -apple-system, sans-serif',
+      fillColor: Color.fromCssColorString('#38bdf8'),
+      outlineColor: Color.fromCssColorString('#020617'),
+      outlineWidth: 3.0,
+      style: LabelStyle.FILL_AND_OUTLINE,
+      verticalOrigin: VerticalOrigin.CENTER,
+      horizontalOrigin: HorizontalOrigin.LEFT,
+      heightReference: HeightReference.RELATIVE_TO_GROUND,
+      disableDepthTestDistance: Number.POSITIVE_INFINITY,
+      showBackground: true,
+      backgroundColor: Color.fromCssColorString('#030712').withAlpha(0.85),
+      backgroundPadding: new Cartesian2(6, 3),
+      translucencyByDistance: new NearFarScalar(50, 1.0, 1500, 0.0),
+    },
+    properties: { building_id: b.building_id, bim_floor: true },
+  }));
+
+  return ents;
+}
+
 export default function CesiumViewer({
   city, flyTimestamp, buildings, parcels = [], allBuildings, allParcels = [], layers, selectedBuilding, onBuildingClick, onCitySelect, explodedFloor,
-  onFlyToFloorReady, interiorMode, onCameraControlsReady,
+  onFlyToFloorReady, interiorMode, currentFloorIdx = 0, onCameraControlsReady,
 }) {
   const containerRef         = useRef(null);
   const viewerRef            = useRef(null);
@@ -745,6 +994,7 @@ export default function CesiumViewer({
   const tilesetRef           = useRef(null);
   const googleTilesetRef     = useRef(null);
   const interiorEntRef       = useRef([]);
+  const singleFloorEntRef    = useRef([]);  // on-demand floor BIM entities (current floor only)
   const flyToFloorRef        = useRef(null);
   // ── Stable callback refs — prevent stale-closure in the one-time setup effect ──
   const onBuildingClickRef   = useRef(onBuildingClick);
@@ -1454,6 +1704,33 @@ export default function CesiumViewer({
       });
     }
   }, [city, targetBuildings, targetParcels, layers, selectedBuilding, explodedFloor, interiorMode]);
+
+  // ── On-demand single-floor BIM geometry ──────────────────────────────────
+  // When in interior mode, renders only the current floor's full 3D BIM
+  // architecture — slabs, IfcSpace partitions, columns, corridors — and
+  // swaps it out whenever the user navigates to a different floor.
+  // This keeps GPU entity count constant regardless of total floor count.
+  useEffect(() => {
+    const viewer = viewerRef.current;
+    if (!viewer || viewer.isDestroyed()) return;
+
+    // Remove previous single-floor entities
+    singleFloorEntRef.current.forEach(e => {
+      try { viewer.entities.remove(e); } catch (_) {}
+    });
+    singleFloorEntRef.current = [];
+
+    if (!interiorMode || !selectedBuilding) return;
+
+    // Build the full synthesised floor list (same as InteriorWalkthrough)
+    const allFloors = buildFullFloorList(selectedBuilding);
+    const clampedIdx = Math.min(Math.max(currentFloorIdx ?? 0, 0), allFloors.length - 1);
+    const floorData  = allFloors[clampedIdx];
+    if (!floorData) return;
+
+    const newEnts = buildSingleFloorBIM(selectedBuilding, floorData, clampedIdx, viewer);
+    singleFloorEntRef.current = newEnts;
+  }, [selectedBuilding, currentFloorIdx, interiorMode]);
 
   // ── Cinematic hero fly-to: always keeps building fully in frame ──────────────────
   // flyToBoundingSphere orbits around the building's center, guaranteeing

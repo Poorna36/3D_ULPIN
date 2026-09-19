@@ -228,6 +228,7 @@ export default function App() {
         explodedFloor={explodedFloor}
         onFlyToFloorReady={handleFlyToFloorReady}
         interiorMode={interiorActive}
+        currentFloorIdx={currentFloorIdx}
         onCameraControlsReady={handleCameraControlsReady}
       />
 
