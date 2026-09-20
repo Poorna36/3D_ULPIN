@@ -291,6 +291,7 @@
 | **M4 — Observed Model Pipeline** | Phase 6 | [x] (6C Level Inferencer COMPLETE; 6A/6B await satellite imagery) |
 | **M5 — Full Vertical Slice** | Phases 7-10 | [x] COMPLETE |
 | **M6 — Evaluation Complete** | Phase 11 | [x] COMPLETE |
+| **M7 — Architectural Improvements** | Phase 12 | [ ] PLANNED (12A Statutory Anchor, 12B Legacy Crosswalk, 12C GeoJSON-3D, 12D RERA Deviation) |
 
 ---
 
@@ -311,3 +312,45 @@
    - `src/console/` serves as the internal reference test harness.
    - The production UI is owned by the dedicated frontend team using CesiumJS 3D.
    - Comprehensive golden contract, endpoint schemas, and CesiumJS rendering recipes are documented in [`docs/frontend_integration.md`](docs/frontend_integration.md).
+
+---
+
+## Phase 12 — Architectural Weight Improvements (Planned)
+
+> **Status:** PLANNED — No code written yet. These tasks strengthen institutional credibility, legal grounding, and frontend ergonomics.
+
+### 12A — Indian Statutory Legal Anchor in `/resolve`
+- [ ] **12A.1** Define `statutory_anchor` dict per class in `src/core/grammar.py` or `src/rights/rrr_model.py` — maps each of the 10 classes to the applicable Indian statute, section, and citation reference:
+  - Class `U/C/P` → Maharashtra Apartment Ownership Act 1970 / Karnataka Apartment Ownership Act 1972 (§4 & 5) + RERA 2016 (§2(k), §14)
+  - Class `E` → Metro Railways (Construction of Works) Act 1978 (§6)
+  - Class `T` → RFCTLARR Act 2013 (underground easement provisions)
+  - Class `A` → Aircraft Act 1934 + MoCA CCZM Colour Coded Zoning Map
+  - Class `S/B/L` → Revenue Code of the issuing State (MahaBhulekh / Bhoomi)
+- [ ] **12A.2** Populate `statutory_anchor` field in `GET /resolve/{rid}` response; write new Pydantic `StatutoryAnchor` schema in `src/api/schemas.py`
+- [ ] **12A.3** Unit test: resolve a class-U RID and assert `statutory_anchor.act_name` contains "Apartment Ownership Act" and `statutory_basis == "ENACTED"`
+- [ ] **12A.4** Update `src/rights/rrr_model.py` so `legal_basis_status` for each class is pre-populated from the same statutory map (consolidating existing class-rule logic with the new anchor dict)
+
+### 12B — Legacy Identifier Crosswalk (CTS, e-PID, UPOR, e-Aasthi)
+- [ ] **12B.1** Design `legacy_index` SQLite table schema in `src/core/registry.py`:
+  `(id_system TEXT, legacy_value TEXT, rid TEXT, created_at TEXT, UNIQUE(id_system, legacy_value))`
+- [ ] **12B.2** Implement `insert_legacy_id(id_system, legacy_value, rid)` and `resolve_by_legacy(id_system, legacy_value) → Optional[str]` methods on `RegistryStore`
+- [ ] **12B.3** Extend `GET /resolve` endpoint — accept `legacy_system` + `legacy_value` query params; route through `resolve_by_legacy()`; return same ObjectRecord
+- [ ] **12B.4** Add `legacy_system` and `legacy_value` to `AllocateRequest` body so callers can stamp legacy IDs at allocation time
+- [ ] **12B.5** Unit test: allocate an RID, stamp `CTS:Plot 412/1A`, then `GET /resolve?legacy_system=CTS&legacy_value=Plot+412%2F1A` and assert it returns the same RID
+
+### 12C — Dual-Payload `/cover` with `format=geojson_3d`
+- [ ] **12C.1** Extend `GET /cover` with `format` query parameter: `summary` (existing default) or `geojson_3d`
+- [ ] **12C.2** In `geojson_3d` mode, compute each object's footprint polygon (WGS84 lat/lon) and z extents (`height`, `extrudedHeight`) from its stored bounding box in `spatial_index` table; also emit `fill_color` from the standard class colour palette
+- [ ] **12C.3** Add `format: Optional[Literal["summary", "geojson_3d"]]` to `CoverRequest` schema; add `GeoJSON3DFeature` Pydantic model in `src/api/schemas.py`
+- [ ] **12C.4** Unit test: allocate 3 objects, call `GET /cover?bbox=...&format=geojson_3d`, assert each feature has `properties.extrudedHeight > properties.height` and correct `fill_color` per class
+
+### 12D — RERA Carpet Area Deviation Metric in `/validate`
+- [ ] **12D.1** Add `sanctioned_carpet_area_sqm` field to `binding_versions` table (nullable) and to `AllocateRequest` body
+- [ ] **12D.2** Implement `compute_rera_compliance(rid, store) → RERAComplianceResult` in `src/expected_model/rera_validator.py`:
+  - Compares stored `sanctioned_carpet_area_sqm` vs. mesh-derived as-built area (from T1 geometry validator)
+  - Returns: `deviation_percentage`, `rera_compliance_status` (`PASS` ≤ 2%, `TOLERANCE_WARNING` 2–5%, `FAIL` > 5%), and statutory citation
+- [ ] **12D.3** Call `compute_rera_compliance()` in `GET /validate/{rid}` response when `cls == 'U'` and plan area evidence is available; populate `rera_compliance` field in `ValidateResponse`
+- [ ] **12D.4** Add `RERAComplianceResult` Pydantic model to `src/api/schemas.py`; update `ValidateResponse` to include optional `rera_compliance` field
+- [ ] **12D.5** Unit test: allocate a unit with `sanctioned_carpet_area_sqm=84.5` and geometry producing `~87 m²`; call `/validate/{rid}` and assert `deviation_percentage ≈ 3.07` and `rera_compliance_status == "TOLERANCE_WARNING"`
+
+**Phase 12 done when:** All 4 sub-phases pass unit tests; `/resolve` returns statutory anchors; legacy crosswalk resolves CTS/e-PID identifiers; `/cover?format=geojson_3d` returns valid CesiumJS-ready GeoJSON; `/validate` returns RERA deviation percentage with correct statutory citation.

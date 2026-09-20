@@ -190,6 +190,34 @@ Spatial query returning RIDs within a bounding box.
 }
 ```
 
+**Response 200 (`format=geojson_3d` Format for CesiumJS):**
+
+```json
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "MH2700010001AA-B0001-U0001-K",
+      "properties": {
+        "rid": "MH2700010001AA-B0001-U0001-K",
+        "cls": "U",
+        "height": 14.5,
+        "extrudedHeight": 17.7,
+        "data_provenance": "SYNTHETIC",
+        "validation_status": "PASS",
+        "fill_color": "#E8A048"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[72.8270, 18.9990], [72.8272, 18.9990], [72.8272, 18.9992], [72.8270, 18.9992], [72.8270, 18.9990]]]
+      }
+    }
+  ],
+  "total_count": 42
+}
+```
+
 ---
 
 ### 8.4.6 `GET /explain/{finding_id}`
@@ -228,6 +256,16 @@ Run the full validation tier stack on an RID.
     "available": ["E1", "E2"],
     "required_for_full_pass": ["E1", "E2", "E3"],
     "unverifiable_checks": ["unit_partition_alignment (needs E3)"]
+  },
+  "rera_compliance": {
+    "sanctioned_carpet_area_sqm": 84.50,
+    "as_built_carpet_area_sqm": 87.10,
+    "carpet_area_delta_sqm": 2.60,
+    "deviation_percentage": 3.07,
+    "rera_compliance_status": "TOLERANCE_WARNING",
+    "statutory_citation": "RERA 2016 Section 14(2) — Adherence to Sanctioned Plans"
   }
 }
 ```
+
+> **Note on `rera_compliance`:** Populated only when `class=U` (Private Unit) and sanctioned plan area evidence is available. `rera_compliance_status` values: `PASS` (≤ 2%), `TOLERANCE_WARNING` (2–5%), `FAIL` (> 5%). Absent when `evidence_class < E2`.

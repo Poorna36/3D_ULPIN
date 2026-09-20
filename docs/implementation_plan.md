@@ -710,3 +710,59 @@ graph TD
 ---
 
 *For the full specification behind each step, consult the [Modular Architecture Navigation Index](architecture.md#modular-architecture-navigation-index).*
+
+---
+
+## Step 12 — Architectural Weight Improvements
+
+> **Status:** PLANNED (post-MVP). Strengthens institutional credibility, legal grounding, and frontend ergonomics. No breaking changes to existing 57-test suite.
+
+### Context
+
+The four sub-phases below address gaps identified during architecture review: the system proves correct but does not yet surface *why* it is legally authoritative (12A), cannot cross-reference the pre-existing Indian land-revenue identifier ecosystem (12B), requires complex client-side mesh processing for CesiumJS (12C), and lacks a quantitative RERA plan-deviation score visible to examiners in the UI (12D).
+
+---
+
+### Sub-tasks
+
+| # | Action | Output |
+|---|--------|--------|
+| 12A.1 | Define `CLASS_STATUTORY_MAP: Dict[str, StatutoryAnchor]` — one entry per class code. Class `U/C/P` → Maharashtra Apartment Ownership Act 1970 / Karnataka Apartment Ownership Act 1972 §4 & 5 + RERA 2016 §2(k), §14. Class `E` → Metro Railways Act 1978 §6. Class `T` → RFCTLARR Act 2013 (underground easement). Class `A` → Aircraft Act 1934 + MoCA CCZM. Class `S/B/L` → State Revenue Code (MahaBhulekh / Bhoomi). | `src/rights/rrr_model.py` |
+| 12A.2 | Add `StatutoryAnchor` Pydantic model (`act_name`, `section`, `statutory_basis`, `carpet_area_standard`, `citation_ref`) to `src/api/schemas.py`. Populate in `GET /resolve/{rid}` from `CLASS_STATUTORY_MAP[cls]`. | `src/api/schemas.py`, `src/api/main.py` |
+| 12A.3 | Unit test: resolve class-U RID; assert `statutory_anchor.act_name` contains `"Apartment Ownership Act"` and `statutory_basis == "ENACTED"`. | `tests/unit/test_api.py` |
+| 12A.4 | Consolidate existing `legal_basis_status` class-rule logic in `src/rights/rrr_model.py` to use `CLASS_STATUTORY_MAP` as the single source of truth. | `src/rights/rrr_model.py` |
+| 12B.1 | Add `legacy_index` table in `_init_db()`: `(idx_id INTEGER PK, id_system TEXT, legacy_value TEXT, rid TEXT NOT NULL, created_at TEXT, UNIQUE(id_system, legacy_value))`. | `src/core/registry.py` |
+| 12B.2 | Implement `RegistryStore.insert_legacy_id(id_system, legacy_value, rid)` and `resolve_by_legacy(id_system, legacy_value) → Optional[str]`. | `src/core/registry.py` |
+| 12B.3 | Extend `GET /resolve` — accept `legacy_system` + `legacy_value` query params; call `resolve_by_legacy()` when `rid` path param absent; return same `ResolveResponse`. | `src/api/main.py` |
+| 12B.4 | Extend `AllocateRequest` body with optional `legacy_id: Optional[LegacyIdRequest]` block (`id_system`, `legacy_value`); call `insert_legacy_id()` inside the allocator immediately after RID is committed. | `src/api/schemas.py`, `src/api/main.py` |
+| 12B.5 | Unit test: allocate with `legacy_id={id_system: "CTS", legacy_value: "Plot 412/1A"}`; then `GET /resolve?legacy_system=CTS&legacy_value=Plot+412%2F1A`; assert returned `rid` matches. | `tests/unit/test_api.py` |
+| 12C.1 | Extend `GET /cover` with `format: Literal["summary", "geojson_3d"] = "summary"` query param. | `src/api/main.py` |
+| 12C.2 | In `geojson_3d` mode, derive footprint `Polygon` from `[min_x, min_y, max_x, max_y]` of `spatial_index`; emit `height = min_z` and `extrudedHeight = max_z`; compute `fill_color` from `CLASS_COLOR_MAP` dict (matching existing console class colour scheme). | `src/api/main.py` |
+| 12C.3 | Add `GeoJSON3DFeature` and `GeoJSON3DCollection` Pydantic models to `src/api/schemas.py`. | `src/api/schemas.py` |
+| 12C.4 | Unit test: allocate 3 objects with known bbox; call `GET /cover?bbox=...&format=geojson_3d`; assert `extrudedHeight > height`, `fill_color` correct per class, geometry is `Polygon` type. | `tests/unit/test_api.py` |
+| 12D.1 | Add nullable `sanctioned_carpet_area_sqm REAL` column to `binding_versions` table (migration-safe `ALTER TABLE … ADD COLUMN` in `_init_db`). Extend `AllocateRequest` and `append_binding_version()` to accept and store this field. | `src/core/registry.py`, `src/api/schemas.py` |
+| 12D.2 | Implement `compute_rera_compliance(rid, store) → RERAComplianceResult` in `src/expected_model/rera_validator.py`: load `sanctioned_carpet_area_sqm` from registry; compute as-built area from the T1 mesh footprint projection; return `{sanctioned, as_built, delta, deviation_pct, rera_status, citation}`. Thresholds: PASS ≤ 2%, TOLERANCE_WARNING 2–5%, FAIL > 5%. | `src/expected_model/rera_validator.py` |
+| 12D.3 | Call `compute_rera_compliance()` inside `GET /validate/{rid}` when `cls == "U"` and `sanctioned_carpet_area_sqm IS NOT NULL`; attach `RERAComplianceResult` as `rera_compliance` field in `ValidateResponse`. Return `null` gracefully for non-unit classes or missing plan data. | `src/api/main.py` |
+| 12D.4 | Add `RERAComplianceResult` Pydantic model and optional `rera_compliance` field to `ValidateResponse` in `src/api/schemas.py`. | `src/api/schemas.py` |
+| 12D.5 | Unit test: allocate class-U RID with `sanctioned_carpet_area_sqm=84.5` and extents producing ~87 m² as-built; call `/validate/{rid}`; assert `deviation_percentage ≈ 3.07` (±0.1) and `rera_compliance_status == "TOLERANCE_WARNING"`. | `tests/unit/test_api.py` |
+
+### Acceptance Criteria
+
+- `GET /resolve/{rid}` always returns `statutory_anchor` with non-null `act_name`, `section`, and `citation_ref` for all 10 classes.
+- `GET /resolve?legacy_system=CTS&legacy_value=...` resolves to the correct RID in ≤ 1 ms (indexed lookup).
+- `GET /cover?format=geojson_3d` returns valid RFC 7946 GeoJSON loadable directly by `Cesium.GeoJsonDataSource.load()` with no client-side processing.
+- `GET /validate/{rid}` on a class-U object with plan data returns `rera_compliance` with correct `deviation_percentage` and RERA statutory citation; returns `null` gracefully for all other classes and absent plan data.
+- All 57 existing tests continue to pass; new sub-phase tests bring the total to ≥ 72.
+
+---
+
+### Files Affected Summary
+
+| File | Change |
+|------|--------|
+| `src/rights/rrr_model.py` | Add `CLASS_STATUTORY_MAP`; consolidate `legal_basis_status` logic |
+| `src/core/registry.py` | Add `legacy_index` table; `insert_legacy_id`; `resolve_by_legacy`; `sanctioned_carpet_area_sqm` column |
+| `src/expected_model/rera_validator.py` | Add `compute_rera_compliance()` |
+| `src/api/schemas.py` | Add `StatutoryAnchor`, `LegacyIdRequest`, `GeoJSON3DFeature`, `GeoJSON3DCollection`, `RERAComplianceResult`; extend `AllocateRequest`, `ResolveResponse`, `ValidateResponse` |
+| `src/api/main.py` | Extend `/resolve`, `/cover`, `/validate`, `/allocate` handlers |
+| `tests/unit/test_api.py` | Add 5 new test cases (12A.3, 12B.5, 12C.4, 12D.5) |
