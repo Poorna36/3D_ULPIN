@@ -302,7 +302,7 @@ def verify_geometry(req: VerifyRequest):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"RID '{req.rid}' not found")
 
     candidate_mesh = geometry_to_mesh(req.geometry)
-    computed_nk = compute_nk(candidate_mesh)
+    computed_nk = compute_nk(candidate_mesh, cls=rec["cls"])
     registered_digest = rec["current_nk"].get("digest", "")
 
     # Compare digests
@@ -412,7 +412,8 @@ def get_cover(
     cls: Optional[str] = Query(None, description="Comma-separated class filter"),
     data_provenance: Optional[str] = Query(None, description="Comma-separated provenance filter"),
     lod: Optional[str] = Query("LOD2", description="LOD filter (A, B, C)"),
-    format: Optional[str] = Query("summary", description="Response format: 'summary' or 'geojson_3d'")
+    format: Optional[str] = Query("summary", description="Response format: 'summary' or 'geojson_3d'"),
+    limit: int = Query(1000, description="Maximum number of features to return (default: 1000)")
 ):
     try:
         parts = [float(p.strip()) for p in bbox.split(",")]
@@ -433,7 +434,8 @@ def get_cover(
         min_lon=min_lon, min_lat=min_lat, min_h=min_h,
         max_lon=max_lon, max_lat=max_lat, max_h=max_h,
         cls_filter=cls_list,
-        provenance_filter=prov_list
+        provenance_filter=prov_list,
+        limit=limit
     )
 
     features = []

@@ -608,7 +608,7 @@ class RegistryStore:
         max_lon: float, max_lat: float, max_h: float,
         cls_filter: Optional[List[str]] = None,
         provenance_filter: Optional[List[str]] = None,
-        limit: int = 100
+        limit: int = 1000
     ) -> List[Dict[str, Any]]:
         """
         Spatial cover query returning objects matching 3D bounding box and attribute filters.

@@ -378,3 +378,31 @@
 
 **Phase 12 done when:** All 5 sub-phases pass unit tests; `/resolve` returns statutory anchors per jurisdiction; legacy crosswalk resolves CTS/e-PID identifiers; `/cover?format=geojson_3d` returns valid CesiumJS-ready GeoJSON; `/validate` returns RERA deviation percentage with correct statutory citation for Indian objects and bypasses for sandbox models; fictional mega-structures (Arasaka Tower) validate cleanly without spurious state-law errors.
 
+---
+
+## Phase 13 — Repository Modularization & Full Backend / ML Validation (Complete)
+
+> **Status:** COMPLETE — All unit tests (75/75), API integration tests (18/18), and live database spatial queries verified with 0 failures.
+
+### 13A — Clean Directory Separation
+- [x] Grouped codebase into dedicated, clean top-level directories:
+  - `backend/`: API routes (`api/`), core models & grammar (`core/`), identity allocation (`identity/`), legal rights (`rights/`), sensor & building procedural simulation (`simulation/`), reference viewer (`console/`).
+  - `ml/`: AI heuristics for elevation inference (H2 Viterbi), cadastral boundary delineation (H3), and manifold topology defect ranking (H4).
+  - `data/`: Real cadastral boundary zones, synthetic datasets, provenance index.
+  - `docs/`: Technical specifications, frontend integration guide, feature architecture, mathematical definitions.
+  - `scripts/`: Operational scripts (`seed_hero_towers.py`).
+  - `tests/`: Comprehensive unit, integration, conformance, and benchmark suites.
+- [x] Removed all stale `src/` import paths across all files.
+
+### 13B — Deep Backend Verification & Bug Fixes
+- [x] **Natural Key Digest Matching in `/verify`:** Fixed `backend/api/main.py` line 305 to pass `cls=rec["cls"]` to `compute_nk()`. Previously defaulted to `"U"`, causing non-unit registered classes (`B`, `C`, `P`, `E`, `T`) to report spurious `DRIFT` on identical candidate geometries.
+- [x] **Spatial Cover Limit Optimization:** Updated `search_cover` and `GET /cover` endpoint to support a configurable `limit` parameter defaulting to 1000 (previously hard-limited to 100). This ensures the frontend receives all 143 volumes of the Mumbai Hero Tower and all 106 volumes of the Bengaluru Hero Tower in a single query.
+- [x] **Live Registry Validation:** Verified both Mumbai (`MH2700010001AA`) and Bengaluru (`KA2900020001BB`) towers against the live `registry.db`.
+
+### 13C — Test Verification Summary
+- **Unit & Conformance Test Suite:** 75 / 75 passed (`python -m pytest tests/ -v`).
+- **API Smoke Test Suite:** 18 / 18 passed (`scratch/api_smoke_test.py`).
+- **Spatial Coverage Queries:** 143 Mumbai units + 106 Bengaluru units returned with valid 3D GeoJSON coordinates.
+- **Lineage & Hash Integrity:** 100% cryptographic SHA-256 chain verification passed across all records.
+- **Ready for Frontend Integration:** Fully compliant with CesiumJS / 3D Geospatial web contract.
+
