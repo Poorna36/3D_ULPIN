@@ -729,3 +729,74 @@ export function getAllPilotData() {
   ];
   return { allBuildings, allParcels };
 }
+
+/**
+ * GET /api/drone/surveys
+ */
+export async function getDroneSurveys() {
+  try {
+    const res = await fetchWithTimeout(`${BACKEND_BASE_URL}/api/drone/surveys`, {}, 2000);
+    if (res.ok) return await res.json();
+  } catch {
+    // fallback
+  }
+  return [
+    {
+      survey_id: "SURV-IN-BLR-UAV-01",
+      name: "Bengaluru Tech Corridor UAV Photogrammetry",
+      city: "bengaluru",
+      total_images: 84,
+      mean_gsd_cm: 2.4,
+      flight_altitude_m: 120.0,
+      crs: "EPSG:4326 / UTM 43N",
+      status: "READY_FOR_PROCESSING",
+      rtk_fix: "FIXED (Survey of India CORS Network)"
+    },
+    {
+      survey_id: "SURV-IN-BOM-UAV-02",
+      name: "Mumbai Lower Parel Vertical Density Survey",
+      city: "mumbai",
+      total_images: 126,
+      mean_gsd_cm: 2.1,
+      flight_altitude_m: 150.0,
+      crs: "EPSG:4326 / UTM 43N",
+      status: "READY_FOR_PROCESSING",
+      rtk_fix: "FIXED (Survey of India CORS Network)"
+    },
+    {
+      survey_id: "SURV-IN-RUR-UAV-03",
+      name: "SVAMITVA Rural Abadi Drone Cadastral Mapping",
+      city: "bengaluru",
+      total_images: 65,
+      mean_gsd_cm: 3.0,
+      flight_altitude_m: 100.0,
+      crs: "EPSG:4326 / India Zone EPSG:7755",
+      status: "READY_FOR_PROCESSING",
+      rtk_fix: "FIXED (SoI Reference Station)"
+    }
+  ];
+}
+
+/**
+ * POST /api/drone/process
+ */
+export async function processDroneSurvey(surveyParams) {
+  try {
+    const res = await fetchWithTimeout(`${BACKEND_BASE_URL}/api/drone/process`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(surveyParams)
+    }, 6000);
+    if (res.ok) return await res.json();
+  } catch (err) {
+    console.warn("Backend /api/drone/process offline or timed out, returning client fallback", err);
+  }
+  await delay(500);
+  return {
+    success: true,
+    survey_id: surveyParams.survey_id || "SURV-IN-BLR-UAV-01",
+    prototype_3d_id: `3D-IN-${(surveyParams.city || 'BLR').slice(0, 3).toUpperCase()}-F08-A9F3C1`,
+    message: "Reconstructed 3D building and vertical volumes from drone photogrammetry",
+    processing_time_s: 0.32
+  };
+}
