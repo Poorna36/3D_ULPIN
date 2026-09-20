@@ -9,7 +9,7 @@ from contextlib import contextmanager
 import sqlite3
 import json
 
-from src.core.grammar import get_statutory_anchor, StatutoryAnchor
+from backend.core.grammar import get_statutory_anchor, StatutoryAnchor
 
 
 def get_legal_basis_for_class(cls: str, jurisdiction: str = "IN_MH") -> tuple[str, str]:

@@ -4,7 +4,7 @@ Conforms to docs/features.md § 3.4 and § 3.10.
 """
 import pytest
 import random
-from src.core.grammar import (
+from backend.core.grammar import (
     compute_check_symbol,
     verify_check_symbol,
     format_rid,

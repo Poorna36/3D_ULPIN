@@ -6,9 +6,9 @@ import pytest
 import os
 import tempfile
 
-from src.rights.rrr_model import RRRStore, Right, RightType
-from src.rights.export import CadastralExporter
-from src.simulation.building_gen import generate_bz1_hero_tower
+from backend.rights.rrr_model import RRRStore, Right, RightType
+from backend.rights.export import CadastralExporter
+from backend.simulation.building_gen import generate_bz1_hero_tower
 
 
 def test_rrr_store_insertion_and_query():

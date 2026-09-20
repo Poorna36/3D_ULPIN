@@ -5,9 +5,9 @@ Conforms to docs/features.md, docs/pipeline.md, and Phase 4.
 import pytest
 import numpy as np
 
-from src.georegistration.cors_model import CORSModel, GNSSFixType
-from src.georegistration.sigma_propagation import propagate_sigma, combined_sigma
-from src.georegistration.datum_transform import DatumTransformer
+from backend.georegistration.cors_model import CORSModel, GNSSFixType
+from backend.georegistration.sigma_propagation import propagate_sigma, combined_sigma
+from backend.georegistration.datum_transform import DatumTransformer
 
 
 def test_cors_model_uncertainty_scaling():
@@ -54,7 +54,7 @@ def test_datum_transform_roundtrip_accuracy():
 
 def test_icp_alignment_and_residual_policy():
     """ICP must align shifted point clouds and apply residual policy."""
-    from src.georegistration.icp_align import ICPAligner, ICPStatus
+    from backend.georegistration.icp_align import ICPAligner, ICPStatus
 
     # Create target point cloud (random cube surface points)
     np.random.seed(42)
@@ -85,7 +85,7 @@ def test_icp_alignment_and_residual_policy():
 
 def test_icp_alignment_with_gcps():
     """ICP with GCP constraints must compute post-alignment GCP residual metrics."""
-    from src.georegistration.icp_align import ICPAligner, ICPStatus
+    from backend.georegistration.icp_align import ICPAligner, ICPStatus
 
     np.random.seed(42)
     target = np.random.uniform(low=0.0, high=10.0, size=(60, 3))

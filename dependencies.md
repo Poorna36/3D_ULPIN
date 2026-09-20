@@ -100,10 +100,10 @@ Run tests and style checks using standard tooling:
 pytest
 
 # Run tests with coverage summary
-pytest --cov=src tests/
+pytest --cov=backend --cov=ml tests/
 
 # Format / Lint code
-ruff check src/ tests/
+ruff check backend/ ml/ tests/
 ```
 
 ---

@@ -11,7 +11,7 @@ import copy
 import numpy as np
 import trimesh
 
-from src.simulation.building_gen import BuildingStructure, GeneratedVolume
+from backend.simulation.building_gen import BuildingStructure, GeneratedVolume
 
 
 class DefectType(str, Enum):

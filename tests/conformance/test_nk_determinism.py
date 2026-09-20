@@ -5,7 +5,7 @@ Conforms to docs/features.md § 3.6, § 3.7, and § 3.10.
 import pytest
 import numpy as np
 import trimesh
-from src.core.grammar import (
+from backend.core.grammar import (
     compute_nk,
     canonical_polyhedron,
     morton_encode_3d,

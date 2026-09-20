@@ -5,11 +5,11 @@ Conforms to docs/features.md, docs/aiml.md § 6.3, and Phase 7.8.
 import os
 import tempfile
 import pytest
-from src.core.grammar import verify_check_symbol, compute_nk
-from src.core.registry import RegistryStore
-from src.identity.allocator import ULPIN3DAllocator
-from src.simulation.building_gen import generate_mz1_hero_tower
-from src.ml.h3_delineation import H3Delineator, RoomAdjacencyGraph
+from backend.core.grammar import verify_check_symbol, compute_nk
+from backend.core.registry import RegistryStore
+from backend.identity.allocator import ULPIN3DAllocator
+from backend.simulation.building_gen import generate_mz1_hero_tower
+from ml.h3_delineation import H3Delineator, RoomAdjacencyGraph
 
 
 def test_room_adjacency_and_delineation():

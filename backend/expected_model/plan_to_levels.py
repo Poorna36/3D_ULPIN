@@ -7,8 +7,8 @@ import numpy as np
 import trimesh
 from shapely.geometry import Polygon
 
-from src.ingestion.plan_parser import FloorPlanJSON, LevelJSON, RoomJSON
-from src.simulation.building_gen import GeneratedVolume, BuildingStructure
+from backend.ingestion.plan_parser import FloorPlanJSON, LevelJSON, RoomJSON
+from backend.simulation.building_gen import GeneratedVolume, BuildingStructure
 
 
 ROOM_TYPE_TO_CLASS = {

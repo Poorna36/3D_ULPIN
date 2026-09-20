@@ -4,7 +4,7 @@ Conforms to docs/pipeline.md § 4.2, docs/decisions.md, and Phase 5.6-5.7.
 """
 from dataclasses import dataclass
 from typing import List, Dict, Any, Optional
-from src.validation.explain import ExplainObject, create_finding
+from backend.validation.explain import ExplainObject, create_finding
 
 
 @dataclass
@@ -109,7 +109,7 @@ def compute_rera_compliance(rid: str, store: Any) -> Optional[Any]:
     Computes statutory RERA carpet area deviation against sanctioned plan (Phase 12D & 12E).
     Returns RERAComplianceResult or None if evidence/sanctioned area is absent.
     """
-    from src.api.schemas import RERAComplianceResult
+    from backend.api.schemas import RERAComplianceResult
     import numpy as np
     import trimesh
 

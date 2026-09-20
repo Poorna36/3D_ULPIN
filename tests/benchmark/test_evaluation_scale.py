@@ -9,14 +9,14 @@ import pytest
 import numpy as np
 import trimesh
 
-from src.core.grammar import format_rid, verify_check_symbol, compute_nk
-from src.core.registry import RegistryStore
-from src.identity.allocator import ULPIN3DAllocator
-from src.simulation.building_gen import generate_mz1_hero_tower, generate_bz1_hero_tower
-from src.rights.export import CadastralExporter
-from src.rights.rrr_model import RRRStore, Right, RightType
-from src.validation.t2_topology import T2TopologyValidator
-from src.simulation.defect_injector import DefectInjector
+from backend.core.grammar import format_rid, verify_check_symbol, compute_nk
+from backend.core.registry import RegistryStore
+from backend.identity.allocator import ULPIN3DAllocator
+from backend.simulation.building_gen import generate_mz1_hero_tower, generate_bz1_hero_tower
+from backend.rights.export import CadastralExporter
+from backend.rights.rrr_model import RRRStore, Right, RightType
+from backend.validation.t2_topology import T2TopologyValidator
+from backend.simulation.defect_injector import DefectInjector
 
 
 def test_real_vs_synthetic_separation():

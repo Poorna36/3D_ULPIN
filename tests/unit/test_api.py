@@ -7,10 +7,10 @@ import tempfile
 import pytest
 from fastapi.testclient import TestClient
 
-from src.api.main import app, get_registry_store, get_rrr_store
-import src.api.main as api_main
-from src.core.registry import RegistryStore
-from src.rights.rrr_model import RRRStore, Right, RightType
+from backend.api.main import app, get_registry_store, get_rrr_store
+import backend.api.main as api_main
+from backend.core.registry import RegistryStore
+from backend.rights.rrr_model import RRRStore, Right, RightType
 
 
 @pytest.fixture

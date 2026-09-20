@@ -7,8 +7,8 @@ from typing import List, Tuple, Dict, Any, Optional
 import numpy as np
 import trimesh
 
-from src.core.ict import compute_mesh_intersection_volume
-from src.validation.explain import ExplainObject, create_finding
+from backend.core.ict import compute_mesh_intersection_volume
+from backend.validation.explain import ExplainObject, create_finding
 
 
 class T2TopologyValidator:

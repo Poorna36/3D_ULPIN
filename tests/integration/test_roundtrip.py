@@ -14,11 +14,11 @@ Validates that:
 import os
 import tempfile
 import trimesh
-from src.core.registry import RegistryStore
-from src.identity.allocator import ULPIN3DAllocator
-from src.simulation.building_gen import BuildingGenerator, BuildingStructure, GeneratedVolume
-from src.rights.rrr_model import RRRStore, Right, RightType, Restriction, RestrictionType, Responsibility, ResponsibilityType
-from src.rights.export import CadastralExporter
+from backend.core.registry import RegistryStore
+from backend.identity.allocator import ULPIN3DAllocator
+from backend.simulation.building_gen import BuildingGenerator, BuildingStructure, GeneratedVolume
+from backend.rights.rrr_model import RRRStore, Right, RightType, Restriction, RestrictionType, Responsibility, ResponsibilityType
+from backend.rights.export import CadastralExporter
 
 
 def test_cadastral_export_roundtrip_preserves_rids():

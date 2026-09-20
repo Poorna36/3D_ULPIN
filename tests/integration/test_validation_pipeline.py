@@ -11,13 +11,13 @@ Validates that:
 """
 import pytest
 import trimesh
-from src.simulation.building_gen import BuildingGenerator, generate_mz1_hero_tower
-from src.simulation.defect_injector import DefectInjector, DefectType
-from src.validation.t0_integrity import T0IntegrityValidator
-from src.validation.t1_geometry import T1GeometryValidator
-from src.validation.t2_topology import T2TopologyValidator
-from src.validation.t4_admin import T4AdminValidator
-from src.ml.h4_topology_validator import H4TopologyValidator
+from backend.simulation.building_gen import BuildingGenerator, generate_mz1_hero_tower
+from backend.simulation.defect_injector import DefectInjector, DefectType
+from backend.validation.t0_integrity import T0IntegrityValidator
+from backend.validation.t1_geometry import T1GeometryValidator
+from backend.validation.t2_topology import T2TopologyValidator
+from backend.validation.t4_admin import T4AdminValidator
+from ml.h4_topology_validator import H4TopologyValidator
 
 
 def test_validation_pipeline_defect_detection_and_h4_ranking():

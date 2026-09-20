@@ -4,8 +4,8 @@ Conforms to docs/implementation_plan.md Phase 1.8.
 """
 import os
 import json
-from src.ingestion.provenance import ProvenanceRecord, LedgerStore
-from src.ingestion.gis_reader import GISReader
+from backend.ingestion.provenance import ProvenanceRecord, LedgerStore
+from backend.ingestion.gis_reader import GISReader
 
 
 def ingest_phase0_assets(db_path: str = "registry.db", index_path: str = "data/PROVENANCE_INDEX.json"):

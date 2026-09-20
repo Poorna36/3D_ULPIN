@@ -16,12 +16,12 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import List, Dict, Any, Optional, Tuple
 
-from src.ingestion.provenance import ProvenanceRecord, LedgerStore
+from backend.ingestion.provenance import ProvenanceRecord, LedgerStore
 # FloorPlanJSON, LevelJSON, RoomJSON are TypedDicts (plain dicts at runtime)
 # We import them only for type annotation purposes.
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
-    from src.ingestion.plan_parser import FloorPlanJSON, LevelJSON, RoomJSON
+    from backend.ingestion.plan_parser import FloorPlanJSON, LevelJSON, RoomJSON
 
 # Type alias used in signatures
 FloorPlanDict = dict
@@ -88,7 +88,7 @@ class IFCReader:
             # JSON-serialised IFC dict (compatibility path)
             with open(path, "r", encoding="utf-8") as fh:
                 ifc_dict = json.load(fh)
-            from src.ingestion.plan_parser import IFCParser
+            from backend.ingestion.plan_parser import IFCParser
             plan = IFCParser.parse_from_dict(ifc_dict)
         elif _IFC_AVAILABLE:
             plan = self._read_ifcopenshell(path, default_floor_height)

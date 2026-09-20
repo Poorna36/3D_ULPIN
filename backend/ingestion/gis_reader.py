@@ -10,7 +10,7 @@ from __future__ import annotations
 import os
 from typing import Optional, Dict, Any, List, Tuple
 
-from src.ingestion.provenance import ProvenanceRecord, LedgerStore, VALID_PROVENANCE_TAGS
+from backend.ingestion.provenance import ProvenanceRecord, LedgerStore, VALID_PROVENANCE_TAGS
 
 
 # ---------------------------------------------------------------------------

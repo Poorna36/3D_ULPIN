@@ -5,9 +5,9 @@ Conforms to docs/pipeline.md § 4.2 and Phase 5.8.
 import os
 import tempfile
 import pytest
-from src.ingestion.plan_parser import DXFParser, IFCParser
-from src.expected_model.plan_to_levels import PlanToLevels
-from src.expected_model.rera_validator import RERAValidator
+from backend.ingestion.plan_parser import DXFParser, IFCParser
+from backend.expected_model.plan_to_levels import PlanToLevels
+from backend.expected_model.rera_validator import RERAValidator
 
 
 def test_dxf_parsing_and_3d_extrusion():

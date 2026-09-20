@@ -6,7 +6,7 @@ Conforms to docs/features.md § 3.6 and Phase 2B.6.
 import pytest
 import numpy as np
 import trimesh
-from src.core.grammar import compute_nk, sa_lookup, SpatialAddressIndex
+from backend.core.grammar import compute_nk, sa_lookup, SpatialAddressIndex
 
 
 def test_nk_zero_collision_across_distinct_voxels():

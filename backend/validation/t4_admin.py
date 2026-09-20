@@ -6,7 +6,7 @@ Verifies legal & statutory consistency under Indian apartment ownership laws:
 Conforms to docs/validation.md § 7.1 and Phase 8A.9.
 """
 from typing import List, Dict, Any, Optional
-from src.validation.explain import ExplainObject, create_finding
+from backend.validation.explain import ExplainObject, create_finding
 
 
 class T4AdminValidator:

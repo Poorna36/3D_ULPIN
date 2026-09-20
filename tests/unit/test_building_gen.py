@@ -6,7 +6,7 @@ import pytest
 import numpy as np
 import trimesh
 
-from src.simulation.building_gen import (
+from backend.simulation.building_gen import (
     BuildingGenerator,
     BuildingTypology,
     generate_mz1_hero_tower,
@@ -16,8 +16,8 @@ from src.simulation.building_gen import (
     generate_commercial_campus,
     generate_arasaka_tower
 )
-from src.simulation.defect_injector import DefectInjector, DefectType
-from src.simulation.sensor_sim import SensorSimulator
+from backend.simulation.defect_injector import DefectInjector, DefectType
+from backend.simulation.sensor_sim import SensorSimulator
 
 
 def test_building_generator_all_ten_classes():

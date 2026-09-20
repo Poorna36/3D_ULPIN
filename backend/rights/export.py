@@ -5,8 +5,8 @@ Conforms to docs/features.md § 3.10 and Phase 9.6-9.8.
 import json
 import uuid
 from typing import List, Dict, Any
-from src.simulation.building_gen import BuildingStructure
-from src.rights.rrr_model import Right
+from backend.simulation.building_gen import BuildingStructure
+from backend.rights.rrr_model import Right
 
 
 class CadastralExporter:

@@ -9,7 +9,7 @@ from typing import List, Dict, Any, Optional, Tuple, Set
 import numpy as np
 from sklearn.ensemble import IsolationForest
 
-from src.validation.explain import ExplainObject
+from backend.validation.explain import ExplainObject
 
 
 PREDICATE_ENCODING = {

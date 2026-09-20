@@ -1,9 +1,9 @@
 ﻿import os, sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from src.core.registry import RegistryStore
-from src.identity.allocator import ULPIN3DAllocator
-from src.simulation.building_gen import generate_mz1_hero_tower, generate_bz1_hero_tower
-from src.ml.h3_delineation import H3Delineator
+from backend.core.registry import RegistryStore
+from backend.identity.allocator import ULPIN3DAllocator
+from backend.simulation.building_gen import generate_mz1_hero_tower, generate_bz1_hero_tower
+from ml.h3_delineation import H3Delineator
 
 DB_PATH = os.environ.get('REGISTRY_DB_PATH', 'registry.db')
 

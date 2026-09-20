@@ -10,7 +10,7 @@ import math
 import numpy as np
 import trimesh
 
-from src.core.grammar import (
+from backend.core.grammar import (
     compute_check_symbol,
     verify_check_symbol,
     format_rid,

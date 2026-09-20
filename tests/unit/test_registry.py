@@ -6,7 +6,7 @@ import pytest
 import os
 import tempfile
 import json
-from src.core.registry import RegistryStore, GENESIS_HASH
+from backend.core.registry import RegistryStore, GENESIS_HASH
 
 
 @pytest.fixture

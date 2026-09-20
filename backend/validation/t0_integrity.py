@@ -4,7 +4,7 @@ Verifies schema completeness, non-null CRS, explicit provenance tags, and non-em
 Conforms to docs/validation.md § 7.1 and Phase 8A.1.
 """
 from typing import Dict, Any, List, Optional
-from src.validation.explain import ExplainObject, create_finding
+from backend.validation.explain import ExplainObject, create_finding
 
 VALID_PROVENANCE_TAGS = {"REAL", "PROXY", "SYNTHETIC", "REAL-FOREIGN", "REAL-OWN"}
 

@@ -10,7 +10,7 @@
 
 The 3D ULPIN backend is a high-performance, specification-compliant 3D Cadastral Registry engine built for the Indian Land Administration system (conforming to DoLR / NIC guidelines and the Digital India Land Records Modernization Programme).
 
-The frontend created in `src/console/` serves as an **internal reference test harness**. The production frontend (developed by your team) will be the primary visual interface for government land examiners, surveyors, and the public.
+The frontend created in `backend/console/` serves as an **internal reference test harness**. The production frontend (developed by your team) will be the primary visual interface for government land examiners, surveyors, and the public.
 
 ```
 ┌────────────────────────────────────────────────────────┐
@@ -37,7 +37,7 @@ The frontend created in `src/console/` serves as an **internal reference test ha
 ### 2.1 Starting the Backend
 ```bash
 # From the repository root (with Python 3.10+):
-python -m uvicorn src.api.main:app --host 0.0.0.0 --port 8000 --reload
+python -m uvicorn backend.api.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 Once started:
 - Health check / Root: `http://localhost:8000/`

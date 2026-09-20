@@ -9,7 +9,7 @@ from typing import List, Tuple, Optional
 import numpy as np
 import trimesh
 
-from src.simulation.building_gen import BuildingStructure
+from backend.simulation.building_gen import BuildingStructure
 
 
 @dataclass

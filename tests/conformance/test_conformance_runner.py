@@ -1,7 +1,7 @@
 """
 Full Conformance Suite Execution Test
 """
-from src.identity.conformance import run_conformance_suite
+from backend.identity.conformance import run_conformance_suite
 
 
 def test_full_conformance_suite():

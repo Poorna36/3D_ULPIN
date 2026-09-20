@@ -4,7 +4,7 @@ Conforms to docs/pipeline.md § 4.4 and Phase 6C.5.
 """
 import pytest
 import numpy as np
-from src.ml.h2_level_inferencer import LevelInferencer, CandidatePeak
+from ml.h2_level_inferencer import LevelInferencer, CandidatePeak
 
 
 def test_peak_extraction_from_point_cloud():

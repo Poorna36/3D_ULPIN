@@ -12,7 +12,7 @@ from typing import Optional, List, Dict, Any
 from fastapi import FastAPI, HTTPException, Query, Path, status
 from fastapi.middleware.cors import CORSMiddleware
 
-from src.api.schemas import (
+from backend.api.schemas import (
     AllocateRequest, AllocateResponse,
     ResolveResponse, CurrentNK, LegacyId, StatutoryAnchorModel,
     VerifyRequest, VerifyResponse,
@@ -21,17 +21,17 @@ from src.api.schemas import (
     ValidateResponse, TierResult, EvidenceSufficiency, RERAComplianceResult,
     GeometryModel
 )
-from src.core.grammar import compute_nk, get_statutory_anchor
-from src.core.registry import RegistryStore
-from src.core.ict import ict_evaluate, ICTDecision, compute_mesh_intersection_volume
-from src.identity.allocator import ULPIN3DAllocator
-from src.rights.rrr_model import RRRStore
-from src.validation.t0_integrity import T0IntegrityValidator
-from src.validation.t1_geometry import T1GeometryValidator
-from src.validation.t4_admin import T4AdminValidator
-from src.validation.explain import ExplainObject, create_finding
-from src.ml.h4_topology_validator import H4TopologyValidator
-from src.expected_model.rera_validator import compute_rera_compliance
+from backend.core.grammar import compute_nk, get_statutory_anchor
+from backend.core.registry import RegistryStore
+from backend.core.ict import ict_evaluate, ICTDecision, compute_mesh_intersection_volume
+from backend.identity.allocator import ULPIN3DAllocator
+from backend.rights.rrr_model import RRRStore
+from backend.validation.t0_integrity import T0IntegrityValidator
+from backend.validation.t1_geometry import T1GeometryValidator
+from backend.validation.t4_admin import T4AdminValidator
+from backend.validation.explain import ExplainObject, create_finding
+from ml.h4_topology_validator import H4TopologyValidator
+from backend.expected_model.rera_validator import compute_rera_compliance
 
 
 from collections import OrderedDict

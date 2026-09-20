@@ -5,9 +5,9 @@ Conforms to docs/features.md § 3.8 and Phase 2E.3.
 import tempfile
 import os
 import trimesh
-from src.core.ict import ict_evaluate, ICTDecision
-from src.core.registry import RegistryStore
-from src.identity.allocator import ULPIN3DAllocator
+from backend.core.ict import ict_evaluate, ICTDecision
+from backend.core.registry import RegistryStore
+from backend.identity.allocator import ULPIN3DAllocator
 
 
 def test_ict_unit_partition_remodel():

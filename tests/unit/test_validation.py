@@ -6,13 +6,13 @@ import pytest
 import numpy as np
 import trimesh
 
-from src.validation.t0_integrity import T0IntegrityValidator
-from src.validation.t1_geometry import T1GeometryValidator
-from src.validation.t2_topology import T2TopologyValidator
-from src.validation.t3_reconciliation import T3ReconciliationValidator
-from src.validation.t4_admin import T4AdminValidator
-from src.simulation.building_gen import generate_mz1_hero_tower
-from src.simulation.defect_injector import DefectInjector
+from backend.validation.t0_integrity import T0IntegrityValidator
+from backend.validation.t1_geometry import T1GeometryValidator
+from backend.validation.t2_topology import T2TopologyValidator
+from backend.validation.t3_reconciliation import T3ReconciliationValidator
+from backend.validation.t4_admin import T4AdminValidator
+from backend.simulation.building_gen import generate_mz1_hero_tower
+from backend.simulation.defect_injector import DefectInjector
 
 
 def test_t0_integrity_validation():

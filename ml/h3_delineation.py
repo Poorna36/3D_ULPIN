@@ -11,8 +11,8 @@ from shapely.geometry import Polygon, MultiPolygon
 from shapely.ops import unary_union
 from scipy.optimize import milp, LinearConstraint
 
-from src.ingestion.plan_parser import RoomJSON, LevelJSON
-from src.identity.allocator import ULPIN3DAllocator, AllocationResult
+from backend.ingestion.plan_parser import RoomJSON, LevelJSON
+from backend.identity.allocator import ULPIN3DAllocator, AllocationResult
 
 
 @dataclass

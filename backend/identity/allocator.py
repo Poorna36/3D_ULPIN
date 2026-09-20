@@ -9,7 +9,7 @@ import json
 import math
 import trimesh
 
-from src.core.grammar import (
+from backend.core.grammar import (
     format_rid,
     compute_nk,
     compute_sa_cover,
@@ -17,8 +17,8 @@ from src.core.grammar import (
     NaturalKey,
     get_statutory_anchor
 )
-from src.core.registry import RegistryStore, ObjectRecord, BindingVersion
-from src.core.ict import ict_evaluate, ICTDecision, ICTResult
+from backend.core.registry import RegistryStore, ObjectRecord, BindingVersion
+from backend.core.ict import ict_evaluate, ICTDecision, ICTResult
 
 
 @dataclass

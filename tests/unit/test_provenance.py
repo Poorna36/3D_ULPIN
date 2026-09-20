@@ -15,14 +15,14 @@ import tempfile
 import pytest
 import numpy as np
 
-from src.ingestion.provenance import (
+from backend.ingestion.provenance import (
     ProvenanceRecord,
     LedgerStore,
     VALID_PROVENANCE_TAGS,
 )
-from src.ingestion.gis_reader import GISReader
-from src.ingestion.lidar_reader import LidarReader, PointCloudData
-from src.ingestion.ifc_reader import IFCReader
+from backend.ingestion.gis_reader import GISReader
+from backend.ingestion.lidar_reader import LidarReader, PointCloudData
+from backend.ingestion.ifc_reader import IFCReader
 
 
 @pytest.fixture

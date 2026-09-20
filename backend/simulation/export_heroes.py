@@ -4,7 +4,7 @@ Conforms to Phase 3.11 and 3.12.
 """
 import os
 import json
-from src.simulation.building_gen import generate_mz1_hero_tower, generate_bz1_hero_tower
+from backend.simulation.building_gen import generate_mz1_hero_tower, generate_bz1_hero_tower
 
 
 def export_hero_towers(base_dir: str = "data/synthetic"):

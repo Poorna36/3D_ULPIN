@@ -7,21 +7,21 @@ from fastapi.testclient import TestClient
 import trimesh
 import numpy as np
 
-from src.api.main import app, get_registry_store
-from src.core.grammar import (
+from backend.api.main import app, get_registry_store
+from backend.core.grammar import (
     get_statutory_anchor,
     Jurisdiction,
     StatutoryAnchor,
     JURISDICTION_STATUTORY_MAP
 )
-from src.core.registry import RegistryStore
-from src.expected_model.rera_validator import compute_rera_compliance
+from backend.core.registry import RegistryStore
+from backend.expected_model.rera_validator import compute_rera_compliance
 
 
 import os
 import tempfile
-import src.api.main as api_main
-from src.rights.rrr_model import RRRStore
+import backend.api.main as api_main
+from backend.rights.rrr_model import RRRStore
 
 
 @pytest.fixture
