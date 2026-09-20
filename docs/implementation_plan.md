@@ -719,7 +719,7 @@ graph TD
 
 ### Context
 
-The four sub-phases below address gaps identified during architecture review: the system proves correct but does not yet surface *why* it is legally authoritative (12A), cannot cross-reference the pre-existing Indian land-revenue identifier ecosystem (12B), requires complex client-side mesh processing for CesiumJS (12C), and lacks a quantitative RERA plan-deviation score visible to examiners in the UI (12D).
+The five sub-phases below address gaps identified during architecture review: the system proves correct but does not yet surface *why* it is legally authoritative (12A), cannot cross-reference the pre-existing Indian land-revenue identifier ecosystem (12B), requires complex client-side mesh processing for CesiumJS (12C), lacks a quantitative RERA plan-deviation score visible to examiners in the UI (12D), and must decouple territorial state laws (Mumbai, Bengaluru, Singapore) from synthetic/fictional sandbox models like Arasaka Tower while formally bounding photogrammetry as an external side project (12E).
 
 ---
 
@@ -745,14 +745,20 @@ The four sub-phases below address gaps identified during architecture review: th
 | 12D.3 | Call `compute_rera_compliance()` inside `GET /validate/{rid}` when `cls == "U"` and `sanctioned_carpet_area_sqm IS NOT NULL`; attach `RERAComplianceResult` as `rera_compliance` field in `ValidateResponse`. Return `null` gracefully for non-unit classes or missing plan data. | `src/api/main.py` |
 | 12D.4 | Add `RERAComplianceResult` Pydantic model and optional `rera_compliance` field to `ValidateResponse` in `src/api/schemas.py`. | `src/api/schemas.py` |
 | 12D.5 | Unit test: allocate class-U RID with `sanctioned_carpet_area_sqm=84.5` and extents producing ~87 m² as-built; call `/validate/{rid}`; assert `deviation_percentage ≈ 3.07` (±0.1) and `rera_compliance_status == "TOLERANCE_WARNING"`. | `tests/unit/test_api.py` |
+| 12E.1 | Define `Jurisdiction = Literal["IN_MH", "IN_KA", "SG", "SANDBOX"]` in `src/core/grammar.py` and `src/api/schemas.py`; add `jurisdiction TEXT DEFAULT 'IN_MH'` column to `objects` table. | `src/core/grammar.py`, `src/core/registry.py`, `src/api/schemas.py` |
+| 12E.2 | Parameterize statutory mapping by jurisdiction (`JURISDICTION_STATUTORY_MAP`); route Mumbai (`IN_MH`) to MahaRERA/MOA, Bengaluru (`IN_KA`) to K-RERA/KAOA, Singapore (`SG`) to SLA/LTA, and `SANDBOX` to `SANDBOX_BYPASS` (no state law assigned). | `src/rights/rrr_model.py` |
+| 12E.3 | In `compute_rera_compliance()` and administrative validators (T4), check object jurisdiction: when `SANDBOX` (e.g. Arasaka Tower fictional models), skip state RERA penalties with status `EXEMPT_SANDBOX`; enforce pure 3D manifold/topological non-overlap (T0, T1, T2). | `src/expected_model/rera_validator.py`, `src/validation/t4_admin.py` |
+| 12E.4 | Formalize the photogrammetry pipeline boundary: relegate 2D drone image SfM/NeRF processing to an external side project; keep core backend consumption locked to 3D meshes (OBJ/GLTF/IFC) and LiDAR (LAS/LAZ). | `docs/decisions.md`, `docs/pipeline.md` |
+| 12E.5 | Unit test: allocate Arasaka Tower synthetic parcel under `jurisdiction="SANDBOX"`; call `/validate/{rid}` and `/resolve/{rid}`; assert topology passes, RERA is exempt, and statutory basis is `SANDBOX_BYPASS`. | `tests/unit/test_api.py` |
 
 ### Acceptance Criteria
 
-- `GET /resolve/{rid}` always returns `statutory_anchor` with non-null `act_name`, `section`, and `citation_ref` for all 10 classes.
+- `GET /resolve/{rid}` always returns `statutory_anchor` with non-null `act_name`, `section`, and `citation_ref` for real jurisdictions (`IN_MH`, `IN_KA`, `SG`), and returns `SANDBOX_BYPASS` for fictional/sandbox models (`SANDBOX`).
 - `GET /resolve?legacy_system=CTS&legacy_value=...` resolves to the correct RID in ≤ 1 ms (indexed lookup).
 - `GET /cover?format=geojson_3d` returns valid RFC 7946 GeoJSON loadable directly by `Cesium.GeoJsonDataSource.load()` with no client-side processing.
-- `GET /validate/{rid}` on a class-U object with plan data returns `rera_compliance` with correct `deviation_percentage` and RERA statutory citation; returns `null` gracefully for all other classes and absent plan data.
-- All 57 existing tests continue to pass; new sub-phase tests bring the total to ≥ 72.
+- `GET /validate/{rid}` on a class-U object with plan data returns `rera_compliance` with correct `deviation_percentage` and RERA statutory citation; returns `null` or `EXEMPT_SANDBOX` for sandbox models and absent plan data.
+- Fictional mega-structures (e.g. Arasaka Tower) can be ingested and validated topologically without triggering spurious state-specific bye-law or RERA violations.
+- All 57 existing tests continue to pass; new sub-phase tests bring the total to ≥ 75.
 
 ---
 
@@ -760,9 +766,11 @@ The four sub-phases below address gaps identified during architecture review: th
 
 | File | Change |
 |------|--------|
-| `src/rights/rrr_model.py` | Add `CLASS_STATUTORY_MAP`; consolidate `legal_basis_status` logic |
-| `src/core/registry.py` | Add `legacy_index` table; `insert_legacy_id`; `resolve_by_legacy`; `sanctioned_carpet_area_sqm` column |
-| `src/expected_model/rera_validator.py` | Add `compute_rera_compliance()` |
-| `src/api/schemas.py` | Add `StatutoryAnchor`, `LegacyIdRequest`, `GeoJSON3DFeature`, `GeoJSON3DCollection`, `RERAComplianceResult`; extend `AllocateRequest`, `ResolveResponse`, `ValidateResponse` |
-| `src/api/main.py` | Extend `/resolve`, `/cover`, `/validate`, `/allocate` handlers |
-| `tests/unit/test_api.py` | Add 5 new test cases (12A.3, 12B.5, 12C.4, 12D.5) |
+| `src/core/grammar.py` | Add `Jurisdiction` literal enum |
+| `src/rights/rrr_model.py` | Add `JURISDICTION_STATUTORY_MAP`; consolidate `legal_basis_status` logic |
+| `src/core/registry.py` | Add `legacy_index` table; `jurisdiction` column in `objects`; `insert_legacy_id`; `resolve_by_legacy`; `sanctioned_carpet_area_sqm` column |
+| `src/expected_model/rera_validator.py` | Add `compute_rera_compliance()` with jurisdiction sandbox exemption |
+| `src/validation/t4_admin.py` | Guard state-specific administrative checks by jurisdiction |
+| `src/api/schemas.py` | Add `StatutoryAnchor`, `LegacyIdRequest`, `GeoJSON3DFeature`, `GeoJSON3DCollection`, `RERAComplianceResult`; extend `AllocateRequest`, `ResolveResponse`, `ValidateResponse` with `jurisdiction` |
+| `src/api/main.py` | Extend `/resolve`, `/cover`, `/validate`, `/allocate` handlers with jurisdiction logic |
+| `tests/unit/test_api.py` | Add 6 new test cases (12A.3, 12B.5, 12C.4, 12D.5, 12E.5) |

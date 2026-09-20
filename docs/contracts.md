@@ -24,6 +24,7 @@ Allocate a new 3D ULPIN (RID) under an authorised session.
   "evidence_refs": ["string (evidence IDs)"],
   "plan_version": "string",
   "data_provenance": "string enum: REAL|PROXY|SYNTHETIC",
+  "jurisdiction": "string enum: IN_MH|IN_KA|SG|SANDBOX (default IN_MH)",
   "boundary_convention": "string enum: INNER_FACE|WALL_CENTRE|OUTER_FACE (default INNER_FACE)",
   "parent_rid": "string (RID of parent object, e.g. building RID for a level)",
   "spans": ["string (ULPINs this object spans, for E/T/I classes)"]
@@ -75,6 +76,7 @@ Resolve a 3D ULPIN to its current state, or perform reverse lookup via legacy la
   },
   "current_parcel_ulpin": "string",
   "data_provenance": "string",
+  "jurisdiction": "string enum: IN_MH|IN_KA|SG|SANDBOX",
   "legal_basis_status": "string",
   "statutory_anchor": {
     "act_name": "Maharashtra Apartment Ownership Act, 1970 (or Karnataka Apartment Ownership Act, 1972)",
@@ -86,9 +88,13 @@ Resolve a 3D ULPIN to its current state, or perform reverse lookup via legacy la
   "legacy_ids": [{"id_system": "CTS", "legacy_value": "123/456"}],
   "spans": ["string"],
   "geometry": "object (only if include_geometry=true)",
-  "issuer_node_id": "string (e.g. MH, KA)"
+  "issuer_node_id": "string (e.g. MH, KA, SG, SANDBOX)"
 }
 ```
+
+> **Note on `jurisdiction` & `statutory_anchor`:**  
+> - For real-world territories (`IN_MH`, `IN_KA`, `SG`), `statutory_anchor` populates exact state/country statutes.  
+> - For `SANDBOX` (purely fictional/gaming/synthetic structures like Arasaka Tower), state laws do not apply: `statutory_anchor` returns `null` or `statutory_basis: "SANDBOX_BYPASS"`.
 
 **Error:** `404 Not Found`: RID not found
 
@@ -268,4 +274,7 @@ Run the full validation tier stack on an RID.
 }
 ```
 
-> **Note on `rera_compliance`:** Populated only when `class=U` (Private Unit) and sanctioned plan area evidence is available. `rera_compliance_status` values: `PASS` (≤ 2%), `TOLERANCE_WARNING` (2–5%), `FAIL` (> 5%). Absent when `evidence_class < E2`.
+> **Note on `rera_compliance` & Jurisdiction:**  
+> - Populated only when `class=U` (Private Unit) under a real Indian jurisdiction (`IN_MH`, `IN_KA`) and sanctioned plan area evidence is available.  
+> - `rera_compliance_status` values: `PASS` (≤ 2%), `TOLERANCE_WARNING` (2–5%), `FAIL` (> 5%). Absent when `evidence_class < E2`.  
+> - For `jurisdiction = "SANDBOX"` (e.g. Arasaka Tower, synthetic gaming/test assets), state RERA penalties are bypassed (`rera_compliance: null` or `"EXEMPT_SANDBOX"`). Core physical/topological checks (T0, T1, T2) continue to run.

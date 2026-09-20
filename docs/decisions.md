@@ -343,3 +343,49 @@ This table is the single best "show, don't tell" artifact for a judge panel: ide
 | **SRA mixed-tenure** | — | (MZ-3) SRA redevelopment tower with mixed free-sale + rehabilitation-tenement units in one building — a distinctive Indian vertical-property class not exercised elsewhere |
 | **Heritage-over-infrastructure** | — | (MZ-4) Heritage-protected, height-restricted Art Deco/Fort precinct above the deepest, densest underground infrastructure in the pilot — demonstrates why 2D records cannot show what is beneath a surface parcel |
 | **IT-park commercial** | (BZ-3) Large single-owner commercial towers in Electronics City SEZ — fewer, larger U/C objects than residential; Yellow Line elevated corridor crossing IT parcels | — |
+
+---
+
+## Appendix H: Jurisdiction-Aware Statutory Scoping & Sandbox Decoupling
+
+### H.1 Architectural Principle: Territoriality of Property Law
+
+A central constitutional reality is that property laws, building bye-laws, and regulatory sanctions are **strictly territorial**:
+- **Maharashtra (`IN_MH`):** Governed by the Maharashtra Apartment Ownership Act 1970, Maharashtra Regional and Town Planning (MRTP) Act 1966, MahaRERA rules, and Mumbai DCPR 2034.
+- **Karnataka (`IN_KA`):** Governed by the Karnataka Apartment Ownership Act 1972, Karnataka Town and Country Planning (KTCP) Act 1961, K-RERA rules, and BBMP Building Bye-laws.
+- **Singapore (`SG`):** Governed by Singapore Land Authority (SLA) Land Titles (Strata) Act, Building Control Act (BCA), and URA Master Plan.
+- **Sandbox / Fictional (`SANDBOX`):** Purely synthetic, gaming, or fictional structures (e.g. Arasaka Tower from Cyberpunk Night City, procedural benchmark towers, or test meshes).
+
+> [!IMPORTANT]
+> **No Universal Enforcement of State Laws:**
+> Statutory compliance checks (e.g. MahaRERA carpet-area tolerance caps, state-specific setback restrictions, municipal height limits) must **only** execute when an object belongs to the matching jurisdiction. Applying Maharashtra or Karnataka state legislation to a Singapore land parcel or a fictional Cyberpunk sandbox asset is legally absurd and structurally incorrect.
+
+### H.2 Sandbox Mode (`jurisdiction = "SANDBOX"`)
+
+For fictional, game, or synthetic stress-test models:
+1. **Bypassed / Neutralized:**
+   - State-specific statutory anchors (`statutory_anchor` returns `null` or `SANDBOX_EXEMPT`).
+   - RERA Section 14(2) deviation penalties (marked `EXEMPT_SANDBOX`).
+   - Municipal setback caps and local master-plan height ceilings.
+2. **Strictly Enforced:**
+   - Core 3D manifoldness & watertight mesh checks (T0).
+   - Volumetric non-self-intersection and 3D containment (T1).
+   - 3D spatial topology & vertical rights non-overlap (T2: Unit-vs-Unit and Unit-vs-Common non-collision).
+   - Deterministic 3D ULPIN Natural Key hashing (ISO 19152 LADM Part 2).
+
+This allows the engine to model, hash, slice, and validate exotic multi-tier structures (such as mega-towers with subterranean vaults, elevated transit links, and cantilevered skybridges) purely as 3D topological objects without throwing false state-law violations.
+
+---
+
+## Appendix I: Photogrammetry & Sensor Data Boundary
+
+### I.1 Decoupling of 2D Photogrammetry
+- **Classification:** **EXTERNAL PRE-PROCESSING PIPELINE (EXTENDED SIDE PROJECT)**.
+- **Rationale:** Converting 500+ raw, uncalibrated 2D drone camera JPEGs into an aligned, dense 3D point cloud requires compute-intensive Structure-from-Motion (SfM) / Multi-View Stereo (MVS) / NeRF algorithms (e.g. OpenDroneMap, Pix4D, COLMAP) typically run across GPU clusters.
+- **Engine Ingestion Boundary:** The 3D ULPIN backend is a **cadastral, spatial identity, and regulatory validation engine**, not an SfM photogrammetry solver.
+- **Ingestion Contracts:**
+  - Ingests **already reconstructed 3D Meshes** (`.obj`, `.gltf`, `.ifc`, `.dxf`).
+  - Ingests **standard 3D Point Clouds** (`.las`, `.laz`, or numpy coordinate arrays).
+  - Ingests **orthomosaics / DEMs** (`GeoTIFF`).
+- Real drone flight photogrammetry can feed into the backend via standard LAS/OBJ exports from external photogrammetry tooling when ready.
+

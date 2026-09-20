@@ -313,11 +313,21 @@
    - The production UI is owned by the dedicated frontend team using CesiumJS 3D.
    - Comprehensive golden contract, endpoint schemas, and CesiumJS rendering recipes are documented in [`docs/frontend_integration.md`](docs/frontend_integration.md).
 
+5. **Photogrammetry & Sensor Ingestion Boundary:**
+   - *Status:* **OUT OF CORE SCOPE (EXTENDED SIDE PROJECT)**.
+   - Processing hundreds of uncalibrated 2D drone images via Structure-from-Motion (SfM/NeRF) requires external cluster compute (e.g. OpenDroneMap).
+   - Core backend is strictly a **cadastral, spatial identity, and validation engine**: it ingests 3D polyhedra (`.obj`, `.gltf`, `.ifc`, `.dxf`) and point clouds (`.las`, `.laz`, numpy arrays).
+
+6. **Territorial Jurisdiction & Sandbox Decoupling:**
+   - *Status:* **PLANNED (Phase 12E)**.
+   - Laws and regulatory constraints are territorial. Maharashtra laws (MahaRERA, MOA) apply to `IN_MH`; Karnataka laws apply to `IN_KA`; Singapore laws apply to `SG`.
+   - Purely synthetic/fictional models (e.g. Arasaka Tower from Cyberpunk Night City) execute under `jurisdiction = "SANDBOX"`: state statutes and RERA deviation penalties are bypassed, while 3D topological manifold, non-overlap, and 3D ULPIN volumetric hashing remain strictly active.
+
 ---
 
 ## Phase 12 — Architectural Weight Improvements (Planned)
 
-> **Status:** PLANNED — No code written yet. These tasks strengthen institutional credibility, legal grounding, and frontend ergonomics.
+> **Status:** PLANNED — No code written yet. These tasks strengthen institutional credibility, legal grounding, frontend ergonomics, and jurisdiction-specific regulatory isolation.
 
 ### 12A — Indian Statutory Legal Anchor in `/resolve`
 - [ ] **12A.1** Define `statutory_anchor` dict per class in `src/core/grammar.py` or `src/rights/rrr_model.py` — maps each of the 10 classes to the applicable Indian statute, section, and citation reference:
@@ -353,4 +363,16 @@
 - [ ] **12D.4** Add `RERAComplianceResult` Pydantic model to `src/api/schemas.py`; update `ValidateResponse` to include optional `rera_compliance` field
 - [ ] **12D.5** Unit test: allocate a unit with `sanctioned_carpet_area_sqm=84.5` and geometry producing `~87 m²`; call `/validate/{rid}` and assert `deviation_percentage ≈ 3.07` and `rera_compliance_status == "TOLERANCE_WARNING"`
 
-**Phase 12 done when:** All 4 sub-phases pass unit tests; `/resolve` returns statutory anchors; legacy crosswalk resolves CTS/e-PID identifiers; `/cover?format=geojson_3d` returns valid CesiumJS-ready GeoJSON; `/validate` returns RERA deviation percentage with correct statutory citation.
+### 12E — Jurisdiction-Aware Regulatory Engine & Sandbox Decoupling
+- [ ] **12E.1** Define `Jurisdiction` enum (`IN_MH`, `IN_KA`, `SG`, `SANDBOX`) in `src/core/grammar.py` and `src/api/schemas.py`; add `jurisdiction TEXT DEFAULT 'IN_MH'` column to `objects` table in `src/core/registry.py`
+- [ ] **12E.2** Parameterize statutory mapping by jurisdiction (`JURISDICTION_STATUTORY_MAP`):
+  - `IN_MH` → Maharashtra Apartment Ownership Act 1970 / MahaRERA
+  - `IN_KA` → Karnataka Apartment Ownership Act 1972 / K-RERA
+  - `SG` → Singapore Land Titles (Strata) Act / SLA 3D Cadastre
+  - `SANDBOX` → No state statute (`statutory_basis: "SANDBOX_BYPASS"`)
+- [ ] **12E.3** In `compute_rera_compliance()` and administrative validators (T4), check object jurisdiction: when `SANDBOX` (e.g. Arasaka Tower fictional models), skip state RERA penalties with status `EXEMPT_SANDBOX`; enforce pure 3D manifold/topological non-overlap (T0, T1, T2)
+- [ ] **12E.4** Formalize the photogrammetry pipeline boundary: relegate 2D drone image SfM/NeRF processing to an external side project; keep core backend consumption locked to 3D meshes (OBJ/GLTF/IFC) and LiDAR (LAS/LAZ)
+- [ ] **12E.5** Unit test: allocate Arasaka Tower synthetic parcel under `jurisdiction="SANDBOX"`; call `/validate/{rid}` and `/resolve/{rid}`; assert topology passes, RERA is exempt, and statutory basis is `SANDBOX_BYPASS`
+
+**Phase 12 done when:** All 5 sub-phases pass unit tests; `/resolve` returns statutory anchors per jurisdiction; legacy crosswalk resolves CTS/e-PID identifiers; `/cover?format=geojson_3d` returns valid CesiumJS-ready GeoJSON; `/validate` returns RERA deviation percentage with correct statutory citation for Indian objects and bypasses for sandbox models; fictional mega-structures (Arasaka Tower) validate cleanly without spurious state-law errors.
+
