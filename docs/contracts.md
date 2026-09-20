@@ -51,11 +51,13 @@ Allocate a new 3D ULPIN (RID) under an authorised session.
 
 ### 8.4.2 `GET /resolve/{rid}`
 
-Resolve a 3D ULPIN to its current state.
+Resolve a 3D ULPIN to its current state, or perform reverse lookup via legacy land revenue identifier.
 
 **Parameters:**
-- `rid` (path, required): The 3D ULPIN (RID) to resolve
-- `include_geometry` (query, optional, default false): Include canonical geometry
+- `rid` (path, required/optional): The 3D ULPIN (RID) to resolve
+- `include_geometry` (query, optional, default `false`): Include canonical 3D mesh geometry
+- `legacy_system` (query, optional): Legacy registry authority (e.g. `CTS`, `CS`, `EPID`, `EAASTHI`, `UPOR`)
+- `legacy_value` (query, optional): Legacy deed identifier (e.g. `Plot 412/1A`, `BBMP-104-W22-P04`)
 
 **Response 200:**
 
@@ -74,6 +76,13 @@ Resolve a 3D ULPIN to its current state.
   "current_parcel_ulpin": "string",
   "data_provenance": "string",
   "legal_basis_status": "string",
+  "statutory_anchor": {
+    "act_name": "Maharashtra Apartment Ownership Act, 1970 (or Karnataka Apartment Ownership Act, 1972)",
+    "section": "Section 4 & 5 (Deed of Apartment & Floor Plan Registration)",
+    "statutory_basis": "ENACTED",
+    "carpet_area_standard": "RERA 2016 Section 2(k)",
+    "citation_ref": "MAH-ACT-XV-1971 / RERA-2016-SEC-14"
+  },
   "legacy_ids": [{"id_system": "CTS", "legacy_value": "123/456"}],
   "spans": ["string"],
   "geometry": "object (only if include_geometry=true)",
@@ -160,6 +169,7 @@ Spatial query returning RIDs within a bounding box.
 - `cls` (query, optional): Filter by class(es)
 - `data_provenance` (query, optional): Filter by provenance
 - `lod` (query, optional): Tier fidelity filter (A, B, C)
+- `format` (query, optional, default `summary`): `summary` or `geojson_3d` (GeoJSON polygon footprint with `height` and `extrudedHeight` properties for instant CesiumJS ingestion)
 
 **Response 200:**
 

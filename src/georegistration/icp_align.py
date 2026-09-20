@@ -129,6 +129,31 @@ class ICPAligner:
         else:
             status = ICPStatus.FAIL
 
+        details: Dict[str, Any] = {
+            "sigma_policy_m": sigma_policy_m,
+            "point_count": len(source_points),
+            "per_point_residuals": [round(float(d), 4) for d in final_distances]
+        }
+
+        if gcps is not None:
+            src_gcp, tgt_gcp = gcps
+            if len(src_gcp) > 0:
+                R_final = T_accum[:3, :3]
+                t_final = T_accum[:3, 3]
+                transformed_gcp = np.dot(src_gcp, R_final.T) + t_final
+                gcp_diffs = transformed_gcp - tgt_gcp
+                gcp_res = np.linalg.norm(gcp_diffs, axis=1)
+                gcp_rmse = float(np.sqrt(np.mean(gcp_res ** 2)))
+                gcp_max = float(np.max(gcp_res))
+                gcp_median = float(np.median(gcp_res))
+                details["gcp_metrics"] = {
+                    "count": int(len(src_gcp)),
+                    "rmse_m": round(gcp_rmse, 4),
+                    "max_residual_m": round(gcp_max, 4),
+                    "median_residual_m": round(gcp_median, 4),
+                    "residuals_m": [round(float(r), 4) for r in gcp_res]
+                }
+
         return ICPResult(
             transformation_matrix=T_accum,
             converged=converged,
@@ -136,8 +161,5 @@ class ICPAligner:
             median_residual_m=round(median_res, 4),
             rmse_m=round(rmse, 4),
             status=status,
-            details={
-                "sigma_policy_m": sigma_policy_m,
-                "point_count": len(source_points)
-            }
+            details=details
         )

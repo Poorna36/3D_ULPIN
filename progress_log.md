@@ -291,3 +291,23 @@
 | **M4 — Observed Model Pipeline** | Phase 6 | [x] (6C Level Inferencer COMPLETE; 6A/6B await satellite imagery) |
 | **M5 — Full Vertical Slice** | Phases 7-10 | [x] COMPLETE |
 | **M6 — Evaluation Complete** | Phase 11 | [x] COMPLETE |
+
+---
+
+## Architectural Scope Alignments & Handoff Decisions (Freeze)
+
+1. **Authentication & Authorization:**
+   - *Status:* **DEFERRED** (Out of scope for current MVP/evaluation). Open endpoints for maximum developer velocity and zero-barrier examiner evaluations.
+
+2. **Deployment & Docker Packaging:**
+   - *Status:* **DEFERRED** (Post-MVP packaging). Backend is served directly via Python standard runtime (`uvicorn src.api.main:app --port 8000`).
+
+3. **Multi-State Federation Architecture:**
+   - *Status:* **VERIFIED IN-ENGINE** (Zero external daemon/cluster overhead).
+   - Conforms to constitutional division of powers (State List II, Entry 18). State partitioning (`MH`, `KA`) is embedded inside the 14-char ULPIN grammar, `issuer_node_id`, and SQLite database isolation. Fully verified via `tests/conformance/test_federation.py` and `tests/benchmark/test_evaluation_scale.py`.
+
+4. **Frontend Architecture & Handoff:**
+   - *Status:* **CONTRACT FROZEN & HANDED OFF**.
+   - `src/console/` serves as the internal reference test harness.
+   - The production UI is owned by the dedicated frontend team using CesiumJS 3D.
+   - Comprehensive golden contract, endpoint schemas, and CesiumJS rendering recipes are documented in [`docs/frontend_integration.md`](docs/frontend_integration.md).

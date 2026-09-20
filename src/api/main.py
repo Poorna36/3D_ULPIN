@@ -33,12 +33,57 @@ from src.validation.explain import ExplainObject, create_finding
 from src.ml.h4_topology_validator import H4TopologyValidator
 
 
+from collections import OrderedDict
+from threading import RLock
+
+class FindingsCache:
+    """Thread-safe bounded LRU cache for validation ExplainObjects."""
+    def __init__(self, maxsize: int = 5000):
+        self._maxsize = maxsize
+        self._cache: OrderedDict[str, ExplainObject] = OrderedDict()
+        self._lock = RLock()
+
+    def get(self, key: str, default: Any = None) -> Any:
+        with self._lock:
+            if key in self._cache:
+                self._cache.move_to_end(key)
+                return self._cache[key]
+            return default
+
+    def __getitem__(self, key: str) -> ExplainObject:
+        with self._lock:
+            if key in self._cache:
+                self._cache.move_to_end(key)
+                return self._cache[key]
+            raise KeyError(key)
+
+    def __setitem__(self, key: str, value: ExplainObject) -> None:
+        with self._lock:
+            if key in self._cache:
+                self._cache.move_to_end(key)
+            self._cache[key] = value
+            if len(self._cache) > self._maxsize:
+                self._cache.popitem(last=False)
+
+    def __contains__(self, key: str) -> bool:
+        with self._lock:
+            return key in self._cache
+
+    def __len__(self) -> int:
+        with self._lock:
+            return len(self._cache)
+
+    def clear(self) -> None:
+        with self._lock:
+            self._cache.clear()
+
+
 # Global singleton stores
 _REGISTRY_STORE: Optional[RegistryStore] = None
 _RRR_STORE: Optional[RRRStore] = None
 _ALLOCATOR: Optional[ULPIN3DAllocator] = None
 _H4_VALIDATOR: Optional[H4TopologyValidator] = None
-_FINDINGS_CACHE: Dict[str, ExplainObject] = {}
+_FINDINGS_CACHE: FindingsCache = FindingsCache(maxsize=5000)
 
 
 def get_registry_store() -> RegistryStore:
@@ -421,6 +466,10 @@ def validate_rid(
         ))
         for f in t0_findings:
             _FINDINGS_CACHE[f.finding_id] = f
+            try:
+                store.append_audit_log(rid=rid, action="VALIDATE_T0", actor="API", payload=f.to_dict(), finding_id=f.finding_id)
+            except Exception:
+                pass
 
     # T1: Geometry
     if "T1" in requested_tiers:
@@ -442,6 +491,10 @@ def validate_rid(
         ))
         for f in t1_findings:
             _FINDINGS_CACHE[f.finding_id] = f
+            try:
+                store.append_audit_log(rid=rid, action="VALIDATE_T1", actor="API", payload=f.to_dict(), finding_id=f.finding_id)
+            except Exception:
+                pass
 
     # T4: Admin rights
     if "T4" in requested_tiers:
@@ -457,6 +510,10 @@ def validate_rid(
             t4_status = t4_finding.status
             t4_findings = [t4_finding]
             _FINDINGS_CACHE[t4_finding.finding_id] = t4_finding
+            try:
+                store.append_audit_log(rid=rid, action="VALIDATE_T4", actor="API", payload=t4_finding.to_dict(), finding_id=t4_finding.finding_id)
+            except Exception:
+                pass
         else:
             t4_status = "PASS"
             t4_findings = []

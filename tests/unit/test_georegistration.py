@@ -79,3 +79,41 @@ def test_icp_alignment_and_residual_policy():
     assert res.converged is True
     assert res.median_residual_m < 0.05
     assert res.status == ICPStatus.PASS
+    assert "per_point_residuals" in res.details
+    assert len(res.details["per_point_residuals"]) == 100
+
+
+def test_icp_alignment_with_gcps():
+    """ICP with GCP constraints must compute post-alignment GCP residual metrics."""
+    from src.georegistration.icp_align import ICPAligner, ICPStatus
+
+    np.random.seed(42)
+    target = np.random.uniform(low=0.0, high=10.0, size=(60, 3))
+    R = np.eye(3)
+    t = np.array([0.02, 0.01, -0.01])
+    source = np.dot(target, R.T) + t
+
+    # 4 synthetic GCPs at corners
+    target_gcps = np.array([
+        [0.0, 0.0, 0.0],
+        [10.0, 0.0, 0.0],
+        [0.0, 10.0, 0.0],
+        [10.0, 10.0, 10.0]
+    ])
+    source_gcps = np.dot(target_gcps, R.T) + t
+
+    res = ICPAligner.align(
+        source_points=source,
+        target_points=target,
+        max_iterations=20,
+        sigma_policy_m=0.05,
+        gcps=(source_gcps, target_gcps)
+    )
+
+    assert res.converged is True
+    assert "gcp_metrics" in res.details
+    gcp_m = res.details["gcp_metrics"]
+    assert gcp_m["count"] == 4
+    assert gcp_m["rmse_m"] < 0.02
+    assert gcp_m["max_residual_m"] < 0.03
+

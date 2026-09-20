@@ -153,6 +153,13 @@ def test_api_lineage_and_cover_and_validate(client_with_isolated_db):
     exp_data = exp_resp.json()
     assert exp_data["finding_id"] == finding_id
 
+    # 5. Clear in-memory cache and verify fallback to SQLite audit_log
+    api_main._FINDINGS_CACHE.clear()
+    assert finding_id not in api_main._FINDINGS_CACHE
+    exp_resp_evicted = client.get(f"/explain/{finding_id}")
+    assert exp_resp_evicted.status_code == 200
+    assert exp_resp_evicted.json()["finding_id"] == finding_id
+
 
 def test_api_console_static_mount(client_with_isolated_db):
     client = client_with_isolated_db

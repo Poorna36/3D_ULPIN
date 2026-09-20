@@ -165,6 +165,24 @@ class RegistryStore:
             cursor.execute("CREATE INDEX IF NOT EXISTS idx_audit_rid ON audit_log(rid);")
             cursor.execute("CREATE INDEX IF NOT EXISTS idx_lineage_src ON lineage_edges(source_rid);")
             cursor.execute("CREATE INDEX IF NOT EXISTS idx_lineage_tgt ON lineage_edges(target_rid);")
+
+            # 6. SQLite Native R*Tree Spatial Virtual Table (O(log N) 3D bounding box queries)
+            cursor.execute("""
+                CREATE VIRTUAL TABLE IF NOT EXISTS spatial_index USING rtree(
+                    version_id,
+                    min_x, max_x,
+                    min_y, max_y,
+                    min_z, max_z
+                );
+            """)
+
+            # Backfill any existing records
+            cursor.execute("""
+                INSERT OR IGNORE INTO spatial_index (version_id, min_x, max_x, min_y, max_y, min_z, max_z)
+                SELECT version_id, min_x, max_x, min_y, max_y, min_z, max_z
+                FROM binding_versions
+                WHERE min_x IS NOT NULL AND max_x IS NOT NULL;
+            """)
             conn.commit()
 
     # --------------------------------------------------------------------------
@@ -279,6 +297,14 @@ class RegistryStore:
             """, (rid,))
 
             version_id = cursor.lastrowid
+
+            # Index into SQLite Native R*Tree
+            if min_x is not None and max_x is not None:
+                cursor.execute("""
+                    INSERT OR REPLACE INTO spatial_index (version_id, min_x, max_x, min_y, max_y, min_z, max_z)
+                    VALUES (?, ?, ?, ?, ?, ?, ?);
+                """, (version_id, min_x, max_x, min_y, max_y, min_z, max_z))
+
             conn.commit()
 
             return BindingVersion(
@@ -444,6 +470,34 @@ class RegistryStore:
             """, (source_rid, target_rid, edge_type, created_at))
             conn.commit()
 
+    def append_audit_log(
+        self,
+        rid: str,
+        action: str,
+        actor: str,
+        payload: Dict[str, Any],
+        finding_id: Optional[str] = None
+    ) -> str:
+        """Appends an entry to the tamper-evident hash-chained audit log."""
+        created_at = datetime.now(timezone.utc).isoformat()
+        payload_json = json.dumps(payload, sort_keys=True)
+        with self._get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT this_hash FROM audit_log ORDER BY log_id DESC LIMIT 1;")
+            last = cursor.fetchone()
+            prev_hash = last["this_hash"] if last else GENESIS_HASH
+
+            # Hash = SHA256(prev_hash | rid | action | actor | finding_id | payload_json | created_at)
+            hash_payload = f"{prev_hash}|{rid}|{action}|{actor}|{finding_id or ''}|{payload_json}|{created_at}"
+            this_hash = hashlib.sha256(hash_payload.encode("utf-8")).hexdigest()
+
+            cursor.execute("""
+                INSERT INTO audit_log (rid, action, actor, finding_id, payload_json, prev_hash, this_hash, created_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+            """, (rid, action, actor, finding_id, payload_json, prev_hash, this_hash, created_at))
+            conn.commit()
+            return this_hash
+
     def get_audit_log_finding(self, finding_id: str) -> Optional[Dict[str, Any]]:
         """Retrieves an ExplainObject audit log finding by finding_id."""
         with self._get_connection() as conn:
@@ -479,20 +533,21 @@ class RegistryStore:
             query = """
                 SELECT o.rid, o.cls, o.data_provenance, o.status, o.parent_rid, o.issuer_node_id
                 FROM objects o
-                LEFT JOIN binding_versions b ON o.rid = b.rid
-                WHERE (b.version_num IS NULL OR b.version_num = (
+                JOIN binding_versions b ON o.rid = b.rid
+                LEFT JOIN spatial_index s ON b.version_id = s.version_id
+                WHERE (b.version_num = (
                     SELECT MAX(v.version_num) FROM binding_versions v WHERE v.rid = o.rid
                 ))
             """
             params: List[Any] = []
 
-            # 3D spatial intersection bounding box predicate
+            # 3D spatial intersection bounding box predicate using native R*Tree
             query += """
                 AND (
-                    b.min_x IS NULL OR NOT (
-                        b.max_x < ? OR b.min_x > ? OR
-                        b.max_y < ? OR b.min_y > ? OR
-                        b.max_z < ? OR b.min_z > ?
+                    s.version_id IS NULL OR (
+                        s.max_x >= ? AND s.min_x <= ? AND
+                        s.max_y >= ? AND s.min_y <= ? AND
+                        s.max_z >= ? AND s.min_z <= ?
                     )
                 )
             """
