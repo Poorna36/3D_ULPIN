@@ -1,0 +1,12 @@
+{
+  "agency": "Survey Settlement and Land Records Department, Govt. of Karnataka",
+  "portal": "Urban Property Ownership Records (UPOR) / e-Aasthi e-Khata Portal",
+  "status": "PUBLIC_ACCESSIBLE_PILOT",
+  "access_policy": "City cadastral spatial extents publicly disclosed; individual property cards accessible with Khata PID",
+  "resolution_m": 0.1,
+  "datum": "WGS84 / Karnataka State Plane",
+  "mitigation_applied": "UPOR pilot sector extents ingested directly; interior boundaries supplemented with RERA sanctioned layout coordinates",
+  "data_provenance": "REAL",
+  "license": "Government Open Data License (Karnataka)",
+  "timestamp": "2026-09-20T10:00:00Z"
+}

@@ -2,6 +2,7 @@
 3D ULPIN Core Grammar, Check Symbol, Natural Key (NK) and Spatial Address (SA)
 Conforms strictly to docs/features.md and docs/implementation_plan.md Phase 2.
 """
+from enum import Enum
 from dataclasses import dataclass
 from functools import lru_cache
 import hashlib
@@ -467,3 +468,280 @@ class SpatialAddressIndex:
 
     def lookup(self, cell_code: str) -> List[str]:
         return self._cell_to_rids.get(cell_code, [])
+
+
+class Jurisdiction(str, Enum):
+    IN_MH = "IN_MH"
+    IN_KA = "IN_KA"
+    SG = "SG"
+    SANDBOX = "SANDBOX"
+
+
+@dataclass(frozen=True)
+class StatutoryAnchor:
+    act_name: str
+    section: str
+    statutory_basis: str
+    citation: str
+    notes: str = ""
+
+    def to_dict(self) -> Dict[str, str]:
+        return {
+            "act_name": self.act_name,
+            "section": self.section,
+            "statutory_basis": self.statutory_basis,
+            "citation": self.citation,
+            "notes": self.notes,
+        }
+
+
+JURISDICTION_STATUTORY_MAP: Dict[str, Dict[str, StatutoryAnchor]] = {
+    "IN_MH": {
+        "U": StatutoryAnchor(
+            act_name="Maharashtra Apartment Ownership Act 1970",
+            section="Section 4 & 5",
+            statutory_basis="ENACTED",
+            citation="MAOA 1970 § 4, 5 r/w Real Estate (Regulation and Development) Act 2016 § 2(k), § 14",
+            notes="Exclusive ownership of apartment unit with undivided interest in common areas",
+        ),
+        "C": StatutoryAnchor(
+            act_name="Maharashtra Apartment Ownership Act 1970",
+            section="Section 6",
+            statutory_basis="ENACTED",
+            citation="MAOA 1970 § 6 r/w MOFA 1963",
+            notes="Common areas and facilities held in undivided interest by apartment owners",
+        ),
+        "P": StatutoryAnchor(
+            act_name="Maharashtra Apartment Ownership Act 1970",
+            section="Section 3(a) & 4",
+            statutory_basis="ENACTED",
+            citation="MAOA 1970 § 3(a), 4 (Limited Common Area / Appurtenant Parking Bay)",
+            notes="Appurtenant or reserved parking space attached to residential / commercial unit",
+        ),
+        "E": StatutoryAnchor(
+            act_name="Metro Railways (Construction of Works) Act 1978",
+            section="Section 6",
+            statutory_basis="ENACTED",
+            citation="Metro Railways Act 1978 § 6 (Elevated Alignment Easement)",
+            notes="Elevated transit corridor right of user / statutory easement over surface parcels",
+        ),
+        "T": StatutoryAnchor(
+            act_name="Right to Fair Compensation and Transparency in Land Acquisition, Rehabilitation and Resettlement Act 2013",
+            section="Subterranean Easement Provisions",
+            statutory_basis="ENACTED",
+            citation="RFCTLARR Act 2013 (Subterranean Transit / Infrastructure Easement)",
+            notes="Underground transit tunnel easement (e.g. MMRC Aqua Line 3 tunnel layer)",
+        ),
+        "A": StatutoryAnchor(
+            act_name="Aircraft Act 1934 & MoCA CCZM Rules",
+            section="Colour Coded Zoning Map Rules",
+            statutory_basis="STATUTORY_RESTRICTION",
+            citation="Aircraft Act 1934 r/w MoCA CCZM Height Limitations & TDR Regulations",
+            notes="Airspace lot subject to statutory airport obstacle limitation surfaces & transferable development rights",
+        ),
+        "S": StatutoryAnchor(
+            act_name="Maharashtra Land Revenue Code 1966",
+            section="Section 20 & 44",
+            statutory_basis="ENACTED",
+            citation="MLRC 1966 § 20, 44 (Cadastral Parcel Surface Unit)",
+            notes="Ground surface parcel column registered in City Survey / MahaBhulekh",
+        ),
+        "B": StatutoryAnchor(
+            act_name="Maharashtra Land Revenue Code 1966 & MCGM Development Control Regulations",
+            section="Building Envelope Provisions",
+            statutory_basis="ENACTED",
+            citation="MLRC 1966 r/w DCPR 2034 (Approved Building Envelope)",
+            notes="Overall sanctioned building envelope shell",
+        ),
+        "L": StatutoryAnchor(
+            act_name="Maharashtra Regional and Town Planning Act 1966",
+            section="Sanctioned Development Plan Provisions",
+            statutory_basis="ENACTED",
+            citation="MRTP Act 1966 / DCPR 2034 Floor Slab Allocation",
+            notes="Horizontal storey slab band dividing vertical cadastral space",
+        ),
+        "I": StatutoryAnchor(
+            act_name="Indian Telegraph Act 1885 & Electricity Act 2003",
+            section="Wayleave & Subsurface Conduits",
+            statutory_basis="ENACTED",
+            citation="Indian Telegraph Act 1885 § 10 / Electricity Act 2003 (Utility Wayleave)",
+            notes="Underground or surface utility-network corridor servitude",
+        ),
+    },
+    "IN_KA": {
+        "U": StatutoryAnchor(
+            act_name="Karnataka Apartment Ownership Act 1972",
+            section="Section 4 & 5",
+            statutory_basis="ENACTED",
+            citation="KAOA 1972 § 4, 5 r/w Real Estate (Regulation and Development) Act 2016 § 2(k), § 14",
+            notes="Exclusive ownership of apartment unit with undivided share of land (UDS)",
+        ),
+        "C": StatutoryAnchor(
+            act_name="Karnataka Apartment Ownership Act 1972",
+            section="Section 6",
+            statutory_basis="ENACTED",
+            citation="KAOA 1972 § 6 (Common Areas and Facilities)",
+            notes="Common areas held in common by apartment owners association",
+        ),
+        "P": StatutoryAnchor(
+            act_name="Karnataka Apartment Ownership Act 1972",
+            section="Section 3(f) & 4",
+            statutory_basis="ENACTED",
+            citation="KAOA 1972 § 3(f), 4 (Appurtenant Parking Bay)",
+            notes="Designated parking cell tied to apartment title",
+        ),
+        "E": StatutoryAnchor(
+            act_name="Metro Railways (Construction of Works) Act 1978",
+            section="Section 6",
+            statutory_basis="ENACTED",
+            citation="Metro Railways Act 1978 § 6 (BMRCL Elevated Alignment)",
+            notes="Namma Metro viaduct easement over Bangalore surface parcels",
+        ),
+        "T": StatutoryAnchor(
+            act_name="Right to Fair Compensation and Transparency in Land Acquisition, Rehabilitation and Resettlement Act 2013",
+            section="Subterranean Easement Provisions",
+            statutory_basis="ENACTED",
+            citation="RFCTLARR Act 2013 (BMRCL Underground Tunnel Easement)",
+            notes="Subterranean metro corridor (Purple/Pink Line underground sections)",
+        ),
+        "A": StatutoryAnchor(
+            act_name="Aircraft Act 1934 & MoCA CCZM Rules",
+            section="Colour Coded Zoning Map Rules",
+            statutory_basis="STATUTORY_RESTRICTION",
+            citation="Aircraft Act 1934 r/w HAL & BIAL Airport Height Envelopes",
+            notes="Airspace restriction envelope over Bengaluru parcels",
+        ),
+        "S": StatutoryAnchor(
+            act_name="Karnataka Land Revenue Act 1964",
+            section="Section 67 & 95",
+            statutory_basis="ENACTED",
+            citation="KLRA 1964 § 67, 95 (Bhoomi / UPOR Cadastral Surface Unit)",
+            notes="Ground parcel registered under Karnataka UPOR / e-Aasthi",
+        ),
+        "B": StatutoryAnchor(
+            act_name="Karnataka Municipal Corporations Act 1976 & BBMP Building Bye-Laws",
+            section="Sanctioned Building Plan Envelope",
+            statutory_basis="ENACTED",
+            citation="KMCA 1976 r/w BBMP Building Bye-laws 2003",
+            notes="Sanctioned structural envelope for Bengaluru property",
+        ),
+        "L": StatutoryAnchor(
+            act_name="Karnataka Town and Country Planning Act 1961",
+            section="Zoning Regulations",
+            statutory_basis="ENACTED",
+            citation="KTCPA 1961 Floor Storey Allocation",
+            notes="Floor slab storey level",
+        ),
+        "I": StatutoryAnchor(
+            act_name="Indian Telegraph Act 1885 & Karnataka Municipal Authorities Utility Regulations",
+            section="Utility Wayleave",
+            statutory_basis="ENACTED",
+            citation="Indian Telegraph Act 1885 § 10 / BWSSB / BESCOM Easement",
+            notes="Public water / electricity utility conduit servitude",
+        ),
+    },
+    "SG": {
+        "U": StatutoryAnchor(
+            act_name="Land Titles (Strata) Act (Cap. 158)",
+            section="Part II (Strata Lots)",
+            statutory_basis="ENACTED",
+            citation="Singapore Land Titles (Strata) Act (Cap. 158) / SLA 3D Cadastre",
+            notes="Subdivided strata lot in airspace",
+        ),
+        "C": StatutoryAnchor(
+            act_name="Building Maintenance and Strata Management Act (BMSMA)",
+            section="Part III (Common Property)",
+            statutory_basis="ENACTED",
+            citation="BMSMA Part III / SLA 3D Common Property",
+            notes="Strata common property managed by MCST",
+        ),
+        "P": StatutoryAnchor(
+            act_name="Land Titles (Strata) Act (Cap. 158)",
+            section="Accessory Lot Provisions",
+            statutory_basis="ENACTED",
+            citation="Singapore LTSA Accessory Lot",
+            notes="Accessory strata lot for vehicle parking",
+        ),
+        "E": StatutoryAnchor(
+            act_name="Rapid Transit Systems Act (Cap. 263A)",
+            section="Section 8 (Railway Safety Zone)",
+            statutory_basis="ENACTED",
+            citation="RTSA (Cap. 263A) § 8 (LTA Elevated Railway Reserve)",
+            notes="LTA elevated MRT railway safety corridor",
+        ),
+        "T": StatutoryAnchor(
+            act_name="State Lands Act (Cap. 314)",
+            section="Underground Land Severance (30m Stratum)",
+            statutory_basis="ENACTED",
+            citation="State Lands Act (Cap. 314) § 3(4) (Subterranean Land Severance)",
+            notes="Underground stratum below subterranean boundary limit",
+        ),
+        "A": StatutoryAnchor(
+            act_name="Air Navigation Act (Cap. 6)",
+            section="Aviation Height Limit",
+            statutory_basis="STATUTORY_RESTRICTION",
+            citation="Air Navigation Act (Cap. 6) / CAAS Height Limitation",
+            notes="Restricted airspace ceiling above Singapore parcel",
+        ),
+        "S": StatutoryAnchor(
+            act_name="Land Titles Act (Cap. 157)",
+            section="Surface Land Parcel",
+            statutory_basis="ENACTED",
+            citation="LTA (Cap. 157) Land Lot Boundary",
+            notes="SLA State Land Lot",
+        ),
+        "B": StatutoryAnchor(
+            act_name="Building Control Act (Cap. 29)",
+            section="Approved Building Works",
+            statutory_basis="ENACTED",
+            citation="BCA Approved Envelope",
+            notes="Building envelope permitted under URA Master Plan",
+        ),
+        "L": StatutoryAnchor(
+            act_name="Planning Act (Cap. 232)",
+            section="Gross Floor Area Guidelines",
+            statutory_basis="ENACTED",
+            citation="Planning Act (Cap. 232) Storey Level",
+            notes="Storey level within building",
+        ),
+        "I": StatutoryAnchor(
+            act_name="Public Utilities Act (Cap. 261)",
+            section="Utility Corridors",
+            statutory_basis="ENACTED",
+            citation="PUA (Cap. 261) Utility Subterranean Reserve",
+            notes="PUB water/power utility reserve",
+        ),
+    },
+    "SANDBOX": {
+        cls_code: StatutoryAnchor(
+            act_name="None (Synthetic Sandbox / Fictional Model)",
+            section="N/A",
+            statutory_basis="SANDBOX_BYPASS",
+            citation="Synthetic Geometry Sandbox (State statutes and local RERA rules bypassed)",
+            notes="Non-territorial simulation model (e.g. Arasaka Tower); topological and geometric validity only",
+        )
+        for cls_code in VALID_CLASSES
+    }
+}
+
+
+def get_statutory_anchor(cls: str, jurisdiction: str = "IN_MH") -> StatutoryAnchor:
+    """
+    Returns the StatutoryAnchor object for a given property class and jurisdiction.
+    Falls back gracefully to IN_MH defaults if jurisdiction is unrecognized.
+    """
+    jur = jurisdiction.upper() if jurisdiction else "IN_MH"
+    if jur not in JURISDICTION_STATUTORY_MAP:
+        jur = "IN_MH"
+    jur_map = JURISDICTION_STATUTORY_MAP[jur]
+    if cls in jur_map:
+        return jur_map[cls]
+    # Default fallback
+    return StatutoryAnchor(
+        act_name="General Cadastral Regulations",
+        section="Section 1",
+        statutory_basis="ASSUMED",
+        citation="Cadastral General Law",
+        notes="Unclassified 3D parcel volume",
+    )
+

@@ -9,6 +9,17 @@ from contextlib import contextmanager
 import sqlite3
 import json
 
+from src.core.grammar import get_statutory_anchor, StatutoryAnchor
+
+
+def get_legal_basis_for_class(cls: str, jurisdiction: str = "IN_MH") -> tuple[str, str]:
+    """
+    Returns (legal_basis_status, legal_act_ref) from the unified statutory source of truth.
+    Conforms to Phase 12A.4.
+    """
+    anchor = get_statutory_anchor(cls, jurisdiction)
+    return anchor.statutory_basis, anchor.citation
+
 
 class RightType(str, Enum):
     OWNERSHIP = "OWNERSHIP"          # Full statutory ownership (apartment title)

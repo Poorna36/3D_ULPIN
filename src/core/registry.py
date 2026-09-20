@@ -27,6 +27,7 @@ class ObjectRecord:
     status: str
     data_provenance: str
     legal_basis_status: str
+    jurisdiction: str = "IN_MH"
 
 
 @dataclass
@@ -45,6 +46,7 @@ class BindingVersion:
     prev_hash: str
     this_hash: str
     created_at: str
+    sanctioned_carpet_area_sqm: Optional[float] = None
 
 
 class RegistryStore:
@@ -86,9 +88,15 @@ class RegistryStore:
                     data_provenance TEXT NOT NULL CHECK(data_provenance IN (
                         'REAL', 'PROXY', 'SYNTHETIC', 'REAL-FOREIGN', 'REAL-OWN'
                     )),
-                    legal_basis_status TEXT DEFAULT 'ASSUMED'
+                    legal_basis_status TEXT DEFAULT 'ASSUMED',
+                    jurisdiction TEXT DEFAULT 'IN_MH'
                 );
             """)
+
+            try:
+                cursor.execute("ALTER TABLE objects ADD COLUMN jurisdiction TEXT DEFAULT 'IN_MH';")
+            except Exception:
+                pass
 
             # 2. Binding versions table (Immutable hash-chained versions)
             cursor.execute("""
@@ -113,12 +121,13 @@ class RegistryStore:
                     max_x REAL,
                     max_y REAL,
                     max_z REAL,
+                    sanctioned_carpet_area_sqm REAL,
                     UNIQUE(rid, version_num)
                 );
             """)
 
             # Migrate existing tables if columns missing
-            for col in ["min_x", "min_y", "min_z", "max_x", "max_y", "max_z"]:
+            for col in ["min_x", "min_y", "min_z", "max_x", "max_y", "max_z", "sanctioned_carpet_area_sqm"]:
                 try:
                     cursor.execute(f"ALTER TABLE binding_versions ADD COLUMN {col} REAL;")
                 except Exception:
@@ -159,14 +168,26 @@ class RegistryStore:
                 );
             """)
 
+            # 6. Legacy Identifier Crosswalk (Phase 12B)
+            cursor.execute("""
+                CREATE TABLE IF NOT EXISTS legacy_index (
+                    id_system TEXT NOT NULL,
+                    legacy_value TEXT NOT NULL,
+                    rid TEXT NOT NULL REFERENCES objects(rid),
+                    created_at TEXT NOT NULL,
+                    PRIMARY KEY (id_system, legacy_value)
+                );
+            """)
+
             # Indices for sub-millisecond lookups
             cursor.execute("CREATE INDEX IF NOT EXISTS idx_objects_ulpin14 ON objects(ulpin14);")
             cursor.execute("CREATE INDEX IF NOT EXISTS idx_binding_rid ON binding_versions(rid);")
             cursor.execute("CREATE INDEX IF NOT EXISTS idx_audit_rid ON audit_log(rid);")
             cursor.execute("CREATE INDEX IF NOT EXISTS idx_lineage_src ON lineage_edges(source_rid);")
             cursor.execute("CREATE INDEX IF NOT EXISTS idx_lineage_tgt ON lineage_edges(target_rid);")
+            cursor.execute("CREATE INDEX IF NOT EXISTS idx_legacy_rid ON legacy_index(rid);")
 
-            # 6. SQLite Native R*Tree Spatial Virtual Table (O(log N) 3D bounding box queries)
+            # 7. SQLite Native R*Tree Spatial Virtual Table (O(log N) 3D bounding box queries)
             cursor.execute("""
                 CREATE VIRTUAL TABLE IF NOT EXISTS spatial_index USING rtree(
                     version_id,
@@ -201,7 +222,8 @@ class RegistryStore:
         parent_rid: Optional[str] = None,
         status: str = "ALLOCATED",
         legal_basis_status: str = "ASSUMED",
-        spans: Optional[List[str]] = None
+        spans: Optional[List[str]] = None,
+        jurisdiction: str = "IN_MH",
     ) -> None:
         birth_ts = datetime.now(timezone.utc).isoformat()
         with self._get_connection() as conn:
@@ -209,11 +231,11 @@ class RegistryStore:
             cursor.execute("""
                 INSERT INTO objects (
                     rid, cls, ulpin14, bld_seq, seq, parent_rid,
-                    issuer_node_id, birth_ts, status, data_provenance, legal_basis_status
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+                    issuer_node_id, birth_ts, status, data_provenance, legal_basis_status, jurisdiction
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
             """, (
                 rid, cls, ulpin14, bld_seq, seq, parent_rid,
-                issuer_node_id, birth_ts, status, data_provenance, legal_basis_status
+                issuer_node_id, birth_ts, status, data_provenance, legal_basis_status, jurisdiction
             ))
 
             if spans:
@@ -232,7 +254,8 @@ class RegistryStore:
         plan_version: str,
         evidence_class: str,
         sigma_dict: Optional[Dict[str, Any]] = None,
-        sign_off: Optional[str] = None
+        sign_off: Optional[str] = None,
+        sanctioned_carpet_area_sqm: Optional[float] = None,
     ) -> BindingVersion:
         created_at = datetime.now(timezone.utc).isoformat()
         sa_str = json.dumps(sa_cover)
@@ -263,7 +286,7 @@ class RegistryStore:
             )
             this_hash = hashlib.sha256(hash_payload.encode("utf-8")).hexdigest()
 
-            # Extract bounding extents if available
+            # Extract bounding extents; convert to WGS84 lon/lat if 'origin' present
             min_x = min_y = min_z = max_x = max_y = max_z = None
             try:
                 geom_data = json.loads(geometry_json) if isinstance(geometry_json, str) else geometry_json
@@ -272,8 +295,26 @@ class RegistryStore:
                     if v_arr.ndim == 2 and v_arr.shape[1] >= 3:
                         b_min = v_arr.min(axis=0)
                         b_max = v_arr.max(axis=0)
-                        min_x, min_y, min_z = float(b_min[0]), float(b_min[1]), float(b_min[2])
-                        max_x, max_y, max_z = float(b_max[0]), float(b_max[1]), float(b_max[2])
+                        origin = geom_data.get("origin")  # [lon, lat, elev_msl_m]
+                        if origin and len(origin) == 3:
+                            import math
+                            o_lon, o_lat, _o_elev = float(origin[0]), float(origin[1]), float(origin[2])
+                            # Approximate metric→degree conversion at anchor latitude
+                            m_per_deg_lon = 111320.0 * math.cos(math.radians(o_lat))
+                            m_per_deg_lat = 110540.0
+                            # x-axis (local east-west metres) → longitude degrees
+                            min_x = round(o_lon + float(b_min[0]) / m_per_deg_lon, 8)
+                            max_x = round(o_lon + float(b_max[0]) / m_per_deg_lon, 8)
+                            # y-axis (local north-south metres) → latitude degrees
+                            min_y = round(o_lat + float(b_min[1]) / m_per_deg_lat, 8)
+                            max_y = round(o_lat + float(b_max[1]) / m_per_deg_lat, 8)
+                            # z-axis stays in metres MSL (already absolute)
+                            min_z = float(b_min[2])
+                            max_z = float(b_max[2])
+                        else:
+                            # Legacy: store local metric coords as-is
+                            min_x, min_y, min_z = float(b_min[0]), float(b_min[1]), float(b_min[2])
+                            max_x, max_y, max_z = float(b_max[0]), float(b_max[1]), float(b_max[2])
             except Exception:
                 pass
 
@@ -282,13 +323,15 @@ class RegistryStore:
                     rid, version_num, nk_digest, nk_locator, sa_json,
                     geometry_json, plan_version, evidence_class, sigma_json,
                     sign_off, prev_hash, this_hash, created_at,
-                    min_x, min_y, min_z, max_x, max_y, max_z
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+                    min_x, min_y, min_z, max_x, max_y, max_z,
+                    sanctioned_carpet_area_sqm
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
             """, (
                 rid, next_version, nk_digest, nk_locator, sa_str,
                 geometry_json, plan_version, evidence_class, sigma_str,
                 sign_off, prev_hash, this_hash, created_at,
-                min_x, min_y, min_z, max_x, max_y, max_z
+                min_x, min_y, min_z, max_x, max_y, max_z,
+                sanctioned_carpet_area_sqm
             ))
 
             # Update object status to ACTIVE if it was ALLOCATED
@@ -321,8 +364,42 @@ class RegistryStore:
                 sign_off=sign_off,
                 prev_hash=prev_hash,
                 this_hash=this_hash,
-                created_at=created_at
+                created_at=created_at,
+                sanctioned_carpet_area_sqm=sanctioned_carpet_area_sqm,
             )
+
+    def insert_legacy_id(self, id_system: str, legacy_value: str, rid: str) -> None:
+        """Stamp a legacy parcel identifier (CTS, e-PID, UPOR) linked to an RID (Phase 12B)."""
+        created_at = datetime.now(timezone.utc).isoformat()
+        with self._get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute("""
+                INSERT OR REPLACE INTO legacy_index (id_system, legacy_value, rid, created_at)
+                VALUES (?, ?, ?, ?);
+            """, (id_system, legacy_value, rid, created_at))
+            conn.commit()
+
+    def resolve_by_legacy(self, id_system: str, legacy_value: str) -> Optional[str]:
+        """Crosswalk from legacy identifier to canonical 3D ULPIN RID (Phase 12B)."""
+        with self._get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute("""
+                SELECT rid FROM legacy_index
+                WHERE id_system = ? AND legacy_value = ?;
+            """, (id_system, legacy_value))
+            row = cursor.fetchone()
+            return row["rid"] if row else None
+
+    def get_legacy_ids_for_rid(self, rid: str) -> List[Dict[str, str]]:
+        """Return all stamped legacy identifiers for a given RID."""
+        with self._get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute("""
+                SELECT id_system, legacy_value FROM legacy_index
+                WHERE rid = ?;
+            """, (rid,))
+            rows = cursor.fetchall()
+            return [{"id_system": r["id_system"], "legacy_value": r["legacy_value"]} for r in rows]
 
     def append_audit_log(
         self,
@@ -377,6 +454,9 @@ class RegistryStore:
             cursor.execute("SELECT spanned_ulpin FROM spans WHERE rid = ?;", (rid,))
             spans = [r["spanned_ulpin"] for r in cursor.fetchall()]
 
+            cursor.execute("SELECT id_system, legacy_value FROM legacy_index WHERE rid = ?;", (rid,))
+            legacy_ids = [{"id_system": r["id_system"], "legacy_value": r["legacy_value"]} for r in cursor.fetchall()]
+
             res = {
                 "rid": obj["rid"],
                 "cls": obj["cls"],
@@ -388,6 +468,8 @@ class RegistryStore:
                 "birth_ts": obj["birth_ts"],
                 "data_provenance": obj["data_provenance"],
                 "legal_basis_status": obj["legal_basis_status"],
+                "jurisdiction": obj["jurisdiction"] if "jurisdiction" in obj.keys() and obj["jurisdiction"] else "IN_MH",
+                "legacy_ids": legacy_ids,
                 "spans": spans,
                 "current_nk": {
                     "digest": b_ver["nk_digest"] if b_ver else None,
@@ -395,6 +477,9 @@ class RegistryStore:
                     "version": b_ver["version_num"] if b_ver else 0
                 }
             }
+
+            if b_ver and "sanctioned_carpet_area_sqm" in b_ver.keys() and b_ver["sanctioned_carpet_area_sqm"] is not None:
+                res["sanctioned_carpet_area_sqm"] = float(b_ver["sanctioned_carpet_area_sqm"])
 
             if include_geometry and b_ver:
                 res["geometry"] = json.loads(b_ver["geometry_json"])
@@ -531,7 +616,8 @@ class RegistryStore:
         with self._get_connection() as conn:
             cursor = conn.cursor()
             query = """
-                SELECT o.rid, o.cls, o.data_provenance, o.status, o.parent_rid, o.issuer_node_id
+                SELECT o.rid, o.cls, o.data_provenance, o.status, o.parent_rid, o.issuer_node_id,
+                       o.jurisdiction, b.min_x, b.max_x, b.min_y, b.max_y, b.min_z, b.max_z
                 FROM objects o
                 JOIN binding_versions b ON o.rid = b.rid
                 LEFT JOIN spatial_index s ON b.version_id = s.version_id
@@ -576,7 +662,14 @@ class RegistryStore:
                     "data_provenance": r["data_provenance"],
                     "status": r["status"],
                     "parent_rid": r["parent_rid"],
-                    "issuer_node_id": r["issuer_node_id"]
+                    "issuer_node_id": r["issuer_node_id"],
+                    "jurisdiction": r["jurisdiction"] if "jurisdiction" in r.keys() and r["jurisdiction"] else "IN_MH",
+                    "min_x": r["min_x"] if "min_x" in r.keys() else None,
+                    "max_x": r["max_x"] if "max_x" in r.keys() else None,
+                    "min_y": r["min_y"] if "min_y" in r.keys() else None,
+                    "max_y": r["max_y"] if "max_y" in r.keys() else None,
+                    "min_z": r["min_z"] if "min_z" in r.keys() else None,
+                    "max_z": r["max_z"] if "max_z" in r.keys() else None,
                 })
             return results
 

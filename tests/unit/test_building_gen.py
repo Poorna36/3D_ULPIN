@@ -8,8 +8,13 @@ import trimesh
 
 from src.simulation.building_gen import (
     BuildingGenerator,
+    BuildingTypology,
     generate_mz1_hero_tower,
-    generate_bz1_hero_tower
+    generate_bz1_hero_tower,
+    generate_podium_tower,
+    generate_stepped_tower,
+    generate_commercial_campus,
+    generate_arasaka_tower
 )
 from src.simulation.defect_injector import DefectInjector, DefectType
 from src.simulation.sensor_sim import SensorSimulator
@@ -87,3 +92,71 @@ def test_sensor_simulator_lidar_raycasting():
     assert len(pc.points) > 50
     assert pc.points.shape[1] == 3
     assert len(pc.intensities) == len(pc.points)
+
+
+def test_building_typologies_diversity():
+    """Verify distinct architectural typologies maintain watertightness and volume conservation."""
+    typology_generators = [
+        ("Podium_Tower", generate_podium_tower()),
+        ("Stepped_Highrise", generate_stepped_tower()),
+        ("Commercial_Campus", generate_commercial_campus()),
+        ("Arasaka_Megatower", generate_arasaka_tower()),
+    ]
+
+    for name, bld in typology_generators:
+        assert bld.floor_count > 0
+        assert len(bld.volumes) > 0
+
+        # Check all volumes are watertight 2-manifolds with positive volume
+        for vol in bld.volumes:
+            assert vol.mesh.is_watertight is True, f"Volume {vol.label} in {name} is not watertight!"
+            assert vol.volume > 0.0, f"Volume {vol.label} in {name} has non-positive volume!"
+
+        # Check volume conservation across levels
+        levels = bld.get_by_class("L")
+        for lvl in levels[:3]:  # Test first 3 levels
+            child_units = [v for v in bld.volumes if lvl.label in v.label and v.cls in ("U", "C", "P") and v.label != lvl.label]
+            if child_units:
+                sum_children = sum(u.volume for u in child_units)
+                ratio = abs(sum_children - lvl.volume) / lvl.volume
+                assert ratio <= 0.01, f"Volume conservation failed in {name} for {lvl.label}: sum={sum_children}, level={lvl.volume}"
+
+    # Verify sandbox model properties
+    arasaka = generate_arasaka_tower()
+    assert arasaka.jurisdiction == "SANDBOX"
+    assert arasaka.typology == BuildingTypology.CYBERPUNK_MEGATOWER.value
+
+
+def test_intra_building_floor_variations():
+    """Verify realistic floor-to-floor variations within the same building."""
+    gen = BuildingGenerator(ground_elevation=0.0)
+    tower = gen.generate(
+        name="VariedTower",
+        floor_count=6,
+        floor_variation=True
+    )
+
+    # 1. Ground floor (Level 00): Grand lobby + retail units
+    lvl0_vols = [v for v in tower.volumes if "Level_00" in v.label]
+    lvl0_labels = [v.label for v in lvl0_vols]
+    assert any("GrandLobby" in l for l in lvl0_labels), "Ground floor missing Grand Lobby!"
+    assert any("Retail" in l for l in lvl0_labels), "Ground floor missing Retail unit!"
+
+    # 2. Even mid-floor (Level 02, Type A): 3BHK Master + 1BHK Studio + 2BHKs
+    lvl2_vols = [v for v in tower.volumes if "Level_02" in v.label]
+    lvl2_labels = [v.label for v in lvl2_vols]
+    assert any("3BHK_Master" in l for l in lvl2_labels), "Level 02 missing 3BHK Master!"
+    assert any("1BHK_Studio" in l for l in lvl2_labels), "Level 02 missing 1BHK Studio!"
+
+    # 3. Odd mid-floor (Level 03, Type B): Executive Suites + Studio
+    lvl3_vols = [v for v in tower.volumes if "Level_03" in v.label]
+    lvl3_labels = [v.label for v in lvl3_vols]
+    assert any("ExecSuite" in l for l in lvl3_labels), "Level 03 missing Executive Suite!"
+    assert any("Studio_Center" in l for l in lvl3_labels), "Level 03 missing Central Studio!"
+
+    # 4. Top floor (Level 05, Penthouse): Royal/Imperial Penthouse + Sky Terraces
+    lvl5_vols = [v for v in tower.volumes if "Level_05" in v.label]
+    lvl5_labels = [v.label for v in lvl5_vols]
+    assert any("Penthouse" in l for l in lvl5_labels), "Top floor missing Penthouse!"
+    assert any("SkyTerrace" in l for l in lvl5_labels), "Top floor missing Sky Terrace!"
+

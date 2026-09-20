@@ -216,8 +216,13 @@ class H3Delineator:
         4. Airspace & Tunnel (A, T)
         5. Elevated & Utility (E, I)
         Each allocation is cryptographically verified and bound into the SQLite registry.
+        geo_anchor is propagated from the BuildingStructure to every allocate() call so
+        the spatial R-tree index stores real-world WGS84 bounding boxes.
         """
         allocation_map: Dict[str, AllocationResult] = {}
+        # Extract geo_anchor from building structure (None for synthetic/test buildings)
+        geo_anchor = getattr(building_structure, "geo_anchor", None)
+        jurisdiction = getattr(building_structure, "jurisdiction", "IN_MH")
 
         # 1. Class B: Building Envelope
         bld_vols = [v for v in building_structure.volumes if v.cls == "B"]
@@ -231,7 +236,9 @@ class H3Delineator:
                 bld_seq="B0001",
                 parent_rid=None,
                 issuer_node_id=issuer_node_id,
-                data_provenance=bv.data_provenance
+                data_provenance=bv.data_provenance,
+                jurisdiction=jurisdiction,
+                geo_anchor=geo_anchor
             )
             allocation_map[bv.label] = res_b
             bld_rid = res_b.rid
@@ -246,7 +253,9 @@ class H3Delineator:
                 bld_seq="B0001",
                 parent_rid=bld_rid,
                 issuer_node_id=issuer_node_id,
-                data_provenance=lv.data_provenance
+                data_provenance=lv.data_provenance,
+                jurisdiction=jurisdiction,
+                geo_anchor=geo_anchor
             )
             allocation_map[lv.label] = res_l
             level_rids[lv.label] = res_l.rid
@@ -261,7 +270,9 @@ class H3Delineator:
                 bld_seq="B0001",
                 parent_rid=parent_l_rid,
                 issuer_node_id=issuer_node_id,
-                data_provenance=uv.data_provenance
+                data_provenance=uv.data_provenance,
+                jurisdiction=jurisdiction,
+                geo_anchor=geo_anchor
             )
             allocation_map[uv.label] = res_u
 
@@ -274,7 +285,9 @@ class H3Delineator:
                 bld_seq="B0001",
                 parent_rid=bld_rid,
                 issuer_node_id=issuer_node_id,
-                data_provenance=sv.data_provenance
+                data_provenance=sv.data_provenance,
+                jurisdiction=jurisdiction,
+                geo_anchor=geo_anchor
             )
             allocation_map[sv.label] = res_s
 

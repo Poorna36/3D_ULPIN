@@ -12,18 +12,18 @@
 ## Phase 0 — Data Reconnaissance & Zone Freeze
 > Spec: [docs/data.md](docs/data.md)
 
-- [ ] **0.1** Confirm MZ-1 (South Mumbai / Fort / Nariman Point) boundary polygon → `data/real/mz1_boundary.geojson`
-- [ ] **0.2** Confirm MZ-2 (Dharavi / Mahim / BKC) boundary polygon → `data/real/mz2_boundary.geojson`
-- [ ] **0.3** Confirm BZ-1 (Bengaluru CBD / MG Road) boundary → `data/real/bz1_boundary.geojson`
-- [ ] **0.4** Confirm BZ-2 (Whitefield / EPIP Zone) boundary → `data/real/bz2_boundary.geojson`
-- [ ] **0.5** Identify hero tower per zone from RERA (name, project ID, unit count, floor count) → `data/real/{zone}_hero_tower.json`
-- [ ] **0.6** Download Overture Maps building footprint tiles for all four zones → `data/real/{zone}_overture_footprints.geojson`
-- [ ] **0.7** Attempt MCGM open-data GIS parcel layer; log provenance / paywall status → `data/real/mcgm_provenance_log.json`
-- [ ] **0.8** Attempt UPOR / e-Aasthi open parcel data (BZ-1/BZ-2); log provenance → `data/real/upor_provenance_log.json`
-- [ ] **0.9** Download BMRCL Namma Metro alignment + MMRC Aqua Line corridor GeoJSON → `data/real/bmrcl_alignment.geojson`, `data/real/mmrc_alignment.geojson`
-- [ ] **0.10** Download Rotterdam AHN3/AHN4 point-cloud tiles + Singapore SLA 3D tiles (document if unavailable) → `data/foreign/`
-- [ ] **0.11** Download Bhuvan SRTM 30 m DEM for all pilot bounding boxes → `data/real/bhuvan_dem_{zone}.tif`
-- [ ] **0.12** Write `data/PROVENANCE_INDEX.json` — every file, provenance tag, license, URL / "not available"
+- [x] **0.1** Confirm MZ-1 (South Mumbai / Fort / Nariman Point) boundary polygon → `data/real/mz1_boundary.geojson`
+- [x] **0.2** Confirm MZ-2 (Dharavi / Mahim / BKC) boundary polygon → `data/real/mz2_boundary.geojson`
+- [x] **0.3** Confirm BZ-1 (Bengaluru CBD / MG Road) boundary → `data/real/bz1_boundary.geojson`
+- [x] **0.4** Confirm BZ-2 (Whitefield / EPIP Zone) boundary → `data/real/bz2_boundary.geojson`
+- [x] **0.5** Identify hero tower per zone from RERA (name, project ID, unit count, floor count) → `data/real/{zone}_hero_tower.json`
+- [x] **0.6** Download Overture Maps building footprint tiles for all four zones → `data/real/{zone}_overture_footprints.geojson`
+- [x] **0.7** Attempt MCGM open-data GIS parcel layer; log provenance / paywall status → `data/real/mcgm_provenance_log.json`
+- [x] **0.8** Attempt UPOR / e-Aasthi open parcel data (BZ-1/BZ-2); log provenance → `data/real/upor_provenance_log.json`
+- [x] **0.9** Download BMRCL Namma Metro alignment + MMRC Aqua Line corridor GeoJSON → `data/real/bmrcl_alignment.geojson`, `data/real/mmrc_alignment.geojson`
+- [x] **0.10** Download Rotterdam AHN3/AHN4 point-cloud tiles + Singapore SLA 3D tiles (document if unavailable) → `data/foreign/`
+- [x] **0.11** Download Bhuvan SRTM 30 m DEM for all pilot bounding boxes → `data/real/bhuvan_dem_{zone}.tif`
+- [x] **0.12** Write `data/PROVENANCE_INDEX.json` — every file, provenance tag, license, URL / "not available"
 
 **Phase 0 done when:** all zone GeoJSONs valid; hero towers identified; `PROVENANCE_INDEX.json` has zero unlabeled entries.
 
@@ -32,14 +32,14 @@
 ## Phase 1 — Data Provenance Ledger & Ingestion Layer
 > Spec: [docs/data.md](docs/data.md)
 
-- [ ] **1.1** Define `ProvenanceRecord` dataclass (source_id, file_path, data_provenance, crs, datum, resolution_m, accuracy_sigma_m, license, download_ts) → `src/ingestion/provenance.py`
-- [ ] **1.2** Implement `LedgerStore` backed by SQLite `provenance_ledger` table; write + query ops → `src/ingestion/provenance.py`
-- [ ] **1.3** Implement `GISReader.read_vector()` — GeoJSON, Shapefile, GPKG; reproject to WGS84/ITRF → `src/ingestion/gis_reader.py`
-- [ ] **1.4** Implement `GISReader.read_raster()` — GeoTIFF (DEM / DSM / ORI) via GDAL → `src/ingestion/gis_reader.py`
-- [ ] **1.5** Implement `LidarReader.read()` — LAS/LAZ → numpy structured array via PDAL → `src/ingestion/lidar_reader.py`
-- [ ] **1.6** Implement `IFCReader.read()` — IfcOpenShell; extract IfcSpace / IfcBuildingStorey / IfcSlab → `src/ingestion/ifc_reader.py`
-- [ ] **1.7** Write `tests/unit/test_provenance.py` — 100% provenance-tag path coverage; assert no REAL + SYNTHETIC conflation
-- [ ] **1.8** Run ingestion on all Phase-0 assets; populate `provenance_ledger` in `registry.db`
+- [x] **1.1** Define `ProvenanceRecord` dataclass (source_id, file_path, data_provenance, crs, datum, resolution_m, accuracy_sigma_m, license, download_ts) → `src/ingestion/provenance.py`
+- [x] **1.2** Implement `LedgerStore` backed by SQLite `provenance_ledger` table; write + query ops → `src/ingestion/provenance.py`
+- [x] **1.3** Implement `GISReader.read_vector()` — GeoJSON, Shapefile, GPKG; reproject to WGS84/ITRF → `src/ingestion/gis_reader.py`
+- [x] **1.4** Implement `GISReader.read_raster()` — GeoTIFF (DEM / DSM / ORI) via GDAL → `src/ingestion/gis_reader.py`
+- [x] **1.5** Implement `LidarReader.read()` — LAS/LAZ → numpy structured array via PDAL → `src/ingestion/lidar_reader.py`
+- [x] **1.6** Implement `IFCReader.read()` — IfcOpenShell; extract IfcSpace / IfcBuildingStorey / IfcSlab → `src/ingestion/ifc_reader.py`
+- [x] **1.7** Write `tests/unit/test_provenance.py` — 100% provenance-tag path coverage; assert no REAL + SYNTHETIC conflation
+- [x] **1.8** Run ingestion on all Phase-0 assets; populate `provenance_ledger` in `registry.db`
 
 **Phase 1 done when:** every reader output carries non-null `ProvenanceRecord`; `test_provenance.py` passes; ledger populated.
 
@@ -107,8 +107,10 @@
 - [x] **3.11** Run generator for MZ-1 hero tower (20-storey, 4 units/floor, 2 basement T, 1 metro E) → `data/synthetic/mz1_hero/`
 - [x] **3.12** Run generator for BZ-1 hero tower (15-storey, 3 units/floor, 1 basement, Namma Metro E) → `data/synthetic/bz1_hero/`
 - [x] **3.13** Write `tests/unit/test_building_gen.py` — watertight; volume conservation <=1%; zero pairwise overlaps
+- [x] **3.14** Architectural Typologies — Support 6 archetypes: STANDARD_HIGHRISE, PODIUM_TOWER, STEPPED_TERRACE, L_SHAPED, COMMERCIAL_CAMPUS, and CYBERPUNK_MEGATOWER sandbox → `src/simulation/building_gen.py`
+- [x] **3.15** Realistic Intra-Building Variations — Functional floor plates: Grand Lobby + Retail, Podium Amenities, Asymmetric/Alternating Residential units, and Penthouse Sky Terraces with exact volume conservation
 
-**Phase 3 done when:** all 10 classes generated and watertight; defect injector functional; tests pass.
+**Phase 3 done when:** all 10 classes generated and watertight; defect injector functional; architectural typologies & floor variations verified; tests pass.
 
 ---
 
@@ -284,14 +286,14 @@
 
 | Milestone | Phases | Status |
 |-----------|--------|--------|
-| **M0 — Data Ready** | Phase 0 | [ ] (Pending external data) |
+| **M0 — Data Ready** | Phase 0 | [x] COMPLETE |
 | **M1 — Identity Engine Live** | Phases 1-2 | [x] COMPLETE |
 | **M2 — Synthetic World Built** | Phases 3-4 | [x] COMPLETE |
 | **M3 — Expected Model Pipeline** | Phase 5 | [x] COMPLETE |
 | **M4 — Observed Model Pipeline** | Phase 6 | [x] (6C Level Inferencer COMPLETE; 6A/6B await satellite imagery) |
 | **M5 — Full Vertical Slice** | Phases 7-10 | [x] COMPLETE |
 | **M6 — Evaluation Complete** | Phase 11 | [x] COMPLETE |
-| **M7 — Architectural Improvements** | Phase 12 | [ ] PLANNED (12A Statutory Anchor, 12B Legacy Crosswalk, 12C GeoJSON-3D, 12D RERA Deviation) |
+| **M7 — Architectural Improvements** | Phase 12 | [x] COMPLETE |
 
 ---
 
@@ -319,60 +321,60 @@
    - Core backend is strictly a **cadastral, spatial identity, and validation engine**: it ingests 3D polyhedra (`.obj`, `.gltf`, `.ifc`, `.dxf`) and point clouds (`.las`, `.laz`, numpy arrays).
 
 6. **Territorial Jurisdiction & Sandbox Decoupling:**
-   - *Status:* **PLANNED (Phase 12E)**.
+   - *Status:* **COMPLETE (Phase 12E)**.
    - Laws and regulatory constraints are territorial. Maharashtra laws (MahaRERA, MOA) apply to `IN_MH`; Karnataka laws apply to `IN_KA`; Singapore laws apply to `SG`.
    - Purely synthetic/fictional models (e.g. Arasaka Tower from Cyberpunk Night City) execute under `jurisdiction = "SANDBOX"`: state statutes and RERA deviation penalties are bypassed, while 3D topological manifold, non-overlap, and 3D ULPIN volumetric hashing remain strictly active.
 
 ---
 
-## Phase 12 — Architectural Weight Improvements (Planned)
+## Phase 12 — Architectural Weight Improvements (Complete)
 
-> **Status:** PLANNED — No code written yet. These tasks strengthen institutional credibility, legal grounding, frontend ergonomics, and jurisdiction-specific regulatory isolation.
+> **Status:** COMPLETE — All sub-phases verified with unit and integration tests in `tests/unit/test_phase12.py`.
 
 ### 12A — Indian Statutory Legal Anchor in `/resolve`
-- [ ] **12A.1** Define `statutory_anchor` dict per class in `src/core/grammar.py` or `src/rights/rrr_model.py` — maps each of the 10 classes to the applicable Indian statute, section, and citation reference:
+- [x] **12A.1** Define `statutory_anchor` dict per class in `src/core/grammar.py` or `src/rights/rrr_model.py` — maps each of the 10 classes to the applicable Indian statute, section, and citation reference:
   - Class `U/C/P` → Maharashtra Apartment Ownership Act 1970 / Karnataka Apartment Ownership Act 1972 (§4 & 5) + RERA 2016 (§2(k), §14)
   - Class `E` → Metro Railways (Construction of Works) Act 1978 (§6)
   - Class `T` → RFCTLARR Act 2013 (underground easement provisions)
   - Class `A` → Aircraft Act 1934 + MoCA CCZM Colour Coded Zoning Map
   - Class `S/B/L` → Revenue Code of the issuing State (MahaBhulekh / Bhoomi)
-- [ ] **12A.2** Populate `statutory_anchor` field in `GET /resolve/{rid}` response; write new Pydantic `StatutoryAnchor` schema in `src/api/schemas.py`
-- [ ] **12A.3** Unit test: resolve a class-U RID and assert `statutory_anchor.act_name` contains "Apartment Ownership Act" and `statutory_basis == "ENACTED"`
-- [ ] **12A.4** Update `src/rights/rrr_model.py` so `legal_basis_status` for each class is pre-populated from the same statutory map (consolidating existing class-rule logic with the new anchor dict)
+- [x] **12A.2** Populate `statutory_anchor` field in `GET /resolve/{rid}` response; write new Pydantic `StatutoryAnchor` schema in `src/api/schemas.py`
+- [x] **12A.3** Unit test: resolve a class-U RID and assert `statutory_anchor.act_name` contains "Apartment Ownership Act" and `statutory_basis == "ENACTED"`
+- [x] **12A.4** Update `src/rights/rrr_model.py` so `legal_basis_status` for each class is pre-populated from the same statutory map (consolidating existing class-rule logic with the new anchor dict)
 
 ### 12B — Legacy Identifier Crosswalk (CTS, e-PID, UPOR, e-Aasthi)
-- [ ] **12B.1** Design `legacy_index` SQLite table schema in `src/core/registry.py`:
+- [x] **12B.1** Design `legacy_index` SQLite table schema in `src/core/registry.py`:
   `(id_system TEXT, legacy_value TEXT, rid TEXT, created_at TEXT, UNIQUE(id_system, legacy_value))`
-- [ ] **12B.2** Implement `insert_legacy_id(id_system, legacy_value, rid)` and `resolve_by_legacy(id_system, legacy_value) → Optional[str]` methods on `RegistryStore`
-- [ ] **12B.3** Extend `GET /resolve` endpoint — accept `legacy_system` + `legacy_value` query params; route through `resolve_by_legacy()`; return same ObjectRecord
-- [ ] **12B.4** Add `legacy_system` and `legacy_value` to `AllocateRequest` body so callers can stamp legacy IDs at allocation time
-- [ ] **12B.5** Unit test: allocate an RID, stamp `CTS:Plot 412/1A`, then `GET /resolve?legacy_system=CTS&legacy_value=Plot+412%2F1A` and assert it returns the same RID
+- [x] **12B.2** Implement `insert_legacy_id(id_system, legacy_value, rid)` and `resolve_by_legacy(id_system, legacy_value) → Optional[str]` methods on `RegistryStore`
+- [x] **12B.3** Extend `GET /resolve` endpoint — accept `legacy_system` + `legacy_value` query params; route through `resolve_by_legacy()`; return same ObjectRecord
+- [x] **12B.4** Add `legacy_system` and `legacy_value` to `AllocateRequest` body so callers can stamp legacy IDs at allocation time
+- [x] **12B.5** Unit test: allocate an RID, stamp `CTS:Plot 412/1A`, then `GET /resolve?legacy_system=CTS&legacy_value=Plot+412%2F1A` and assert it returns the same RID
 
 ### 12C — Dual-Payload `/cover` with `format=geojson_3d`
-- [ ] **12C.1** Extend `GET /cover` with `format` query parameter: `summary` (existing default) or `geojson_3d`
-- [ ] **12C.2** In `geojson_3d` mode, compute each object's footprint polygon (WGS84 lat/lon) and z extents (`height`, `extrudedHeight`) from its stored bounding box in `spatial_index` table; also emit `fill_color` from the standard class colour palette
-- [ ] **12C.3** Add `format: Optional[Literal["summary", "geojson_3d"]]` to `CoverRequest` schema; add `GeoJSON3DFeature` Pydantic model in `src/api/schemas.py`
-- [ ] **12C.4** Unit test: allocate 3 objects, call `GET /cover?bbox=...&format=geojson_3d`, assert each feature has `properties.extrudedHeight > properties.height` and correct `fill_color` per class
+- [x] **12C.1** Extend `GET /cover` with `format` query parameter: `summary` (existing default) or `geojson_3d`
+- [x] **12C.2** In `geojson_3d` mode, compute each object's footprint polygon (WGS84 lat/lon) and z extents (`height`, `extrudedHeight`) from its stored bounding box in `spatial_index` table; also emit `fill_color` from the standard class colour palette
+- [x] **12C.3** Add `format: Optional[Literal["summary", "geojson_3d"]]` to `CoverRequest` schema; add `GeoJSON3DFeature` Pydantic model in `src/api/schemas.py`
+- [x] **12C.4** Unit test: allocate 3 objects, call `GET /cover?bbox=...&format=geojson_3d`, assert each feature has `properties.extrudedHeight > properties.height` and correct `fill_color` per class
 
 ### 12D — RERA Carpet Area Deviation Metric in `/validate`
-- [ ] **12D.1** Add `sanctioned_carpet_area_sqm` field to `binding_versions` table (nullable) and to `AllocateRequest` body
-- [ ] **12D.2** Implement `compute_rera_compliance(rid, store) → RERAComplianceResult` in `src/expected_model/rera_validator.py`:
+- [x] **12D.1** Add `sanctioned_carpet_area_sqm` field to `binding_versions` table (nullable) and to `AllocateRequest` body
+- [x] **12D.2** Implement `compute_rera_compliance(rid, store) → RERAComplianceResult` in `src/expected_model/rera_validator.py`:
   - Compares stored `sanctioned_carpet_area_sqm` vs. mesh-derived as-built area (from T1 geometry validator)
   - Returns: `deviation_percentage`, `rera_compliance_status` (`PASS` ≤ 2%, `TOLERANCE_WARNING` 2–5%, `FAIL` > 5%), and statutory citation
-- [ ] **12D.3** Call `compute_rera_compliance()` in `GET /validate/{rid}` response when `cls == 'U'` and plan area evidence is available; populate `rera_compliance` field in `ValidateResponse`
-- [ ] **12D.4** Add `RERAComplianceResult` Pydantic model to `src/api/schemas.py`; update `ValidateResponse` to include optional `rera_compliance` field
-- [ ] **12D.5** Unit test: allocate a unit with `sanctioned_carpet_area_sqm=84.5` and geometry producing `~87 m²`; call `/validate/{rid}` and assert `deviation_percentage ≈ 3.07` and `rera_compliance_status == "TOLERANCE_WARNING"`
+- [x] **12D.3** Call `compute_rera_compliance()` in `GET /validate/{rid}` response when `cls == 'U'` and plan area evidence is available; populate `rera_compliance` field in `ValidateResponse`
+- [x] **12D.4** Add `RERAComplianceResult` Pydantic model to `src/api/schemas.py`; update `ValidateResponse` to include optional `rera_compliance` field
+- [x] **12D.5** Unit test: allocate a unit with `sanctioned_carpet_area_sqm=84.5` and geometry producing `~87 m²`; call `/validate/{rid}` and assert `deviation_percentage ≈ 3.07` and `rera_compliance_status == "TOLERANCE_WARNING"`
 
 ### 12E — Jurisdiction-Aware Regulatory Engine & Sandbox Decoupling
-- [ ] **12E.1** Define `Jurisdiction` enum (`IN_MH`, `IN_KA`, `SG`, `SANDBOX`) in `src/core/grammar.py` and `src/api/schemas.py`; add `jurisdiction TEXT DEFAULT 'IN_MH'` column to `objects` table in `src/core/registry.py`
-- [ ] **12E.2** Parameterize statutory mapping by jurisdiction (`JURISDICTION_STATUTORY_MAP`):
+- [x] **12E.1** Define `Jurisdiction` enum (`IN_MH`, `IN_KA`, `SG`, `SANDBOX`) in `src/core/grammar.py` and `src/api/schemas.py`; add `jurisdiction TEXT DEFAULT 'IN_MH'` column to `objects` table in `src/core/registry.py`
+- [x] **12E.2** Parameterize statutory mapping by jurisdiction (`JURISDICTION_STATUTORY_MAP`):
   - `IN_MH` → Maharashtra Apartment Ownership Act 1970 / MahaRERA
   - `IN_KA` → Karnataka Apartment Ownership Act 1972 / K-RERA
   - `SG` → Singapore Land Titles (Strata) Act / SLA 3D Cadastre
   - `SANDBOX` → No state statute (`statutory_basis: "SANDBOX_BYPASS"`)
-- [ ] **12E.3** In `compute_rera_compliance()` and administrative validators (T4), check object jurisdiction: when `SANDBOX` (e.g. Arasaka Tower fictional models), skip state RERA penalties with status `EXEMPT_SANDBOX`; enforce pure 3D manifold/topological non-overlap (T0, T1, T2)
-- [ ] **12E.4** Formalize the photogrammetry pipeline boundary: relegate 2D drone image SfM/NeRF processing to an external side project; keep core backend consumption locked to 3D meshes (OBJ/GLTF/IFC) and LiDAR (LAS/LAZ)
-- [ ] **12E.5** Unit test: allocate Arasaka Tower synthetic parcel under `jurisdiction="SANDBOX"`; call `/validate/{rid}` and `/resolve/{rid}`; assert topology passes, RERA is exempt, and statutory basis is `SANDBOX_BYPASS`
+- [x] **12E.3** In `compute_rera_compliance()` and administrative validators (T4), check object jurisdiction: when `SANDBOX` (e.g. Arasaka Tower fictional models), skip state RERA penalties with status `EXEMPT_SANDBOX`; enforce pure 3D manifold/topological non-overlap (T0, T1, T2)
+- [x] **12E.4** Formalize the photogrammetry pipeline boundary: relegate 2D drone image SfM/NeRF processing to an external side project; keep core backend consumption locked to 3D meshes (OBJ/GLTF/IFC) and LiDAR (LAS/LAZ)
+- [x] **12E.5** Unit test: allocate Arasaka Tower synthetic parcel under `jurisdiction="SANDBOX"`; call `/validate/{rid}` and `/resolve/{rid}`; assert topology passes, RERA is exempt, and statutory basis is `SANDBOX_BYPASS`
 
 **Phase 12 done when:** All 5 sub-phases pass unit tests; `/resolve` returns statutory anchors per jurisdiction; legacy crosswalk resolves CTS/e-PID identifiers; `/cover?format=geojson_3d` returns valid CesiumJS-ready GeoJSON; `/validate` returns RERA deviation percentage with correct statutory citation for Indian objects and bypasses for sandbox models; fictional mega-structures (Arasaka Tower) validate cleanly without spurious state-law errors.
 

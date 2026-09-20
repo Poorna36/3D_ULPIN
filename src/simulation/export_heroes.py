@@ -19,6 +19,8 @@ def export_hero_towers(base_dir: str = "data/synthetic"):
             "ground_elevation": structure.ground_elevation,
             "height": structure.height,
             "floor_count": structure.floor_count,
+            "typology": structure.typology,
+            "jurisdiction": structure.jurisdiction,
             "total_volume": structure.total_volume,
             "volume_count": len(structure.volumes),
             "classes_exercised": sorted(list({v.cls for v in structure.volumes})),
@@ -30,7 +32,8 @@ def export_hero_towers(base_dir: str = "data/synthetic"):
                     "z_max": v.z_max,
                     "volume": v.volume,
                     "parent_label": v.parent_label,
-                    "data_provenance": v.data_provenance
+                    "data_provenance": v.data_provenance,
+                    "description": v.description
                 }
                 for v in structure.volumes
             ]

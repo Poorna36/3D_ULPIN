@@ -14,14 +14,14 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from src.api.schemas import (
     AllocateRequest, AllocateResponse,
-    ResolveResponse, CurrentNK, LegacyId,
+    ResolveResponse, CurrentNK, LegacyId, StatutoryAnchorModel,
     VerifyRequest, VerifyResponse,
     LineageResponse, VersionRecord, LineageEdge,
-    CoverResponse, CoverFeature,
-    ValidateResponse, TierResult, EvidenceSufficiency,
+    CoverResponse, CoverFeature, GeoJSON3DFeature, GeoJSON3DProperties,
+    ValidateResponse, TierResult, EvidenceSufficiency, RERAComplianceResult,
     GeometryModel
 )
-from src.core.grammar import compute_nk
+from src.core.grammar import compute_nk, get_statutory_anchor
 from src.core.registry import RegistryStore
 from src.core.ict import ict_evaluate, ICTDecision, compute_mesh_intersection_volume
 from src.identity.allocator import ULPIN3DAllocator
@@ -31,6 +31,7 @@ from src.validation.t1_geometry import T1GeometryValidator
 from src.validation.t4_admin import T4AdminValidator
 from src.validation.explain import ExplainObject, create_finding
 from src.ml.h4_topology_validator import H4TopologyValidator
+from src.expected_model.rera_validator import compute_rera_compliance
 
 
 from collections import OrderedDict
@@ -194,7 +195,12 @@ def allocate_rid(req: AllocateRequest):
             data_provenance=req.data_provenance,
             plan_version=req.plan_version,
             evidence_class=req.evidence_refs[0] if req.evidence_refs else "E1",
-            spans=req.spans
+            spans=req.spans,
+            jurisdiction=req.jurisdiction or "IN_MH",
+            legacy_system=req.legacy_system,
+            legacy_value=req.legacy_value,
+            sanctioned_carpet_area_sqm=req.sanctioned_carpet_area_sqm,
+            geo_anchor=tuple(req.geo_anchor) if req.geo_anchor and len(req.geo_anchor) == 3 else None,
         )
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(e))
@@ -225,12 +231,37 @@ def allocate_rid(req: AllocateRequest):
 )
 def resolve_rid(
     rid: str = Path(..., description="The 3D ULPIN (RID) to resolve"),
-    include_geometry: bool = Query(False, description="Include canonical geometry")
+    include_geometry: bool = Query(False, description="Include canonical geometry"),
+    legacy_system: Optional[str] = Query(None, description="Legacy identifier system (e.g. CTS, e-PID)"),
+    legacy_value: Optional[str] = Query(None, description="Legacy identifier value")
 ):
     store = get_registry_store()
-    rec = store.resolve_rid(rid, include_geometry=include_geometry)
+    target_rid = rid
+
+    # Legacy crosswalk lookup (Phase 12B.3)
+    if legacy_system and legacy_value:
+        resolved = store.resolve_by_legacy(legacy_system, legacy_value)
+        if resolved:
+            target_rid = resolved
+
+    rec = store.resolve_rid(target_rid, include_geometry=include_geometry)
     if not rec:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"RID '{rid}' not found")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"RID '{target_rid}' not found")
+
+    jur = rec.get("jurisdiction", "IN_MH")
+    stat_anchor = get_statutory_anchor(cls=rec["cls"], jurisdiction=jur)
+    anchor_model = StatutoryAnchorModel(
+        act_name=stat_anchor.act_name,
+        section=stat_anchor.section,
+        statutory_basis=stat_anchor.statutory_basis,
+        citation=stat_anchor.citation,
+        notes=stat_anchor.notes,
+    )
+
+    legacy_ids = [
+        LegacyId(id_system=item["id_system"], legacy_value=item["legacy_value"])
+        for item in rec.get("legacy_ids", [])
+    ]
 
     return ResolveResponse(
         rid=rec["rid"],
@@ -246,7 +277,10 @@ def resolve_rid(
         current_parcel_ulpin=rec["current_parcel_ulpin"],
         data_provenance=rec["data_provenance"],
         legal_basis_status=rec["legal_basis_status"],
-        legacy_ids=[],
+        jurisdiction=jur,
+        statutory_anchor=anchor_model,
+        sanctioned_carpet_area_sqm=rec.get("sanctioned_carpet_area_sqm"),
+        legacy_ids=legacy_ids,
         spans=rec.get("spans", []),
         geometry=rec.get("geometry"),
         issuer_node_id=rec["issuer_node_id"]
@@ -351,6 +385,20 @@ def get_lineage(rid: str = Path(..., description="The RID to inspect")):
     )
 
 
+CLASS_COLORS = {
+    "U": "#E8A048",
+    "C": "#6DB56D",
+    "P": "#8A8A8A",
+    "A": "#9B59B6",
+    "T": "#34495E",
+    "I": "#E67E22",
+    "E": "#4A8BD4",
+    "S": "#27AE60",
+    "B": "#2980B9",
+    "L": "#16A085"
+}
+
+
 # ------------------------------------------------------------------------------
 # 8.4.5 GET /cover
 # ------------------------------------------------------------------------------
@@ -363,7 +411,8 @@ def get_cover(
     bbox: str = Query(..., description="min_lon,min_lat,min_h,max_lon,max_lat,max_h"),
     cls: Optional[str] = Query(None, description="Comma-separated class filter"),
     data_provenance: Optional[str] = Query(None, description="Comma-separated provenance filter"),
-    lod: Optional[str] = Query("LOD2", description="LOD filter (A, B, C)")
+    lod: Optional[str] = Query("LOD2", description="LOD filter (A, B, C)"),
+    format: Optional[str] = Query("summary", description="Response format: 'summary' or 'geojson_3d'")
 ):
     try:
         parts = [float(p.strip()) for p in bbox.split(",")]
@@ -388,15 +437,56 @@ def get_cover(
     )
 
     features = []
-    for m in matches:
-        features.append(CoverFeature(
-            rid=m["rid"],
-            cls=m["cls"],
-            data_provenance=m["data_provenance"],
-            validation_status="PASS",
-            tier=lod or "T1",
-            geometry={"type": "Solid"}
-        ))
+    if format == "geojson_3d":
+        for m in matches:
+            min_x = m.get("min_x") if m.get("min_x") is not None else min_lon
+            max_x = m.get("max_x") if m.get("max_x") is not None else max_lon
+            min_y = m.get("min_y") if m.get("min_y") is not None else min_lat
+            max_y = m.get("max_y") if m.get("max_y") is not None else max_lat
+            min_z = m.get("min_z") if m.get("min_z") is not None else 0.0
+            max_z = m.get("max_z") if m.get("max_z") is not None else min_z + 3.0
+            if max_z <= min_z:
+                max_z = min_z + 3.0
+
+            poly = [
+                [
+                    [round(min_x, 6), round(min_y, 6)],
+                    [round(max_x, 6), round(min_y, 6)],
+                    [round(max_x, 6), round(max_y, 6)],
+                    [round(min_x, 6), round(max_y, 6)],
+                    [round(min_x, 6), round(min_y, 6)],
+                ]
+            ]
+            fill_c = CLASS_COLORS.get(m["cls"], "#E8A048")
+            props = GeoJSON3DProperties(
+                rid=m["rid"],
+                cls=m["cls"],
+                data_provenance=m["data_provenance"],
+                validation_status="PASS",
+                tier=lod or "T1",
+                height=float(min_z),
+                extrudedHeight=float(max_z),
+                fill_color=fill_c,
+                outline_color="#FFFFFF",
+                fill_opacity=0.85,
+                jurisdiction=m.get("jurisdiction", "IN_MH"),
+                legal_basis_status="ENACTED"
+            )
+            features.append(GeoJSON3DFeature(
+                type="Feature",
+                properties=props,
+                geometry={"type": "Polygon", "coordinates": poly}
+            ))
+    else:
+        for m in matches:
+            features.append(CoverFeature(
+                rid=m["rid"],
+                cls=m["cls"],
+                data_provenance=m["data_provenance"],
+                validation_status="PASS",
+                tier=lod or "T1",
+                geometry={"type": "Solid"}
+            ))
 
     return CoverResponse(
         type="FeatureCollection",
@@ -526,6 +616,8 @@ def validate_rid(
             findings=[f.to_dict() for f in t4_findings]
         ))
 
+    rera_comp = compute_rera_compliance(rid=rid, store=store)
+
     return ValidateResponse(
         rid=rid,
         overall_status=overall_status,
@@ -534,5 +626,6 @@ def validate_rid(
             available=["E1", "E2"],
             required_for_full_pass=["E1", "E2", "E3"],
             unverifiable_checks=[]
-        )
+        ),
+        rera_compliance=rera_comp
     )

@@ -4,8 +4,10 @@
   "ground_elevation": 8.5,
   "height": 68.0,
   "floor_count": 20,
+  "typology": "STANDARD_HIGHRISE",
+  "jurisdiction": "IN_MH",
   "total_volume": 423788.544,
-  "volume_count": 135,
+  "volume_count": 144,
   "classes_exercised": [
     "A",
     "B",
@@ -25,7 +27,8 @@
       "z_max": 116.5,
       "volume": 260480.0,
       "parent_label": null,
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Surface Cadastral Parcel Column with air and subsurface rights"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Envelope",
@@ -34,7 +37,8 @@
       "z_max": 76.5,
       "volume": 45696.0,
       "parent_label": "MZ1_Worli_Hero_Tower_Parcel_Column",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Master Building Envelope Solid"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Level_00",
@@ -43,52 +47,58 @@
       "z_max": 11.9,
       "volume": 2284.8,
       "parent_label": "MZ1_Worli_Hero_Tower_Envelope",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Level Slab Band 00"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_00_CommonCorridor",
+      "label": "MZ1_Worli_Hero_Tower_Level_00_GrandLobby_Reception",
       "cls": "C",
       "z_min": 8.5,
       "z_max": 11.9,
-      "volume": 195.84,
+      "volume": 799.68,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_00",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Grand Double-Height Entrance Lobby, Security Desk & Elevator Core"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_00_Unit_01",
+      "label": "MZ1_Worli_Hero_Tower_Level_00_Unit_Retail_Bank_West_01",
       "cls": "U",
       "z_min": 8.5,
       "z_max": 11.9,
-      "volume": 522.24,
+      "volume": 371.28,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_00",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Street-Facing Anchor Commercial Banking Space (South West)"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_00_Unit_02",
+      "label": "MZ1_Worli_Hero_Tower_Level_00_Unit_Retail_Store_West_02",
       "cls": "U",
       "z_min": 8.5,
       "z_max": 11.9,
-      "volume": 522.24,
+      "volume": 371.28,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_00",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Street-Facing Commercial Pharmacy & Retail Store (North West)"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_00_Unit_03",
+      "label": "MZ1_Worli_Hero_Tower_Level_00_Unit_Retail_Cafe_East_03",
       "cls": "U",
       "z_min": 8.5,
       "z_max": 11.9,
-      "volume": 522.24,
+      "volume": 371.28,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_00",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Street-Facing Cafeteria & Coffee Lounge (South East)"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_00_Unit_04",
+      "label": "MZ1_Worli_Hero_Tower_Level_00_Unit_Retail_Showroom_East_04",
       "cls": "U",
       "z_min": 8.5,
       "z_max": 11.9,
-      "volume": 522.24,
+      "volume": 371.28,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_00",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Street-Facing Commercial Showroom Space (North East)"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Level_01",
@@ -97,7 +107,8 @@
       "z_max": 15.3,
       "volume": 2284.8,
       "parent_label": "MZ1_Worli_Hero_Tower_Envelope",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Level Slab Band 01"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Level_01_CommonCorridor",
@@ -106,43 +117,58 @@
       "z_max": 15.3,
       "volume": 195.84,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_01",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Central Resident Circulation Hallway & Stair Core"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_01_Unit_01",
+      "label": "MZ1_Worli_Hero_Tower_Level_01_Unit_2BHK_West_01",
       "cls": "U",
       "z_min": 11.9,
       "z_max": 15.3,
       "volume": 522.24,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_01",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Apartment (South Wing)"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_01_Unit_02",
+      "label": "MZ1_Worli_Hero_Tower_Level_01_Unit_2BHK_West_02",
       "cls": "U",
       "z_min": 11.9,
       "z_max": 15.3,
       "volume": 522.24,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_01",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Apartment (North Wing)"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_01_Unit_03",
+      "label": "MZ1_Worli_Hero_Tower_Level_01_Unit_ExecSuite_South_03",
       "cls": "U",
       "z_min": 11.9,
       "z_max": 15.3,
-      "volume": 522.24,
+      "volume": 365.568,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_01",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Executive Corner Suite with Panoramic Corner Glazing"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_01_Unit_04",
+      "label": "MZ1_Worli_Hero_Tower_Level_01_Unit_Studio_Center_04",
       "cls": "U",
       "z_min": 11.9,
       "z_max": 15.3,
-      "volume": 522.24,
+      "volume": 313.344,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_01",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Central Compact Urban Studio Unit"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_01_Unit_ExecSuite_North_05",
+      "cls": "U",
+      "z_min": 11.9,
+      "z_max": 15.3,
+      "volume": 365.568,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_01",
+      "data_provenance": "SYNTHETIC",
+      "description": "Executive Corner Suite with North Garden View"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Level_02",
@@ -151,7 +177,8 @@
       "z_max": 18.7,
       "volume": 2284.8,
       "parent_label": "MZ1_Worli_Hero_Tower_Envelope",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Level Slab Band 02"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Level_02_CommonCorridor",
@@ -160,43 +187,48 @@
       "z_max": 18.7,
       "volume": 195.84,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_02",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Central Resident Circulation Hallway & Stair Core"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_02_Unit_01",
+      "label": "MZ1_Worli_Hero_Tower_Level_02_Unit_3BHK_Master_01",
+      "cls": "U",
+      "z_min": 15.3,
+      "z_max": 18.7,
+      "volume": 626.688,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_02",
+      "data_provenance": "SYNTHETIC",
+      "description": "Spacious 3BHK Family Master Apartment with dual balcony"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_02_Unit_1BHK_Studio_02",
+      "cls": "U",
+      "z_min": 15.3,
+      "z_max": 18.7,
+      "volume": 417.792,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_02",
+      "data_provenance": "SYNTHETIC",
+      "description": "Compact 1BHK Executive Studio Suite"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_02_Unit_2BHK_East_South_03",
       "cls": "U",
       "z_min": 15.3,
       "z_max": 18.7,
       "volume": 522.24,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_02",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Urban Apartment (South Wing)"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_02_Unit_02",
+      "label": "MZ1_Worli_Hero_Tower_Level_02_Unit_2BHK_East_North_04",
       "cls": "U",
       "z_min": 15.3,
       "z_max": 18.7,
       "volume": 522.24,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_02",
-      "data_provenance": "SYNTHETIC"
-    },
-    {
-      "label": "MZ1_Worli_Hero_Tower_Level_02_Unit_03",
-      "cls": "U",
-      "z_min": 15.3,
-      "z_max": 18.7,
-      "volume": 522.24,
-      "parent_label": "MZ1_Worli_Hero_Tower_Level_02",
-      "data_provenance": "SYNTHETIC"
-    },
-    {
-      "label": "MZ1_Worli_Hero_Tower_Level_02_Unit_04",
-      "cls": "U",
-      "z_min": 15.3,
-      "z_max": 18.7,
-      "volume": 522.24,
-      "parent_label": "MZ1_Worli_Hero_Tower_Level_02",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Urban Apartment (North Wing)"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Level_03",
@@ -205,7 +237,8 @@
       "z_max": 22.1,
       "volume": 2284.8,
       "parent_label": "MZ1_Worli_Hero_Tower_Envelope",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Level Slab Band 03"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Level_03_CommonCorridor",
@@ -214,43 +247,58 @@
       "z_max": 22.1,
       "volume": 195.84,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_03",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Central Resident Circulation Hallway & Stair Core"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_03_Unit_01",
+      "label": "MZ1_Worli_Hero_Tower_Level_03_Unit_2BHK_West_01",
       "cls": "U",
       "z_min": 18.7,
       "z_max": 22.1,
       "volume": 522.24,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_03",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Apartment (South Wing)"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_03_Unit_02",
+      "label": "MZ1_Worli_Hero_Tower_Level_03_Unit_2BHK_West_02",
       "cls": "U",
       "z_min": 18.7,
       "z_max": 22.1,
       "volume": 522.24,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_03",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Apartment (North Wing)"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_03_Unit_03",
+      "label": "MZ1_Worli_Hero_Tower_Level_03_Unit_ExecSuite_South_03",
       "cls": "U",
       "z_min": 18.7,
       "z_max": 22.1,
-      "volume": 522.24,
+      "volume": 365.568,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_03",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Executive Corner Suite with Panoramic Corner Glazing"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_03_Unit_04",
+      "label": "MZ1_Worli_Hero_Tower_Level_03_Unit_Studio_Center_04",
       "cls": "U",
       "z_min": 18.7,
       "z_max": 22.1,
-      "volume": 522.24,
+      "volume": 313.344,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_03",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Central Compact Urban Studio Unit"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_03_Unit_ExecSuite_North_05",
+      "cls": "U",
+      "z_min": 18.7,
+      "z_max": 22.1,
+      "volume": 365.568,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_03",
+      "data_provenance": "SYNTHETIC",
+      "description": "Executive Corner Suite with North Garden View"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Level_04",
@@ -259,7 +307,8 @@
       "z_max": 25.5,
       "volume": 2284.8,
       "parent_label": "MZ1_Worli_Hero_Tower_Envelope",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Level Slab Band 04"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Level_04_CommonCorridor",
@@ -268,43 +317,48 @@
       "z_max": 25.5,
       "volume": 195.84,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_04",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Central Resident Circulation Hallway & Stair Core"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_04_Unit_01",
+      "label": "MZ1_Worli_Hero_Tower_Level_04_Unit_3BHK_Master_01",
+      "cls": "U",
+      "z_min": 22.1,
+      "z_max": 25.5,
+      "volume": 626.688,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_04",
+      "data_provenance": "SYNTHETIC",
+      "description": "Spacious 3BHK Family Master Apartment with dual balcony"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_04_Unit_1BHK_Studio_02",
+      "cls": "U",
+      "z_min": 22.1,
+      "z_max": 25.5,
+      "volume": 417.792,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_04",
+      "data_provenance": "SYNTHETIC",
+      "description": "Compact 1BHK Executive Studio Suite"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_04_Unit_2BHK_East_South_03",
       "cls": "U",
       "z_min": 22.1,
       "z_max": 25.5,
       "volume": 522.24,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_04",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Urban Apartment (South Wing)"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_04_Unit_02",
+      "label": "MZ1_Worli_Hero_Tower_Level_04_Unit_2BHK_East_North_04",
       "cls": "U",
       "z_min": 22.1,
       "z_max": 25.5,
       "volume": 522.24,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_04",
-      "data_provenance": "SYNTHETIC"
-    },
-    {
-      "label": "MZ1_Worli_Hero_Tower_Level_04_Unit_03",
-      "cls": "U",
-      "z_min": 22.1,
-      "z_max": 25.5,
-      "volume": 522.24,
-      "parent_label": "MZ1_Worli_Hero_Tower_Level_04",
-      "data_provenance": "SYNTHETIC"
-    },
-    {
-      "label": "MZ1_Worli_Hero_Tower_Level_04_Unit_04",
-      "cls": "U",
-      "z_min": 22.1,
-      "z_max": 25.5,
-      "volume": 522.24,
-      "parent_label": "MZ1_Worli_Hero_Tower_Level_04",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Urban Apartment (North Wing)"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Level_05",
@@ -313,7 +367,8 @@
       "z_max": 28.9,
       "volume": 2284.8,
       "parent_label": "MZ1_Worli_Hero_Tower_Envelope",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Level Slab Band 05"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Level_05_CommonCorridor",
@@ -322,43 +377,58 @@
       "z_max": 28.9,
       "volume": 195.84,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_05",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Central Resident Circulation Hallway & Stair Core"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_05_Unit_01",
+      "label": "MZ1_Worli_Hero_Tower_Level_05_Unit_2BHK_West_01",
       "cls": "U",
       "z_min": 25.5,
       "z_max": 28.9,
       "volume": 522.24,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_05",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Apartment (South Wing)"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_05_Unit_02",
+      "label": "MZ1_Worli_Hero_Tower_Level_05_Unit_2BHK_West_02",
       "cls": "U",
       "z_min": 25.5,
       "z_max": 28.9,
       "volume": 522.24,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_05",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Apartment (North Wing)"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_05_Unit_03",
+      "label": "MZ1_Worli_Hero_Tower_Level_05_Unit_ExecSuite_South_03",
       "cls": "U",
       "z_min": 25.5,
       "z_max": 28.9,
-      "volume": 522.24,
+      "volume": 365.568,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_05",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Executive Corner Suite with Panoramic Corner Glazing"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_05_Unit_04",
+      "label": "MZ1_Worli_Hero_Tower_Level_05_Unit_Studio_Center_04",
       "cls": "U",
       "z_min": 25.5,
       "z_max": 28.9,
-      "volume": 522.24,
+      "volume": 313.344,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_05",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Central Compact Urban Studio Unit"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_05_Unit_ExecSuite_North_05",
+      "cls": "U",
+      "z_min": 25.5,
+      "z_max": 28.9,
+      "volume": 365.568,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_05",
+      "data_provenance": "SYNTHETIC",
+      "description": "Executive Corner Suite with North Garden View"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Level_06",
@@ -367,7 +437,8 @@
       "z_max": 32.3,
       "volume": 2284.8,
       "parent_label": "MZ1_Worli_Hero_Tower_Envelope",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Level Slab Band 06"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Level_06_CommonCorridor",
@@ -376,43 +447,48 @@
       "z_max": 32.3,
       "volume": 195.84,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_06",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Central Resident Circulation Hallway & Stair Core"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_06_Unit_01",
+      "label": "MZ1_Worli_Hero_Tower_Level_06_Unit_3BHK_Master_01",
+      "cls": "U",
+      "z_min": 28.9,
+      "z_max": 32.3,
+      "volume": 626.688,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_06",
+      "data_provenance": "SYNTHETIC",
+      "description": "Spacious 3BHK Family Master Apartment with dual balcony"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_06_Unit_1BHK_Studio_02",
+      "cls": "U",
+      "z_min": 28.9,
+      "z_max": 32.3,
+      "volume": 417.792,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_06",
+      "data_provenance": "SYNTHETIC",
+      "description": "Compact 1BHK Executive Studio Suite"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_06_Unit_2BHK_East_South_03",
       "cls": "U",
       "z_min": 28.9,
       "z_max": 32.3,
       "volume": 522.24,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_06",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Urban Apartment (South Wing)"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_06_Unit_02",
+      "label": "MZ1_Worli_Hero_Tower_Level_06_Unit_2BHK_East_North_04",
       "cls": "U",
       "z_min": 28.9,
       "z_max": 32.3,
       "volume": 522.24,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_06",
-      "data_provenance": "SYNTHETIC"
-    },
-    {
-      "label": "MZ1_Worli_Hero_Tower_Level_06_Unit_03",
-      "cls": "U",
-      "z_min": 28.9,
-      "z_max": 32.3,
-      "volume": 522.24,
-      "parent_label": "MZ1_Worli_Hero_Tower_Level_06",
-      "data_provenance": "SYNTHETIC"
-    },
-    {
-      "label": "MZ1_Worli_Hero_Tower_Level_06_Unit_04",
-      "cls": "U",
-      "z_min": 28.9,
-      "z_max": 32.3,
-      "volume": 522.24,
-      "parent_label": "MZ1_Worli_Hero_Tower_Level_06",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Urban Apartment (North Wing)"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Level_07",
@@ -421,7 +497,8 @@
       "z_max": 35.7,
       "volume": 2284.8,
       "parent_label": "MZ1_Worli_Hero_Tower_Envelope",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Level Slab Band 07"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Level_07_CommonCorridor",
@@ -430,43 +507,58 @@
       "z_max": 35.7,
       "volume": 195.84,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_07",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Central Resident Circulation Hallway & Stair Core"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_07_Unit_01",
+      "label": "MZ1_Worli_Hero_Tower_Level_07_Unit_2BHK_West_01",
       "cls": "U",
       "z_min": 32.3,
       "z_max": 35.7,
       "volume": 522.24,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_07",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Apartment (South Wing)"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_07_Unit_02",
+      "label": "MZ1_Worli_Hero_Tower_Level_07_Unit_2BHK_West_02",
       "cls": "U",
       "z_min": 32.3,
       "z_max": 35.7,
       "volume": 522.24,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_07",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Apartment (North Wing)"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_07_Unit_03",
+      "label": "MZ1_Worli_Hero_Tower_Level_07_Unit_ExecSuite_South_03",
       "cls": "U",
       "z_min": 32.3,
       "z_max": 35.7,
-      "volume": 522.24,
+      "volume": 365.568,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_07",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Executive Corner Suite with Panoramic Corner Glazing"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_07_Unit_04",
+      "label": "MZ1_Worli_Hero_Tower_Level_07_Unit_Studio_Center_04",
       "cls": "U",
       "z_min": 32.3,
       "z_max": 35.7,
-      "volume": 522.24,
+      "volume": 313.344,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_07",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Central Compact Urban Studio Unit"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_07_Unit_ExecSuite_North_05",
+      "cls": "U",
+      "z_min": 32.3,
+      "z_max": 35.7,
+      "volume": 365.568,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_07",
+      "data_provenance": "SYNTHETIC",
+      "description": "Executive Corner Suite with North Garden View"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Level_08",
@@ -475,7 +567,8 @@
       "z_max": 39.1,
       "volume": 2284.8,
       "parent_label": "MZ1_Worli_Hero_Tower_Envelope",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Level Slab Band 08"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Level_08_CommonCorridor",
@@ -484,43 +577,48 @@
       "z_max": 39.1,
       "volume": 195.84,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_08",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Central Resident Circulation Hallway & Stair Core"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_08_Unit_01",
+      "label": "MZ1_Worli_Hero_Tower_Level_08_Unit_3BHK_Master_01",
+      "cls": "U",
+      "z_min": 35.7,
+      "z_max": 39.1,
+      "volume": 626.688,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_08",
+      "data_provenance": "SYNTHETIC",
+      "description": "Spacious 3BHK Family Master Apartment with dual balcony"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_08_Unit_1BHK_Studio_02",
+      "cls": "U",
+      "z_min": 35.7,
+      "z_max": 39.1,
+      "volume": 417.792,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_08",
+      "data_provenance": "SYNTHETIC",
+      "description": "Compact 1BHK Executive Studio Suite"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_08_Unit_2BHK_East_South_03",
       "cls": "U",
       "z_min": 35.7,
       "z_max": 39.1,
       "volume": 522.24,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_08",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Urban Apartment (South Wing)"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_08_Unit_02",
+      "label": "MZ1_Worli_Hero_Tower_Level_08_Unit_2BHK_East_North_04",
       "cls": "U",
       "z_min": 35.7,
       "z_max": 39.1,
       "volume": 522.24,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_08",
-      "data_provenance": "SYNTHETIC"
-    },
-    {
-      "label": "MZ1_Worli_Hero_Tower_Level_08_Unit_03",
-      "cls": "U",
-      "z_min": 35.7,
-      "z_max": 39.1,
-      "volume": 522.24,
-      "parent_label": "MZ1_Worli_Hero_Tower_Level_08",
-      "data_provenance": "SYNTHETIC"
-    },
-    {
-      "label": "MZ1_Worli_Hero_Tower_Level_08_Unit_04",
-      "cls": "U",
-      "z_min": 35.7,
-      "z_max": 39.1,
-      "volume": 522.24,
-      "parent_label": "MZ1_Worli_Hero_Tower_Level_08",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Urban Apartment (North Wing)"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Level_09",
@@ -529,7 +627,8 @@
       "z_max": 42.5,
       "volume": 2284.8,
       "parent_label": "MZ1_Worli_Hero_Tower_Envelope",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Level Slab Band 09"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Level_09_CommonCorridor",
@@ -538,43 +637,58 @@
       "z_max": 42.5,
       "volume": 195.84,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_09",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Central Resident Circulation Hallway & Stair Core"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_09_Unit_01",
+      "label": "MZ1_Worli_Hero_Tower_Level_09_Unit_2BHK_West_01",
       "cls": "U",
       "z_min": 39.1,
       "z_max": 42.5,
       "volume": 522.24,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_09",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Apartment (South Wing)"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_09_Unit_02",
+      "label": "MZ1_Worli_Hero_Tower_Level_09_Unit_2BHK_West_02",
       "cls": "U",
       "z_min": 39.1,
       "z_max": 42.5,
       "volume": 522.24,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_09",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Apartment (North Wing)"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_09_Unit_03",
+      "label": "MZ1_Worli_Hero_Tower_Level_09_Unit_ExecSuite_South_03",
       "cls": "U",
       "z_min": 39.1,
       "z_max": 42.5,
-      "volume": 522.24,
+      "volume": 365.568,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_09",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Executive Corner Suite with Panoramic Corner Glazing"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_09_Unit_04",
+      "label": "MZ1_Worli_Hero_Tower_Level_09_Unit_Studio_Center_04",
       "cls": "U",
       "z_min": 39.1,
       "z_max": 42.5,
-      "volume": 522.24,
+      "volume": 313.344,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_09",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Central Compact Urban Studio Unit"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_09_Unit_ExecSuite_North_05",
+      "cls": "U",
+      "z_min": 39.1,
+      "z_max": 42.5,
+      "volume": 365.568,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_09",
+      "data_provenance": "SYNTHETIC",
+      "description": "Executive Corner Suite with North Garden View"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Level_10",
@@ -583,7 +697,8 @@
       "z_max": 45.9,
       "volume": 2284.8,
       "parent_label": "MZ1_Worli_Hero_Tower_Envelope",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Level Slab Band 10"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Level_10_CommonCorridor",
@@ -592,43 +707,48 @@
       "z_max": 45.9,
       "volume": 195.84,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_10",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Central Resident Circulation Hallway & Stair Core"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_10_Unit_01",
+      "label": "MZ1_Worli_Hero_Tower_Level_10_Unit_3BHK_Master_01",
+      "cls": "U",
+      "z_min": 42.5,
+      "z_max": 45.9,
+      "volume": 626.688,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_10",
+      "data_provenance": "SYNTHETIC",
+      "description": "Spacious 3BHK Family Master Apartment with dual balcony"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_10_Unit_1BHK_Studio_02",
+      "cls": "U",
+      "z_min": 42.5,
+      "z_max": 45.9,
+      "volume": 417.792,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_10",
+      "data_provenance": "SYNTHETIC",
+      "description": "Compact 1BHK Executive Studio Suite"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_10_Unit_2BHK_East_South_03",
       "cls": "U",
       "z_min": 42.5,
       "z_max": 45.9,
       "volume": 522.24,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_10",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Urban Apartment (South Wing)"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_10_Unit_02",
+      "label": "MZ1_Worli_Hero_Tower_Level_10_Unit_2BHK_East_North_04",
       "cls": "U",
       "z_min": 42.5,
       "z_max": 45.9,
       "volume": 522.24,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_10",
-      "data_provenance": "SYNTHETIC"
-    },
-    {
-      "label": "MZ1_Worli_Hero_Tower_Level_10_Unit_03",
-      "cls": "U",
-      "z_min": 42.5,
-      "z_max": 45.9,
-      "volume": 522.24,
-      "parent_label": "MZ1_Worli_Hero_Tower_Level_10",
-      "data_provenance": "SYNTHETIC"
-    },
-    {
-      "label": "MZ1_Worli_Hero_Tower_Level_10_Unit_04",
-      "cls": "U",
-      "z_min": 42.5,
-      "z_max": 45.9,
-      "volume": 522.24,
-      "parent_label": "MZ1_Worli_Hero_Tower_Level_10",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Urban Apartment (North Wing)"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Level_11",
@@ -637,7 +757,8 @@
       "z_max": 49.3,
       "volume": 2284.8,
       "parent_label": "MZ1_Worli_Hero_Tower_Envelope",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Level Slab Band 11"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Level_11_CommonCorridor",
@@ -646,43 +767,58 @@
       "z_max": 49.3,
       "volume": 195.84,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_11",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Central Resident Circulation Hallway & Stair Core"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_11_Unit_01",
+      "label": "MZ1_Worli_Hero_Tower_Level_11_Unit_2BHK_West_01",
       "cls": "U",
       "z_min": 45.9,
       "z_max": 49.3,
       "volume": 522.24,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_11",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Apartment (South Wing)"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_11_Unit_02",
+      "label": "MZ1_Worli_Hero_Tower_Level_11_Unit_2BHK_West_02",
       "cls": "U",
       "z_min": 45.9,
       "z_max": 49.3,
       "volume": 522.24,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_11",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Apartment (North Wing)"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_11_Unit_03",
+      "label": "MZ1_Worli_Hero_Tower_Level_11_Unit_ExecSuite_South_03",
       "cls": "U",
       "z_min": 45.9,
       "z_max": 49.3,
-      "volume": 522.24,
+      "volume": 365.568,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_11",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Executive Corner Suite with Panoramic Corner Glazing"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_11_Unit_04",
+      "label": "MZ1_Worli_Hero_Tower_Level_11_Unit_Studio_Center_04",
       "cls": "U",
       "z_min": 45.9,
       "z_max": 49.3,
-      "volume": 522.24,
+      "volume": 313.344,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_11",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Central Compact Urban Studio Unit"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_11_Unit_ExecSuite_North_05",
+      "cls": "U",
+      "z_min": 45.9,
+      "z_max": 49.3,
+      "volume": 365.568,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_11",
+      "data_provenance": "SYNTHETIC",
+      "description": "Executive Corner Suite with North Garden View"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Level_12",
@@ -691,7 +827,8 @@
       "z_max": 52.7,
       "volume": 2284.8,
       "parent_label": "MZ1_Worli_Hero_Tower_Envelope",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Level Slab Band 12"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Level_12_CommonCorridor",
@@ -700,43 +837,48 @@
       "z_max": 52.7,
       "volume": 195.84,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_12",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Central Resident Circulation Hallway & Stair Core"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_12_Unit_01",
+      "label": "MZ1_Worli_Hero_Tower_Level_12_Unit_3BHK_Master_01",
+      "cls": "U",
+      "z_min": 49.3,
+      "z_max": 52.7,
+      "volume": 626.688,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_12",
+      "data_provenance": "SYNTHETIC",
+      "description": "Spacious 3BHK Family Master Apartment with dual balcony"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_12_Unit_1BHK_Studio_02",
+      "cls": "U",
+      "z_min": 49.3,
+      "z_max": 52.7,
+      "volume": 417.792,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_12",
+      "data_provenance": "SYNTHETIC",
+      "description": "Compact 1BHK Executive Studio Suite"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_12_Unit_2BHK_East_South_03",
       "cls": "U",
       "z_min": 49.3,
       "z_max": 52.7,
       "volume": 522.24,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_12",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Urban Apartment (South Wing)"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_12_Unit_02",
+      "label": "MZ1_Worli_Hero_Tower_Level_12_Unit_2BHK_East_North_04",
       "cls": "U",
       "z_min": 49.3,
       "z_max": 52.7,
       "volume": 522.24,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_12",
-      "data_provenance": "SYNTHETIC"
-    },
-    {
-      "label": "MZ1_Worli_Hero_Tower_Level_12_Unit_03",
-      "cls": "U",
-      "z_min": 49.3,
-      "z_max": 52.7,
-      "volume": 522.24,
-      "parent_label": "MZ1_Worli_Hero_Tower_Level_12",
-      "data_provenance": "SYNTHETIC"
-    },
-    {
-      "label": "MZ1_Worli_Hero_Tower_Level_12_Unit_04",
-      "cls": "U",
-      "z_min": 49.3,
-      "z_max": 52.7,
-      "volume": 522.24,
-      "parent_label": "MZ1_Worli_Hero_Tower_Level_12",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Urban Apartment (North Wing)"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Level_13",
@@ -745,7 +887,8 @@
       "z_max": 56.1,
       "volume": 2284.8,
       "parent_label": "MZ1_Worli_Hero_Tower_Envelope",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Level Slab Band 13"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Level_13_CommonCorridor",
@@ -754,43 +897,58 @@
       "z_max": 56.1,
       "volume": 195.84,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_13",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Central Resident Circulation Hallway & Stair Core"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_13_Unit_01",
+      "label": "MZ1_Worli_Hero_Tower_Level_13_Unit_2BHK_West_01",
       "cls": "U",
       "z_min": 52.7,
       "z_max": 56.1,
       "volume": 522.24,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_13",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Apartment (South Wing)"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_13_Unit_02",
+      "label": "MZ1_Worli_Hero_Tower_Level_13_Unit_2BHK_West_02",
       "cls": "U",
       "z_min": 52.7,
       "z_max": 56.1,
       "volume": 522.24,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_13",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Apartment (North Wing)"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_13_Unit_03",
+      "label": "MZ1_Worli_Hero_Tower_Level_13_Unit_ExecSuite_South_03",
       "cls": "U",
       "z_min": 52.7,
       "z_max": 56.1,
-      "volume": 522.24,
+      "volume": 365.568,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_13",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Executive Corner Suite with Panoramic Corner Glazing"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_13_Unit_04",
+      "label": "MZ1_Worli_Hero_Tower_Level_13_Unit_Studio_Center_04",
       "cls": "U",
       "z_min": 52.7,
       "z_max": 56.1,
-      "volume": 522.24,
+      "volume": 313.344,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_13",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Central Compact Urban Studio Unit"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_13_Unit_ExecSuite_North_05",
+      "cls": "U",
+      "z_min": 52.7,
+      "z_max": 56.1,
+      "volume": 365.568,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_13",
+      "data_provenance": "SYNTHETIC",
+      "description": "Executive Corner Suite with North Garden View"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Level_14",
@@ -799,7 +957,8 @@
       "z_max": 59.5,
       "volume": 2284.8,
       "parent_label": "MZ1_Worli_Hero_Tower_Envelope",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Level Slab Band 14"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Level_14_CommonCorridor",
@@ -808,43 +967,48 @@
       "z_max": 59.5,
       "volume": 195.84,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_14",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Central Resident Circulation Hallway & Stair Core"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_14_Unit_01",
+      "label": "MZ1_Worli_Hero_Tower_Level_14_Unit_3BHK_Master_01",
+      "cls": "U",
+      "z_min": 56.1,
+      "z_max": 59.5,
+      "volume": 626.688,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_14",
+      "data_provenance": "SYNTHETIC",
+      "description": "Spacious 3BHK Family Master Apartment with dual balcony"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_14_Unit_1BHK_Studio_02",
+      "cls": "U",
+      "z_min": 56.1,
+      "z_max": 59.5,
+      "volume": 417.792,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_14",
+      "data_provenance": "SYNTHETIC",
+      "description": "Compact 1BHK Executive Studio Suite"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_14_Unit_2BHK_East_South_03",
       "cls": "U",
       "z_min": 56.1,
       "z_max": 59.5,
       "volume": 522.24,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_14",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Urban Apartment (South Wing)"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_14_Unit_02",
+      "label": "MZ1_Worli_Hero_Tower_Level_14_Unit_2BHK_East_North_04",
       "cls": "U",
       "z_min": 56.1,
       "z_max": 59.5,
       "volume": 522.24,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_14",
-      "data_provenance": "SYNTHETIC"
-    },
-    {
-      "label": "MZ1_Worli_Hero_Tower_Level_14_Unit_03",
-      "cls": "U",
-      "z_min": 56.1,
-      "z_max": 59.5,
-      "volume": 522.24,
-      "parent_label": "MZ1_Worli_Hero_Tower_Level_14",
-      "data_provenance": "SYNTHETIC"
-    },
-    {
-      "label": "MZ1_Worli_Hero_Tower_Level_14_Unit_04",
-      "cls": "U",
-      "z_min": 56.1,
-      "z_max": 59.5,
-      "volume": 522.24,
-      "parent_label": "MZ1_Worli_Hero_Tower_Level_14",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Urban Apartment (North Wing)"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Level_15",
@@ -853,7 +1017,8 @@
       "z_max": 62.9,
       "volume": 2284.8,
       "parent_label": "MZ1_Worli_Hero_Tower_Envelope",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Level Slab Band 15"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Level_15_CommonCorridor",
@@ -862,43 +1027,58 @@
       "z_max": 62.9,
       "volume": 195.84,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_15",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Central Resident Circulation Hallway & Stair Core"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_15_Unit_01",
+      "label": "MZ1_Worli_Hero_Tower_Level_15_Unit_2BHK_West_01",
       "cls": "U",
       "z_min": 59.5,
       "z_max": 62.9,
       "volume": 522.24,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_15",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Apartment (South Wing)"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_15_Unit_02",
+      "label": "MZ1_Worli_Hero_Tower_Level_15_Unit_2BHK_West_02",
       "cls": "U",
       "z_min": 59.5,
       "z_max": 62.9,
       "volume": 522.24,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_15",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Apartment (North Wing)"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_15_Unit_03",
+      "label": "MZ1_Worli_Hero_Tower_Level_15_Unit_ExecSuite_South_03",
       "cls": "U",
       "z_min": 59.5,
       "z_max": 62.9,
-      "volume": 522.24,
+      "volume": 365.568,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_15",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Executive Corner Suite with Panoramic Corner Glazing"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_15_Unit_04",
+      "label": "MZ1_Worli_Hero_Tower_Level_15_Unit_Studio_Center_04",
       "cls": "U",
       "z_min": 59.5,
       "z_max": 62.9,
-      "volume": 522.24,
+      "volume": 313.344,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_15",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Central Compact Urban Studio Unit"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_15_Unit_ExecSuite_North_05",
+      "cls": "U",
+      "z_min": 59.5,
+      "z_max": 62.9,
+      "volume": 365.568,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_15",
+      "data_provenance": "SYNTHETIC",
+      "description": "Executive Corner Suite with North Garden View"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Level_16",
@@ -907,7 +1087,8 @@
       "z_max": 66.3,
       "volume": 2284.8,
       "parent_label": "MZ1_Worli_Hero_Tower_Envelope",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Level Slab Band 16"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Level_16_CommonCorridor",
@@ -916,43 +1097,48 @@
       "z_max": 66.3,
       "volume": 195.84,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_16",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Central Resident Circulation Hallway & Stair Core"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_16_Unit_01",
+      "label": "MZ1_Worli_Hero_Tower_Level_16_Unit_3BHK_Master_01",
+      "cls": "U",
+      "z_min": 62.9,
+      "z_max": 66.3,
+      "volume": 626.688,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_16",
+      "data_provenance": "SYNTHETIC",
+      "description": "Spacious 3BHK Family Master Apartment with dual balcony"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_16_Unit_1BHK_Studio_02",
+      "cls": "U",
+      "z_min": 62.9,
+      "z_max": 66.3,
+      "volume": 417.792,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_16",
+      "data_provenance": "SYNTHETIC",
+      "description": "Compact 1BHK Executive Studio Suite"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_16_Unit_2BHK_East_South_03",
       "cls": "U",
       "z_min": 62.9,
       "z_max": 66.3,
       "volume": 522.24,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_16",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Urban Apartment (South Wing)"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_16_Unit_02",
+      "label": "MZ1_Worli_Hero_Tower_Level_16_Unit_2BHK_East_North_04",
       "cls": "U",
       "z_min": 62.9,
       "z_max": 66.3,
       "volume": 522.24,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_16",
-      "data_provenance": "SYNTHETIC"
-    },
-    {
-      "label": "MZ1_Worli_Hero_Tower_Level_16_Unit_03",
-      "cls": "U",
-      "z_min": 62.9,
-      "z_max": 66.3,
-      "volume": 522.24,
-      "parent_label": "MZ1_Worli_Hero_Tower_Level_16",
-      "data_provenance": "SYNTHETIC"
-    },
-    {
-      "label": "MZ1_Worli_Hero_Tower_Level_16_Unit_04",
-      "cls": "U",
-      "z_min": 62.9,
-      "z_max": 66.3,
-      "volume": 522.24,
-      "parent_label": "MZ1_Worli_Hero_Tower_Level_16",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Urban Apartment (North Wing)"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Level_17",
@@ -961,7 +1147,8 @@
       "z_max": 69.7,
       "volume": 2284.8,
       "parent_label": "MZ1_Worli_Hero_Tower_Envelope",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Level Slab Band 17"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Level_17_CommonCorridor",
@@ -970,43 +1157,58 @@
       "z_max": 69.7,
       "volume": 195.84,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_17",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Central Resident Circulation Hallway & Stair Core"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_17_Unit_01",
+      "label": "MZ1_Worli_Hero_Tower_Level_17_Unit_2BHK_West_01",
       "cls": "U",
       "z_min": 66.3,
       "z_max": 69.7,
       "volume": 522.24,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_17",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Apartment (South Wing)"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_17_Unit_02",
+      "label": "MZ1_Worli_Hero_Tower_Level_17_Unit_2BHK_West_02",
       "cls": "U",
       "z_min": 66.3,
       "z_max": 69.7,
       "volume": 522.24,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_17",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Apartment (North Wing)"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_17_Unit_03",
+      "label": "MZ1_Worli_Hero_Tower_Level_17_Unit_ExecSuite_South_03",
       "cls": "U",
       "z_min": 66.3,
       "z_max": 69.7,
-      "volume": 522.24,
+      "volume": 365.568,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_17",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Executive Corner Suite with Panoramic Corner Glazing"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_17_Unit_04",
+      "label": "MZ1_Worli_Hero_Tower_Level_17_Unit_Studio_Center_04",
       "cls": "U",
       "z_min": 66.3,
       "z_max": 69.7,
-      "volume": 522.24,
+      "volume": 313.344,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_17",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Central Compact Urban Studio Unit"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_17_Unit_ExecSuite_North_05",
+      "cls": "U",
+      "z_min": 66.3,
+      "z_max": 69.7,
+      "volume": 365.568,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_17",
+      "data_provenance": "SYNTHETIC",
+      "description": "Executive Corner Suite with North Garden View"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Level_18",
@@ -1015,7 +1217,8 @@
       "z_max": 73.1,
       "volume": 2284.8,
       "parent_label": "MZ1_Worli_Hero_Tower_Envelope",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Level Slab Band 18"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Level_18_CommonCorridor",
@@ -1024,43 +1227,48 @@
       "z_max": 73.1,
       "volume": 195.84,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_18",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Central Resident Circulation Hallway & Stair Core"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_18_Unit_01",
+      "label": "MZ1_Worli_Hero_Tower_Level_18_Unit_3BHK_Master_01",
+      "cls": "U",
+      "z_min": 69.7,
+      "z_max": 73.1,
+      "volume": 626.688,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_18",
+      "data_provenance": "SYNTHETIC",
+      "description": "Spacious 3BHK Family Master Apartment with dual balcony"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_18_Unit_1BHK_Studio_02",
+      "cls": "U",
+      "z_min": 69.7,
+      "z_max": 73.1,
+      "volume": 417.792,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_18",
+      "data_provenance": "SYNTHETIC",
+      "description": "Compact 1BHK Executive Studio Suite"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_18_Unit_2BHK_East_South_03",
       "cls": "U",
       "z_min": 69.7,
       "z_max": 73.1,
       "volume": 522.24,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_18",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Urban Apartment (South Wing)"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_18_Unit_02",
+      "label": "MZ1_Worli_Hero_Tower_Level_18_Unit_2BHK_East_North_04",
       "cls": "U",
       "z_min": 69.7,
       "z_max": 73.1,
       "volume": 522.24,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_18",
-      "data_provenance": "SYNTHETIC"
-    },
-    {
-      "label": "MZ1_Worli_Hero_Tower_Level_18_Unit_03",
-      "cls": "U",
-      "z_min": 69.7,
-      "z_max": 73.1,
-      "volume": 522.24,
-      "parent_label": "MZ1_Worli_Hero_Tower_Level_18",
-      "data_provenance": "SYNTHETIC"
-    },
-    {
-      "label": "MZ1_Worli_Hero_Tower_Level_18_Unit_04",
-      "cls": "U",
-      "z_min": 69.7,
-      "z_max": 73.1,
-      "volume": 522.24,
-      "parent_label": "MZ1_Worli_Hero_Tower_Level_18",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Urban Apartment (North Wing)"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Level_19",
@@ -1069,52 +1277,58 @@
       "z_max": 76.5,
       "volume": 2284.8,
       "parent_label": "MZ1_Worli_Hero_Tower_Envelope",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Level Slab Band 19"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_19_CommonCorridor",
+      "label": "MZ1_Worli_Hero_Tower_Level_19_Penthouse_Elevator_Foyer",
       "cls": "C",
       "z_min": 73.1,
       "z_max": 76.5,
       "volume": 195.84,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_19",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Private Penthouse Elevator Foyer & Sky Vestibule"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_19_Unit_01",
+      "label": "MZ1_Worli_Hero_Tower_Level_19_Unit_Royal_Penthouse_West",
       "cls": "U",
       "z_min": 73.1,
       "z_max": 76.5,
-      "volume": 522.24,
+      "volume": 678.912,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_19",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Duplex Royal Sky Penthouse Suite with High Ceilings"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_19_Unit_02",
+      "label": "MZ1_Worli_Hero_Tower_Level_19_SkyTerrace_Garden_West",
+      "cls": "C",
+      "z_min": 73.1,
+      "z_max": 76.5,
+      "volume": 365.568,
+      "parent_label": "MZ1_Worli_Hero_Tower_Level_19",
+      "data_provenance": "SYNTHETIC",
+      "description": "Landscaped Open Sky Terrace Garden with Pergola"
+    },
+    {
+      "label": "MZ1_Worli_Hero_Tower_Level_19_Unit_Imperial_Penthouse_East",
       "cls": "U",
       "z_min": 73.1,
       "z_max": 76.5,
-      "volume": 522.24,
+      "volume": 678.912,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_19",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Imperial Sky Penthouse Residence with Panoramic Views"
     },
     {
-      "label": "MZ1_Worli_Hero_Tower_Level_19_Unit_03",
-      "cls": "U",
+      "label": "MZ1_Worli_Hero_Tower_Level_19_SkyTerrace_ObservationDeck_East",
+      "cls": "C",
       "z_min": 73.1,
       "z_max": 76.5,
-      "volume": 522.24,
+      "volume": 365.568,
       "parent_label": "MZ1_Worli_Hero_Tower_Level_19",
-      "data_provenance": "SYNTHETIC"
-    },
-    {
-      "label": "MZ1_Worli_Hero_Tower_Level_19_Unit_04",
-      "cls": "U",
-      "z_min": 73.1,
-      "z_max": 76.5,
-      "volume": 522.24,
-      "parent_label": "MZ1_Worli_Hero_Tower_Level_19",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Rooftop Observation Deck & Residents' Sunset Lounge"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Basement_B1",
@@ -1123,7 +1337,8 @@
       "z_max": 8.5,
       "volume": 3136.0,
       "parent_label": "MZ1_Worli_Hero_Tower_Parcel_Column",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Subterranean Basement Vault Level B1"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Basement_B1_Parking_Slot_01",
@@ -1132,7 +1347,8 @@
       "z_max": 8.15,
       "volume": 40.768,
       "parent_label": "MZ1_Worli_Hero_Tower_Basement_B1",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Designated Parking Bay B1-P01"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Basement_B1_Parking_Slot_02",
@@ -1141,7 +1357,8 @@
       "z_max": 8.15,
       "volume": 40.768,
       "parent_label": "MZ1_Worli_Hero_Tower_Basement_B1",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Designated Parking Bay B1-P02"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Basement_B1_Parking_Slot_03",
@@ -1150,7 +1367,8 @@
       "z_max": 8.15,
       "volume": 40.768,
       "parent_label": "MZ1_Worli_Hero_Tower_Basement_B1",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Designated Parking Bay B1-P03"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Basement_B1_Parking_Slot_04",
@@ -1159,7 +1377,8 @@
       "z_max": 8.15,
       "volume": 40.768,
       "parent_label": "MZ1_Worli_Hero_Tower_Basement_B1",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Designated Parking Bay B1-P04"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Basement_B2",
@@ -1168,7 +1387,8 @@
       "z_max": 5.0,
       "volume": 3136.0,
       "parent_label": "MZ1_Worli_Hero_Tower_Parcel_Column",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Subterranean Basement Vault Level B2"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Basement_B2_Parking_Slot_01",
@@ -1177,7 +1397,8 @@
       "z_max": 4.65,
       "volume": 40.768,
       "parent_label": "MZ1_Worli_Hero_Tower_Basement_B2",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Designated Parking Bay B2-P01"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Basement_B2_Parking_Slot_02",
@@ -1186,7 +1407,8 @@
       "z_max": 4.65,
       "volume": 40.768,
       "parent_label": "MZ1_Worli_Hero_Tower_Basement_B2",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Designated Parking Bay B2-P02"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Basement_B2_Parking_Slot_03",
@@ -1195,7 +1417,8 @@
       "z_max": 4.65,
       "volume": 40.768,
       "parent_label": "MZ1_Worli_Hero_Tower_Basement_B2",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Designated Parking Bay B2-P03"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Basement_B2_Parking_Slot_04",
@@ -1204,7 +1427,8 @@
       "z_max": 4.65,
       "volume": 40.768,
       "parent_label": "MZ1_Worli_Hero_Tower_Basement_B2",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Designated Parking Bay B2-P04"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Airspace_Lot",
@@ -1213,7 +1437,8 @@
       "z_max": 101.5,
       "volume": 16800.0,
       "parent_label": "MZ1_Worli_Hero_Tower_Parcel_Column",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Transferable Development Rights / Airspace Lot"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Metro_Tunnel_Alignment",
@@ -1222,7 +1447,8 @@
       "z_max": -7.5,
       "volume": 2664.0,
       "parent_label": "MZ1_Worli_Hero_Tower_Parcel_Column",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Underground Mass Rapid Transit Rail Alignment"
     },
     {
       "label": "MZ1_Worli_Hero_Tower_Subsurface_Utility_Corridor",
@@ -1231,7 +1457,8 @@
       "z_max": 6.9,
       "volume": 158.4,
       "parent_label": "MZ1_Worli_Hero_Tower_Parcel_Column",
-      "data_provenance": "SYNTHETIC"
+      "data_provenance": "SYNTHETIC",
+      "description": "Subsurface Municipal Utility Infrastructure Duct"
     }
   ]
 }

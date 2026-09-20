@@ -47,8 +47,15 @@ class DefectInjector:
             raise ValueError("At least 2 units required to inject OVERLAP.")
 
         target = units[0]
-        # Shift target mesh along x-axis into neighbor
-        target.mesh.apply_translation([overlap_distance_m, 0.0, 0.0])
+        neighbor = units[1]
+        # Shift target mesh towards neighbor to create an illegal boundary collision
+        delta = neighbor.mesh.centroid - target.mesh.centroid
+        dist = float(np.linalg.norm(delta))
+        if dist > 1e-3:
+            shift_vector = (delta / dist) * overlap_distance_m
+        else:
+            shift_vector = np.array([0.0, overlap_distance_m, 0.0])
+        target.mesh.apply_translation(shift_vector)
         target.label = f"{target.label}_DEFECT_OVERLAP"
 
         manifest = DefectManifest(

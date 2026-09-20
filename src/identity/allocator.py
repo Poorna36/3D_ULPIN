@@ -4,8 +4,9 @@ Orchestrates: Canonicalization -> NK -> SA -> ICT Evaluation -> RID Format -> Re
 Conforms to docs/features.md § 3.2, docs/contracts.md § 8.4.1, and Phase 2F.
 """
 from dataclasses import dataclass
-from typing import Optional, List, Dict, Any
+from typing import Optional, List, Dict, Any, Tuple
 import json
+import math
 import trimesh
 
 from src.core.grammar import (
@@ -13,7 +14,8 @@ from src.core.grammar import (
     compute_nk,
     compute_sa_cover,
     CROCKFORD_BASE32,
-    NaturalKey
+    NaturalKey,
+    get_statutory_anchor
 )
 from src.core.registry import RegistryStore, ObjectRecord, BindingVersion
 from src.core.ict import ict_evaluate, ICTDecision, ICTResult
@@ -61,15 +63,29 @@ class ULPIN3DAllocator:
         data_provenance: str = "SYNTHETIC",
         bld_seq: str = "B0000",
         parent_rid: Optional[str] = None,
-        legal_basis_status: str = "ASSUMED",
+        legal_basis_status: Optional[str] = None,
         spans: Optional[List[str]] = None,
         existing_rid: Optional[str] = None,
-        old_mesh: Optional[trimesh.Trimesh] = None
+        old_mesh: Optional[trimesh.Trimesh] = None,
+        jurisdiction: str = "IN_MH",
+        legacy_system: Optional[str] = None,
+        legacy_value: Optional[str] = None,
+        sanctioned_carpet_area_sqm: Optional[float] = None,
+        geo_anchor: Optional[Tuple[float, float, float]] = None,
     ) -> AllocationResult:
         """
         Executes atomic 3D ULPIN allocation with Layer 1 RID, Layer 2 NK,
         Layer 3 SA, and cryptographic binding version.
+
+        geo_anchor: Optional (lon, lat, elev_msl) WGS84 anchor for the building.
+        When provided, an 'origin' field is embedded in geometry_json so the
+        spatial index stores real-world WGS84 bounding boxes, enabling
+        GET /cover?bbox=<WGS84> to return the correct volumes for Mumbai/Bengaluru.
+        Mesh vertices remain in local metric coordinates for accurate volume computation.
         """
+        if legal_basis_status is None:
+            legal_basis_status = get_statutory_anchor(cls, jurisdiction).statutory_basis
+
         # 1. Compute Layer 2 Natural Key (NK) and Layer 3 Spatial Address (SA)
         nk: NaturalKey = compute_nk(mesh, cls=cls)
         sa_cover: List[str] = compute_sa_cover(mesh)
@@ -84,12 +100,17 @@ class ULPIN3DAllocator:
             new_parent_rid=parent_rid
         )
 
-        # Serialized geometry for binding version
-        geometry_dict = {
+        # Serialized geometry for binding version.
+        # 'origin' stores the real-world WGS84 anchor so the registry spatial
+        # index can compute correct lon/lat bounding boxes from local metric vertices.
+        geometry_dict: Dict[str, Any] = {
             "vertices": mesh.vertices.tolist(),
             "faces": mesh.faces.tolist(),
-            "volume": float(mesh.volume) if mesh.is_watertight else 0.0
+            "volume": float(mesh.volume) if mesh.is_watertight else 0.0,
+            "crs": "EPSG:4326"
         }
+        if geo_anchor is not None:
+            geometry_dict["origin"] = list(geo_anchor)  # [lon, lat, elev_msl_m]
         geom_json = json.dumps(geometry_dict)
 
         # 3. Handle RID generation or reuse based on ICT decision
@@ -114,7 +135,8 @@ class ULPIN3DAllocator:
                 parent_rid=parent_rid,
                 status=status,
                 legal_basis_status=legal_basis_status,
-                spans=spans
+                spans=spans,
+                jurisdiction=jurisdiction,
             )
 
             # Record lineage edge if this object evolved from an existing object
@@ -128,6 +150,14 @@ class ULPIN3DAllocator:
                     edge_type=edge_type
                 )
 
+        # Stamp legacy identifier if provided (Phase 12B)
+        if legacy_system and legacy_value and hasattr(self.store, "insert_legacy_id"):
+            self.store.insert_legacy_id(
+                id_system=legacy_system,
+                legacy_value=legacy_value,
+                rid=target_rid
+            )
+
         # 4. Append immutable, hash-chained Binding Version
         b_ver: BindingVersion = self.store.append_binding_version(
             rid=target_rid,
@@ -136,7 +166,8 @@ class ULPIN3DAllocator:
             sa_cover=sa_cover,
             geometry_json=geom_json,
             plan_version=plan_version,
-            evidence_class=evidence_class
+            evidence_class=evidence_class,
+            sanctioned_carpet_area_sqm=sanctioned_carpet_area_sqm,
         )
 
         # 5. Log audit trail entry

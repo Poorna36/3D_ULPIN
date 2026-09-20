@@ -2,7 +2,7 @@
 Pydantic Schemas for 3D ULPIN REST Endpoints
 Conforms strictly to docs/contracts.md § 8.4 and Phase 10A.
 """
-from typing import List, Optional, Dict, Any, Literal
+from typing import List, Optional, Dict, Any, Literal, Union
 from pydantic import BaseModel, Field
 
 
@@ -14,6 +14,25 @@ ValidationStatus = Literal["PASS", "WARN", "FAIL", "UNVERIFIABLE"]
 VerifyResultType = Literal["MATCH", "DRIFT", "NOT_SAME"]
 
 
+class StatutoryAnchorModel(BaseModel):
+    act_name: str
+    section: str
+    statutory_basis: str
+    citation: str
+    notes: Optional[str] = ""
+
+
+class RERAComplianceResult(BaseModel):
+    sanctioned_carpet_area_sqm: float
+    as_built_carpet_area_sqm: float
+    deviation_percentage: float
+    deviation_sqm: float
+    rera_compliance_status: Literal["PASS", "TOLERANCE_WARNING", "FAIL", "EXEMPT_SANDBOX"]
+    statutory_citation: str
+    tolerance_applied_percent: float = 5.0
+    notes: Optional[str] = ""
+
+
 class GeometryModel(BaseModel):
     type: str = "Solid"
     coordinates: Optional[Any] = None
@@ -22,6 +41,10 @@ class GeometryModel(BaseModel):
     extents: Optional[List[float]] = None
     crs: Optional[str] = "EPSG:4326"
     datum_id: Optional[str] = "WGS84"
+    # Real-world WGS84 anchor [lon, lat, elev_msl_m].
+    # Vertices are in local metric space relative to this origin.
+    # Frontend: worldPos = [origin[0] + x/m_per_deg_lon, origin[1] + y/m_per_deg_lat, z]
+    origin: Optional[List[float]] = None
 
 
 class AllocateRequest(BaseModel):
@@ -36,6 +59,16 @@ class AllocateRequest(BaseModel):
     parent_rid: Optional[str] = None
     spans: Optional[List[str]] = None
     issuer_node_id: str = Field("MH")
+    jurisdiction: Optional[str] = Field("IN_MH", description="IN_MH, IN_KA, SG, or SANDBOX")
+    legacy_system: Optional[str] = Field(None, description="Legacy identifier system (CTS, e-PID, UPOR, e-Aasthi)")
+    legacy_value: Optional[str] = Field(None, description="Legacy parcel or property card identifier value")
+    sanctioned_carpet_area_sqm: Optional[float] = Field(None, description="Sanctioned RERA carpet area in square metres")
+    geo_anchor: Optional[List[float]] = Field(
+        None,
+        description="Real-world WGS84 geo-anchor [lon, lat, elev_msl_m]. "
+                    "When provided, spatial index stores WGS84 bounding boxes so "
+                    "GET /cover?bbox=<WGS84> returns correctly positioned volumes."
+    )
 
 
 class AllocateResponse(BaseModel):
@@ -68,6 +101,9 @@ class ResolveResponse(BaseModel):
     current_parcel_ulpin: Optional[str] = None
     data_provenance: str
     legal_basis_status: str
+    jurisdiction: str = "IN_MH"
+    statutory_anchor: Optional[StatutoryAnchorModel] = None
+    sanctioned_carpet_area_sqm: Optional[float] = None
     legacy_ids: List[LegacyId] = Field(default_factory=list)
     spans: List[str] = Field(default_factory=list)
     geometry: Optional[Dict[str, Any]] = None
@@ -122,9 +158,30 @@ class CoverFeature(BaseModel):
     geometry: Optional[Dict[str, Any]] = None
 
 
+class GeoJSON3DProperties(BaseModel):
+    rid: str
+    cls: str
+    data_provenance: str
+    validation_status: ValidationStatus = "PASS"
+    tier: str = "T1"
+    height: float = Field(0.0, description="Bottom elevation / ellipsoid z_min")
+    extrudedHeight: float = Field(3.0, description="Top elevation / ellipsoid z_max")
+    fill_color: str = Field("#E8A048", description="Hex color according to class scheme")
+    outline_color: str = Field("#FFFFFF", description="Hex outline color")
+    fill_opacity: float = 0.85
+    jurisdiction: str = "IN_MH"
+    legal_basis_status: str = "ENACTED"
+
+
+class GeoJSON3DFeature(BaseModel):
+    type: Literal["Feature"] = "Feature"
+    properties: GeoJSON3DProperties
+    geometry: Dict[str, Any]
+
+
 class CoverResponse(BaseModel):
     type: str = "FeatureCollection"
-    features: List[CoverFeature]
+    features: List[Union[CoverFeature, GeoJSON3DFeature]]
     total_count: int
 
 
@@ -145,3 +202,4 @@ class ValidateResponse(BaseModel):
     overall_status: ValidationStatus
     tier_results: List[TierResult]
     evidence_sufficiency: EvidenceSufficiency
+    rera_compliance: Optional[RERAComplianceResult] = None
