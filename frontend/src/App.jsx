@@ -288,7 +288,14 @@ export default function App() {
       </button>
 
       {showAI && (
-        <AIPipelinePanel onStatusChange={setAIStatus} />
+        <AIPipelinePanel
+          onStatusChange={setAIStatus}
+          currentCity={city}
+          onBuildingGenerated={(bld) => {
+            setSelected(bld);
+            setBuildings(prev => [bld, ...prev.filter(b => b.building_id !== bld.building_id)]);
+          }}
+        />
       )}
 
       <style>{`
