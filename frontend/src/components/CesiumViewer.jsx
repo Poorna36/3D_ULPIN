@@ -12,10 +12,18 @@ import {
   ShadowMode, EasingFunction, ImageryLayer,
   Terrain, IonWorldImageryStyle,
   BoundingSphere, HeadingPitchRange, JulianDate,
+  sampleTerrainMostDetailed, RequestScheduler,
 } from 'cesium';
 import 'cesium/Build/Cesium/Widgets/widgets.css';
 
 Ion.defaultAccessToken = import.meta.env.VITE_CESIUM_ION_TOKEN ?? '';
+
+// Maximize parallel HTTP/2 tile streaming to eliminate blank tile delays
+try {
+  RequestScheduler.requestsByServer['tile.googleapis.com:443'] = 18;
+  RequestScheduler.requestsByServer['assets.cesium.com:443'] = 18;
+  RequestScheduler.requestsByServer['api.cesium.com:443'] = 18;
+} catch {}
 
 // ── Cinematic city viewpoints ────────────────────────────────────────────────
 // Low-altitude street & mid-tower perspective (380-480m) giving majestic architectural scale
@@ -49,6 +57,58 @@ const PILOT_PINS = [
   { id: 'netherlands', name: 'Rotterdam (NL)', country: 'Netherlands', flag: '🇳🇱', lon: 4.4871,   lat: 51.9038, color: '#f59e0b' },
   { id: 'singapore',   name: 'Singapore',      country: 'Singapore',   flag: '🇸🇬', lon: 103.8540, lat: 1.2800,  color: '#a855f7' },
 ];
+
+// ── Preemptive Preloader: Pilot Cities (Bengaluru, Mumbai, Rotterdam, Singapore) ──
+// Pre-warms high-res terrain elevation & satellite imagery tiles for the 4 focal zones,
+// while letting the rest of the planet render with coarse/lightweight SSE (3.5).
+function preloadPilotCities(viewer, baseLayer) {
+  if (!viewer || viewer.isDestroyed()) return;
+
+  const pilotPositions = PILOT_PINS.map(p => Cartographic.fromDegrees(p.lon, p.lat));
+
+  // 1. Preemptively fetch terrain elevation LODs for the 4 cities
+  try {
+    const tp = viewer.terrainProvider;
+    if (tp && typeof sampleTerrainMostDetailed === 'function') {
+      sampleTerrainMostDetailed(tp, pilotPositions).catch(() => {});
+    }
+  } catch {}
+
+  // 2. Preemptively fetch satellite imagery tiles across zoom levels 8, 11, 13, 15
+  try {
+    const ip = baseLayer?.imageryProvider;
+    const scheme = ip?.tilingScheme;
+    if (scheme && typeof ip.requestImage === 'function') {
+      pilotPositions.forEach(carto => {
+        [8, 11, 13, 15].forEach(level => {
+          try {
+            const tileXY = scheme.positionToTileXY(carto, level);
+            if (tileXY) {
+              ip.requestImage(tileXY.x, tileXY.y, level);
+            }
+          } catch {}
+        });
+      });
+    }
+  } catch {}
+}
+
+// Pre-generate building textures for pilot city buildings during idle time
+function warmBuildingTextureCache(buildingsList) {
+  if (!buildingsList || !buildingsList.length) return;
+  const doWarm = () => {
+    buildingsList.forEach(b => {
+      try {
+        generateFacadeTexture(b, false, b.is_underground);
+      } catch {}
+    });
+  };
+  if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+    window.requestIdleCallback(doWarm);
+  } else {
+    setTimeout(doWarm, 100);
+  }
+}
 
 // ── Solid cadastral envelope fill colors (dark building-material base + status tint) ──
 const STATUS_COLORS = {
@@ -84,7 +144,7 @@ function buildingFootprint(b) {
   const { lon, lat } = b;
   const latRad = ((lat || 13) * Math.PI) / 180;
   const lonScale = 1 / Math.max(0.2, Math.cos(latRad));
-  const baseScale = 0.00010 + (Math.min(b.floor_count || 10, 45) / 45) * 0.00007;
+  const baseScale = 0.00007 + (Math.min(b.floor_count || 10, 45) / 45) * 0.00004;
   const w = baseScale * lonScale;
   const h = baseScale;
 
@@ -998,17 +1058,22 @@ export default function CesiumViewer({
   const cityEntitiesRef      = useRef([]);  // all ULPIN entities for the active city view
   const tileReadyRef         = useRef(false); // true once Google 3D tiles have initially loaded
   const flyToFloorRef        = useRef(null);
+  const isFlyingRef          = useRef(false);
   // ── Stable callback refs — prevent stale-closure in the one-time setup effect ──
   const onBuildingClickRef   = useRef(onBuildingClick);
   const onCitySelectRef      = useRef(onCitySelect);
   const cityRef              = useRef(city);
 
   useEffect(() => { buildingsRef.current      = targetBuildings; }, [targetBuildings]);
+  useEffect(() => { warmBuildingTextureCache(targetBuildings);   }, [targetBuildings]);
   useEffect(() => { onBuildingClickRef.current = onBuildingClick; }, [onBuildingClick]);
   useEffect(() => { onCitySelectRef.current    = onCitySelect;    }, [onCitySelect]);
   useEffect(() => { cityRef.current            = city;            }, [city]);
 
   // ── Smooth Cinematic Camera Flight ─────────────────────────────────────────
+  // Two-phase approach fixes "zoom out to see map" tile loading issue:
+  //   Phase 1: Descend to ~2500m (medium tiles stream in fast, ~1-2s)
+  //   Phase 2: Globe fires tileLoadProgressEvent → 0 tiles remaining → swoop to final viewpoint
   const flyToTarget = useCallback((targetCity) => {
     const viewer = viewerRef.current;
     if (!viewer || viewer.isDestroyed()) {
@@ -1017,8 +1082,10 @@ export default function CesiumViewer({
     }
 
     viewer.camera.cancelFlight();
+    isFlyingRef.current = false;
 
     if (!targetCity) {
+      isFlyingRef.current = true;
       // Space orbit view — centered over India & Asia from 12,500 km in full daylight
       viewer.camera.flyTo({
         destination: Cartesian3.fromDegrees(75.0, 19.0, 12500000),
@@ -1027,9 +1094,11 @@ export default function CesiumViewer({
           pitch: CesiumMath.toRadians(-89.9),
           roll: 0,
         },
-        duration: 4.2,
-        pitchAdjustHeight: 6000,
-        easingFunction: EasingFunction.CUBIC_IN_OUT,
+        duration: 3.8, // Smooth, silky ascent back into Earth orbit
+        pitchAdjustHeight: 25000,
+        easingFunction: EasingFunction.SINUSOIDAL_IN_OUT,
+        complete: () => { isFlyingRef.current = false; },
+        cancel:   () => { isFlyingRef.current = false; },
       });
       return;
     }
@@ -1037,8 +1106,10 @@ export default function CesiumViewer({
     const pos = CITY_POSITIONS[targetCity];
     if (!pos) return;
 
-    // Cinematic swoop descending from orbit directly into the city's 3D perspective
-    // 6.8s gives Google 3D Tiles, terrain, and buildings ample time to stream and refine LODs
+    // ── Continuous Direct Flight to City Viewpoint ────────────────────────────
+    // With skipLevelOfDetail=true and cullWithChildrenBounds=false, tiles stream
+    // progressively along the parabolic trajectory without needing any staging pauses.
+    isFlyingRef.current = true;
     viewer.camera.flyTo({
       destination: Cartesian3.fromDegrees(pos.lon, pos.lat, pos.height),
       orientation: {
@@ -1046,9 +1117,11 @@ export default function CesiumViewer({
         pitch:   CesiumMath.toRadians(pos.pitchDeg ?? -24),
         roll:    0.0,
       },
-      duration: 6.8,
-      pitchAdjustHeight: 8000,
-      easingFunction: EasingFunction.CUBIC_IN_OUT,
+      duration: 5.5, // Brisk, cinematic, and continuous
+      pitchAdjustHeight: 35000, // Smooth stratospheric arc
+      easingFunction: EasingFunction.SINUSOIDAL_IN_OUT,
+      complete: () => { isFlyingRef.current = false; },
+      cancel:   () => { isFlyingRef.current = false; },
     });
   }, []);
 
@@ -1065,28 +1138,44 @@ export default function CesiumViewer({
       ? Math.max(0, floorsList[floorIdx].z_min - (building.ground_elevation || 0))
       : floorIdx * floorH;
 
-    // Stand in the corridor: 1.7m above the floor slab (eye height)
-    const eyeHeight = floorBase + 1.7;
+    // ── True terrain elevation at building coordinate (ellipsoid height) ────
+    const carto = Cartographic.fromDegrees(lon, lat);
+    let terrainElev = viewer.scene.globe.getHeight(carto);
+    if (terrainElev === undefined || terrainElev === null || isNaN(terrainElev) || terrainElev < -50) {
+      if (typeof building.ground_elevation === 'number' && building.ground_elevation > 0) {
+        terrainElev = building.ground_elevation;
+      } else if (lat > 12.5 && lat < 13.5) {
+        terrainElev = 920; // Bengaluru Deccan plateau elevation
+      } else if (lat > 18.5 && lat < 19.5) {
+        terrainElev = 12;  // Mumbai coastal elevation
+      } else if (lat > 1.1 && lat < 1.5) {
+        terrainElev = 15;  // Singapore
+      } else {
+        terrainElev = 2;
+      }
+    }
 
-    // Camera stands just inside the building along the corridor spine
-    const latRad   = (lat * Math.PI) / 180;
-    const lonScale = 1 / Math.max(0.2, Math.cos(latRad));
+    // Stand in the corridor: 1.7m above the floor slab (human eye height)
+    // Terrain elevation must be added to floor elevation so camera stays above ground surface!
+    const camZ = terrainElev + (building.is_underground ? -Math.abs(floorBase) : floorBase) + 1.7;
+
     const baseScale = 0.00010 + (Math.min(building.floor_count || 10, 45) / 45) * 0.00007;
-    const bW = baseScale * lonScale;
-    // Position: stand at 30% along the corridor from center, looking toward far end
-    const offsetLon = bW * 0.35;
+    const bD = baseScale;
+
+    // Position: stand at the south end of the central corridor looking north along the hallway
+    const camLat = lat - bD * 0.45;
 
     viewer.camera.cancelFlight();
     viewer.camera.flyTo({
-      destination: Cartesian3.fromDegrees(lon - offsetLon, lat, eyeHeight),
+      destination: Cartesian3.fromDegrees(lon, camLat, camZ),
       orientation: {
         // Look straight along the corridor axis (+lat direction = north)
         heading: CesiumMath.toRadians(0),
-        pitch:   CesiumMath.toRadians(-3),  // Slight downward gaze, human eye level
+        pitch:   CesiumMath.toRadians(-2),  // Human eye level looking straight forward down the hallway
         roll:    0,
       },
-      duration: 1.6,
-      easingFunction: EasingFunction.CUBIC_IN_OUT,
+      duration: 1.8,
+      easingFunction: EasingFunction.SINUSOIDAL_IN_OUT,
     });
   }, []);
 
@@ -1117,15 +1206,31 @@ export default function CesiumViewer({
     flyToTarget(cityRef.current);
   }, [flyToTarget]);
 
+  const handleFlyToCoords = useCallback(({ lon, lat, height = 500, pitch = -35, heading = 0 }) => {
+    const v = viewerRef.current;
+    if (!v || v.isDestroyed()) return;
+    v.camera.flyTo({
+      destination: Cartesian3.fromDegrees(lon, lat, height),
+      orientation: {
+        heading: CesiumMath.toRadians(heading),
+        pitch: CesiumMath.toRadians(pitch),
+        roll: 0.0,
+      },
+      duration: 4.8,
+      easingFunction: EasingFunction.SINUSOIDAL_IN_OUT,
+    });
+  }, []);
+
   useEffect(() => {
     if (onCameraControlsReady) {
       onCameraControlsReady({
         zoomIn: handleZoomIn,
         zoomOut: handleZoomOut,
         resetCamera: handleResetCamera,
+        flyToCoords: handleFlyToCoords,
       });
     }
-  }, [handleZoomIn, handleZoomOut, handleResetCamera, onCameraControlsReady]);
+  }, [handleZoomIn, handleZoomOut, handleResetCamera, handleFlyToCoords, onCameraControlsReady]);
 
   // ── Initialize Cesium Viewer once on mount ──────────────────────────────────
   useEffect(() => {
@@ -1168,9 +1273,12 @@ export default function CesiumViewer({
 
     viewerRef.current = viewer;
 
+    // Preemptively pre-warm elevation and satellite tiles for Bengaluru, Mumbai, Rotterdam, Singapore
+    preloadPilotCities(viewer, baseLayer);
+
     // ── Native 1:1 Hardware Pixel Resolution & Razor-Sharp Imagery ───────────
     viewer.useBrowserRecommendedResolution = false;
-    viewer.resolutionScale = Math.max(window.devicePixelRatio || 1.0, 1.25);
+    viewer.resolutionScale = 1.0; // 1.0 guarantees locked 60fps without high-DPI GPU frame drops
     viewer.scene.highDynamicRange = false;
 
     // Enable maximum hardware anisotropic filtering for razor-sharp curvature
@@ -1193,13 +1301,15 @@ export default function CesiumViewer({
     // ── Camera controller: Silky-Smooth Navigation & Zooming ────────────────
     const ctrl = viewer.scene.screenSpaceCameraController;
     if (ctrl) {
-      ctrl.inertiaSpin          = 0.88;
-      ctrl.inertiaTranslate     = 0.88;
-      ctrl.inertiaZoom          = 0.85; // Smooth, natural wheel damping
+      ctrl.enableCollisionDetection = false; // Turn off expensive terrain collision raycasts during camera movement
+      ctrl.maximumMovementRatio = 0.0;  // 0.0 = no limit (Cesium standard: unclamped 1:1 fluid tracking)
+      ctrl.inertiaSpin          = 0.92; // Natural, responsive momentum glide
+      ctrl.inertiaTranslate     = 0.90;
+      ctrl.inertiaZoom          = 0.86; // Natural wheel damping
       ctrl.zoomFactor           = 3.0;  // Controlled, silky-smooth zoom speed
-      ctrl.maximumMovementRatio = 0.05; // Prevents jerky movements
       ctrl.minimumZoomDistance  = 0.5;  // Allow camera inside buildings (eye level)
       ctrl.maximumZoomDistance  = 35000000;
+      ctrl.bounceAnimationTime  = 1.0;
     }
 
     // ── Globe Settings: Maximum Sharpness, Vibrant True Color & Instant LODs ──
@@ -1207,9 +1317,9 @@ export default function CesiumViewer({
     globe.baseColor                 = Color.fromCssColorString('#071326'); // Deep navy ocean base
     globe.preloadAncestors          = true;
     globe.preloadSiblings           = true;
-    globe.tileCacheSize             = 8000; // Expanded cache for instant high-detail tile paging
-    globe.loadingDescendantLimit    = 64;
-    globe.maximumScreenSpaceError   = 1.0;  // Supreme sharpness
+    globe.tileCacheSize             = 5000; // Optimal cache for instant high-detail tile paging
+    globe.loadingDescendantLimit    = 20;   // Prevents tile queue congestion during rapid rotation
+    globe.maximumScreenSpaceError   = 2.0;  // Standard optimal SSE for fluid 60fps globe rotation and instant imagery
     globe.depthTestAgainstTerrain   = false;
     // Keep Earth 100% brightly illuminated with authentic satellite daylight everywhere
     globe.enableLighting            = false;
@@ -1221,9 +1331,70 @@ export default function CesiumViewer({
       viewer.scene.skyAtmosphere.saturationShift = 0.20;
     }
 
+    // ── Ambient Globe Auto-Rotation in Space Orbit ────────────────────────────
+    // In Earth space orbit (!city), smoothly rotate the globe when idle.
+    // Seamlessly pauses the instant user interacts (drag/wheel/touch) or enters a city.
+    let lastSpinTime = performance.now();
+    let isUserInteracting = false;
+    let isDragging = false;
+    let resumeTimer = null;
+
+    const startInteraction = () => {
+      isDragging = true;
+      isUserInteracting = true;
+      if (resumeTimer) clearTimeout(resumeTimer);
+    };
+
+    const stopInteraction = () => {
+      isDragging = false;
+      isUserInteracting = false;
+      if (resumeTimer) clearTimeout(resumeTimer);
+      resumeTimer = setTimeout(() => {
+        isUserInteracting = false;
+        lastSpinTime = performance.now();
+      }, 1800);
+    };
+
+    const onWheel = () => {
+      isUserInteracting = true;
+      if (resumeTimer) clearTimeout(resumeTimer);
+      resumeTimer = setTimeout(() => {
+        isUserInteracting = false;
+        lastSpinTime = performance.now();
+      }, 1800);
+    };
+
+    const canvas = viewer.canvas;
+    canvas.addEventListener('pointerdown', startInteraction, { passive: true });
+    canvas.addEventListener('wheel', onWheel, { passive: true });
+    window.addEventListener('pointerup', stopInteraction, { passive: true });
+
+    const removePreRender = viewer.scene.preRender.addEventListener(() => {
+      const now = performance.now();
+      const dt = Math.min((now - lastSpinTime) / 1000, 0.1);
+      lastSpinTime = now;
+
+      // Only auto-spin when:
+      // 1. No city is active (space orbit mode)
+      // 2. User is not currently dragging/zooming (idle)
+      // 3. Camera is high in space (> 2,500,000 meters)
+      // 4. No camera flight is in progress
+      if (
+        !cityRef.current &&
+        !isDragging &&
+        !isUserInteracting &&
+        !isFlyingRef.current &&
+        viewer.camera.positionCartographic?.height > 2500000
+      ) {
+        // Serene, silky-smooth orbital rotation (approx 0.045 deg/sec)
+        const spinAngle = 0.0008 * dt;
+        viewer.scene.camera.rotate(Cartesian3.UNIT_Z, -spinAngle);
+      }
+    });
+
     let isCancelled = false;
 
-    // ── Google Photorealistic 3D Tiles (Supreme Fidelity) ───────────────────
+    // ── Google Photorealistic 3D Tiles (Supreme Fidelity, Zero-Hole Streaming) ───
     async function initGoogle3DTiles() {
       try {
         let googleTileset;
@@ -1238,16 +1409,26 @@ export default function CesiumViewer({
         }
         if (isCancelled || viewer.isDestroyed() || !googleTileset) return;
 
-        // Supreme visual sharpness: 1.0 SSE loads finest photogrammetric LODs
-        googleTileset.maximumScreenSpaceError = 1.0;
-        googleTileset.maximumMemoryUsage = 2048; // 2GB GPU cache for seamless high-res textures
-        googleTileset.immediatelyLoadDesiredLevelOfDetail = true;
-        googleTileset.loadSiblings = true;
-        googleTileset.cullWithChildrenBounds = true;
+        // Optimal 3D Tiles configuration eliminating "zoom out to load" starvation
+        googleTileset.maximumScreenSpaceError   = 16;   // Cesium standard: parent tiles render immediately, no holes
+        googleTileset.skipLevelOfDetail         = true; // Skip intermediate levels directly to target detail
+        googleTileset.baseScreenSpaceError      = 1024;
+        googleTileset.skipScreenSpaceErrorFactor= 16;
+        googleTileset.skipLevels                = 1;
+        googleTileset.loadSiblings              = true;
+        googleTileset.cullWithChildrenBounds    = false; // NEVER cull parent tile before high-res child arrives!
+        googleTileset.preloadWhenHidden         = true;
+        googleTileset.preloadFlightCamera       = true;
+        googleTileset.dynamicScreenSpaceError   = true;
+        googleTileset.dynamicScreenSpaceErrorDensity = 0.00278;
+        googleTileset.dynamicScreenSpaceErrorFactor = 4.0;
+        googleTileset.cacheBytes                = 536870912;  // 512 MB
+        googleTileset.maximumCacheOverflowBytes = 1610612736; // 1.5 GB overflow
 
         viewer.scene.primitives.add(googleTileset);
         googleTilesetRef.current = googleTileset;
         googleTileset.show = layers.google3d ?? true;
+        tileReadyRef.current = true;
 
         // ── Reveal ULPIN entities once the first batch of map tiles are visible ──
         // initialTilesLoaded fires when the visible-area tiles reach their
@@ -1289,7 +1470,8 @@ export default function CesiumViewer({
         });
         if (isCancelled || viewer.isDestroyed() || !osmTileset) return;
 
-        osmTileset.maximumScreenSpaceError = 1.0; // High building detail
+        osmTileset.maximumScreenSpaceError = 16; // Standard optimal SSE: renders instantly without holes
+        osmTileset.skipLevelOfDetail = true;
         osmTileset.maximumMemoryUsage = 2048;
         viewer.scene.primitives.add(osmTileset);
         tilesetRef.current = osmTileset;
@@ -1387,13 +1569,45 @@ export default function CesiumViewer({
       onBuildingClickRef.current(null);
     }, ScreenSpaceEventType.LEFT_CLICK);
 
+    // Sync Cesium screen space event handler directly to start/stop interaction
+    handler.setInputAction(startInteraction, ScreenSpaceEventType.LEFT_DOWN);
+    handler.setInputAction(stopInteraction, ScreenSpaceEventType.LEFT_UP);
+    handler.setInputAction(startInteraction, ScreenSpaceEventType.RIGHT_DOWN);
+    handler.setInputAction(stopInteraction, ScreenSpaceEventType.RIGHT_UP);
+    handler.setInputAction(startInteraction, ScreenSpaceEventType.MIDDLE_DOWN);
+    handler.setInputAction(stopInteraction, ScreenSpaceEventType.MIDDLE_UP);
+
+    // ── Ultra-Smooth MOUSE_MOVE: NEVER run scene.pick while dragging! ────────
+    let hoverRaf = null;
     handler.setInputAction((movement) => {
-      const picked = viewer.scene.pick(movement.endPosition);
-      const bid = picked?.id?.properties?.building_id?.getValue?.();
-      const cityPin = picked?.id?.properties?.city_pin?.getValue?.();
-      // Also show pointer for 3D tileset building hits (OSM or Google)
-      const isTilesetHit = !!picked?.tileset || picked?.primitive === tilesetRef.current || picked?.primitive === googleTilesetRef.current;
-      viewer.scene.canvas.style.cursor = (bid || cityPin || isTilesetHit) ? 'pointer' : 'default';
+      // While dragging the camera/globe, NEVER run scene.pick!
+      // This completely eliminates the synchronous WebGL readPixels GPU pipeline stall during movement.
+      if (isDragging) return;
+
+      if (hoverRaf) return;
+      hoverRaf = requestAnimationFrame(() => {
+        hoverRaf = null;
+        if (viewer.isDestroyed() || isDragging) return;
+
+        // In global orbit mode: only check pilot pins (fast entity pick, no heavy tileset pass)
+        if (!cityRef.current) {
+          try {
+            const picked = viewer.scene.pick(movement.endPosition, 5, 5);
+            const cityPin = picked?.id?.properties?.city_pin?.getValue?.();
+            viewer.scene.canvas.style.cursor = cityPin ? 'pointer' : 'default';
+          } catch {}
+          return;
+        }
+
+        // Inside city view: check for building / tileset hover
+        try {
+          const picked = viewer.scene.pick(movement.endPosition);
+          const bid = picked?.id?.properties?.building_id?.getValue?.();
+          const cityPin = picked?.id?.properties?.city_pin?.getValue?.();
+          const isTilesetHit = !!picked?.tileset || picked?.primitive === tilesetRef.current || picked?.primitive === googleTilesetRef.current;
+          viewer.scene.canvas.style.cursor = (bid || cityPin || isTilesetHit) ? 'pointer' : 'default';
+        } catch {}
+      });
     }, ScreenSpaceEventType.MOUSE_MOVE);
 
     if (pendingCityRef.current) {
@@ -1412,6 +1626,12 @@ export default function CesiumViewer({
 
     return () => {
       isCancelled = true;
+      if (resumeTimer) clearTimeout(resumeTimer);
+      if (hoverRaf) cancelAnimationFrame(hoverRaf);
+      canvas.removeEventListener('pointerdown', startInteraction);
+      canvas.removeEventListener('wheel', onWheel);
+      window.removeEventListener('pointerup', stopInteraction);
+      try { removePreRender(); } catch {}
       handler.destroy();
       viewerRef.current?.destroy();
       viewerRef.current = null;
@@ -1491,32 +1711,40 @@ export default function CesiumViewer({
       });
     });
 
-    // 2. Render Cadastral Parcels (Crisp amber cadastral plots across all pilot cities beforehand)
+    // 2. Render Cadastral Parcels (Crisp amber cadastral plots across all real Earth pilot cities)
     if (layers.parcels && targetParcels?.length) {
-      targetParcels.forEach(p => {
-        if (!p.coordinates || p.coordinates.length < 3) return;
-        const coords = p.coordinates.map(([lon, lat]) => Cartesian3.fromDegrees(lon, lat, 0));
-        viewer.entities.add({
-          name: `Parcel: ${p.parcel_id}`,
-          polygon: {
-            hierarchy: new ConstantProperty(new PolygonHierarchy(coords)),
-            classificationType: ClassificationType.BOTH,
-            material: new ColorMaterialProperty(Color.fromCssColorString('#f59e0b').withAlpha(0.12)),
-            outline: true,
-            outlineColor: Color.fromCssColorString('#fbbf24').withAlpha(0.85),
-            outlineWidth: 2.0,
-            shadows: ShadowMode.DISABLED,
-          },
-          properties: { parcel_id: p.parcel_id }
+      targetParcels
+        .filter(p => p.city !== 'simulation' && p.city !== 'simcity')
+        .forEach(p => {
+          if (!p.coordinates || p.coordinates.length < 3) return;
+          const validCoords = p.coordinates.every(([lon, lat]) => (
+            typeof lon === 'number' && typeof lat === 'number' &&
+            lon >= -180 && lon <= 180 && lat >= -90 && lat <= 90
+          ));
+          if (!validCoords) return;
+
+          const coords = p.coordinates.map(([lon, lat]) => Cartesian3.fromDegrees(lon, lat, 0));
+          viewer.entities.add({
+            name: `Parcel: ${p.parcel_id}`,
+            polygon: {
+              hierarchy: new ConstantProperty(new PolygonHierarchy(coords)),
+              classificationType: ClassificationType.BOTH,
+              material: new ColorMaterialProperty(Color.fromCssColorString('#f59e0b').withAlpha(0.16)),
+              outline: false,
+              shadows: ShadowMode.DISABLED,
+            },
+            properties: { parcel_id: p.parcel_id }
+          });
         });
-      });
     }
 
-    // 3. Render Buildings & 3D Cadastral Envelopes across all pilot cities beforehand
+    // 3. Render Buildings & 3D Cadastral Envelopes across all real Earth pilot cities
     if (targetBuildings?.length) {
-      targetBuildings.forEach(b => {
-        const isUnderground = !!b.is_underground;
-        const isSelected    = selectedBuilding?.building_id === b.building_id;
+      targetBuildings
+        .filter(b => b.city !== 'simulation' && b.city !== 'simcity')
+        .forEach(b => {
+          const isUnderground = !!b.is_underground;
+          const isSelected    = selectedBuilding?.building_id === b.building_id;
 
         if (!layers.buildings   && !isUnderground) return;
         if (!layers.underground && isUnderground)  return;
@@ -1552,20 +1780,14 @@ export default function CesiumViewer({
                 ? Color.fromCssColorString('#00d4ff').withAlpha(0.25)
                 : fillColor.withAlpha(0.10)
             ),
-            outline:         true,
-            outlineColor:    isSelected ? SELECTED_OUTLINE : outlineCol,
-            outlineWidth:    isSelected ? 2.5 : 1.5,
+            outline:         false,
             shadows:         ShadowMode.DISABLED,
           },
           properties: { building_id: b.building_id },
         });
 
-        // ── Interior architecture for SELECTED building ──────────────────────
+        // ── Envelope & Floor Strata for SELECTED building ───────────────────
         if (isSelected) {
-          // Detailed internal architecture: concrete slabs, illuminated corridors, elevator core
-          const ents = buildInteriorGeometry(b, viewer);
-          interiorEntRef.current.push(...ents);
-
           // Solid glowing exterior shell — visible from outside even in interior mode
           // This ensures the building always looks like a real rigid structure with neon outline
           const facadeAlpha = interiorMode ? 0.15 : 0.88;
@@ -1656,9 +1878,7 @@ export default function CesiumViewer({
               heightReference:         isUnderground ? HeightReference.RELATIVE_TO_GROUND : HeightReference.CLAMP_TO_GROUND,
               extrudedHeightReference: HeightReference.RELATIVE_TO_GROUND,
               material:                new ColorMaterialProperty(fillColor),
-              outline:                 true,
-              outlineColor:            outlineCol,
-              outlineWidth:            2.5,
+              outline:                 false,
               shadows:                 ShadowMode.DISABLED,
               closeTop:                true,
               closeBottom:             true,
@@ -1748,40 +1968,11 @@ export default function CesiumViewer({
     });
     cityEntitiesRef.current = all;
 
-    if (tileReadyRef.current) {
-      // Tiles already loaded (cached, subsequent city visits) — show instantly
-      all.forEach(e => { if (e && !e.isDestroyed?.()) e.show = true; });
-    } else {
-      // Tiles haven't loaded yet — hide entities and wait for initialTilesLoaded
-      // to reveal them (handled in initGoogle3DTiles listener above).
-      // Safety fallback: if Google tileset never fires (e.g. token error), reveal after 5s.
-      all.forEach(e => { if (e && !e.isDestroyed?.()) e.show = false; });
-      const fallbackTimer = setTimeout(() => {
-        if (!tileReadyRef.current) {
-          tileReadyRef.current = true;
-          cityEntitiesRef.current.forEach(e => {
-            if (e && !e.isDestroyed?.()) e.show = true;
-          });
-        }
-      }, 5000);
-      return () => clearTimeout(fallbackTimer);
-    }
+    // All entities (cadastral parcels, 3D extruded building envelopes, neon outlines, and floating datum tags)
+    // are displayed immediately with 100% visibility — never hidden waiting for external network events!
+    all.forEach(e => { if (e && !e.isDestroyed?.()) e.show = true; });
+    tileReadyRef.current = true;
   }, [city, targetBuildings, targetParcels, layers, selectedBuilding, explodedFloor, interiorMode]);
-
-  // Reset tile-ready flag when switching cities (so new city waits for fresh tiles)
-  useEffect(() => {
-    if (!city) {
-      // Back to globe — no tiles needed, show everything
-      tileReadyRef.current = true;
-      return;
-    }
-    // Only reset if tileset is not yet registered (first time loading)
-    // If tileset exists and tiles are cached, keep tileReadyRef true for instant reveal
-    if (!googleTilesetRef.current) {
-      tileReadyRef.current = false;
-    }
-    // If already loaded, keep true so subsequent city switches are instant
-  }, [city]);
 
   // ── On-demand single-floor BIM geometry ──────────────────────────────────
   // When in interior mode, renders only the current floor's full 3D BIM
@@ -1815,10 +2006,17 @@ export default function CesiumViewer({
   // the building never scrolls out of view regardless of height or position.
   useEffect(() => {
     const viewer = viewerRef.current;
-    if (!viewer || !selectedBuilding) return;
+    if (!viewer || !selectedBuilding || interiorMode) return;
     const b   = selectedBuilding;
     const absH = Math.max(Math.abs(b.height || 40), 20);
-    const groundElev = Math.max(b.ground_elevation || 0, 0);
+
+    const carto = Cartographic.fromDegrees(b.lon, b.lat);
+    let groundElev = viewer.scene.globe.getHeight(carto);
+    if (groundElev === undefined || groundElev === null || isNaN(groundElev) || groundElev < -50) {
+      groundElev = (typeof b.ground_elevation === 'number' && b.ground_elevation > 0)
+        ? b.ground_elevation
+        : (b.lat > 12.5 && b.lat < 13.5 ? 920 : (b.lat > 18.5 && b.lat < 19.5 ? 12 : 10));
+    }
 
     // Sphere center = horizontal building position at 45% of its height
     // This frames both lower podiums AND upper tower in the viewport
@@ -1844,11 +2042,11 @@ export default function CesiumViewer({
     );
 
     viewer.camera.flyToBoundingSphere(sphere, {
-      duration: 2.0,
+      duration: 2.8,
       offset,
-      easingFunction: EasingFunction.CUBIC_IN_OUT,
+      easingFunction: EasingFunction.SINUSOIDAL_IN_OUT,
     });
-  }, [selectedBuilding]);
+  }, [selectedBuilding, interiorMode]);
 
   return (
     <div

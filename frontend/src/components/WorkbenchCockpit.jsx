@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import CitySelector from './CitySelector.jsx';
 
 const CITIES = [
   {
@@ -41,10 +42,21 @@ const CITIES = [
     desc: 'De Rotterdam vertical city & port maritime strata',
     color: '#f59e0b',
   },
+  {
+    id: 'simulation',
+    name: 'Night City (LOD4 Lab)',
+    shortName: 'SIMULATION CADASTRE',
+    coords: '18.88°N, 72.78°E',
+    tag: '100% LOD4 TWIN (B4-78F)',
+    country: 'Digital Twin Lab 🌆',
+    desc: 'Authoritative IFC 4.3 BIM, sky-bridges & subsurface hyperloop',
+    color: '#ec4899',
+  },
 ];
 
 export default function WorkbenchCockpit({
   city,
+  activeRealm = 'globe',
   onCityChange,
   onResetOrbit,
   onZoomIn,
@@ -58,8 +70,13 @@ export default function WorkbenchCockpit({
   activeMode,
   onModeChange,
   onReturnToLanding,
+  onOpenDisputes,
+  onOpenStrata,
+  onOpenSandbox,
+  onOpenExport,
 }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const fileInputRef = useRef(null);
 
   const currentCityObj = CITIES.find(c => c.id === city) || CITIES[0];
   const isOrbit = !city;
@@ -85,7 +102,7 @@ export default function WorkbenchCockpit({
         borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
         userSelect: 'none',
       }}>
-        {/* Left: Brand + Target Selector Pill */}
+        {/* Left: Brand + Pilot Selection Tabs */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
           {/* Logo */}
           <div
@@ -108,96 +125,80 @@ export default function WorkbenchCockpit({
             }} />
           </div>
 
-          {/* Target City Selector Pill */}
-          <div style={{ position: 'relative' }}>
-            <div style={{
-              display: 'flex', alignItems: 'center',
-              background: 'rgba(255, 255, 255, 0.06)',
-              border: '1px solid rgba(255, 255, 255, 0.12)',
-              borderRadius: 999,
-              height: 32, padding: '0 4px',
-            }}>
-              {/* City target dropdown trigger */}
-              <button
-                onClick={() => setDropdownOpen(!dropdownOpen)}
-                style={{
-                  background: 'none', border: 'none',
-                  color: '#ffffff', fontFamily: "'Space Grotesk', sans-serif",
-                  fontSize: 12, fontWeight: 600,
-                  display: 'flex', alignItems: 'center', gap: 8,
-                  padding: '4px 14px', cursor: 'pointer',
-                  borderRadius: 999,
-                }}
-              >
-                <span style={{
-                  width: 7, height: 7, borderRadius: '50%',
-                  background: isOrbit ? '#a855f7' : currentCityObj.color,
-                  boxShadow: `0 0 8px ${isOrbit ? '#a855f7' : currentCityObj.color}`,
-                }} />
-                <span>{isOrbit ? 'Global Orbit (All Pilots)' : currentCityObj.name}</span>
-                <span style={{ fontSize: 10, opacity: 0.6, marginLeft: 2 }}>▼</span>
-              </button>
-            </div>
-
-            {/* Dropdown Menu */}
-            {dropdownOpen && (
-              <div style={{
-                position: 'absolute', top: 40, left: 0, zIndex: 200,
-                width: 290, background: '#090a0f',
-                border: '1px solid rgba(255, 255, 255, 0.14)',
-                borderRadius: 12, padding: 6,
-                boxShadow: '0 16px 40px rgba(0,0,0,0.85)',
-                display: 'flex', flexDirection: 'column', gap: 2,
-              }}>
-                <button
-                  onClick={() => handleSelectCity('orbit')}
-                  style={{
-                    display: 'flex', alignItems: 'center', gap: 10,
-                    padding: '8px 12px', borderRadius: 8,
-                    background: isOrbit ? 'rgba(255, 255, 255, 0.08)' : 'transparent',
-                    border: 'none', color: '#fff', cursor: 'pointer',
-                    textAlign: 'left', fontFamily: 'inherit', fontSize: 12,
-                  }}
-                >
-                  <span style={{ fontSize: 15 }}>🌍</span>
-                  <div>
-                    <div style={{ fontWeight: 600 }}>Global Earth Orbit</div>
-                    <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.4)' }}>Inspect all 4 pilot zones from space</div>
-                  </div>
-                </button>
-
-                <div style={{ height: 1, background: 'rgba(255,255,255,0.06)', margin: '4px 0' }} />
-
-                {CITIES.map(c => {
-                  const isSelected = city === c.id;
-                  return (
-                    <button
-                      key={c.id}
-                      onClick={() => handleSelectCity(c.id)}
-                      style={{
-                        display: 'flex', alignItems: 'center', gap: 10,
-                        padding: '8px 12px', borderRadius: 8,
-                        background: isSelected ? 'rgba(56, 189, 248, 0.12)' : 'transparent',
-                        border: isSelected ? '1px solid rgba(56, 189, 248, 0.3)' : '1px solid transparent',
-                        color: '#fff', cursor: 'pointer',
-                        textAlign: 'left', fontFamily: 'inherit', fontSize: 12,
-                      }}
-                    >
-                      <span style={{ width: 8, height: 8, borderRadius: '50%', background: c.color, flexShrink: 0 }} />
-                      <div style={{ flex: 1 }}>
-                        <div style={{ fontWeight: 600 }}>{c.name}</div>
-                        <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.45)' }}>{c.tag}</div>
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-            )}
-          </div>
+          {/* Pilot Selection Tabs (Earth Pilot Cities vs Off-Globe Night City) */}
+          <CitySelector city={city} activeRealm={activeRealm} onChange={onCityChange} />
         </div>
 
-        {/* Right side is intentionally minimal & clear */}
-        <div />
+        {/* Right side: 3D ULPIN Registry & Dispute Workflows */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <button
+            onClick={onOpenDisputes}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 6,
+              background: 'rgba(239, 68, 68, 0.12)',
+              border: '1px solid rgba(239, 68, 68, 0.35)',
+              borderRadius: 999, height: 30, padding: '0 12px',
+              color: '#f87171', fontSize: 11, fontWeight: 600,
+              fontFamily: "'Space Grotesk', sans-serif",
+              cursor: 'pointer', transition: 'all 0.15s',
+            }}
+            title="Real-World 3D Cadastral Disputes (docs/decisions.md Section 9.4)"
+          >
+            <span>⚖</span>
+            <span>Disputes</span>
+          </button>
+
+          <button
+            onClick={onOpenStrata}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 6,
+              background: 'rgba(56, 189, 248, 0.12)',
+              border: '1px solid rgba(56, 189, 248, 0.35)',
+              borderRadius: 999, height: 30, padding: '0 12px',
+              color: '#38bdf8', fontSize: 11, fontWeight: 600,
+              fontFamily: "'Space Grotesk', sans-serif",
+              cursor: 'pointer', transition: 'all 0.15s',
+            }}
+            title="R1 Headline Query: What is Below / Above This Parcel? (docs/eval_results.md)"
+          >
+            <span>🏢</span>
+            <span>Strata (R1)</span>
+          </button>
+
+          <button
+            onClick={onOpenSandbox}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 6,
+              background: 'rgba(168, 85, 247, 0.12)',
+              border: '1px solid rgba(168, 85, 247, 0.35)',
+              borderRadius: 999, height: 30, padding: '0 12px',
+              color: '#c084fc', fontSize: 11, fontWeight: 600,
+              fontFamily: "'Space Grotesk', sans-serif",
+              cursor: 'pointer', transition: 'all 0.15s',
+            }}
+            title="OpenAPI REST Registry Operations (docs/contracts.md)"
+          >
+            <span>⚡</span>
+            <span>REST API</span>
+          </button>
+
+          <button
+            onClick={onOpenExport}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 6,
+              background: 'rgba(34, 197, 94, 0.12)',
+              border: '1px solid rgba(34, 197, 94, 0.35)',
+              borderRadius: 999, height: 30, padding: '0 12px',
+              color: '#4ade80', fontSize: 11, fontWeight: 600,
+              fontFamily: "'Space Grotesk', sans-serif",
+              cursor: 'pointer', transition: 'all 0.15s',
+            }}
+            title="Lossless Cadastre Export: ISO 19152 LADM, IFC 4.3, CityJSON 1.1"
+          >
+            <span>💾</span>
+            <span>Export</span>
+          </button>
+        </div>
       </header>
 
 

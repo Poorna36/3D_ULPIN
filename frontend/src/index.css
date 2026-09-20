@@ -324,3 +324,143 @@ h3 {
   scrollbar-width: thin;
   scrollbar-color: rgba(56, 189, 248, 0.2) transparent;
 }
+
+/* ── Landing → Cesium: collapse inward ─────────────────────── */
+/* The landing page shrinks to its center point, corners rounding
+   into a pill then a dot, while Cesium is revealed around it.  */
+@keyframes collapse-inward {
+  0%   { transform: scale(1);    border-radius: 0;    opacity: 1;   }
+  50%  { transform: scale(0.38); border-radius: 24px; opacity: 1;   }
+  80%  { transform: scale(0.10); border-radius: 50%;  opacity: 0.6; }
+  100% { transform: scale(0);    border-radius: 50%;  opacity: 0;   }
+}
+
+.landing-collapse-inward {
+  animation: collapse-inward 0.60s cubic-bezier(0.55, 0, 0.1, 1) forwards !important;
+  pointer-events: none !important;
+  transition: none !important;
+  transform-origin: center center !important;
+}
+
+/* ── 3D ULPIN Registry Modals ───────────────────────────────── */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(3, 7, 18, 0.78);
+  backdrop-filter: blur(14px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.modal-container {
+  background: rgba(11, 15, 25, 0.95);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  border-radius: var(--r-lg);
+  padding: 20px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 35px rgba(56, 189, 248, 0.15);
+  display: flex;
+  flex-direction: column;
+  color: var(--text-primary);
+  max-height: 90vh;
+}
+
+.modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.anim-fade-in {
+  animation: fadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.anim-scale-up {
+  animation: scaleUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleUp {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* ── Detail Panel Sidebar (Right side, non-intrusive 380px) ── */
+.detail-panel {
+  position: fixed;
+  top: 52px;
+  right: 0;
+  bottom: 0;
+  width: 380px;
+  max-width: 90vw;
+  display: flex;
+  flex-direction: column;
+  background: rgba(9, 11, 16, 0.90);
+  backdrop-filter: blur(20px);
+  border-left: 1px solid rgba(255, 255, 255, 0.10);
+  z-index: 80;
+  box-shadow: -8px 0 32px rgba(0, 0, 0, 0.6);
+  user-select: none;
+}
+
+.detail-panel-collapsed {
+  position: fixed;
+  top: 64px;
+  right: 16px;
+  z-index: 85;
+}
+
+.panel-expand-btn {
+  background: rgba(9, 11, 16, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  padding: 8px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+  transition: all 0.15s;
+}
+.panel-expand-btn:hover {
+  border-color: #38bdf8;
+  color: #38bdf8;
+}
+
+.panel-header {
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.panel-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.panel-scroll {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.anim-slide-left {
+  animation: slideLeft 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideLeft {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+

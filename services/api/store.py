@@ -107,7 +107,294 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
           "label": "Provenance Complete",
           "status": "VALID"
         }
-      ]
+      ],
+      "parent_ulpin": "IN-KA-BLR-000001",
+      "canonical_rid": "IN-KA-BLR-0000-B0001-B00001-8",
+      "cls": "B",
+      "natural_key": {
+        "digest": "NK-SHA256-000A2DBE-B32-BV1",
+        "locator": "0x70583C8DD138F546",
+        "version": 1,
+        "precision": {
+          "xy": "1 cm",
+          "z": "1 cm"
+        },
+        "datum": "EPSG:4979 (WGS84 3D)"
+      },
+      "spatial_address": {
+        "morton_63": "0x70583C8DD138F546",
+        "lod": "LOD2",
+        "cell_level": 16
+      },
+      "binding_record": {
+        "version": 1,
+        "record_hash": "0x000A2DBEA1B2C3D4E5F6",
+        "prev_hash": "0x0000000000000000",
+        "timestamp": "2024-01-15T10:00:00Z",
+        "sign_off": {
+          "examiner_id": "EXAMINER-KA-BBMP-102",
+          "timestamp": "2024-01-15T12:00:00Z"
+        }
+      },
+      "classes_10": [
+        {
+          "cls": "S",
+          "name": "Surface Parcel Column",
+          "rid": "IN-KA-BLR-0000-B0000-S00001-A",
+          "z_range": [
+            -15,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Cadastral surface column between statutory subterranean limit and ground"
+        },
+        {
+          "cls": "B",
+          "name": "Sanctioned Building Envelope",
+          "rid": "IN-KA-BLR-0000-B0001-B00001-8",
+          "z_range": [
+            0,
+            131.8
+          ],
+          "status": "PASS",
+          "desc": "Sanctioned physical building envelope"
+        },
+        {
+          "cls": "L",
+          "name": "Level / Storey Slabs",
+          "rid": "IN-KA-BLR-0000-B0001-L00001-Y",
+          "z_range": [
+            0,
+            4
+          ],
+          "status": "PASS",
+          "desc": "38 vertical storey slabs"
+        },
+        {
+          "cls": "U",
+          "name": "Apartment / Commercial Units",
+          "rid": "IN-KA-BLR-0000-B0001-U00101-5",
+          "z_range": [
+            4,
+            121.80000000000001
+          ],
+          "status": "PASS",
+          "desc": "Residential & commercial spatial units"
+        },
+        {
+          "cls": "C",
+          "name": "Common Areas (Lobbies/Stairs)",
+          "rid": "IN-KA-BLR-0000-B0001-C00001-I",
+          "z_range": [
+            0,
+            131.8
+          ],
+          "status": "PASS",
+          "desc": "Fire exits, service shafts, and entrance lobbies"
+        },
+        {
+          "cls": "P",
+          "name": "Accessory Parking Vaults",
+          "rid": "IN-KA-BLR-0000-B0001-P00001-Z",
+          "z_range": [
+            -10,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Multi-level basement parking and mechanical rooms"
+        },
+        {
+          "cls": "A",
+          "name": "Airspace Development Lot",
+          "rid": "IN-KA-BLR-0000-B0001-A00001-P",
+          "z_range": [
+            131.8,
+            156.8
+          ],
+          "status": "PASS",
+          "desc": "Transferable development air-right volume above roof"
+        },
+        {
+          "cls": "T",
+          "name": "Subterranean Infrastructure Lot",
+          "rid": "IN-KA-BLR-0000-B0000-T00001-K",
+          "z_range": [
+            -30,
+            -15
+          ],
+          "status": "WARN",
+          "desc": "Deep underground rail corridor / utility tunnel"
+        },
+        {
+          "cls": "E",
+          "name": "Elevated Corridor / Viaduct",
+          "rid": "IN-KA-BLR-0000-B0000-E00001-I",
+          "z_range": [
+            12,
+            18
+          ],
+          "status": "PASS",
+          "desc": "Elevated transit right-of-way"
+        },
+        {
+          "cls": "I",
+          "name": "Municipal Utility Network Segment",
+          "rid": "IN-KA-BLR-0000-B0000-I00001-L",
+          "z_range": [
+            -3,
+            0
+          ],
+          "status": "FAIL",
+          "desc": "Storm drain (raja kaluve) and municipal conduit"
+        }
+      ],
+      "legacy_ids": [
+        {
+          "id_system": "PID",
+          "legacy_value": "BBMP-EAASTHI-01-992",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "UPOR",
+          "legacy_value": "PR-KA-BLR-1000",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "RERA",
+          "legacy_value": "PRM/KA/RERA/1251/310/PR/170915/00010",
+          "relationship": "MANY_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "ULPIN",
+          "legacy_value": "IN-KA-BLR-000001",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        }
+      ],
+      "rrr_rights": [
+        {
+          "type": "STRATA_UNIT_TITLE",
+          "holder": "Residential Association / Proprietary Units",
+          "undivided_share": "0.66%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Karnataka Apartment Ownership Act 1972 Sec 5",
+          "verified": true
+        },
+        {
+          "type": "FREEHOLD_OWNERSHIP",
+          "holder": "Land Owning Entity / Cadastral Parent",
+          "undivided_share": "100.00%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Transfer of Property Act 1882",
+          "verified": true
+        },
+        {
+          "type": "EASEMENT_DISPUTED",
+          "holder": "BBMP Storm Water Drain Authority",
+          "undivided_share": null,
+          "legal_basis_status": "STATE_SPECIFIC",
+          "statute": "Indian Easements Act 1882 Sec 15",
+          "verified": false
+        }
+      ],
+      "tier_results": [
+        {
+          "tier": "T0",
+          "name": "Data Integrity",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T1",
+          "name": "Geometric Validity (val3dity 2-manifold)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T2",
+          "name": "Cadastral Topology (No-Overlap & Containment)",
+          "status": "FAIL",
+          "findings": [
+            {
+              "finding_id": "FINDING-BLR-001",
+              "finding_type": "UTILITY_WITHOUT_EASEMENT",
+              "severity": "FAIL",
+              "rule_id": "T2.OVERLAP.UTILITY",
+              "message": "Municipal storm drain (raja kaluve, Class I) intersects basement without a registered easement Right."
+            }
+          ]
+        },
+        {
+          "tier": "T3",
+          "name": "Plan-vs-As-Built Hungarian Reconciliation",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T4",
+          "name": "Administrative & RRR Consistency",
+          "status": "FAIL",
+          "findings": []
+        }
+      ],
+      "explain_objects": [
+        {
+          "finding_id": "EXPLAIN-BLR-001",
+          "finding_type": "UTILITY_WITHOUT_EASEMENT",
+          "severity": "FAIL",
+          "confidence": 0.98,
+          "rule": {
+            "rule_id": "T2.OVERLAP.UTILITY",
+            "description": "Utility corridor (Class I) intersecting ownership volume (Class U/P) requires registered easement Right",
+            "tolerance": "epsilon_v = 0.00 m³",
+            "policy_reference": "Indian Easements Act 1882 + K-RERA Title Verification"
+          },
+          "evidence": {
+            "evidence_ids": [
+              "EV-BBMP-DRAIN-CADASTRE",
+              "EV-TERRESTRIAL-BIM-E3"
+            ],
+            "evidence_class": "E5 (GPR Subsurface) + E3 (BIM)",
+            "sigma_measurement": 0.08,
+            "data_provenance": [
+              "REAL",
+              "PROXY"
+            ]
+          },
+          "geometry_overlay": {
+            "expected": "Parcel boundary with buffer clearance",
+            "observed": "Encroachment into 12m natural drain buffer",
+            "intersection": "Basement P1 northwest corner intersects drain channel",
+            "magnitude": "14.2 m³ volumetric overlap"
+          },
+          "plan_version": "BBMP-SANCTION-2018-REV4",
+          "affected_rids": [
+            "IN-KA-BLR-0000-B0001-B00001-8",
+            "IN-KA-BLR-0000-B0000-I00001-L"
+          ],
+          "examiner_action": null,
+          "override_history": []
+        }
+      ],
+      "evidence_sufficiency": {
+        "available": [
+          "E1 (Airborne LiDAR)",
+          "E2 (Exterior UAV)",
+          "E4 (Sanctioned Plans)"
+        ],
+        "required_for_full_pass": [
+          "E1",
+          "E2",
+          "E3 (Interior Terrestrial Scan)",
+          "E4"
+        ],
+        "unverifiable_checks": [
+          "Unit Partition Alignment (requires E3 terrestrial scan — Zero Silent PASS Upgrades)"
+        ]
+      }
     },
     {
       "building_id": "BLR-BLD-00002",
@@ -190,7 +477,248 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
           "label": "Provenance Complete",
           "status": "VALID"
         }
-      ]
+      ],
+      "parent_ulpin": "IN-KA-BLR-000002",
+      "canonical_rid": "IN-KA-BLR-0000-B0002-B00001-S",
+      "cls": "B",
+      "natural_key": {
+        "digest": "NK-SHA256-000A2D92-B32-BV1",
+        "locator": "0x70583C84F5BC0389",
+        "version": 1,
+        "precision": {
+          "xy": "1 cm",
+          "z": "1 cm"
+        },
+        "datum": "EPSG:4979 (WGS84 3D)"
+      },
+      "spatial_address": {
+        "morton_63": "0x70583C84F5BC0389",
+        "lod": "LOD2",
+        "cell_level": 16
+      },
+      "binding_record": {
+        "version": 1,
+        "record_hash": "0x000A2D92A1B2C3D4E5F6",
+        "prev_hash": "0x0000000000000000",
+        "timestamp": "2024-01-15T10:00:00Z",
+        "sign_off": {
+          "examiner_id": "EXAMINER-KA-BBMP-102",
+          "timestamp": "2024-01-15T12:00:00Z"
+        }
+      },
+      "classes_10": [
+        {
+          "cls": "S",
+          "name": "Surface Parcel Column",
+          "rid": "IN-KA-BLR-0000-B0000-S00001-A",
+          "z_range": [
+            -15,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Cadastral surface column between statutory subterranean limit and ground"
+        },
+        {
+          "cls": "B",
+          "name": "Sanctioned Building Envelope",
+          "rid": "IN-KA-BLR-0000-B0002-B00001-S",
+          "z_range": [
+            0,
+            90
+          ],
+          "status": "PASS",
+          "desc": "Sanctioned physical building envelope"
+        },
+        {
+          "cls": "L",
+          "name": "Level / Storey Slabs",
+          "rid": "IN-KA-BLR-0000-B0002-L00001-H",
+          "z_range": [
+            0,
+            4
+          ],
+          "status": "PASS",
+          "desc": "26 vertical storey slabs"
+        },
+        {
+          "cls": "U",
+          "name": "Apartment / Commercial Units",
+          "rid": "IN-KA-BLR-0000-B0002-U00101-P",
+          "z_range": [
+            4,
+            80
+          ],
+          "status": "PASS",
+          "desc": "Residential & commercial spatial units"
+        },
+        {
+          "cls": "C",
+          "name": "Common Areas (Lobbies/Stairs)",
+          "rid": "IN-KA-BLR-0000-B0002-C00001-1",
+          "z_range": [
+            0,
+            90
+          ],
+          "status": "PASS",
+          "desc": "Fire exits, service shafts, and entrance lobbies"
+        },
+        {
+          "cls": "P",
+          "name": "Accessory Parking Vaults",
+          "rid": "IN-KA-BLR-0000-B0002-P00001-K",
+          "z_range": [
+            -10,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Multi-level basement parking and mechanical rooms"
+        },
+        {
+          "cls": "A",
+          "name": "Airspace Development Lot",
+          "rid": "IN-KA-BLR-0000-B0002-A00001-I",
+          "z_range": [
+            90,
+            115
+          ],
+          "status": "PASS",
+          "desc": "Transferable development air-right volume above roof"
+        },
+        {
+          "cls": "T",
+          "name": "Subterranean Infrastructure Lot",
+          "rid": "IN-KA-BLR-0000-B0000-T00001-K",
+          "z_range": [
+            -30,
+            -15
+          ],
+          "status": "PASS",
+          "desc": "Deep underground rail corridor / utility tunnel"
+        },
+        {
+          "cls": "E",
+          "name": "Elevated Corridor / Viaduct",
+          "rid": "IN-KA-BLR-0000-B0000-E00001-I",
+          "z_range": [
+            12,
+            18
+          ],
+          "status": "PASS",
+          "desc": "Elevated transit right-of-way"
+        },
+        {
+          "cls": "I",
+          "name": "Municipal Utility Network Segment",
+          "rid": "IN-KA-BLR-0000-B0000-I00001-L",
+          "z_range": [
+            -3,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Storm drain (raja kaluve) and municipal conduit"
+        }
+      ],
+      "legacy_ids": [
+        {
+          "id_system": "PID",
+          "legacy_value": "BBMP-EAASTHI-02-992",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "UPOR",
+          "legacy_value": "PR-KA-BLR-1001",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "RERA",
+          "legacy_value": "PRM/KA/RERA/1251/310/PR/170915/00011",
+          "relationship": "MANY_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "ULPIN",
+          "legacy_value": "IN-KA-BLR-000002",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        }
+      ],
+      "rrr_rights": [
+        {
+          "type": "STRATA_UNIT_TITLE",
+          "holder": "Residential Association / Proprietary Units",
+          "undivided_share": "0.96%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Karnataka Apartment Ownership Act 1972 Sec 5",
+          "verified": true
+        },
+        {
+          "type": "FREEHOLD_OWNERSHIP",
+          "holder": "Land Owning Entity / Cadastral Parent",
+          "undivided_share": "100.00%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Transfer of Property Act 1882",
+          "verified": true
+        },
+        {
+          "type": "EASEMENT_UTILITY",
+          "holder": "BBMP Storm Water Drain Authority",
+          "undivided_share": null,
+          "legal_basis_status": "VERIFIED",
+          "statute": "Indian Easements Act 1882 Sec 15",
+          "verified": true
+        }
+      ],
+      "tier_results": [
+        {
+          "tier": "T0",
+          "name": "Data Integrity",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T1",
+          "name": "Geometric Validity (val3dity 2-manifold)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T2",
+          "name": "Cadastral Topology (No-Overlap & Containment)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T3",
+          "name": "Plan-vs-As-Built Hungarian Reconciliation",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T4",
+          "name": "Administrative & RRR Consistency",
+          "status": "PASS",
+          "findings": []
+        }
+      ],
+      "explain_objects": [],
+      "evidence_sufficiency": {
+        "available": [
+          "E1 (Airborne LiDAR)",
+          "E2 (Exterior UAV)",
+          "E4 (Sanctioned Plans)"
+        ],
+        "required_for_full_pass": [
+          "E1",
+          "E2",
+          "E3 (Interior Terrestrial Scan)",
+          "E4"
+        ],
+        "unverifiable_checks": [
+          "Unit Partition Alignment (requires E3 terrestrial scan — Zero Silent PASS Upgrades)"
+        ]
+      }
     },
     {
       "building_id": "BLR-BLD-00003",
@@ -273,7 +801,248 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
           "label": "Provenance Complete",
           "status": "VALID"
         }
-      ]
+      ],
+      "parent_ulpin": "IN-KA-BLR-000003",
+      "canonical_rid": "IN-KA-BLR-0000-B0003-B00001-B",
+      "cls": "B",
+      "natural_key": {
+        "digest": "NK-SHA256-000A2DB2-B32-BV1",
+        "locator": "0x70582ECCF5A5427E",
+        "version": 1,
+        "precision": {
+          "xy": "1 cm",
+          "z": "1 cm"
+        },
+        "datum": "EPSG:4979 (WGS84 3D)"
+      },
+      "spatial_address": {
+        "morton_63": "0x70582ECCF5A5427E",
+        "lod": "LOD2",
+        "cell_level": 16
+      },
+      "binding_record": {
+        "version": 1,
+        "record_hash": "0x000A2DB2A1B2C3D4E5F6",
+        "prev_hash": "0x0000000000000000",
+        "timestamp": "2024-01-15T10:00:00Z",
+        "sign_off": {
+          "examiner_id": "EXAMINER-KA-BBMP-102",
+          "timestamp": "2024-01-15T12:00:00Z"
+        }
+      },
+      "classes_10": [
+        {
+          "cls": "S",
+          "name": "Surface Parcel Column",
+          "rid": "IN-KA-BLR-0000-B0000-S00001-A",
+          "z_range": [
+            -15,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Cadastral surface column between statutory subterranean limit and ground"
+        },
+        {
+          "cls": "B",
+          "name": "Sanctioned Building Envelope",
+          "rid": "IN-KA-BLR-0000-B0003-B00001-B",
+          "z_range": [
+            0,
+            180
+          ],
+          "status": "PASS",
+          "desc": "Sanctioned physical building envelope"
+        },
+        {
+          "cls": "L",
+          "name": "Level / Storey Slabs",
+          "rid": "IN-KA-BLR-0000-B0003-L00001-Z",
+          "z_range": [
+            0,
+            4
+          ],
+          "status": "PASS",
+          "desc": "48 vertical storey slabs"
+        },
+        {
+          "cls": "U",
+          "name": "Apartment / Commercial Units",
+          "rid": "IN-KA-BLR-0000-B0003-U00101-8",
+          "z_range": [
+            4,
+            170
+          ],
+          "status": "PASS",
+          "desc": "Residential & commercial spatial units"
+        },
+        {
+          "cls": "C",
+          "name": "Common Areas (Lobbies/Stairs)",
+          "rid": "IN-KA-BLR-0000-B0003-C00001-L",
+          "z_range": [
+            0,
+            180
+          ],
+          "status": "PASS",
+          "desc": "Fire exits, service shafts, and entrance lobbies"
+        },
+        {
+          "cls": "P",
+          "name": "Accessory Parking Vaults",
+          "rid": "IN-KA-BLR-0000-B0003-P00001-3",
+          "z_range": [
+            -10,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Multi-level basement parking and mechanical rooms"
+        },
+        {
+          "cls": "A",
+          "name": "Airspace Development Lot",
+          "rid": "IN-KA-BLR-0000-B0003-A00001-1",
+          "z_range": [
+            180,
+            205
+          ],
+          "status": "PASS",
+          "desc": "Transferable development air-right volume above roof"
+        },
+        {
+          "cls": "T",
+          "name": "Subterranean Infrastructure Lot",
+          "rid": "IN-KA-BLR-0000-B0000-T00001-K",
+          "z_range": [
+            -30,
+            -15
+          ],
+          "status": "PASS",
+          "desc": "Deep underground rail corridor / utility tunnel"
+        },
+        {
+          "cls": "E",
+          "name": "Elevated Corridor / Viaduct",
+          "rid": "IN-KA-BLR-0000-B0000-E00001-I",
+          "z_range": [
+            12,
+            18
+          ],
+          "status": "PASS",
+          "desc": "Elevated transit right-of-way"
+        },
+        {
+          "cls": "I",
+          "name": "Municipal Utility Network Segment",
+          "rid": "IN-KA-BLR-0000-B0000-I00001-L",
+          "z_range": [
+            -3,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Storm drain (raja kaluve) and municipal conduit"
+        }
+      ],
+      "legacy_ids": [
+        {
+          "id_system": "PID",
+          "legacy_value": "BBMP-EAASTHI-03-992",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "UPOR",
+          "legacy_value": "PR-KA-BLR-1002",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "RERA",
+          "legacy_value": "PRM/KA/RERA/1251/310/PR/170915/00012",
+          "relationship": "MANY_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "ULPIN",
+          "legacy_value": "IN-KA-BLR-000003",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        }
+      ],
+      "rrr_rights": [
+        {
+          "type": "STRATA_UNIT_TITLE",
+          "holder": "Residential Association / Proprietary Units",
+          "undivided_share": "0.52%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Karnataka Apartment Ownership Act 1972 Sec 5",
+          "verified": true
+        },
+        {
+          "type": "FREEHOLD_OWNERSHIP",
+          "holder": "Land Owning Entity / Cadastral Parent",
+          "undivided_share": "100.00%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Transfer of Property Act 1882",
+          "verified": true
+        },
+        {
+          "type": "EASEMENT_UTILITY",
+          "holder": "BBMP Storm Water Drain Authority",
+          "undivided_share": null,
+          "legal_basis_status": "VERIFIED",
+          "statute": "Indian Easements Act 1882 Sec 15",
+          "verified": true
+        }
+      ],
+      "tier_results": [
+        {
+          "tier": "T0",
+          "name": "Data Integrity",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T1",
+          "name": "Geometric Validity (val3dity 2-manifold)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T2",
+          "name": "Cadastral Topology (No-Overlap & Containment)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T3",
+          "name": "Plan-vs-As-Built Hungarian Reconciliation",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T4",
+          "name": "Administrative & RRR Consistency",
+          "status": "PASS",
+          "findings": []
+        }
+      ],
+      "explain_objects": [],
+      "evidence_sufficiency": {
+        "available": [
+          "E1 (Airborne LiDAR)",
+          "E2 (Exterior UAV)",
+          "E4 (Sanctioned Plans)"
+        ],
+        "required_for_full_pass": [
+          "E1",
+          "E2",
+          "E3 (Interior Terrestrial Scan)",
+          "E4"
+        ],
+        "unverifiable_checks": [
+          "Unit Partition Alignment (requires E3 terrestrial scan — Zero Silent PASS Upgrades)"
+        ]
+      }
     },
     {
       "building_id": "BLR-BLD-00004",
@@ -347,7 +1116,248 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
           "label": "Provenance Complete",
           "status": "VALID"
         }
-      ]
+      ],
+      "parent_ulpin": "IN-KA-BLR-000004",
+      "canonical_rid": "IN-KA-BLR-0000-B0004-B00001-V",
+      "cls": "B",
+      "natural_key": {
+        "digest": "NK-SHA256-000A20F4-B32-BV1",
+        "locator": "0x397CBE84E80773C4",
+        "version": 1,
+        "precision": {
+          "xy": "1 cm",
+          "z": "1 cm"
+        },
+        "datum": "EPSG:4979 (WGS84 3D)"
+      },
+      "spatial_address": {
+        "morton_63": "0x397CBE84E80773C4",
+        "lod": "LOD2",
+        "cell_level": 16
+      },
+      "binding_record": {
+        "version": 1,
+        "record_hash": "0x000A20F4A1B2C3D4E5F6",
+        "prev_hash": "0x0000000000000000",
+        "timestamp": "2024-01-15T10:00:00Z",
+        "sign_off": {
+          "examiner_id": "EXAMINER-KA-BBMP-102",
+          "timestamp": "2024-01-15T12:00:00Z"
+        }
+      },
+      "classes_10": [
+        {
+          "cls": "S",
+          "name": "Surface Parcel Column",
+          "rid": "IN-KA-BLR-0000-B0000-S00001-A",
+          "z_range": [
+            -15,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Cadastral surface column between statutory subterranean limit and ground"
+        },
+        {
+          "cls": "B",
+          "name": "Sanctioned Building Envelope",
+          "rid": "IN-KA-BLR-0000-B0004-B00001-V",
+          "z_range": [
+            0,
+            120
+          ],
+          "status": "PASS",
+          "desc": "Sanctioned physical building envelope"
+        },
+        {
+          "cls": "L",
+          "name": "Level / Storey Slabs",
+          "rid": "IN-KA-BLR-0000-B0004-L00001-K",
+          "z_range": [
+            0,
+            4
+          ],
+          "status": "PASS",
+          "desc": "34 vertical storey slabs"
+        },
+        {
+          "cls": "U",
+          "name": "Apartment / Commercial Units",
+          "rid": "IN-KA-BLR-0000-B0004-U00101-S",
+          "z_range": [
+            4,
+            110
+          ],
+          "status": "PASS",
+          "desc": "Residential & commercial spatial units"
+        },
+        {
+          "cls": "C",
+          "name": "Common Areas (Lobbies/Stairs)",
+          "rid": "IN-KA-BLR-0000-B0004-C00001-4",
+          "z_range": [
+            0,
+            120
+          ],
+          "status": "PASS",
+          "desc": "Fire exits, service shafts, and entrance lobbies"
+        },
+        {
+          "cls": "P",
+          "name": "Accessory Parking Vaults",
+          "rid": "IN-KA-BLR-0000-B0004-P00001-N",
+          "z_range": [
+            -10,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Multi-level basement parking and mechanical rooms"
+        },
+        {
+          "cls": "A",
+          "name": "Airspace Development Lot",
+          "rid": "IN-KA-BLR-0000-B0004-A00001-L",
+          "z_range": [
+            120,
+            145
+          ],
+          "status": "PASS",
+          "desc": "Transferable development air-right volume above roof"
+        },
+        {
+          "cls": "T",
+          "name": "Subterranean Infrastructure Lot",
+          "rid": "IN-KA-BLR-0000-B0000-T00001-K",
+          "z_range": [
+            -30,
+            -15
+          ],
+          "status": "PASS",
+          "desc": "Deep underground rail corridor / utility tunnel"
+        },
+        {
+          "cls": "E",
+          "name": "Elevated Corridor / Viaduct",
+          "rid": "IN-KA-BLR-0000-B0000-E00001-I",
+          "z_range": [
+            12,
+            18
+          ],
+          "status": "PASS",
+          "desc": "Elevated transit right-of-way"
+        },
+        {
+          "cls": "I",
+          "name": "Municipal Utility Network Segment",
+          "rid": "IN-KA-BLR-0000-B0000-I00001-L",
+          "z_range": [
+            -3,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Storm drain (raja kaluve) and municipal conduit"
+        }
+      ],
+      "legacy_ids": [
+        {
+          "id_system": "PID",
+          "legacy_value": "BBMP-EAASTHI-04-992",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "UPOR",
+          "legacy_value": "PR-KA-BLR-1003",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "RERA",
+          "legacy_value": "PRM/KA/RERA/1251/310/PR/170915/00013",
+          "relationship": "MANY_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "ULPIN",
+          "legacy_value": "IN-KA-BLR-000004",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        }
+      ],
+      "rrr_rights": [
+        {
+          "type": "STRATA_UNIT_TITLE",
+          "holder": "Residential Association / Proprietary Units",
+          "undivided_share": "0.74%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Karnataka Apartment Ownership Act 1972 Sec 5",
+          "verified": true
+        },
+        {
+          "type": "FREEHOLD_OWNERSHIP",
+          "holder": "Land Owning Entity / Cadastral Parent",
+          "undivided_share": "100.00%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Transfer of Property Act 1882",
+          "verified": true
+        },
+        {
+          "type": "EASEMENT_UTILITY",
+          "holder": "BBMP Storm Water Drain Authority",
+          "undivided_share": null,
+          "legal_basis_status": "VERIFIED",
+          "statute": "Indian Easements Act 1882 Sec 15",
+          "verified": true
+        }
+      ],
+      "tier_results": [
+        {
+          "tier": "T0",
+          "name": "Data Integrity",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T1",
+          "name": "Geometric Validity (val3dity 2-manifold)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T2",
+          "name": "Cadastral Topology (No-Overlap & Containment)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T3",
+          "name": "Plan-vs-As-Built Hungarian Reconciliation",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T4",
+          "name": "Administrative & RRR Consistency",
+          "status": "PASS",
+          "findings": []
+        }
+      ],
+      "explain_objects": [],
+      "evidence_sufficiency": {
+        "available": [
+          "E1 (Airborne LiDAR)",
+          "E2 (Exterior UAV)",
+          "E4 (Sanctioned Plans)"
+        ],
+        "required_for_full_pass": [
+          "E1",
+          "E2",
+          "E3 (Interior Terrestrial Scan)",
+          "E4"
+        ],
+        "unverifiable_checks": [
+          "Unit Partition Alignment (requires E3 terrestrial scan — Zero Silent PASS Upgrades)"
+        ]
+      }
     },
     {
       "building_id": "BLR-BLD-00005",
@@ -420,7 +1430,248 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
           "label": "Provenance Complete",
           "status": "VALID"
         }
-      ]
+      ],
+      "parent_ulpin": "IN-KA-BLR-000005",
+      "canonical_rid": "IN-KA-BLR-0000-B0005-B00001-E",
+      "cls": "B",
+      "natural_key": {
+        "digest": "NK-SHA256-000A21DE-B32-BV1",
+        "locator": "0x397CBCC4EC71748B",
+        "version": 1,
+        "precision": {
+          "xy": "1 cm",
+          "z": "1 cm"
+        },
+        "datum": "EPSG:4979 (WGS84 3D)"
+      },
+      "spatial_address": {
+        "morton_63": "0x397CBCC4EC71748B",
+        "lod": "LOD2",
+        "cell_level": 16
+      },
+      "binding_record": {
+        "version": 1,
+        "record_hash": "0x000A21DEA1B2C3D4E5F6",
+        "prev_hash": "0x0000000000000000",
+        "timestamp": "2024-01-15T10:00:00Z",
+        "sign_off": {
+          "examiner_id": "EXAMINER-KA-BBMP-102",
+          "timestamp": "2024-01-15T12:00:00Z"
+        }
+      },
+      "classes_10": [
+        {
+          "cls": "S",
+          "name": "Surface Parcel Column",
+          "rid": "IN-KA-BLR-0000-B0000-S00001-A",
+          "z_range": [
+            -15,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Cadastral surface column between statutory subterranean limit and ground"
+        },
+        {
+          "cls": "B",
+          "name": "Sanctioned Building Envelope",
+          "rid": "IN-KA-BLR-0000-B0005-B00001-E",
+          "z_range": [
+            0,
+            120
+          ],
+          "status": "PASS",
+          "desc": "Sanctioned physical building envelope"
+        },
+        {
+          "cls": "L",
+          "name": "Level / Storey Slabs",
+          "rid": "IN-KA-BLR-0000-B0005-L00001-3",
+          "z_range": [
+            0,
+            4
+          ],
+          "status": "PASS",
+          "desc": "32 vertical storey slabs"
+        },
+        {
+          "cls": "U",
+          "name": "Apartment / Commercial Units",
+          "rid": "IN-KA-BLR-0000-B0005-U00101-B",
+          "z_range": [
+            4,
+            110
+          ],
+          "status": "PASS",
+          "desc": "Residential & commercial spatial units"
+        },
+        {
+          "cls": "C",
+          "name": "Common Areas (Lobbies/Stairs)",
+          "rid": "IN-KA-BLR-0000-B0005-C00001-O",
+          "z_range": [
+            0,
+            120
+          ],
+          "status": "PASS",
+          "desc": "Fire exits, service shafts, and entrance lobbies"
+        },
+        {
+          "cls": "P",
+          "name": "Accessory Parking Vaults",
+          "rid": "IN-KA-BLR-0000-B0005-P00001-6",
+          "z_range": [
+            -10,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Multi-level basement parking and mechanical rooms"
+        },
+        {
+          "cls": "A",
+          "name": "Airspace Development Lot",
+          "rid": "IN-KA-BLR-0000-B0005-A00001-4",
+          "z_range": [
+            120,
+            145
+          ],
+          "status": "PASS",
+          "desc": "Transferable development air-right volume above roof"
+        },
+        {
+          "cls": "T",
+          "name": "Subterranean Infrastructure Lot",
+          "rid": "IN-KA-BLR-0000-B0000-T00001-K",
+          "z_range": [
+            -30,
+            -15
+          ],
+          "status": "PASS",
+          "desc": "Deep underground rail corridor / utility tunnel"
+        },
+        {
+          "cls": "E",
+          "name": "Elevated Corridor / Viaduct",
+          "rid": "IN-KA-BLR-0000-B0000-E00001-I",
+          "z_range": [
+            12,
+            18
+          ],
+          "status": "PASS",
+          "desc": "Elevated transit right-of-way"
+        },
+        {
+          "cls": "I",
+          "name": "Municipal Utility Network Segment",
+          "rid": "IN-KA-BLR-0000-B0000-I00001-L",
+          "z_range": [
+            -3,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Storm drain (raja kaluve) and municipal conduit"
+        }
+      ],
+      "legacy_ids": [
+        {
+          "id_system": "PID",
+          "legacy_value": "BBMP-EAASTHI-05-992",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "UPOR",
+          "legacy_value": "PR-KA-BLR-1004",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "RERA",
+          "legacy_value": "PRM/KA/RERA/1251/310/PR/170915/00014",
+          "relationship": "MANY_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "ULPIN",
+          "legacy_value": "IN-KA-BLR-000005",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        }
+      ],
+      "rrr_rights": [
+        {
+          "type": "STRATA_UNIT_TITLE",
+          "holder": "Residential Association / Proprietary Units",
+          "undivided_share": "0.78%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Karnataka Apartment Ownership Act 1972 Sec 5",
+          "verified": true
+        },
+        {
+          "type": "FREEHOLD_OWNERSHIP",
+          "holder": "Land Owning Entity / Cadastral Parent",
+          "undivided_share": "100.00%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Transfer of Property Act 1882",
+          "verified": true
+        },
+        {
+          "type": "EASEMENT_UTILITY",
+          "holder": "BBMP Storm Water Drain Authority",
+          "undivided_share": null,
+          "legal_basis_status": "VERIFIED",
+          "statute": "Indian Easements Act 1882 Sec 15",
+          "verified": true
+        }
+      ],
+      "tier_results": [
+        {
+          "tier": "T0",
+          "name": "Data Integrity",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T1",
+          "name": "Geometric Validity (val3dity 2-manifold)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T2",
+          "name": "Cadastral Topology (No-Overlap & Containment)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T3",
+          "name": "Plan-vs-As-Built Hungarian Reconciliation",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T4",
+          "name": "Administrative & RRR Consistency",
+          "status": "PASS",
+          "findings": []
+        }
+      ],
+      "explain_objects": [],
+      "evidence_sufficiency": {
+        "available": [
+          "E1 (Airborne LiDAR)",
+          "E2 (Exterior UAV)",
+          "E4 (Sanctioned Plans)"
+        ],
+        "required_for_full_pass": [
+          "E1",
+          "E2",
+          "E3 (Interior Terrestrial Scan)",
+          "E4"
+        ],
+        "unverifiable_checks": [
+          "Unit Partition Alignment (requires E3 terrestrial scan — Zero Silent PASS Upgrades)"
+        ]
+      }
     },
     {
       "building_id": "BLR-BLD-00006",
@@ -479,7 +1730,248 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
           "label": "Provenance Complete",
           "status": "VALID"
         }
-      ]
+      ],
+      "parent_ulpin": "IN-KA-BLR-000006",
+      "canonical_rid": "IN-KA-BLR-0000-B0006-B00001-Y",
+      "cls": "B",
+      "natural_key": {
+        "digest": "NK-SHA256-000A2123-B32-BV1",
+        "locator": "0x397CBCCDEA326FD8",
+        "version": 1,
+        "precision": {
+          "xy": "1 cm",
+          "z": "1 cm"
+        },
+        "datum": "EPSG:4979 (WGS84 3D)"
+      },
+      "spatial_address": {
+        "morton_63": "0x397CBCCDEA326FD8",
+        "lod": "LOD2",
+        "cell_level": 16
+      },
+      "binding_record": {
+        "version": 1,
+        "record_hash": "0x000A2123A1B2C3D4E5F6",
+        "prev_hash": "0x0000000000000000",
+        "timestamp": "2024-01-15T10:00:00Z",
+        "sign_off": {
+          "examiner_id": "EXAMINER-KA-BBMP-102",
+          "timestamp": "2024-01-15T12:00:00Z"
+        }
+      },
+      "classes_10": [
+        {
+          "cls": "S",
+          "name": "Surface Parcel Column",
+          "rid": "IN-KA-BLR-0000-B0000-S00001-A",
+          "z_range": [
+            -15,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Cadastral surface column between statutory subterranean limit and ground"
+        },
+        {
+          "cls": "B",
+          "name": "Sanctioned Building Envelope",
+          "rid": "IN-KA-BLR-0000-B0006-B00001-Y",
+          "z_range": [
+            0,
+            95
+          ],
+          "status": "PASS",
+          "desc": "Sanctioned physical building envelope"
+        },
+        {
+          "cls": "L",
+          "name": "Level / Storey Slabs",
+          "rid": "IN-KA-BLR-0000-B0006-L00001-N",
+          "z_range": [
+            0,
+            4
+          ],
+          "status": "PASS",
+          "desc": "28 vertical storey slabs"
+        },
+        {
+          "cls": "U",
+          "name": "Apartment / Commercial Units",
+          "rid": "IN-KA-BLR-0000-B0006-U00101-V",
+          "z_range": [
+            4,
+            85
+          ],
+          "status": "PASS",
+          "desc": "Residential & commercial spatial units"
+        },
+        {
+          "cls": "C",
+          "name": "Common Areas (Lobbies/Stairs)",
+          "rid": "IN-KA-BLR-0000-B0006-C00001-7",
+          "z_range": [
+            0,
+            95
+          ],
+          "status": "PASS",
+          "desc": "Fire exits, service shafts, and entrance lobbies"
+        },
+        {
+          "cls": "P",
+          "name": "Accessory Parking Vaults",
+          "rid": "IN-KA-BLR-0000-B0006-P00001-Q",
+          "z_range": [
+            -10,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Multi-level basement parking and mechanical rooms"
+        },
+        {
+          "cls": "A",
+          "name": "Airspace Development Lot",
+          "rid": "IN-KA-BLR-0000-B0006-A00001-O",
+          "z_range": [
+            95,
+            120
+          ],
+          "status": "PASS",
+          "desc": "Transferable development air-right volume above roof"
+        },
+        {
+          "cls": "T",
+          "name": "Subterranean Infrastructure Lot",
+          "rid": "IN-KA-BLR-0000-B0000-T00001-K",
+          "z_range": [
+            -30,
+            -15
+          ],
+          "status": "PASS",
+          "desc": "Deep underground rail corridor / utility tunnel"
+        },
+        {
+          "cls": "E",
+          "name": "Elevated Corridor / Viaduct",
+          "rid": "IN-KA-BLR-0000-B0000-E00001-I",
+          "z_range": [
+            12,
+            18
+          ],
+          "status": "PASS",
+          "desc": "Elevated transit right-of-way"
+        },
+        {
+          "cls": "I",
+          "name": "Municipal Utility Network Segment",
+          "rid": "IN-KA-BLR-0000-B0000-I00001-L",
+          "z_range": [
+            -3,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Storm drain (raja kaluve) and municipal conduit"
+        }
+      ],
+      "legacy_ids": [
+        {
+          "id_system": "PID",
+          "legacy_value": "BBMP-EAASTHI-06-992",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "UPOR",
+          "legacy_value": "PR-KA-BLR-1005",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "RERA",
+          "legacy_value": "PRM/KA/RERA/1251/310/PR/170915/00015",
+          "relationship": "MANY_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "ULPIN",
+          "legacy_value": "IN-KA-BLR-000006",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        }
+      ],
+      "rrr_rights": [
+        {
+          "type": "STRATA_UNIT_TITLE",
+          "holder": "Residential Association / Proprietary Units",
+          "undivided_share": "0.89%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Karnataka Apartment Ownership Act 1972 Sec 5",
+          "verified": true
+        },
+        {
+          "type": "FREEHOLD_OWNERSHIP",
+          "holder": "Land Owning Entity / Cadastral Parent",
+          "undivided_share": "100.00%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Transfer of Property Act 1882",
+          "verified": true
+        },
+        {
+          "type": "EASEMENT_UTILITY",
+          "holder": "BBMP Storm Water Drain Authority",
+          "undivided_share": null,
+          "legal_basis_status": "VERIFIED",
+          "statute": "Indian Easements Act 1882 Sec 15",
+          "verified": true
+        }
+      ],
+      "tier_results": [
+        {
+          "tier": "T0",
+          "name": "Data Integrity",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T1",
+          "name": "Geometric Validity (val3dity 2-manifold)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T2",
+          "name": "Cadastral Topology (No-Overlap & Containment)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T3",
+          "name": "Plan-vs-As-Built Hungarian Reconciliation",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T4",
+          "name": "Administrative & RRR Consistency",
+          "status": "PASS",
+          "findings": []
+        }
+      ],
+      "explain_objects": [],
+      "evidence_sufficiency": {
+        "available": [
+          "E1 (Airborne LiDAR)",
+          "E2 (Exterior UAV)",
+          "E4 (Sanctioned Plans)"
+        ],
+        "required_for_full_pass": [
+          "E1",
+          "E2",
+          "E3 (Interior Terrestrial Scan)",
+          "E4"
+        ],
+        "unverifiable_checks": [
+          "Unit Partition Alignment (requires E3 terrestrial scan — Zero Silent PASS Upgrades)"
+        ]
+      }
     },
     {
       "building_id": "BLR-BLD-00007",
@@ -557,7 +2049,248 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
           "label": "Provenance Complete",
           "status": "VALID"
         }
-      ]
+      ],
+      "parent_ulpin": "IN-KA-BLR-000007",
+      "canonical_rid": "IN-KA-BLR-0000-B0007-B00001-7",
+      "cls": "B",
+      "natural_key": {
+        "digest": "NK-SHA256-000A2FFC-B32-BV1",
+        "locator": "0x70583E8DF4AAF516",
+        "version": 1,
+        "precision": {
+          "xy": "1 cm",
+          "z": "1 cm"
+        },
+        "datum": "EPSG:4979 (WGS84 3D)"
+      },
+      "spatial_address": {
+        "morton_63": "0x70583E8DF4AAF516",
+        "lod": "LOD2",
+        "cell_level": 16
+      },
+      "binding_record": {
+        "version": 1,
+        "record_hash": "0x000A2FFCA1B2C3D4E5F6",
+        "prev_hash": "0x0000000000000000",
+        "timestamp": "2024-01-15T10:00:00Z",
+        "sign_off": {
+          "examiner_id": "EXAMINER-KA-BBMP-102",
+          "timestamp": "2024-01-15T12:00:00Z"
+        }
+      },
+      "classes_10": [
+        {
+          "cls": "S",
+          "name": "Surface Parcel Column",
+          "rid": "IN-KA-BLR-0000-B0000-S00001-A",
+          "z_range": [
+            -15,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Cadastral surface column between statutory subterranean limit and ground"
+        },
+        {
+          "cls": "B",
+          "name": "Sanctioned Building Envelope",
+          "rid": "IN-KA-BLR-0000-B0007-B00001-7",
+          "z_range": [
+            0,
+            130
+          ],
+          "status": "PASS",
+          "desc": "Sanctioned physical building envelope"
+        },
+        {
+          "cls": "L",
+          "name": "Level / Storey Slabs",
+          "rid": "IN-KA-BLR-0000-B0007-L00001-X",
+          "z_range": [
+            0,
+            4
+          ],
+          "status": "PASS",
+          "desc": "36 vertical storey slabs"
+        },
+        {
+          "cls": "U",
+          "name": "Apartment / Commercial Units",
+          "rid": "IN-KA-BLR-0000-B0007-U00101-4",
+          "z_range": [
+            4,
+            120
+          ],
+          "status": "PASS",
+          "desc": "Residential & commercial spatial units"
+        },
+        {
+          "cls": "C",
+          "name": "Common Areas (Lobbies/Stairs)",
+          "rid": "IN-KA-BLR-0000-B0007-C00001-H",
+          "z_range": [
+            0,
+            130
+          ],
+          "status": "PASS",
+          "desc": "Fire exits, service shafts, and entrance lobbies"
+        },
+        {
+          "cls": "P",
+          "name": "Accessory Parking Vaults",
+          "rid": "IN-KA-BLR-0000-B0007-P00001-0",
+          "z_range": [
+            -10,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Multi-level basement parking and mechanical rooms"
+        },
+        {
+          "cls": "A",
+          "name": "Airspace Development Lot",
+          "rid": "IN-KA-BLR-0000-B0007-A00001-Y",
+          "z_range": [
+            130,
+            155
+          ],
+          "status": "PASS",
+          "desc": "Transferable development air-right volume above roof"
+        },
+        {
+          "cls": "T",
+          "name": "Subterranean Infrastructure Lot",
+          "rid": "IN-KA-BLR-0000-B0000-T00001-K",
+          "z_range": [
+            -30,
+            -15
+          ],
+          "status": "PASS",
+          "desc": "Deep underground rail corridor / utility tunnel"
+        },
+        {
+          "cls": "E",
+          "name": "Elevated Corridor / Viaduct",
+          "rid": "IN-KA-BLR-0000-B0000-E00001-I",
+          "z_range": [
+            12,
+            18
+          ],
+          "status": "PASS",
+          "desc": "Elevated transit right-of-way"
+        },
+        {
+          "cls": "I",
+          "name": "Municipal Utility Network Segment",
+          "rid": "IN-KA-BLR-0000-B0000-I00001-L",
+          "z_range": [
+            -3,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Storm drain (raja kaluve) and municipal conduit"
+        }
+      ],
+      "legacy_ids": [
+        {
+          "id_system": "PID",
+          "legacy_value": "BBMP-EAASTHI-07-992",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "UPOR",
+          "legacy_value": "PR-KA-BLR-1006",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "RERA",
+          "legacy_value": "PRM/KA/RERA/1251/310/PR/170915/00016",
+          "relationship": "MANY_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "ULPIN",
+          "legacy_value": "IN-KA-BLR-000007",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        }
+      ],
+      "rrr_rights": [
+        {
+          "type": "STRATA_UNIT_TITLE",
+          "holder": "Residential Association / Proprietary Units",
+          "undivided_share": "0.69%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Karnataka Apartment Ownership Act 1972 Sec 5",
+          "verified": true
+        },
+        {
+          "type": "FREEHOLD_OWNERSHIP",
+          "holder": "Land Owning Entity / Cadastral Parent",
+          "undivided_share": "100.00%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Transfer of Property Act 1882",
+          "verified": true
+        },
+        {
+          "type": "EASEMENT_UTILITY",
+          "holder": "BBMP Storm Water Drain Authority",
+          "undivided_share": null,
+          "legal_basis_status": "VERIFIED",
+          "statute": "Indian Easements Act 1882 Sec 15",
+          "verified": true
+        }
+      ],
+      "tier_results": [
+        {
+          "tier": "T0",
+          "name": "Data Integrity",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T1",
+          "name": "Geometric Validity (val3dity 2-manifold)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T2",
+          "name": "Cadastral Topology (No-Overlap & Containment)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T3",
+          "name": "Plan-vs-As-Built Hungarian Reconciliation",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T4",
+          "name": "Administrative & RRR Consistency",
+          "status": "PASS",
+          "findings": []
+        }
+      ],
+      "explain_objects": [],
+      "evidence_sufficiency": {
+        "available": [
+          "E1 (Airborne LiDAR)",
+          "E2 (Exterior UAV)",
+          "E4 (Sanctioned Plans)"
+        ],
+        "required_for_full_pass": [
+          "E1",
+          "E2",
+          "E3 (Interior Terrestrial Scan)",
+          "E4"
+        ],
+        "unverifiable_checks": [
+          "Unit Partition Alignment (requires E3 terrestrial scan — Zero Silent PASS Upgrades)"
+        ]
+      }
     },
     {
       "building_id": "BLR-BLD-00008",
@@ -616,7 +2349,248 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
           "label": "Provenance Complete",
           "status": "VALID"
         }
-      ]
+      ],
+      "parent_ulpin": "IN-KA-BLR-000008",
+      "canonical_rid": "IN-KA-BLR-0000-B0008-B00001-R",
+      "cls": "B",
+      "natural_key": {
+        "digest": "NK-SHA256-000A2A68-B32-BV1",
+        "locator": "0x397CBEE96ED76937",
+        "version": 1,
+        "precision": {
+          "xy": "1 cm",
+          "z": "1 cm"
+        },
+        "datum": "EPSG:4979 (WGS84 3D)"
+      },
+      "spatial_address": {
+        "morton_63": "0x397CBEE96ED76937",
+        "lod": "LOD2",
+        "cell_level": 16
+      },
+      "binding_record": {
+        "version": 1,
+        "record_hash": "0x000A2A68A1B2C3D4E5F6",
+        "prev_hash": "0x0000000000000000",
+        "timestamp": "2024-01-15T10:00:00Z",
+        "sign_off": {
+          "examiner_id": "EXAMINER-KA-BBMP-102",
+          "timestamp": "2024-01-15T12:00:00Z"
+        }
+      },
+      "classes_10": [
+        {
+          "cls": "S",
+          "name": "Surface Parcel Column",
+          "rid": "IN-KA-BLR-0000-B0000-S00001-A",
+          "z_range": [
+            -15,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Cadastral surface column between statutory subterranean limit and ground"
+        },
+        {
+          "cls": "B",
+          "name": "Sanctioned Building Envelope",
+          "rid": "IN-KA-BLR-0000-B0008-B00001-R",
+          "z_range": [
+            0,
+            85
+          ],
+          "status": "PASS",
+          "desc": "Sanctioned physical building envelope"
+        },
+        {
+          "cls": "L",
+          "name": "Level / Storey Slabs",
+          "rid": "IN-KA-BLR-0000-B0008-L00001-G",
+          "z_range": [
+            0,
+            4
+          ],
+          "status": "PASS",
+          "desc": "22 vertical storey slabs"
+        },
+        {
+          "cls": "U",
+          "name": "Apartment / Commercial Units",
+          "rid": "IN-KA-BLR-0000-B0008-U00101-O",
+          "z_range": [
+            4,
+            75
+          ],
+          "status": "PASS",
+          "desc": "Residential & commercial spatial units"
+        },
+        {
+          "cls": "C",
+          "name": "Common Areas (Lobbies/Stairs)",
+          "rid": "IN-KA-BLR-0000-B0008-C00001-Z",
+          "z_range": [
+            0,
+            85
+          ],
+          "status": "PASS",
+          "desc": "Fire exits, service shafts, and entrance lobbies"
+        },
+        {
+          "cls": "P",
+          "name": "Accessory Parking Vaults",
+          "rid": "IN-KA-BLR-0000-B0008-P00001-J",
+          "z_range": [
+            -10,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Multi-level basement parking and mechanical rooms"
+        },
+        {
+          "cls": "A",
+          "name": "Airspace Development Lot",
+          "rid": "IN-KA-BLR-0000-B0008-A00001-H",
+          "z_range": [
+            85,
+            110
+          ],
+          "status": "PASS",
+          "desc": "Transferable development air-right volume above roof"
+        },
+        {
+          "cls": "T",
+          "name": "Subterranean Infrastructure Lot",
+          "rid": "IN-KA-BLR-0000-B0000-T00001-K",
+          "z_range": [
+            -30,
+            -15
+          ],
+          "status": "PASS",
+          "desc": "Deep underground rail corridor / utility tunnel"
+        },
+        {
+          "cls": "E",
+          "name": "Elevated Corridor / Viaduct",
+          "rid": "IN-KA-BLR-0000-B0000-E00001-I",
+          "z_range": [
+            12,
+            18
+          ],
+          "status": "PASS",
+          "desc": "Elevated transit right-of-way"
+        },
+        {
+          "cls": "I",
+          "name": "Municipal Utility Network Segment",
+          "rid": "IN-KA-BLR-0000-B0000-I00001-L",
+          "z_range": [
+            -3,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Storm drain (raja kaluve) and municipal conduit"
+        }
+      ],
+      "legacy_ids": [
+        {
+          "id_system": "PID",
+          "legacy_value": "BBMP-EAASTHI-08-992",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "UPOR",
+          "legacy_value": "PR-KA-BLR-1007",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "RERA",
+          "legacy_value": "PRM/KA/RERA/1251/310/PR/170915/00017",
+          "relationship": "MANY_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "ULPIN",
+          "legacy_value": "IN-KA-BLR-000008",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        }
+      ],
+      "rrr_rights": [
+        {
+          "type": "STRATA_UNIT_TITLE",
+          "holder": "Residential Association / Proprietary Units",
+          "undivided_share": "1.14%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Karnataka Apartment Ownership Act 1972 Sec 5",
+          "verified": true
+        },
+        {
+          "type": "FREEHOLD_OWNERSHIP",
+          "holder": "Land Owning Entity / Cadastral Parent",
+          "undivided_share": "100.00%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Transfer of Property Act 1882",
+          "verified": true
+        },
+        {
+          "type": "EASEMENT_UTILITY",
+          "holder": "BBMP Storm Water Drain Authority",
+          "undivided_share": null,
+          "legal_basis_status": "VERIFIED",
+          "statute": "Indian Easements Act 1882 Sec 15",
+          "verified": true
+        }
+      ],
+      "tier_results": [
+        {
+          "tier": "T0",
+          "name": "Data Integrity",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T1",
+          "name": "Geometric Validity (val3dity 2-manifold)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T2",
+          "name": "Cadastral Topology (No-Overlap & Containment)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T3",
+          "name": "Plan-vs-As-Built Hungarian Reconciliation",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T4",
+          "name": "Administrative & RRR Consistency",
+          "status": "PASS",
+          "findings": []
+        }
+      ],
+      "explain_objects": [],
+      "evidence_sufficiency": {
+        "available": [
+          "E1 (Airborne LiDAR)",
+          "E2 (Exterior UAV)",
+          "E4 (Sanctioned Plans)"
+        ],
+        "required_for_full_pass": [
+          "E1",
+          "E2",
+          "E3 (Interior Terrestrial Scan)",
+          "E4"
+        ],
+        "unverifiable_checks": [
+          "Unit Partition Alignment (requires E3 terrestrial scan — Zero Silent PASS Upgrades)"
+        ]
+      }
     },
     {
       "building_id": "BLR-BLD-00009",
@@ -675,7 +2649,248 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
           "label": "Provenance Complete",
           "status": "VALID"
         }
-      ]
+      ],
+      "parent_ulpin": "IN-KA-BLR-000009",
+      "canonical_rid": "IN-KA-BLR-0000-B0009-B00001-A",
+      "cls": "B",
+      "natural_key": {
+        "digest": "NK-SHA256-000A22CD-B32-BV1",
+        "locator": "0x397CBC8CCA67051A",
+        "version": 1,
+        "precision": {
+          "xy": "1 cm",
+          "z": "1 cm"
+        },
+        "datum": "EPSG:4979 (WGS84 3D)"
+      },
+      "spatial_address": {
+        "morton_63": "0x397CBC8CCA67051A",
+        "lod": "LOD2",
+        "cell_level": 16
+      },
+      "binding_record": {
+        "version": 1,
+        "record_hash": "0x000A22CDA1B2C3D4E5F6",
+        "prev_hash": "0x0000000000000000",
+        "timestamp": "2024-01-15T10:00:00Z",
+        "sign_off": {
+          "examiner_id": "EXAMINER-KA-BBMP-102",
+          "timestamp": "2024-01-15T12:00:00Z"
+        }
+      },
+      "classes_10": [
+        {
+          "cls": "S",
+          "name": "Surface Parcel Column",
+          "rid": "IN-KA-BLR-0000-B0000-S00001-A",
+          "z_range": [
+            -15,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Cadastral surface column between statutory subterranean limit and ground"
+        },
+        {
+          "cls": "B",
+          "name": "Sanctioned Building Envelope",
+          "rid": "IN-KA-BLR-0000-B0009-B00001-A",
+          "z_range": [
+            0,
+            70
+          ],
+          "status": "PASS",
+          "desc": "Sanctioned physical building envelope"
+        },
+        {
+          "cls": "L",
+          "name": "Level / Storey Slabs",
+          "rid": "IN-KA-BLR-0000-B0009-L00001-0",
+          "z_range": [
+            0,
+            4
+          ],
+          "status": "PASS",
+          "desc": "18 vertical storey slabs"
+        },
+        {
+          "cls": "U",
+          "name": "Apartment / Commercial Units",
+          "rid": "IN-KA-BLR-0000-B0009-U00101-7",
+          "z_range": [
+            4,
+            60
+          ],
+          "status": "PASS",
+          "desc": "Residential & commercial spatial units"
+        },
+        {
+          "cls": "C",
+          "name": "Common Areas (Lobbies/Stairs)",
+          "rid": "IN-KA-BLR-0000-B0009-C00001-K",
+          "z_range": [
+            0,
+            70
+          ],
+          "status": "PASS",
+          "desc": "Fire exits, service shafts, and entrance lobbies"
+        },
+        {
+          "cls": "P",
+          "name": "Accessory Parking Vaults",
+          "rid": "IN-KA-BLR-0000-B0009-P00001-2",
+          "z_range": [
+            -10,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Multi-level basement parking and mechanical rooms"
+        },
+        {
+          "cls": "A",
+          "name": "Airspace Development Lot",
+          "rid": "IN-KA-BLR-0000-B0009-A00001-Z",
+          "z_range": [
+            70,
+            95
+          ],
+          "status": "PASS",
+          "desc": "Transferable development air-right volume above roof"
+        },
+        {
+          "cls": "T",
+          "name": "Subterranean Infrastructure Lot",
+          "rid": "IN-KA-BLR-0000-B0000-T00001-K",
+          "z_range": [
+            -30,
+            -15
+          ],
+          "status": "PASS",
+          "desc": "Deep underground rail corridor / utility tunnel"
+        },
+        {
+          "cls": "E",
+          "name": "Elevated Corridor / Viaduct",
+          "rid": "IN-KA-BLR-0000-B0000-E00001-I",
+          "z_range": [
+            12,
+            18
+          ],
+          "status": "PASS",
+          "desc": "Elevated transit right-of-way"
+        },
+        {
+          "cls": "I",
+          "name": "Municipal Utility Network Segment",
+          "rid": "IN-KA-BLR-0000-B0000-I00001-L",
+          "z_range": [
+            -3,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Storm drain (raja kaluve) and municipal conduit"
+        }
+      ],
+      "legacy_ids": [
+        {
+          "id_system": "PID",
+          "legacy_value": "BBMP-EAASTHI-09-992",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "UPOR",
+          "legacy_value": "PR-KA-BLR-1008",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "RERA",
+          "legacy_value": "PRM/KA/RERA/1251/310/PR/170915/00018",
+          "relationship": "MANY_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "ULPIN",
+          "legacy_value": "IN-KA-BLR-000009",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        }
+      ],
+      "rrr_rights": [
+        {
+          "type": "STRATA_UNIT_TITLE",
+          "holder": "Residential Association / Proprietary Units",
+          "undivided_share": "1.39%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Karnataka Apartment Ownership Act 1972 Sec 5",
+          "verified": true
+        },
+        {
+          "type": "FREEHOLD_OWNERSHIP",
+          "holder": "Land Owning Entity / Cadastral Parent",
+          "undivided_share": "100.00%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Transfer of Property Act 1882",
+          "verified": true
+        },
+        {
+          "type": "EASEMENT_UTILITY",
+          "holder": "BBMP Storm Water Drain Authority",
+          "undivided_share": null,
+          "legal_basis_status": "VERIFIED",
+          "statute": "Indian Easements Act 1882 Sec 15",
+          "verified": true
+        }
+      ],
+      "tier_results": [
+        {
+          "tier": "T0",
+          "name": "Data Integrity",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T1",
+          "name": "Geometric Validity (val3dity 2-manifold)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T2",
+          "name": "Cadastral Topology (No-Overlap & Containment)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T3",
+          "name": "Plan-vs-As-Built Hungarian Reconciliation",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T4",
+          "name": "Administrative & RRR Consistency",
+          "status": "PASS",
+          "findings": []
+        }
+      ],
+      "explain_objects": [],
+      "evidence_sufficiency": {
+        "available": [
+          "E1 (Airborne LiDAR)",
+          "E2 (Exterior UAV)",
+          "E4 (Sanctioned Plans)"
+        ],
+        "required_for_full_pass": [
+          "E1",
+          "E2",
+          "E3 (Interior Terrestrial Scan)",
+          "E4"
+        ],
+        "unverifiable_checks": [
+          "Unit Partition Alignment (requires E3 terrestrial scan — Zero Silent PASS Upgrades)"
+        ]
+      }
     },
     {
       "building_id": "BLR-BLD-00010",
@@ -749,7 +2964,248 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
           "label": "Provenance Complete",
           "status": "VALID"
         }
-      ]
+      ],
+      "parent_ulpin": "IN-KA-BLR-000010",
+      "canonical_rid": "IN-KA-BLR-0000-B0010-B00001-S",
+      "cls": "B",
+      "natural_key": {
+        "digest": "NK-SHA256-000A27B0-B32-BV1",
+        "locator": "0x397CACC691189AC5",
+        "version": 1,
+        "precision": {
+          "xy": "1 cm",
+          "z": "1 cm"
+        },
+        "datum": "EPSG:4979 (WGS84 3D)"
+      },
+      "spatial_address": {
+        "morton_63": "0x397CACC691189AC5",
+        "lod": "LOD2",
+        "cell_level": 16
+      },
+      "binding_record": {
+        "version": 1,
+        "record_hash": "0x000A27B0A1B2C3D4E5F6",
+        "prev_hash": "0x0000000000000000",
+        "timestamp": "2024-01-15T10:00:00Z",
+        "sign_off": {
+          "examiner_id": "EXAMINER-KA-BBMP-102",
+          "timestamp": "2024-01-15T12:00:00Z"
+        }
+      },
+      "classes_10": [
+        {
+          "cls": "S",
+          "name": "Surface Parcel Column",
+          "rid": "IN-KA-BLR-0000-B0000-S00001-A",
+          "z_range": [
+            -15,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Cadastral surface column between statutory subterranean limit and ground"
+        },
+        {
+          "cls": "B",
+          "name": "Sanctioned Building Envelope",
+          "rid": "IN-KA-BLR-0000-B0010-B00001-S",
+          "z_range": [
+            0,
+            130
+          ],
+          "status": "PASS",
+          "desc": "Sanctioned physical building envelope"
+        },
+        {
+          "cls": "L",
+          "name": "Level / Storey Slabs",
+          "rid": "IN-KA-BLR-0000-B0010-L00001-H",
+          "z_range": [
+            0,
+            4
+          ],
+          "status": "PASS",
+          "desc": "36 vertical storey slabs"
+        },
+        {
+          "cls": "U",
+          "name": "Apartment / Commercial Units",
+          "rid": "IN-KA-BLR-0000-B0010-U00101-P",
+          "z_range": [
+            4,
+            120
+          ],
+          "status": "PASS",
+          "desc": "Residential & commercial spatial units"
+        },
+        {
+          "cls": "C",
+          "name": "Common Areas (Lobbies/Stairs)",
+          "rid": "IN-KA-BLR-0000-B0010-C00001-1",
+          "z_range": [
+            0,
+            130
+          ],
+          "status": "PASS",
+          "desc": "Fire exits, service shafts, and entrance lobbies"
+        },
+        {
+          "cls": "P",
+          "name": "Accessory Parking Vaults",
+          "rid": "IN-KA-BLR-0000-B0010-P00001-K",
+          "z_range": [
+            -10,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Multi-level basement parking and mechanical rooms"
+        },
+        {
+          "cls": "A",
+          "name": "Airspace Development Lot",
+          "rid": "IN-KA-BLR-0000-B0010-A00001-I",
+          "z_range": [
+            130,
+            155
+          ],
+          "status": "PASS",
+          "desc": "Transferable development air-right volume above roof"
+        },
+        {
+          "cls": "T",
+          "name": "Subterranean Infrastructure Lot",
+          "rid": "IN-KA-BLR-0000-B0000-T00001-K",
+          "z_range": [
+            -30,
+            -15
+          ],
+          "status": "PASS",
+          "desc": "Deep underground rail corridor / utility tunnel"
+        },
+        {
+          "cls": "E",
+          "name": "Elevated Corridor / Viaduct",
+          "rid": "IN-KA-BLR-0000-B0000-E00001-I",
+          "z_range": [
+            12,
+            18
+          ],
+          "status": "PASS",
+          "desc": "Elevated transit right-of-way"
+        },
+        {
+          "cls": "I",
+          "name": "Municipal Utility Network Segment",
+          "rid": "IN-KA-BLR-0000-B0000-I00001-L",
+          "z_range": [
+            -3,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Storm drain (raja kaluve) and municipal conduit"
+        }
+      ],
+      "legacy_ids": [
+        {
+          "id_system": "PID",
+          "legacy_value": "BBMP-EAASTHI-010-992",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "UPOR",
+          "legacy_value": "PR-KA-BLR-1009",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "RERA",
+          "legacy_value": "PRM/KA/RERA/1251/310/PR/170915/00019",
+          "relationship": "MANY_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "ULPIN",
+          "legacy_value": "IN-KA-BLR-000010",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        }
+      ],
+      "rrr_rights": [
+        {
+          "type": "STRATA_UNIT_TITLE",
+          "holder": "Residential Association / Proprietary Units",
+          "undivided_share": "0.69%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Karnataka Apartment Ownership Act 1972 Sec 5",
+          "verified": true
+        },
+        {
+          "type": "FREEHOLD_OWNERSHIP",
+          "holder": "Land Owning Entity / Cadastral Parent",
+          "undivided_share": "100.00%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Transfer of Property Act 1882",
+          "verified": true
+        },
+        {
+          "type": "EASEMENT_UTILITY",
+          "holder": "BBMP Storm Water Drain Authority",
+          "undivided_share": null,
+          "legal_basis_status": "VERIFIED",
+          "statute": "Indian Easements Act 1882 Sec 15",
+          "verified": true
+        }
+      ],
+      "tier_results": [
+        {
+          "tier": "T0",
+          "name": "Data Integrity",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T1",
+          "name": "Geometric Validity (val3dity 2-manifold)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T2",
+          "name": "Cadastral Topology (No-Overlap & Containment)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T3",
+          "name": "Plan-vs-As-Built Hungarian Reconciliation",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T4",
+          "name": "Administrative & RRR Consistency",
+          "status": "PASS",
+          "findings": []
+        }
+      ],
+      "explain_objects": [],
+      "evidence_sufficiency": {
+        "available": [
+          "E1 (Airborne LiDAR)",
+          "E2 (Exterior UAV)",
+          "E4 (Sanctioned Plans)"
+        ],
+        "required_for_full_pass": [
+          "E1",
+          "E2",
+          "E3 (Interior Terrestrial Scan)",
+          "E4"
+        ],
+        "unverifiable_checks": [
+          "Unit Partition Alignment (requires E3 terrestrial scan — Zero Silent PASS Upgrades)"
+        ]
+      }
     },
     {
       "building_id": "BLR-BLD-00011",
@@ -808,7 +3264,248 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
           "label": "Provenance Complete",
           "status": "VALID"
         }
-      ]
+      ],
+      "parent_ulpin": "IN-KA-BLR-000011",
+      "canonical_rid": "IN-KA-BLR-0000-B0011-B00001-B",
+      "cls": "B",
+      "natural_key": {
+        "digest": "NK-SHA256-000A2757-B32-BV1",
+        "locator": "0x397CAC8E90FC41FE",
+        "version": 1,
+        "precision": {
+          "xy": "1 cm",
+          "z": "1 cm"
+        },
+        "datum": "EPSG:4979 (WGS84 3D)"
+      },
+      "spatial_address": {
+        "morton_63": "0x397CAC8E90FC41FE",
+        "lod": "LOD2",
+        "cell_level": 16
+      },
+      "binding_record": {
+        "version": 1,
+        "record_hash": "0x000A2757A1B2C3D4E5F6",
+        "prev_hash": "0x0000000000000000",
+        "timestamp": "2024-01-15T10:00:00Z",
+        "sign_off": {
+          "examiner_id": "EXAMINER-KA-BBMP-102",
+          "timestamp": "2024-01-15T12:00:00Z"
+        }
+      },
+      "classes_10": [
+        {
+          "cls": "S",
+          "name": "Surface Parcel Column",
+          "rid": "IN-KA-BLR-0000-B0000-S00001-A",
+          "z_range": [
+            -15,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Cadastral surface column between statutory subterranean limit and ground"
+        },
+        {
+          "cls": "B",
+          "name": "Sanctioned Building Envelope",
+          "rid": "IN-KA-BLR-0000-B0011-B00001-B",
+          "z_range": [
+            0,
+            70
+          ],
+          "status": "PASS",
+          "desc": "Sanctioned physical building envelope"
+        },
+        {
+          "cls": "L",
+          "name": "Level / Storey Slabs",
+          "rid": "IN-KA-BLR-0000-B0011-L00001-Z",
+          "z_range": [
+            0,
+            4
+          ],
+          "status": "PASS",
+          "desc": "18 vertical storey slabs"
+        },
+        {
+          "cls": "U",
+          "name": "Apartment / Commercial Units",
+          "rid": "IN-KA-BLR-0000-B0011-U00101-8",
+          "z_range": [
+            4,
+            60
+          ],
+          "status": "PASS",
+          "desc": "Residential & commercial spatial units"
+        },
+        {
+          "cls": "C",
+          "name": "Common Areas (Lobbies/Stairs)",
+          "rid": "IN-KA-BLR-0000-B0011-C00001-L",
+          "z_range": [
+            0,
+            70
+          ],
+          "status": "PASS",
+          "desc": "Fire exits, service shafts, and entrance lobbies"
+        },
+        {
+          "cls": "P",
+          "name": "Accessory Parking Vaults",
+          "rid": "IN-KA-BLR-0000-B0011-P00001-3",
+          "z_range": [
+            -10,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Multi-level basement parking and mechanical rooms"
+        },
+        {
+          "cls": "A",
+          "name": "Airspace Development Lot",
+          "rid": "IN-KA-BLR-0000-B0011-A00001-1",
+          "z_range": [
+            70,
+            95
+          ],
+          "status": "PASS",
+          "desc": "Transferable development air-right volume above roof"
+        },
+        {
+          "cls": "T",
+          "name": "Subterranean Infrastructure Lot",
+          "rid": "IN-KA-BLR-0000-B0000-T00001-K",
+          "z_range": [
+            -30,
+            -15
+          ],
+          "status": "PASS",
+          "desc": "Deep underground rail corridor / utility tunnel"
+        },
+        {
+          "cls": "E",
+          "name": "Elevated Corridor / Viaduct",
+          "rid": "IN-KA-BLR-0000-B0000-E00001-I",
+          "z_range": [
+            12,
+            18
+          ],
+          "status": "PASS",
+          "desc": "Elevated transit right-of-way"
+        },
+        {
+          "cls": "I",
+          "name": "Municipal Utility Network Segment",
+          "rid": "IN-KA-BLR-0000-B0000-I00001-L",
+          "z_range": [
+            -3,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Storm drain (raja kaluve) and municipal conduit"
+        }
+      ],
+      "legacy_ids": [
+        {
+          "id_system": "PID",
+          "legacy_value": "BBMP-EAASTHI-011-992",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "UPOR",
+          "legacy_value": "PR-KA-BLR-1010",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "RERA",
+          "legacy_value": "PRM/KA/RERA/1251/310/PR/170915/00020",
+          "relationship": "MANY_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "ULPIN",
+          "legacy_value": "IN-KA-BLR-000011",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        }
+      ],
+      "rrr_rights": [
+        {
+          "type": "STRATA_UNIT_TITLE",
+          "holder": "Residential Association / Proprietary Units",
+          "undivided_share": "1.39%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Karnataka Apartment Ownership Act 1972 Sec 5",
+          "verified": true
+        },
+        {
+          "type": "FREEHOLD_OWNERSHIP",
+          "holder": "Land Owning Entity / Cadastral Parent",
+          "undivided_share": "100.00%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Transfer of Property Act 1882",
+          "verified": true
+        },
+        {
+          "type": "EASEMENT_UTILITY",
+          "holder": "BBMP Storm Water Drain Authority",
+          "undivided_share": null,
+          "legal_basis_status": "VERIFIED",
+          "statute": "Indian Easements Act 1882 Sec 15",
+          "verified": true
+        }
+      ],
+      "tier_results": [
+        {
+          "tier": "T0",
+          "name": "Data Integrity",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T1",
+          "name": "Geometric Validity (val3dity 2-manifold)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T2",
+          "name": "Cadastral Topology (No-Overlap & Containment)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T3",
+          "name": "Plan-vs-As-Built Hungarian Reconciliation",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T4",
+          "name": "Administrative & RRR Consistency",
+          "status": "PASS",
+          "findings": []
+        }
+      ],
+      "explain_objects": [],
+      "evidence_sufficiency": {
+        "available": [
+          "E1 (Airborne LiDAR)",
+          "E2 (Exterior UAV)",
+          "E4 (Sanctioned Plans)"
+        ],
+        "required_for_full_pass": [
+          "E1",
+          "E2",
+          "E3 (Interior Terrestrial Scan)",
+          "E4"
+        ],
+        "unverifiable_checks": [
+          "Unit Partition Alignment (requires E3 terrestrial scan — Zero Silent PASS Upgrades)"
+        ]
+      }
     },
     {
       "building_id": "BLR-BLD-00012",
@@ -862,7 +3559,248 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
           "label": "Identifier Uniqueness",
           "status": "VALID"
         }
-      ]
+      ],
+      "parent_ulpin": "IN-KA-BLR-000012",
+      "canonical_rid": "IN-KA-BLR-0000-B0012-B00001-V",
+      "cls": "B",
+      "natural_key": {
+        "digest": "NK-SHA256-000A21D5-B32-BV1",
+        "locator": "0x397CACC7A6CFF993",
+        "version": 1,
+        "precision": {
+          "xy": "1 cm",
+          "z": "1 cm"
+        },
+        "datum": "EPSG:4979 (WGS84 3D)"
+      },
+      "spatial_address": {
+        "morton_63": "0x397CACC7A6CFF993",
+        "lod": "LOD2",
+        "cell_level": 16
+      },
+      "binding_record": {
+        "version": 1,
+        "record_hash": "0x000A21D5A1B2C3D4E5F6",
+        "prev_hash": "0x0000000000000000",
+        "timestamp": "2024-01-15T10:00:00Z",
+        "sign_off": {
+          "examiner_id": "EXAMINER-KA-BBMP-102",
+          "timestamp": "2024-01-15T12:00:00Z"
+        }
+      },
+      "classes_10": [
+        {
+          "cls": "S",
+          "name": "Surface Parcel Column",
+          "rid": "IN-KA-BLR-0000-B0000-S00001-A",
+          "z_range": [
+            -15,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Cadastral surface column between statutory subterranean limit and ground"
+        },
+        {
+          "cls": "B",
+          "name": "Sanctioned Building Envelope",
+          "rid": "IN-KA-BLR-0000-B0012-B00001-V",
+          "z_range": [
+            0,
+            80
+          ],
+          "status": "PASS",
+          "desc": "Sanctioned physical building envelope"
+        },
+        {
+          "cls": "L",
+          "name": "Level / Storey Slabs",
+          "rid": "IN-KA-BLR-0000-B0012-L00001-K",
+          "z_range": [
+            0,
+            4
+          ],
+          "status": "PASS",
+          "desc": "20 vertical storey slabs"
+        },
+        {
+          "cls": "U",
+          "name": "Apartment / Commercial Units",
+          "rid": "IN-KA-BLR-0000-B0012-U00101-S",
+          "z_range": [
+            4,
+            70
+          ],
+          "status": "PASS",
+          "desc": "Residential & commercial spatial units"
+        },
+        {
+          "cls": "C",
+          "name": "Common Areas (Lobbies/Stairs)",
+          "rid": "IN-KA-BLR-0000-B0012-C00001-4",
+          "z_range": [
+            0,
+            80
+          ],
+          "status": "PASS",
+          "desc": "Fire exits, service shafts, and entrance lobbies"
+        },
+        {
+          "cls": "P",
+          "name": "Accessory Parking Vaults",
+          "rid": "IN-KA-BLR-0000-B0012-P00001-N",
+          "z_range": [
+            -10,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Multi-level basement parking and mechanical rooms"
+        },
+        {
+          "cls": "A",
+          "name": "Airspace Development Lot",
+          "rid": "IN-KA-BLR-0000-B0012-A00001-L",
+          "z_range": [
+            80,
+            105
+          ],
+          "status": "PASS",
+          "desc": "Transferable development air-right volume above roof"
+        },
+        {
+          "cls": "T",
+          "name": "Subterranean Infrastructure Lot",
+          "rid": "IN-KA-BLR-0000-B0000-T00001-K",
+          "z_range": [
+            -30,
+            -15
+          ],
+          "status": "PASS",
+          "desc": "Deep underground rail corridor / utility tunnel"
+        },
+        {
+          "cls": "E",
+          "name": "Elevated Corridor / Viaduct",
+          "rid": "IN-KA-BLR-0000-B0000-E00001-I",
+          "z_range": [
+            12,
+            18
+          ],
+          "status": "PASS",
+          "desc": "Elevated transit right-of-way"
+        },
+        {
+          "cls": "I",
+          "name": "Municipal Utility Network Segment",
+          "rid": "IN-KA-BLR-0000-B0000-I00001-L",
+          "z_range": [
+            -3,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Storm drain (raja kaluve) and municipal conduit"
+        }
+      ],
+      "legacy_ids": [
+        {
+          "id_system": "PID",
+          "legacy_value": "BBMP-EAASTHI-012-992",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "UPOR",
+          "legacy_value": "PR-KA-BLR-1011",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "RERA",
+          "legacy_value": "PRM/KA/RERA/1251/310/PR/170915/00021",
+          "relationship": "MANY_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "ULPIN",
+          "legacy_value": "IN-KA-BLR-000012",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        }
+      ],
+      "rrr_rights": [
+        {
+          "type": "STRATA_UNIT_TITLE",
+          "holder": "Residential Association / Proprietary Units",
+          "undivided_share": "1.25%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Karnataka Apartment Ownership Act 1972 Sec 5",
+          "verified": true
+        },
+        {
+          "type": "FREEHOLD_OWNERSHIP",
+          "holder": "Land Owning Entity / Cadastral Parent",
+          "undivided_share": "100.00%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Transfer of Property Act 1882",
+          "verified": true
+        },
+        {
+          "type": "EASEMENT_UTILITY",
+          "holder": "BBMP Storm Water Drain Authority",
+          "undivided_share": null,
+          "legal_basis_status": "VERIFIED",
+          "statute": "Indian Easements Act 1882 Sec 15",
+          "verified": true
+        }
+      ],
+      "tier_results": [
+        {
+          "tier": "T0",
+          "name": "Data Integrity",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T1",
+          "name": "Geometric Validity (val3dity 2-manifold)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T2",
+          "name": "Cadastral Topology (No-Overlap & Containment)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T3",
+          "name": "Plan-vs-As-Built Hungarian Reconciliation",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T4",
+          "name": "Administrative & RRR Consistency",
+          "status": "PASS",
+          "findings": []
+        }
+      ],
+      "explain_objects": [],
+      "evidence_sufficiency": {
+        "available": [
+          "E1 (Airborne LiDAR)",
+          "E2 (Exterior UAV)",
+          "E4 (Sanctioned Plans)"
+        ],
+        "required_for_full_pass": [
+          "E1",
+          "E2",
+          "E3 (Interior Terrestrial Scan)",
+          "E4"
+        ],
+        "unverifiable_checks": [
+          "Unit Partition Alignment (requires E3 terrestrial scan — Zero Silent PASS Upgrades)"
+        ]
+      }
     },
     {
       "building_id": "BLR-BLD-00013",
@@ -921,7 +3859,248 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
           "label": "Provenance Complete",
           "status": "VALID"
         }
-      ]
+      ],
+      "parent_ulpin": "IN-KA-BLR-000013",
+      "canonical_rid": "IN-KA-BLR-0000-B0013-B00001-E",
+      "cls": "B",
+      "natural_key": {
+        "digest": "NK-SHA256-000A2C02-B32-BV1",
+        "locator": "0x397C3E8C6D442F9F",
+        "version": 1,
+        "precision": {
+          "xy": "1 cm",
+          "z": "1 cm"
+        },
+        "datum": "EPSG:4979 (WGS84 3D)"
+      },
+      "spatial_address": {
+        "morton_63": "0x397C3E8C6D442F9F",
+        "lod": "LOD2",
+        "cell_level": 16
+      },
+      "binding_record": {
+        "version": 1,
+        "record_hash": "0x000A2C02A1B2C3D4E5F6",
+        "prev_hash": "0x0000000000000000",
+        "timestamp": "2024-01-15T10:00:00Z",
+        "sign_off": {
+          "examiner_id": "EXAMINER-KA-BBMP-102",
+          "timestamp": "2024-01-15T12:00:00Z"
+        }
+      },
+      "classes_10": [
+        {
+          "cls": "S",
+          "name": "Surface Parcel Column",
+          "rid": "IN-KA-BLR-0000-B0000-S00001-A",
+          "z_range": [
+            -15,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Cadastral surface column between statutory subterranean limit and ground"
+        },
+        {
+          "cls": "B",
+          "name": "Sanctioned Building Envelope",
+          "rid": "IN-KA-BLR-0000-B0013-B00001-E",
+          "z_range": [
+            0,
+            52
+          ],
+          "status": "PASS",
+          "desc": "Sanctioned physical building envelope"
+        },
+        {
+          "cls": "L",
+          "name": "Level / Storey Slabs",
+          "rid": "IN-KA-BLR-0000-B0013-L00001-3",
+          "z_range": [
+            0,
+            4
+          ],
+          "status": "PASS",
+          "desc": "14 vertical storey slabs"
+        },
+        {
+          "cls": "U",
+          "name": "Apartment / Commercial Units",
+          "rid": "IN-KA-BLR-0000-B0013-U00101-B",
+          "z_range": [
+            4,
+            42
+          ],
+          "status": "PASS",
+          "desc": "Residential & commercial spatial units"
+        },
+        {
+          "cls": "C",
+          "name": "Common Areas (Lobbies/Stairs)",
+          "rid": "IN-KA-BLR-0000-B0013-C00001-O",
+          "z_range": [
+            0,
+            52
+          ],
+          "status": "PASS",
+          "desc": "Fire exits, service shafts, and entrance lobbies"
+        },
+        {
+          "cls": "P",
+          "name": "Accessory Parking Vaults",
+          "rid": "IN-KA-BLR-0000-B0013-P00001-6",
+          "z_range": [
+            -10,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Multi-level basement parking and mechanical rooms"
+        },
+        {
+          "cls": "A",
+          "name": "Airspace Development Lot",
+          "rid": "IN-KA-BLR-0000-B0013-A00001-4",
+          "z_range": [
+            52,
+            77
+          ],
+          "status": "PASS",
+          "desc": "Transferable development air-right volume above roof"
+        },
+        {
+          "cls": "T",
+          "name": "Subterranean Infrastructure Lot",
+          "rid": "IN-KA-BLR-0000-B0000-T00001-K",
+          "z_range": [
+            -30,
+            -15
+          ],
+          "status": "PASS",
+          "desc": "Deep underground rail corridor / utility tunnel"
+        },
+        {
+          "cls": "E",
+          "name": "Elevated Corridor / Viaduct",
+          "rid": "IN-KA-BLR-0000-B0000-E00001-I",
+          "z_range": [
+            12,
+            18
+          ],
+          "status": "PASS",
+          "desc": "Elevated transit right-of-way"
+        },
+        {
+          "cls": "I",
+          "name": "Municipal Utility Network Segment",
+          "rid": "IN-KA-BLR-0000-B0000-I00001-L",
+          "z_range": [
+            -3,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Storm drain (raja kaluve) and municipal conduit"
+        }
+      ],
+      "legacy_ids": [
+        {
+          "id_system": "PID",
+          "legacy_value": "BBMP-EAASTHI-013-992",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "UPOR",
+          "legacy_value": "PR-KA-BLR-1012",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "RERA",
+          "legacy_value": "PRM/KA/RERA/1251/310/PR/170915/00022",
+          "relationship": "MANY_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "ULPIN",
+          "legacy_value": "IN-KA-BLR-000013",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        }
+      ],
+      "rrr_rights": [
+        {
+          "type": "STRATA_UNIT_TITLE",
+          "holder": "Residential Association / Proprietary Units",
+          "undivided_share": "1.79%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Karnataka Apartment Ownership Act 1972 Sec 5",
+          "verified": true
+        },
+        {
+          "type": "FREEHOLD_OWNERSHIP",
+          "holder": "Land Owning Entity / Cadastral Parent",
+          "undivided_share": "100.00%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Transfer of Property Act 1882",
+          "verified": true
+        },
+        {
+          "type": "EASEMENT_UTILITY",
+          "holder": "BBMP Storm Water Drain Authority",
+          "undivided_share": null,
+          "legal_basis_status": "VERIFIED",
+          "statute": "Indian Easements Act 1882 Sec 15",
+          "verified": true
+        }
+      ],
+      "tier_results": [
+        {
+          "tier": "T0",
+          "name": "Data Integrity",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T1",
+          "name": "Geometric Validity (val3dity 2-manifold)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T2",
+          "name": "Cadastral Topology (No-Overlap & Containment)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T3",
+          "name": "Plan-vs-As-Built Hungarian Reconciliation",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T4",
+          "name": "Administrative & RRR Consistency",
+          "status": "PASS",
+          "findings": []
+        }
+      ],
+      "explain_objects": [],
+      "evidence_sufficiency": {
+        "available": [
+          "E1 (Airborne LiDAR)",
+          "E2 (Exterior UAV)",
+          "E4 (Sanctioned Plans)"
+        ],
+        "required_for_full_pass": [
+          "E1",
+          "E2",
+          "E3 (Interior Terrestrial Scan)",
+          "E4"
+        ],
+        "unverifiable_checks": [
+          "Unit Partition Alignment (requires E3 terrestrial scan — Zero Silent PASS Upgrades)"
+        ]
+      }
     },
     {
       "building_id": "BLR-BLD-00014",
@@ -975,7 +4154,248 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
           "label": "Identifier Uniqueness",
           "status": "VALID"
         }
-      ]
+      ],
+      "parent_ulpin": "IN-KA-BLR-000014",
+      "canonical_rid": "IN-KA-BLR-0000-B0014-B00001-Y",
+      "cls": "B",
+      "natural_key": {
+        "digest": "NK-SHA256-000A2FCF-B32-BV1",
+        "locator": "0x397C3CCC493A3F2E",
+        "version": 1,
+        "precision": {
+          "xy": "1 cm",
+          "z": "1 cm"
+        },
+        "datum": "EPSG:4979 (WGS84 3D)"
+      },
+      "spatial_address": {
+        "morton_63": "0x397C3CCC493A3F2E",
+        "lod": "LOD2",
+        "cell_level": 16
+      },
+      "binding_record": {
+        "version": 1,
+        "record_hash": "0x000A2FCFA1B2C3D4E5F6",
+        "prev_hash": "0x0000000000000000",
+        "timestamp": "2024-01-15T10:00:00Z",
+        "sign_off": {
+          "examiner_id": "EXAMINER-KA-BBMP-102",
+          "timestamp": "2024-01-15T12:00:00Z"
+        }
+      },
+      "classes_10": [
+        {
+          "cls": "S",
+          "name": "Surface Parcel Column",
+          "rid": "IN-KA-BLR-0000-B0000-S00001-A",
+          "z_range": [
+            -15,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Cadastral surface column between statutory subterranean limit and ground"
+        },
+        {
+          "cls": "B",
+          "name": "Sanctioned Building Envelope",
+          "rid": "IN-KA-BLR-0000-B0014-B00001-Y",
+          "z_range": [
+            0,
+            45
+          ],
+          "status": "PASS",
+          "desc": "Sanctioned physical building envelope"
+        },
+        {
+          "cls": "L",
+          "name": "Level / Storey Slabs",
+          "rid": "IN-KA-BLR-0000-B0014-L00001-N",
+          "z_range": [
+            0,
+            4
+          ],
+          "status": "PASS",
+          "desc": "12 vertical storey slabs"
+        },
+        {
+          "cls": "U",
+          "name": "Apartment / Commercial Units",
+          "rid": "IN-KA-BLR-0000-B0014-U00101-V",
+          "z_range": [
+            4,
+            35
+          ],
+          "status": "PASS",
+          "desc": "Residential & commercial spatial units"
+        },
+        {
+          "cls": "C",
+          "name": "Common Areas (Lobbies/Stairs)",
+          "rid": "IN-KA-BLR-0000-B0014-C00001-7",
+          "z_range": [
+            0,
+            45
+          ],
+          "status": "PASS",
+          "desc": "Fire exits, service shafts, and entrance lobbies"
+        },
+        {
+          "cls": "P",
+          "name": "Accessory Parking Vaults",
+          "rid": "IN-KA-BLR-0000-B0014-P00001-Q",
+          "z_range": [
+            -10,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Multi-level basement parking and mechanical rooms"
+        },
+        {
+          "cls": "A",
+          "name": "Airspace Development Lot",
+          "rid": "IN-KA-BLR-0000-B0014-A00001-O",
+          "z_range": [
+            45,
+            70
+          ],
+          "status": "PASS",
+          "desc": "Transferable development air-right volume above roof"
+        },
+        {
+          "cls": "T",
+          "name": "Subterranean Infrastructure Lot",
+          "rid": "IN-KA-BLR-0000-B0000-T00001-K",
+          "z_range": [
+            -30,
+            -15
+          ],
+          "status": "PASS",
+          "desc": "Deep underground rail corridor / utility tunnel"
+        },
+        {
+          "cls": "E",
+          "name": "Elevated Corridor / Viaduct",
+          "rid": "IN-KA-BLR-0000-B0000-E00001-I",
+          "z_range": [
+            12,
+            18
+          ],
+          "status": "PASS",
+          "desc": "Elevated transit right-of-way"
+        },
+        {
+          "cls": "I",
+          "name": "Municipal Utility Network Segment",
+          "rid": "IN-KA-BLR-0000-B0000-I00001-L",
+          "z_range": [
+            -3,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Storm drain (raja kaluve) and municipal conduit"
+        }
+      ],
+      "legacy_ids": [
+        {
+          "id_system": "PID",
+          "legacy_value": "BBMP-EAASTHI-014-992",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "UPOR",
+          "legacy_value": "PR-KA-BLR-1013",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "RERA",
+          "legacy_value": "PRM/KA/RERA/1251/310/PR/170915/00023",
+          "relationship": "MANY_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "ULPIN",
+          "legacy_value": "IN-KA-BLR-000014",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        }
+      ],
+      "rrr_rights": [
+        {
+          "type": "STRATA_UNIT_TITLE",
+          "holder": "Residential Association / Proprietary Units",
+          "undivided_share": "2.08%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Karnataka Apartment Ownership Act 1972 Sec 5",
+          "verified": true
+        },
+        {
+          "type": "FREEHOLD_OWNERSHIP",
+          "holder": "Land Owning Entity / Cadastral Parent",
+          "undivided_share": "100.00%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Transfer of Property Act 1882",
+          "verified": true
+        },
+        {
+          "type": "EASEMENT_UTILITY",
+          "holder": "BBMP Storm Water Drain Authority",
+          "undivided_share": null,
+          "legal_basis_status": "VERIFIED",
+          "statute": "Indian Easements Act 1882 Sec 15",
+          "verified": true
+        }
+      ],
+      "tier_results": [
+        {
+          "tier": "T0",
+          "name": "Data Integrity",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T1",
+          "name": "Geometric Validity (val3dity 2-manifold)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T2",
+          "name": "Cadastral Topology (No-Overlap & Containment)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T3",
+          "name": "Plan-vs-As-Built Hungarian Reconciliation",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T4",
+          "name": "Administrative & RRR Consistency",
+          "status": "PASS",
+          "findings": []
+        }
+      ],
+      "explain_objects": [],
+      "evidence_sufficiency": {
+        "available": [
+          "E1 (Airborne LiDAR)",
+          "E2 (Exterior UAV)",
+          "E4 (Sanctioned Plans)"
+        ],
+        "required_for_full_pass": [
+          "E1",
+          "E2",
+          "E3 (Interior Terrestrial Scan)",
+          "E4"
+        ],
+        "unverifiable_checks": [
+          "Unit Partition Alignment (requires E3 terrestrial scan — Zero Silent PASS Upgrades)"
+        ]
+      }
     },
     {
       "building_id": "BLR-BLD-00015",
@@ -1049,7 +4469,248 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
           "label": "Provenance Complete",
           "status": "VALID"
         }
-      ]
+      ],
+      "parent_ulpin": "IN-KA-BLR-000015",
+      "canonical_rid": "IN-KA-BLR-0000-B0015-B00001-7",
+      "cls": "B",
+      "natural_key": {
+        "digest": "NK-SHA256-000A2B62-B32-BV1",
+        "locator": "0x70582CE063E87B17",
+        "version": 1,
+        "precision": {
+          "xy": "1 cm",
+          "z": "1 cm"
+        },
+        "datum": "EPSG:4979 (WGS84 3D)"
+      },
+      "spatial_address": {
+        "morton_63": "0x70582CE063E87B17",
+        "lod": "LOD2",
+        "cell_level": 16
+      },
+      "binding_record": {
+        "version": 1,
+        "record_hash": "0x000A2B62A1B2C3D4E5F6",
+        "prev_hash": "0x0000000000000000",
+        "timestamp": "2024-01-15T10:00:00Z",
+        "sign_off": {
+          "examiner_id": "EXAMINER-KA-BBMP-102",
+          "timestamp": "2024-01-15T12:00:00Z"
+        }
+      },
+      "classes_10": [
+        {
+          "cls": "S",
+          "name": "Surface Parcel Column",
+          "rid": "IN-KA-BLR-0000-B0000-S00001-A",
+          "z_range": [
+            -15,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Cadastral surface column between statutory subterranean limit and ground"
+        },
+        {
+          "cls": "B",
+          "name": "Sanctioned Building Envelope",
+          "rid": "IN-KA-BLR-0000-B0015-B00001-7",
+          "z_range": [
+            0,
+            130
+          ],
+          "status": "PASS",
+          "desc": "Sanctioned physical building envelope"
+        },
+        {
+          "cls": "L",
+          "name": "Level / Storey Slabs",
+          "rid": "IN-KA-BLR-0000-B0015-L00001-X",
+          "z_range": [
+            0,
+            4
+          ],
+          "status": "PASS",
+          "desc": "36 vertical storey slabs"
+        },
+        {
+          "cls": "U",
+          "name": "Apartment / Commercial Units",
+          "rid": "IN-KA-BLR-0000-B0015-U00101-4",
+          "z_range": [
+            4,
+            120
+          ],
+          "status": "PASS",
+          "desc": "Residential & commercial spatial units"
+        },
+        {
+          "cls": "C",
+          "name": "Common Areas (Lobbies/Stairs)",
+          "rid": "IN-KA-BLR-0000-B0015-C00001-H",
+          "z_range": [
+            0,
+            130
+          ],
+          "status": "PASS",
+          "desc": "Fire exits, service shafts, and entrance lobbies"
+        },
+        {
+          "cls": "P",
+          "name": "Accessory Parking Vaults",
+          "rid": "IN-KA-BLR-0000-B0015-P00001-0",
+          "z_range": [
+            -10,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Multi-level basement parking and mechanical rooms"
+        },
+        {
+          "cls": "A",
+          "name": "Airspace Development Lot",
+          "rid": "IN-KA-BLR-0000-B0015-A00001-Y",
+          "z_range": [
+            130,
+            155
+          ],
+          "status": "PASS",
+          "desc": "Transferable development air-right volume above roof"
+        },
+        {
+          "cls": "T",
+          "name": "Subterranean Infrastructure Lot",
+          "rid": "IN-KA-BLR-0000-B0000-T00001-K",
+          "z_range": [
+            -30,
+            -15
+          ],
+          "status": "PASS",
+          "desc": "Deep underground rail corridor / utility tunnel"
+        },
+        {
+          "cls": "E",
+          "name": "Elevated Corridor / Viaduct",
+          "rid": "IN-KA-BLR-0000-B0000-E00001-I",
+          "z_range": [
+            12,
+            18
+          ],
+          "status": "PASS",
+          "desc": "Elevated transit right-of-way"
+        },
+        {
+          "cls": "I",
+          "name": "Municipal Utility Network Segment",
+          "rid": "IN-KA-BLR-0000-B0000-I00001-L",
+          "z_range": [
+            -3,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Storm drain (raja kaluve) and municipal conduit"
+        }
+      ],
+      "legacy_ids": [
+        {
+          "id_system": "PID",
+          "legacy_value": "BBMP-EAASTHI-015-992",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "UPOR",
+          "legacy_value": "PR-KA-BLR-1014",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "RERA",
+          "legacy_value": "PRM/KA/RERA/1251/310/PR/170915/00024",
+          "relationship": "MANY_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "ULPIN",
+          "legacy_value": "IN-KA-BLR-000015",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        }
+      ],
+      "rrr_rights": [
+        {
+          "type": "STRATA_UNIT_TITLE",
+          "holder": "Residential Association / Proprietary Units",
+          "undivided_share": "0.69%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Karnataka Apartment Ownership Act 1972 Sec 5",
+          "verified": true
+        },
+        {
+          "type": "FREEHOLD_OWNERSHIP",
+          "holder": "Land Owning Entity / Cadastral Parent",
+          "undivided_share": "100.00%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Transfer of Property Act 1882",
+          "verified": true
+        },
+        {
+          "type": "EASEMENT_UTILITY",
+          "holder": "BBMP Storm Water Drain Authority",
+          "undivided_share": null,
+          "legal_basis_status": "VERIFIED",
+          "statute": "Indian Easements Act 1882 Sec 15",
+          "verified": true
+        }
+      ],
+      "tier_results": [
+        {
+          "tier": "T0",
+          "name": "Data Integrity",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T1",
+          "name": "Geometric Validity (val3dity 2-manifold)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T2",
+          "name": "Cadastral Topology (No-Overlap & Containment)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T3",
+          "name": "Plan-vs-As-Built Hungarian Reconciliation",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T4",
+          "name": "Administrative & RRR Consistency",
+          "status": "PASS",
+          "findings": []
+        }
+      ],
+      "explain_objects": [],
+      "evidence_sufficiency": {
+        "available": [
+          "E1 (Airborne LiDAR)",
+          "E2 (Exterior UAV)",
+          "E4 (Sanctioned Plans)"
+        ],
+        "required_for_full_pass": [
+          "E1",
+          "E2",
+          "E3 (Interior Terrestrial Scan)",
+          "E4"
+        ],
+        "unverifiable_checks": [
+          "Unit Partition Alignment (requires E3 terrestrial scan — Zero Silent PASS Upgrades)"
+        ]
+      }
     },
     {
       "building_id": "BLR-BLD-00016",
@@ -1118,7 +4779,248 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
           "label": "Provenance Complete",
           "status": "VALID"
         }
-      ]
+      ],
+      "parent_ulpin": "IN-KA-BLR-000016",
+      "canonical_rid": "IN-KA-BLR-0000-B0016-B00001-R",
+      "cls": "B",
+      "natural_key": {
+        "digest": "NK-SHA256-000A2B9F-B32-BV1",
+        "locator": "0x70582CE94794AC46",
+        "version": 1,
+        "precision": {
+          "xy": "1 cm",
+          "z": "1 cm"
+        },
+        "datum": "EPSG:4979 (WGS84 3D)"
+      },
+      "spatial_address": {
+        "morton_63": "0x70582CE94794AC46",
+        "lod": "LOD2",
+        "cell_level": 16
+      },
+      "binding_record": {
+        "version": 1,
+        "record_hash": "0x000A2B9FA1B2C3D4E5F6",
+        "prev_hash": "0x0000000000000000",
+        "timestamp": "2024-01-15T10:00:00Z",
+        "sign_off": {
+          "examiner_id": "EXAMINER-KA-BBMP-102",
+          "timestamp": "2024-01-15T12:00:00Z"
+        }
+      },
+      "classes_10": [
+        {
+          "cls": "S",
+          "name": "Surface Parcel Column",
+          "rid": "IN-KA-BLR-0000-B0000-S00001-A",
+          "z_range": [
+            -15,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Cadastral surface column between statutory subterranean limit and ground"
+        },
+        {
+          "cls": "B",
+          "name": "Sanctioned Building Envelope",
+          "rid": "IN-KA-BLR-0000-B0016-B00001-R",
+          "z_range": [
+            0,
+            150
+          ],
+          "status": "PASS",
+          "desc": "Sanctioned physical building envelope"
+        },
+        {
+          "cls": "L",
+          "name": "Level / Storey Slabs",
+          "rid": "IN-KA-BLR-0000-B0016-L00001-G",
+          "z_range": [
+            0,
+            4
+          ],
+          "status": "PASS",
+          "desc": "42 vertical storey slabs"
+        },
+        {
+          "cls": "U",
+          "name": "Apartment / Commercial Units",
+          "rid": "IN-KA-BLR-0000-B0016-U00101-O",
+          "z_range": [
+            4,
+            140
+          ],
+          "status": "PASS",
+          "desc": "Residential & commercial spatial units"
+        },
+        {
+          "cls": "C",
+          "name": "Common Areas (Lobbies/Stairs)",
+          "rid": "IN-KA-BLR-0000-B0016-C00001-Z",
+          "z_range": [
+            0,
+            150
+          ],
+          "status": "PASS",
+          "desc": "Fire exits, service shafts, and entrance lobbies"
+        },
+        {
+          "cls": "P",
+          "name": "Accessory Parking Vaults",
+          "rid": "IN-KA-BLR-0000-B0016-P00001-J",
+          "z_range": [
+            -10,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Multi-level basement parking and mechanical rooms"
+        },
+        {
+          "cls": "A",
+          "name": "Airspace Development Lot",
+          "rid": "IN-KA-BLR-0000-B0016-A00001-H",
+          "z_range": [
+            150,
+            175
+          ],
+          "status": "PASS",
+          "desc": "Transferable development air-right volume above roof"
+        },
+        {
+          "cls": "T",
+          "name": "Subterranean Infrastructure Lot",
+          "rid": "IN-KA-BLR-0000-B0000-T00001-K",
+          "z_range": [
+            -30,
+            -15
+          ],
+          "status": "PASS",
+          "desc": "Deep underground rail corridor / utility tunnel"
+        },
+        {
+          "cls": "E",
+          "name": "Elevated Corridor / Viaduct",
+          "rid": "IN-KA-BLR-0000-B0000-E00001-I",
+          "z_range": [
+            12,
+            18
+          ],
+          "status": "PASS",
+          "desc": "Elevated transit right-of-way"
+        },
+        {
+          "cls": "I",
+          "name": "Municipal Utility Network Segment",
+          "rid": "IN-KA-BLR-0000-B0000-I00001-L",
+          "z_range": [
+            -3,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Storm drain (raja kaluve) and municipal conduit"
+        }
+      ],
+      "legacy_ids": [
+        {
+          "id_system": "PID",
+          "legacy_value": "BBMP-EAASTHI-016-992",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "UPOR",
+          "legacy_value": "PR-KA-BLR-1015",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "RERA",
+          "legacy_value": "PRM/KA/RERA/1251/310/PR/170915/00025",
+          "relationship": "MANY_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "ULPIN",
+          "legacy_value": "IN-KA-BLR-000016",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        }
+      ],
+      "rrr_rights": [
+        {
+          "type": "STRATA_UNIT_TITLE",
+          "holder": "Residential Association / Proprietary Units",
+          "undivided_share": "0.60%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Karnataka Apartment Ownership Act 1972 Sec 5",
+          "verified": true
+        },
+        {
+          "type": "FREEHOLD_OWNERSHIP",
+          "holder": "Land Owning Entity / Cadastral Parent",
+          "undivided_share": "100.00%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Transfer of Property Act 1882",
+          "verified": true
+        },
+        {
+          "type": "EASEMENT_UTILITY",
+          "holder": "BBMP Storm Water Drain Authority",
+          "undivided_share": null,
+          "legal_basis_status": "VERIFIED",
+          "statute": "Indian Easements Act 1882 Sec 15",
+          "verified": true
+        }
+      ],
+      "tier_results": [
+        {
+          "tier": "T0",
+          "name": "Data Integrity",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T1",
+          "name": "Geometric Validity (val3dity 2-manifold)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T2",
+          "name": "Cadastral Topology (No-Overlap & Containment)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T3",
+          "name": "Plan-vs-As-Built Hungarian Reconciliation",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T4",
+          "name": "Administrative & RRR Consistency",
+          "status": "PASS",
+          "findings": []
+        }
+      ],
+      "explain_objects": [],
+      "evidence_sufficiency": {
+        "available": [
+          "E1 (Airborne LiDAR)",
+          "E2 (Exterior UAV)",
+          "E4 (Sanctioned Plans)"
+        ],
+        "required_for_full_pass": [
+          "E1",
+          "E2",
+          "E3 (Interior Terrestrial Scan)",
+          "E4"
+        ],
+        "unverifiable_checks": [
+          "Unit Partition Alignment (requires E3 terrestrial scan — Zero Silent PASS Upgrades)"
+        ]
+      }
     },
     {
       "building_id": "BLR-BLD-00017",
@@ -1177,7 +5079,248 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
           "label": "Provenance Complete",
           "status": "VALID"
         }
-      ]
+      ],
+      "parent_ulpin": "IN-KA-BLR-000017",
+      "canonical_rid": "IN-KA-BLR-0000-B0017-B00001-A",
+      "cls": "B",
+      "natural_key": {
+        "digest": "NK-SHA256-000A217E-B32-BV1",
+        "locator": "0x397CBE8D55172484",
+        "version": 1,
+        "precision": {
+          "xy": "1 cm",
+          "z": "1 cm"
+        },
+        "datum": "EPSG:4979 (WGS84 3D)"
+      },
+      "spatial_address": {
+        "morton_63": "0x397CBE8D55172484",
+        "lod": "LOD2",
+        "cell_level": 16
+      },
+      "binding_record": {
+        "version": 1,
+        "record_hash": "0x000A217EA1B2C3D4E5F6",
+        "prev_hash": "0x0000000000000000",
+        "timestamp": "2024-01-15T10:00:00Z",
+        "sign_off": {
+          "examiner_id": "EXAMINER-KA-BBMP-102",
+          "timestamp": "2024-01-15T12:00:00Z"
+        }
+      },
+      "classes_10": [
+        {
+          "cls": "S",
+          "name": "Surface Parcel Column",
+          "rid": "IN-KA-BLR-0000-B0000-S00001-A",
+          "z_range": [
+            -15,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Cadastral surface column between statutory subterranean limit and ground"
+        },
+        {
+          "cls": "B",
+          "name": "Sanctioned Building Envelope",
+          "rid": "IN-KA-BLR-0000-B0017-B00001-A",
+          "z_range": [
+            0,
+            120
+          ],
+          "status": "PASS",
+          "desc": "Sanctioned physical building envelope"
+        },
+        {
+          "cls": "L",
+          "name": "Level / Storey Slabs",
+          "rid": "IN-KA-BLR-0000-B0017-L00001-0",
+          "z_range": [
+            0,
+            4
+          ],
+          "status": "PASS",
+          "desc": "32 vertical storey slabs"
+        },
+        {
+          "cls": "U",
+          "name": "Apartment / Commercial Units",
+          "rid": "IN-KA-BLR-0000-B0017-U00101-7",
+          "z_range": [
+            4,
+            110
+          ],
+          "status": "PASS",
+          "desc": "Residential & commercial spatial units"
+        },
+        {
+          "cls": "C",
+          "name": "Common Areas (Lobbies/Stairs)",
+          "rid": "IN-KA-BLR-0000-B0017-C00001-K",
+          "z_range": [
+            0,
+            120
+          ],
+          "status": "PASS",
+          "desc": "Fire exits, service shafts, and entrance lobbies"
+        },
+        {
+          "cls": "P",
+          "name": "Accessory Parking Vaults",
+          "rid": "IN-KA-BLR-0000-B0017-P00001-2",
+          "z_range": [
+            -10,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Multi-level basement parking and mechanical rooms"
+        },
+        {
+          "cls": "A",
+          "name": "Airspace Development Lot",
+          "rid": "IN-KA-BLR-0000-B0017-A00001-Z",
+          "z_range": [
+            120,
+            145
+          ],
+          "status": "PASS",
+          "desc": "Transferable development air-right volume above roof"
+        },
+        {
+          "cls": "T",
+          "name": "Subterranean Infrastructure Lot",
+          "rid": "IN-KA-BLR-0000-B0000-T00001-K",
+          "z_range": [
+            -30,
+            -15
+          ],
+          "status": "PASS",
+          "desc": "Deep underground rail corridor / utility tunnel"
+        },
+        {
+          "cls": "E",
+          "name": "Elevated Corridor / Viaduct",
+          "rid": "IN-KA-BLR-0000-B0000-E00001-I",
+          "z_range": [
+            12,
+            18
+          ],
+          "status": "PASS",
+          "desc": "Elevated transit right-of-way"
+        },
+        {
+          "cls": "I",
+          "name": "Municipal Utility Network Segment",
+          "rid": "IN-KA-BLR-0000-B0000-I00001-L",
+          "z_range": [
+            -3,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Storm drain (raja kaluve) and municipal conduit"
+        }
+      ],
+      "legacy_ids": [
+        {
+          "id_system": "PID",
+          "legacy_value": "BBMP-EAASTHI-017-992",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "UPOR",
+          "legacy_value": "PR-KA-BLR-1016",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "RERA",
+          "legacy_value": "PRM/KA/RERA/1251/310/PR/170915/00026",
+          "relationship": "MANY_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "ULPIN",
+          "legacy_value": "IN-KA-BLR-000017",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        }
+      ],
+      "rrr_rights": [
+        {
+          "type": "STRATA_UNIT_TITLE",
+          "holder": "Residential Association / Proprietary Units",
+          "undivided_share": "0.78%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Karnataka Apartment Ownership Act 1972 Sec 5",
+          "verified": true
+        },
+        {
+          "type": "FREEHOLD_OWNERSHIP",
+          "holder": "Land Owning Entity / Cadastral Parent",
+          "undivided_share": "100.00%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Transfer of Property Act 1882",
+          "verified": true
+        },
+        {
+          "type": "EASEMENT_UTILITY",
+          "holder": "BBMP Storm Water Drain Authority",
+          "undivided_share": null,
+          "legal_basis_status": "VERIFIED",
+          "statute": "Indian Easements Act 1882 Sec 15",
+          "verified": true
+        }
+      ],
+      "tier_results": [
+        {
+          "tier": "T0",
+          "name": "Data Integrity",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T1",
+          "name": "Geometric Validity (val3dity 2-manifold)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T2",
+          "name": "Cadastral Topology (No-Overlap & Containment)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T3",
+          "name": "Plan-vs-As-Built Hungarian Reconciliation",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T4",
+          "name": "Administrative & RRR Consistency",
+          "status": "PASS",
+          "findings": []
+        }
+      ],
+      "explain_objects": [],
+      "evidence_sufficiency": {
+        "available": [
+          "E1 (Airborne LiDAR)",
+          "E2 (Exterior UAV)",
+          "E4 (Sanctioned Plans)"
+        ],
+        "required_for_full_pass": [
+          "E1",
+          "E2",
+          "E3 (Interior Terrestrial Scan)",
+          "E4"
+        ],
+        "unverifiable_checks": [
+          "Unit Partition Alignment (requires E3 terrestrial scan — Zero Silent PASS Upgrades)"
+        ]
+      }
     },
     {
       "building_id": "BLR-BLD-00018",
@@ -1231,7 +5374,248 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
           "label": "Identifier Uniqueness",
           "status": "VALID"
         }
-      ]
+      ],
+      "parent_ulpin": "IN-KA-BLR-000018",
+      "canonical_rid": "IN-KA-BLR-0000-B0018-B00001-U",
+      "cls": "B",
+      "natural_key": {
+        "digest": "NK-SHA256-000A2E54-B32-BV1",
+        "locator": "0x70582E85C50EDB5B",
+        "version": 1,
+        "precision": {
+          "xy": "1 cm",
+          "z": "1 cm"
+        },
+        "datum": "EPSG:4979 (WGS84 3D)"
+      },
+      "spatial_address": {
+        "morton_63": "0x70582E85C50EDB5B",
+        "lod": "LOD2",
+        "cell_level": 16
+      },
+      "binding_record": {
+        "version": 1,
+        "record_hash": "0x000A2E54A1B2C3D4E5F6",
+        "prev_hash": "0x0000000000000000",
+        "timestamp": "2024-01-15T10:00:00Z",
+        "sign_off": {
+          "examiner_id": "EXAMINER-KA-BBMP-102",
+          "timestamp": "2024-01-15T12:00:00Z"
+        }
+      },
+      "classes_10": [
+        {
+          "cls": "S",
+          "name": "Surface Parcel Column",
+          "rid": "IN-KA-BLR-0000-B0000-S00001-A",
+          "z_range": [
+            -15,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Cadastral surface column between statutory subterranean limit and ground"
+        },
+        {
+          "cls": "B",
+          "name": "Sanctioned Building Envelope",
+          "rid": "IN-KA-BLR-0000-B0018-B00001-U",
+          "z_range": [
+            0,
+            70
+          ],
+          "status": "PASS",
+          "desc": "Sanctioned physical building envelope"
+        },
+        {
+          "cls": "L",
+          "name": "Level / Storey Slabs",
+          "rid": "IN-KA-BLR-0000-B0018-L00001-J",
+          "z_range": [
+            0,
+            4
+          ],
+          "status": "PASS",
+          "desc": "18 vertical storey slabs"
+        },
+        {
+          "cls": "U",
+          "name": "Apartment / Commercial Units",
+          "rid": "IN-KA-BLR-0000-B0018-U00101-Z",
+          "z_range": [
+            4,
+            60
+          ],
+          "status": "PASS",
+          "desc": "Residential & commercial spatial units"
+        },
+        {
+          "cls": "C",
+          "name": "Common Areas (Lobbies/Stairs)",
+          "rid": "IN-KA-BLR-0000-B0018-C00001-3",
+          "z_range": [
+            0,
+            70
+          ],
+          "status": "PASS",
+          "desc": "Fire exits, service shafts, and entrance lobbies"
+        },
+        {
+          "cls": "P",
+          "name": "Accessory Parking Vaults",
+          "rid": "IN-KA-BLR-0000-B0018-P00001-M",
+          "z_range": [
+            -10,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Multi-level basement parking and mechanical rooms"
+        },
+        {
+          "cls": "A",
+          "name": "Airspace Development Lot",
+          "rid": "IN-KA-BLR-0000-B0018-A00001-K",
+          "z_range": [
+            70,
+            95
+          ],
+          "status": "PASS",
+          "desc": "Transferable development air-right volume above roof"
+        },
+        {
+          "cls": "T",
+          "name": "Subterranean Infrastructure Lot",
+          "rid": "IN-KA-BLR-0000-B0000-T00001-K",
+          "z_range": [
+            -30,
+            -15
+          ],
+          "status": "PASS",
+          "desc": "Deep underground rail corridor / utility tunnel"
+        },
+        {
+          "cls": "E",
+          "name": "Elevated Corridor / Viaduct",
+          "rid": "IN-KA-BLR-0000-B0000-E00001-I",
+          "z_range": [
+            12,
+            18
+          ],
+          "status": "PASS",
+          "desc": "Elevated transit right-of-way"
+        },
+        {
+          "cls": "I",
+          "name": "Municipal Utility Network Segment",
+          "rid": "IN-KA-BLR-0000-B0000-I00001-L",
+          "z_range": [
+            -3,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Storm drain (raja kaluve) and municipal conduit"
+        }
+      ],
+      "legacy_ids": [
+        {
+          "id_system": "PID",
+          "legacy_value": "BBMP-EAASTHI-018-992",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "UPOR",
+          "legacy_value": "PR-KA-BLR-1017",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "RERA",
+          "legacy_value": "PRM/KA/RERA/1251/310/PR/170915/00027",
+          "relationship": "MANY_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "ULPIN",
+          "legacy_value": "IN-KA-BLR-000018",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        }
+      ],
+      "rrr_rights": [
+        {
+          "type": "STRATA_UNIT_TITLE",
+          "holder": "Residential Association / Proprietary Units",
+          "undivided_share": "1.39%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Karnataka Apartment Ownership Act 1972 Sec 5",
+          "verified": true
+        },
+        {
+          "type": "FREEHOLD_OWNERSHIP",
+          "holder": "Land Owning Entity / Cadastral Parent",
+          "undivided_share": "100.00%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Transfer of Property Act 1882",
+          "verified": true
+        },
+        {
+          "type": "EASEMENT_UTILITY",
+          "holder": "BBMP Storm Water Drain Authority",
+          "undivided_share": null,
+          "legal_basis_status": "VERIFIED",
+          "statute": "Indian Easements Act 1882 Sec 15",
+          "verified": true
+        }
+      ],
+      "tier_results": [
+        {
+          "tier": "T0",
+          "name": "Data Integrity",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T1",
+          "name": "Geometric Validity (val3dity 2-manifold)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T2",
+          "name": "Cadastral Topology (No-Overlap & Containment)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T3",
+          "name": "Plan-vs-As-Built Hungarian Reconciliation",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T4",
+          "name": "Administrative & RRR Consistency",
+          "status": "PASS",
+          "findings": []
+        }
+      ],
+      "explain_objects": [],
+      "evidence_sufficiency": {
+        "available": [
+          "E1 (Airborne LiDAR)",
+          "E2 (Exterior UAV)",
+          "E4 (Sanctioned Plans)"
+        ],
+        "required_for_full_pass": [
+          "E1",
+          "E2",
+          "E3 (Interior Terrestrial Scan)",
+          "E4"
+        ],
+        "unverifiable_checks": [
+          "Unit Partition Alignment (requires E3 terrestrial scan — Zero Silent PASS Upgrades)"
+        ]
+      }
     },
     {
       "building_id": "BLR-INF-00001",
@@ -1284,7 +5668,248 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
           "label": "Identifier Uniqueness",
           "status": "VALID"
         }
-      ]
+      ],
+      "parent_ulpin": "IN-KA-BLR-000019",
+      "canonical_rid": "IN-KA-BLR-0000-B0019-B00001-D",
+      "cls": "B",
+      "natural_key": {
+        "digest": "NK-SHA256-000A2D43-B32-BV1",
+        "locator": "0x70583C8CF176DA52",
+        "version": 1,
+        "precision": {
+          "xy": "1 cm",
+          "z": "1 cm"
+        },
+        "datum": "EPSG:4979 (WGS84 3D)"
+      },
+      "spatial_address": {
+        "morton_63": "0x70583C8CF176DA52",
+        "lod": "LOD2",
+        "cell_level": 16
+      },
+      "binding_record": {
+        "version": 1,
+        "record_hash": "0x000A2D43A1B2C3D4E5F6",
+        "prev_hash": "0x0000000000000000",
+        "timestamp": "2024-01-15T10:00:00Z",
+        "sign_off": {
+          "examiner_id": "EXAMINER-KA-BBMP-102",
+          "timestamp": "2024-01-15T12:00:00Z"
+        }
+      },
+      "classes_10": [
+        {
+          "cls": "S",
+          "name": "Surface Parcel Column",
+          "rid": "IN-KA-BLR-0000-B0000-S00001-A",
+          "z_range": [
+            -15,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Cadastral surface column between statutory subterranean limit and ground"
+        },
+        {
+          "cls": "B",
+          "name": "Sanctioned Building Envelope",
+          "rid": "IN-KA-BLR-0000-B0019-B00001-D",
+          "z_range": [
+            0,
+            -8
+          ],
+          "status": "PASS",
+          "desc": "Sanctioned physical building envelope"
+        },
+        {
+          "cls": "L",
+          "name": "Level / Storey Slabs",
+          "rid": "IN-KA-BLR-0000-B0019-L00001-2",
+          "z_range": [
+            0,
+            4
+          ],
+          "status": "PASS",
+          "desc": "1 vertical storey slabs"
+        },
+        {
+          "cls": "U",
+          "name": "Apartment / Commercial Units",
+          "rid": "IN-KA-BLR-0000-B0019-U00101-K",
+          "z_range": [
+            4,
+            -18
+          ],
+          "status": "PASS",
+          "desc": "Residential & commercial spatial units"
+        },
+        {
+          "cls": "C",
+          "name": "Common Areas (Lobbies/Stairs)",
+          "rid": "IN-KA-BLR-0000-B0019-C00001-N",
+          "z_range": [
+            0,
+            -8
+          ],
+          "status": "PASS",
+          "desc": "Fire exits, service shafts, and entrance lobbies"
+        },
+        {
+          "cls": "P",
+          "name": "Accessory Parking Vaults",
+          "rid": "IN-KA-BLR-0000-B0019-P00001-5",
+          "z_range": [
+            -10,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Multi-level basement parking and mechanical rooms"
+        },
+        {
+          "cls": "A",
+          "name": "Airspace Development Lot",
+          "rid": "IN-KA-BLR-0000-B0019-A00001-3",
+          "z_range": [
+            -8,
+            17
+          ],
+          "status": "PASS",
+          "desc": "Transferable development air-right volume above roof"
+        },
+        {
+          "cls": "T",
+          "name": "Subterranean Infrastructure Lot",
+          "rid": "IN-KA-BLR-0000-B0000-T00001-K",
+          "z_range": [
+            -30,
+            -15
+          ],
+          "status": "PASS",
+          "desc": "Deep underground rail corridor / utility tunnel"
+        },
+        {
+          "cls": "E",
+          "name": "Elevated Corridor / Viaduct",
+          "rid": "IN-KA-BLR-0000-B0000-E00001-I",
+          "z_range": [
+            12,
+            18
+          ],
+          "status": "PASS",
+          "desc": "Elevated transit right-of-way"
+        },
+        {
+          "cls": "I",
+          "name": "Municipal Utility Network Segment",
+          "rid": "IN-KA-BLR-0000-B0000-I00001-L",
+          "z_range": [
+            -3,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Storm drain (raja kaluve) and municipal conduit"
+        }
+      ],
+      "legacy_ids": [
+        {
+          "id_system": "PID",
+          "legacy_value": "BBMP-EAASTHI-019-992",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "UPOR",
+          "legacy_value": "PR-KA-BLR-1018",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "RERA",
+          "legacy_value": "PRM/KA/RERA/1251/310/PR/170915/00028",
+          "relationship": "MANY_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "ULPIN",
+          "legacy_value": "IN-KA-BLR-000019",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        }
+      ],
+      "rrr_rights": [
+        {
+          "type": "STRATA_UNIT_TITLE",
+          "holder": "Residential Association / Proprietary Units",
+          "undivided_share": "25.00%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Karnataka Apartment Ownership Act 1972 Sec 5",
+          "verified": true
+        },
+        {
+          "type": "FREEHOLD_OWNERSHIP",
+          "holder": "Land Owning Entity / Cadastral Parent",
+          "undivided_share": "100.00%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Transfer of Property Act 1882",
+          "verified": true
+        },
+        {
+          "type": "EASEMENT_UTILITY",
+          "holder": "BBMP Storm Water Drain Authority",
+          "undivided_share": null,
+          "legal_basis_status": "VERIFIED",
+          "statute": "Indian Easements Act 1882 Sec 15",
+          "verified": true
+        }
+      ],
+      "tier_results": [
+        {
+          "tier": "T0",
+          "name": "Data Integrity",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T1",
+          "name": "Geometric Validity (val3dity 2-manifold)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T2",
+          "name": "Cadastral Topology (No-Overlap & Containment)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T3",
+          "name": "Plan-vs-As-Built Hungarian Reconciliation",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T4",
+          "name": "Administrative & RRR Consistency",
+          "status": "PASS",
+          "findings": []
+        }
+      ],
+      "explain_objects": [],
+      "evidence_sufficiency": {
+        "available": [
+          "E1 (Airborne LiDAR)",
+          "E2 (Exterior UAV)",
+          "E4 (Sanctioned Plans)"
+        ],
+        "required_for_full_pass": [
+          "E1",
+          "E2",
+          "E3 (Interior Terrestrial Scan)",
+          "E4"
+        ],
+        "unverifiable_checks": [
+          "Unit Partition Alignment (requires E3 terrestrial scan — Zero Silent PASS Upgrades)"
+        ]
+      }
     },
     {
       "building_id": "BLR-INF-00002",
@@ -1337,7 +5962,248 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
           "label": "Identifier Uniqueness",
           "status": "VALID"
         }
-      ]
+      ],
+      "parent_ulpin": "IN-KA-BLR-000020",
+      "canonical_rid": "IN-KA-BLR-0000-B0020-B00001-V",
+      "cls": "B",
+      "natural_key": {
+        "digest": "NK-SHA256-000A2233-B32-BV1",
+        "locator": "0x70582EC5D8670405",
+        "version": 1,
+        "precision": {
+          "xy": "1 cm",
+          "z": "1 cm"
+        },
+        "datum": "EPSG:4979 (WGS84 3D)"
+      },
+      "spatial_address": {
+        "morton_63": "0x70582EC5D8670405",
+        "lod": "LOD2",
+        "cell_level": 16
+      },
+      "binding_record": {
+        "version": 1,
+        "record_hash": "0x000A2233A1B2C3D4E5F6",
+        "prev_hash": "0x0000000000000000",
+        "timestamp": "2024-01-15T10:00:00Z",
+        "sign_off": {
+          "examiner_id": "EXAMINER-KA-BBMP-102",
+          "timestamp": "2024-01-15T12:00:00Z"
+        }
+      },
+      "classes_10": [
+        {
+          "cls": "S",
+          "name": "Surface Parcel Column",
+          "rid": "IN-KA-BLR-0000-B0000-S00001-A",
+          "z_range": [
+            -15,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Cadastral surface column between statutory subterranean limit and ground"
+        },
+        {
+          "cls": "B",
+          "name": "Sanctioned Building Envelope",
+          "rid": "IN-KA-BLR-0000-B0020-B00001-V",
+          "z_range": [
+            0,
+            -6.5
+          ],
+          "status": "PASS",
+          "desc": "Sanctioned physical building envelope"
+        },
+        {
+          "cls": "L",
+          "name": "Level / Storey Slabs",
+          "rid": "IN-KA-BLR-0000-B0020-L00001-K",
+          "z_range": [
+            0,
+            4
+          ],
+          "status": "PASS",
+          "desc": "1 vertical storey slabs"
+        },
+        {
+          "cls": "U",
+          "name": "Apartment / Commercial Units",
+          "rid": "IN-KA-BLR-0000-B0020-U00101-S",
+          "z_range": [
+            4,
+            -16.5
+          ],
+          "status": "PASS",
+          "desc": "Residential & commercial spatial units"
+        },
+        {
+          "cls": "C",
+          "name": "Common Areas (Lobbies/Stairs)",
+          "rid": "IN-KA-BLR-0000-B0020-C00001-4",
+          "z_range": [
+            0,
+            -6.5
+          ],
+          "status": "PASS",
+          "desc": "Fire exits, service shafts, and entrance lobbies"
+        },
+        {
+          "cls": "P",
+          "name": "Accessory Parking Vaults",
+          "rid": "IN-KA-BLR-0000-B0020-P00001-N",
+          "z_range": [
+            -10,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Multi-level basement parking and mechanical rooms"
+        },
+        {
+          "cls": "A",
+          "name": "Airspace Development Lot",
+          "rid": "IN-KA-BLR-0000-B0020-A00001-L",
+          "z_range": [
+            -6.5,
+            18.5
+          ],
+          "status": "PASS",
+          "desc": "Transferable development air-right volume above roof"
+        },
+        {
+          "cls": "T",
+          "name": "Subterranean Infrastructure Lot",
+          "rid": "IN-KA-BLR-0000-B0000-T00001-K",
+          "z_range": [
+            -30,
+            -15
+          ],
+          "status": "PASS",
+          "desc": "Deep underground rail corridor / utility tunnel"
+        },
+        {
+          "cls": "E",
+          "name": "Elevated Corridor / Viaduct",
+          "rid": "IN-KA-BLR-0000-B0000-E00001-I",
+          "z_range": [
+            12,
+            18
+          ],
+          "status": "PASS",
+          "desc": "Elevated transit right-of-way"
+        },
+        {
+          "cls": "I",
+          "name": "Municipal Utility Network Segment",
+          "rid": "IN-KA-BLR-0000-B0000-I00001-L",
+          "z_range": [
+            -3,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Storm drain (raja kaluve) and municipal conduit"
+        }
+      ],
+      "legacy_ids": [
+        {
+          "id_system": "PID",
+          "legacy_value": "BBMP-EAASTHI-020-992",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "UPOR",
+          "legacy_value": "PR-KA-BLR-1019",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "RERA",
+          "legacy_value": "PRM/KA/RERA/1251/310/PR/170915/00029",
+          "relationship": "MANY_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "ULPIN",
+          "legacy_value": "IN-KA-BLR-000020",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        }
+      ],
+      "rrr_rights": [
+        {
+          "type": "STRATA_UNIT_TITLE",
+          "holder": "Residential Association / Proprietary Units",
+          "undivided_share": "25.00%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Karnataka Apartment Ownership Act 1972 Sec 5",
+          "verified": true
+        },
+        {
+          "type": "FREEHOLD_OWNERSHIP",
+          "holder": "Land Owning Entity / Cadastral Parent",
+          "undivided_share": "100.00%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Transfer of Property Act 1882",
+          "verified": true
+        },
+        {
+          "type": "EASEMENT_UTILITY",
+          "holder": "BBMP Storm Water Drain Authority",
+          "undivided_share": null,
+          "legal_basis_status": "VERIFIED",
+          "statute": "Indian Easements Act 1882 Sec 15",
+          "verified": true
+        }
+      ],
+      "tier_results": [
+        {
+          "tier": "T0",
+          "name": "Data Integrity",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T1",
+          "name": "Geometric Validity (val3dity 2-manifold)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T2",
+          "name": "Cadastral Topology (No-Overlap & Containment)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T3",
+          "name": "Plan-vs-As-Built Hungarian Reconciliation",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T4",
+          "name": "Administrative & RRR Consistency",
+          "status": "PASS",
+          "findings": []
+        }
+      ],
+      "explain_objects": [],
+      "evidence_sufficiency": {
+        "available": [
+          "E1 (Airborne LiDAR)",
+          "E2 (Exterior UAV)",
+          "E4 (Sanctioned Plans)"
+        ],
+        "required_for_full_pass": [
+          "E1",
+          "E2",
+          "E3 (Interior Terrestrial Scan)",
+          "E4"
+        ],
+        "unverifiable_checks": [
+          "Unit Partition Alignment (requires E3 terrestrial scan — Zero Silent PASS Upgrades)"
+        ]
+      }
     },
     {
       "building_id": "BLR-BLD-00019",
@@ -1391,7 +6257,248 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
           "label": "Identifier Uniqueness",
           "status": "VALID"
         }
-      ]
+      ],
+      "parent_ulpin": "IN-KA-BLR-000021",
+      "canonical_rid": "IN-KA-BLR-0000-B0021-B00001-E",
+      "cls": "B",
+      "natural_key": {
+        "digest": "NK-SHA256-000A235A-B32-BV1",
+        "locator": "0x397CBE8DCE7F84CD",
+        "version": 1,
+        "precision": {
+          "xy": "1 cm",
+          "z": "1 cm"
+        },
+        "datum": "EPSG:4979 (WGS84 3D)"
+      },
+      "spatial_address": {
+        "morton_63": "0x397CBE8DCE7F84CD",
+        "lod": "LOD2",
+        "cell_level": 16
+      },
+      "binding_record": {
+        "version": 1,
+        "record_hash": "0x000A235AA1B2C3D4E5F6",
+        "prev_hash": "0x0000000000000000",
+        "timestamp": "2024-01-15T10:00:00Z",
+        "sign_off": {
+          "examiner_id": "EXAMINER-KA-BBMP-102",
+          "timestamp": "2024-01-15T12:00:00Z"
+        }
+      },
+      "classes_10": [
+        {
+          "cls": "S",
+          "name": "Surface Parcel Column",
+          "rid": "IN-KA-BLR-0000-B0000-S00001-A",
+          "z_range": [
+            -15,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Cadastral surface column between statutory subterranean limit and ground"
+        },
+        {
+          "cls": "B",
+          "name": "Sanctioned Building Envelope",
+          "rid": "IN-KA-BLR-0000-B0021-B00001-E",
+          "z_range": [
+            0,
+            70
+          ],
+          "status": "PASS",
+          "desc": "Sanctioned physical building envelope"
+        },
+        {
+          "cls": "L",
+          "name": "Level / Storey Slabs",
+          "rid": "IN-KA-BLR-0000-B0021-L00001-3",
+          "z_range": [
+            0,
+            4
+          ],
+          "status": "PASS",
+          "desc": "19 vertical storey slabs"
+        },
+        {
+          "cls": "U",
+          "name": "Apartment / Commercial Units",
+          "rid": "IN-KA-BLR-0000-B0021-U00101-B",
+          "z_range": [
+            4,
+            60
+          ],
+          "status": "PASS",
+          "desc": "Residential & commercial spatial units"
+        },
+        {
+          "cls": "C",
+          "name": "Common Areas (Lobbies/Stairs)",
+          "rid": "IN-KA-BLR-0000-B0021-C00001-O",
+          "z_range": [
+            0,
+            70
+          ],
+          "status": "PASS",
+          "desc": "Fire exits, service shafts, and entrance lobbies"
+        },
+        {
+          "cls": "P",
+          "name": "Accessory Parking Vaults",
+          "rid": "IN-KA-BLR-0000-B0021-P00001-6",
+          "z_range": [
+            -10,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Multi-level basement parking and mechanical rooms"
+        },
+        {
+          "cls": "A",
+          "name": "Airspace Development Lot",
+          "rid": "IN-KA-BLR-0000-B0021-A00001-4",
+          "z_range": [
+            70,
+            95
+          ],
+          "status": "PASS",
+          "desc": "Transferable development air-right volume above roof"
+        },
+        {
+          "cls": "T",
+          "name": "Subterranean Infrastructure Lot",
+          "rid": "IN-KA-BLR-0000-B0000-T00001-K",
+          "z_range": [
+            -30,
+            -15
+          ],
+          "status": "PASS",
+          "desc": "Deep underground rail corridor / utility tunnel"
+        },
+        {
+          "cls": "E",
+          "name": "Elevated Corridor / Viaduct",
+          "rid": "IN-KA-BLR-0000-B0000-E00001-I",
+          "z_range": [
+            12,
+            18
+          ],
+          "status": "PASS",
+          "desc": "Elevated transit right-of-way"
+        },
+        {
+          "cls": "I",
+          "name": "Municipal Utility Network Segment",
+          "rid": "IN-KA-BLR-0000-B0000-I00001-L",
+          "z_range": [
+            -3,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Storm drain (raja kaluve) and municipal conduit"
+        }
+      ],
+      "legacy_ids": [
+        {
+          "id_system": "PID",
+          "legacy_value": "BBMP-EAASTHI-021-992",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "UPOR",
+          "legacy_value": "PR-KA-BLR-1020",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "RERA",
+          "legacy_value": "PRM/KA/RERA/1251/310/PR/170915/00030",
+          "relationship": "MANY_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "ULPIN",
+          "legacy_value": "IN-KA-BLR-000021",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        }
+      ],
+      "rrr_rights": [
+        {
+          "type": "STRATA_UNIT_TITLE",
+          "holder": "Residential Association / Proprietary Units",
+          "undivided_share": "1.32%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Karnataka Apartment Ownership Act 1972 Sec 5",
+          "verified": true
+        },
+        {
+          "type": "FREEHOLD_OWNERSHIP",
+          "holder": "Land Owning Entity / Cadastral Parent",
+          "undivided_share": "100.00%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Transfer of Property Act 1882",
+          "verified": true
+        },
+        {
+          "type": "EASEMENT_UTILITY",
+          "holder": "BBMP Storm Water Drain Authority",
+          "undivided_share": null,
+          "legal_basis_status": "VERIFIED",
+          "statute": "Indian Easements Act 1882 Sec 15",
+          "verified": true
+        }
+      ],
+      "tier_results": [
+        {
+          "tier": "T0",
+          "name": "Data Integrity",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T1",
+          "name": "Geometric Validity (val3dity 2-manifold)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T2",
+          "name": "Cadastral Topology (No-Overlap & Containment)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T3",
+          "name": "Plan-vs-As-Built Hungarian Reconciliation",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T4",
+          "name": "Administrative & RRR Consistency",
+          "status": "PASS",
+          "findings": []
+        }
+      ],
+      "explain_objects": [],
+      "evidence_sufficiency": {
+        "available": [
+          "E1 (Airborne LiDAR)",
+          "E2 (Exterior UAV)",
+          "E4 (Sanctioned Plans)"
+        ],
+        "required_for_full_pass": [
+          "E1",
+          "E2",
+          "E3 (Interior Terrestrial Scan)",
+          "E4"
+        ],
+        "unverifiable_checks": [
+          "Unit Partition Alignment (requires E3 terrestrial scan — Zero Silent PASS Upgrades)"
+        ]
+      }
     },
     {
       "building_id": "BLR-BLD-00020",
@@ -1445,7 +6552,248 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
           "label": "Identifier Uniqueness",
           "status": "VALID"
         }
-      ]
+      ],
+      "parent_ulpin": "IN-KA-BLR-000022",
+      "canonical_rid": "IN-KA-BLR-0000-B0022-B00001-Y",
+      "cls": "B",
+      "natural_key": {
+        "digest": "NK-SHA256-000A2CE9-B32-BV1",
+        "locator": "0x70583C8DE36A641E",
+        "version": 1,
+        "precision": {
+          "xy": "1 cm",
+          "z": "1 cm"
+        },
+        "datum": "EPSG:4979 (WGS84 3D)"
+      },
+      "spatial_address": {
+        "morton_63": "0x70583C8DE36A641E",
+        "lod": "LOD2",
+        "cell_level": 16
+      },
+      "binding_record": {
+        "version": 1,
+        "record_hash": "0x000A2CE9A1B2C3D4E5F6",
+        "prev_hash": "0x0000000000000000",
+        "timestamp": "2024-01-15T10:00:00Z",
+        "sign_off": {
+          "examiner_id": "EXAMINER-KA-BBMP-102",
+          "timestamp": "2024-01-15T12:00:00Z"
+        }
+      },
+      "classes_10": [
+        {
+          "cls": "S",
+          "name": "Surface Parcel Column",
+          "rid": "IN-KA-BLR-0000-B0000-S00001-A",
+          "z_range": [
+            -15,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Cadastral surface column between statutory subterranean limit and ground"
+        },
+        {
+          "cls": "B",
+          "name": "Sanctioned Building Envelope",
+          "rid": "IN-KA-BLR-0000-B0022-B00001-Y",
+          "z_range": [
+            0,
+            60
+          ],
+          "status": "PASS",
+          "desc": "Sanctioned physical building envelope"
+        },
+        {
+          "cls": "L",
+          "name": "Level / Storey Slabs",
+          "rid": "IN-KA-BLR-0000-B0022-L00001-N",
+          "z_range": [
+            0,
+            4
+          ],
+          "status": "PASS",
+          "desc": "16 vertical storey slabs"
+        },
+        {
+          "cls": "U",
+          "name": "Apartment / Commercial Units",
+          "rid": "IN-KA-BLR-0000-B0022-U00101-V",
+          "z_range": [
+            4,
+            50
+          ],
+          "status": "PASS",
+          "desc": "Residential & commercial spatial units"
+        },
+        {
+          "cls": "C",
+          "name": "Common Areas (Lobbies/Stairs)",
+          "rid": "IN-KA-BLR-0000-B0022-C00001-7",
+          "z_range": [
+            0,
+            60
+          ],
+          "status": "PASS",
+          "desc": "Fire exits, service shafts, and entrance lobbies"
+        },
+        {
+          "cls": "P",
+          "name": "Accessory Parking Vaults",
+          "rid": "IN-KA-BLR-0000-B0022-P00001-Q",
+          "z_range": [
+            -10,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Multi-level basement parking and mechanical rooms"
+        },
+        {
+          "cls": "A",
+          "name": "Airspace Development Lot",
+          "rid": "IN-KA-BLR-0000-B0022-A00001-O",
+          "z_range": [
+            60,
+            85
+          ],
+          "status": "PASS",
+          "desc": "Transferable development air-right volume above roof"
+        },
+        {
+          "cls": "T",
+          "name": "Subterranean Infrastructure Lot",
+          "rid": "IN-KA-BLR-0000-B0000-T00001-K",
+          "z_range": [
+            -30,
+            -15
+          ],
+          "status": "PASS",
+          "desc": "Deep underground rail corridor / utility tunnel"
+        },
+        {
+          "cls": "E",
+          "name": "Elevated Corridor / Viaduct",
+          "rid": "IN-KA-BLR-0000-B0000-E00001-I",
+          "z_range": [
+            12,
+            18
+          ],
+          "status": "PASS",
+          "desc": "Elevated transit right-of-way"
+        },
+        {
+          "cls": "I",
+          "name": "Municipal Utility Network Segment",
+          "rid": "IN-KA-BLR-0000-B0000-I00001-L",
+          "z_range": [
+            -3,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Storm drain (raja kaluve) and municipal conduit"
+        }
+      ],
+      "legacy_ids": [
+        {
+          "id_system": "PID",
+          "legacy_value": "BBMP-EAASTHI-022-992",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "UPOR",
+          "legacy_value": "PR-KA-BLR-1021",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "RERA",
+          "legacy_value": "PRM/KA/RERA/1251/310/PR/170915/00031",
+          "relationship": "MANY_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "ULPIN",
+          "legacy_value": "IN-KA-BLR-000022",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        }
+      ],
+      "rrr_rights": [
+        {
+          "type": "STRATA_UNIT_TITLE",
+          "holder": "Residential Association / Proprietary Units",
+          "undivided_share": "1.56%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Karnataka Apartment Ownership Act 1972 Sec 5",
+          "verified": true
+        },
+        {
+          "type": "FREEHOLD_OWNERSHIP",
+          "holder": "Land Owning Entity / Cadastral Parent",
+          "undivided_share": "100.00%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Transfer of Property Act 1882",
+          "verified": true
+        },
+        {
+          "type": "EASEMENT_UTILITY",
+          "holder": "BBMP Storm Water Drain Authority",
+          "undivided_share": null,
+          "legal_basis_status": "VERIFIED",
+          "statute": "Indian Easements Act 1882 Sec 15",
+          "verified": true
+        }
+      ],
+      "tier_results": [
+        {
+          "tier": "T0",
+          "name": "Data Integrity",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T1",
+          "name": "Geometric Validity (val3dity 2-manifold)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T2",
+          "name": "Cadastral Topology (No-Overlap & Containment)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T3",
+          "name": "Plan-vs-As-Built Hungarian Reconciliation",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T4",
+          "name": "Administrative & RRR Consistency",
+          "status": "PASS",
+          "findings": []
+        }
+      ],
+      "explain_objects": [],
+      "evidence_sufficiency": {
+        "available": [
+          "E1 (Airborne LiDAR)",
+          "E2 (Exterior UAV)",
+          "E4 (Sanctioned Plans)"
+        ],
+        "required_for_full_pass": [
+          "E1",
+          "E2",
+          "E3 (Interior Terrestrial Scan)",
+          "E4"
+        ],
+        "unverifiable_checks": [
+          "Unit Partition Alignment (requires E3 terrestrial scan — Zero Silent PASS Upgrades)"
+        ]
+      }
     },
     {
       "building_id": "BLR-BLD-00021",
@@ -1499,7 +6847,248 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
           "label": "Identifier Uniqueness",
           "status": "VALID"
         }
-      ]
+      ],
+      "parent_ulpin": "IN-KA-BLR-000023",
+      "canonical_rid": "IN-KA-BLR-0000-B0023-B00001-7",
+      "cls": "B",
+      "natural_key": {
+        "digest": "NK-SHA256-000A238E-B32-BV1",
+        "locator": "0x397CBECCDAA52F41",
+        "version": 1,
+        "precision": {
+          "xy": "1 cm",
+          "z": "1 cm"
+        },
+        "datum": "EPSG:4979 (WGS84 3D)"
+      },
+      "spatial_address": {
+        "morton_63": "0x397CBECCDAA52F41",
+        "lod": "LOD2",
+        "cell_level": 16
+      },
+      "binding_record": {
+        "version": 1,
+        "record_hash": "0x000A238EA1B2C3D4E5F6",
+        "prev_hash": "0x0000000000000000",
+        "timestamp": "2024-01-15T10:00:00Z",
+        "sign_off": {
+          "examiner_id": "EXAMINER-KA-BBMP-102",
+          "timestamp": "2024-01-15T12:00:00Z"
+        }
+      },
+      "classes_10": [
+        {
+          "cls": "S",
+          "name": "Surface Parcel Column",
+          "rid": "IN-KA-BLR-0000-B0000-S00001-A",
+          "z_range": [
+            -15,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Cadastral surface column between statutory subterranean limit and ground"
+        },
+        {
+          "cls": "B",
+          "name": "Sanctioned Building Envelope",
+          "rid": "IN-KA-BLR-0000-B0023-B00001-7",
+          "z_range": [
+            0,
+            70
+          ],
+          "status": "PASS",
+          "desc": "Sanctioned physical building envelope"
+        },
+        {
+          "cls": "L",
+          "name": "Level / Storey Slabs",
+          "rid": "IN-KA-BLR-0000-B0023-L00001-X",
+          "z_range": [
+            0,
+            4
+          ],
+          "status": "PASS",
+          "desc": "18 vertical storey slabs"
+        },
+        {
+          "cls": "U",
+          "name": "Apartment / Commercial Units",
+          "rid": "IN-KA-BLR-0000-B0023-U00101-4",
+          "z_range": [
+            4,
+            60
+          ],
+          "status": "PASS",
+          "desc": "Residential & commercial spatial units"
+        },
+        {
+          "cls": "C",
+          "name": "Common Areas (Lobbies/Stairs)",
+          "rid": "IN-KA-BLR-0000-B0023-C00001-H",
+          "z_range": [
+            0,
+            70
+          ],
+          "status": "PASS",
+          "desc": "Fire exits, service shafts, and entrance lobbies"
+        },
+        {
+          "cls": "P",
+          "name": "Accessory Parking Vaults",
+          "rid": "IN-KA-BLR-0000-B0023-P00001-0",
+          "z_range": [
+            -10,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Multi-level basement parking and mechanical rooms"
+        },
+        {
+          "cls": "A",
+          "name": "Airspace Development Lot",
+          "rid": "IN-KA-BLR-0000-B0023-A00001-Y",
+          "z_range": [
+            70,
+            95
+          ],
+          "status": "PASS",
+          "desc": "Transferable development air-right volume above roof"
+        },
+        {
+          "cls": "T",
+          "name": "Subterranean Infrastructure Lot",
+          "rid": "IN-KA-BLR-0000-B0000-T00001-K",
+          "z_range": [
+            -30,
+            -15
+          ],
+          "status": "PASS",
+          "desc": "Deep underground rail corridor / utility tunnel"
+        },
+        {
+          "cls": "E",
+          "name": "Elevated Corridor / Viaduct",
+          "rid": "IN-KA-BLR-0000-B0000-E00001-I",
+          "z_range": [
+            12,
+            18
+          ],
+          "status": "PASS",
+          "desc": "Elevated transit right-of-way"
+        },
+        {
+          "cls": "I",
+          "name": "Municipal Utility Network Segment",
+          "rid": "IN-KA-BLR-0000-B0000-I00001-L",
+          "z_range": [
+            -3,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Storm drain (raja kaluve) and municipal conduit"
+        }
+      ],
+      "legacy_ids": [
+        {
+          "id_system": "PID",
+          "legacy_value": "BBMP-EAASTHI-023-992",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "UPOR",
+          "legacy_value": "PR-KA-BLR-1022",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "RERA",
+          "legacy_value": "PRM/KA/RERA/1251/310/PR/170915/00032",
+          "relationship": "MANY_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "ULPIN",
+          "legacy_value": "IN-KA-BLR-000023",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        }
+      ],
+      "rrr_rights": [
+        {
+          "type": "STRATA_UNIT_TITLE",
+          "holder": "Residential Association / Proprietary Units",
+          "undivided_share": "1.39%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Karnataka Apartment Ownership Act 1972 Sec 5",
+          "verified": true
+        },
+        {
+          "type": "FREEHOLD_OWNERSHIP",
+          "holder": "Land Owning Entity / Cadastral Parent",
+          "undivided_share": "100.00%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Transfer of Property Act 1882",
+          "verified": true
+        },
+        {
+          "type": "EASEMENT_UTILITY",
+          "holder": "BBMP Storm Water Drain Authority",
+          "undivided_share": null,
+          "legal_basis_status": "VERIFIED",
+          "statute": "Indian Easements Act 1882 Sec 15",
+          "verified": true
+        }
+      ],
+      "tier_results": [
+        {
+          "tier": "T0",
+          "name": "Data Integrity",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T1",
+          "name": "Geometric Validity (val3dity 2-manifold)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T2",
+          "name": "Cadastral Topology (No-Overlap & Containment)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T3",
+          "name": "Plan-vs-As-Built Hungarian Reconciliation",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T4",
+          "name": "Administrative & RRR Consistency",
+          "status": "PASS",
+          "findings": []
+        }
+      ],
+      "explain_objects": [],
+      "evidence_sufficiency": {
+        "available": [
+          "E1 (Airborne LiDAR)",
+          "E2 (Exterior UAV)",
+          "E4 (Sanctioned Plans)"
+        ],
+        "required_for_full_pass": [
+          "E1",
+          "E2",
+          "E3 (Interior Terrestrial Scan)",
+          "E4"
+        ],
+        "unverifiable_checks": [
+          "Unit Partition Alignment (requires E3 terrestrial scan — Zero Silent PASS Upgrades)"
+        ]
+      }
     }
   ],
   "mumbai": [
@@ -1648,7 +7237,302 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
           "label": "Provenance Complete",
           "status": "VALID"
         }
-      ]
+      ],
+      "parent_ulpin": "IN-MH-MUM-000001",
+      "canonical_rid": "IN-MH-MUM-0000-B0001-B00001-3",
+      "cls": "B",
+      "natural_key": {
+        "digest": "NK-SHA256-0009FAD0-B32-BV1",
+        "locator": "0x307E0D9A015702C2",
+        "version": 1,
+        "precision": {
+          "xy": "1 cm",
+          "z": "1 cm"
+        },
+        "datum": "EPSG:4979 (WGS84 3D)"
+      },
+      "spatial_address": {
+        "morton_63": "0x307E0D9A015702C2",
+        "lod": "LOD2",
+        "cell_level": 16
+      },
+      "binding_record": {
+        "version": 1,
+        "record_hash": "0x0009FAD0A1B2C3D4E5F6",
+        "prev_hash": "0x0000000000000000",
+        "timestamp": "2024-01-15T10:00:00Z",
+        "sign_off": {
+          "examiner_id": "EXAMINER-MH-MCGM-401",
+          "timestamp": "2024-01-15T12:00:00Z"
+        }
+      },
+      "classes_10": [
+        {
+          "cls": "S",
+          "name": "Surface Parcel Column",
+          "rid": "IN-MH-MUM-0000-B0000-S00001-5",
+          "z_range": [
+            -15,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Cadastral surface column between statutory subterranean limit and ground"
+        },
+        {
+          "cls": "B",
+          "name": "Sanctioned Building Envelope",
+          "rid": "IN-MH-MUM-0000-B0001-B00001-3",
+          "z_range": [
+            0,
+            441.5
+          ],
+          "status": "PASS",
+          "desc": "Sanctioned physical building envelope"
+        },
+        {
+          "cls": "L",
+          "name": "Level / Storey Slabs",
+          "rid": "IN-MH-MUM-0000-B0001-L00001-T",
+          "z_range": [
+            0,
+            4
+          ],
+          "status": "PASS",
+          "desc": "117 vertical storey slabs"
+        },
+        {
+          "cls": "U",
+          "name": "Apartment / Commercial Units",
+          "rid": "IN-MH-MUM-0000-B0001-U00101-A",
+          "z_range": [
+            4,
+            431.5
+          ],
+          "status": "PASS",
+          "desc": "Residential & commercial spatial units"
+        },
+        {
+          "cls": "C",
+          "name": "Common Areas (Lobbies/Stairs)",
+          "rid": "IN-MH-MUM-0000-B0001-C00001-D",
+          "z_range": [
+            0,
+            441.5
+          ],
+          "status": "PASS",
+          "desc": "Fire exits, service shafts, and entrance lobbies"
+        },
+        {
+          "cls": "P",
+          "name": "Accessory Parking Vaults",
+          "rid": "IN-MH-MUM-0000-B0001-P00001-W",
+          "z_range": [
+            -10,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Multi-level basement parking and mechanical rooms"
+        },
+        {
+          "cls": "A",
+          "name": "Airspace Development Lot",
+          "rid": "IN-MH-MUM-0000-B0001-A00001-U",
+          "z_range": [
+            441.5,
+            466.5
+          ],
+          "status": "PASS",
+          "desc": "Transferable development air-right volume above roof"
+        },
+        {
+          "cls": "T",
+          "name": "Subterranean Infrastructure Lot",
+          "rid": "IN-MH-MUM-0000-B0000-T00001-F",
+          "z_range": [
+            -30,
+            -15
+          ],
+          "status": "WARN",
+          "desc": "Deep underground rail corridor / utility tunnel"
+        },
+        {
+          "cls": "E",
+          "name": "Elevated Corridor / Viaduct",
+          "rid": "IN-MH-MUM-0000-B0000-E00001-D",
+          "z_range": [
+            12,
+            18
+          ],
+          "status": "PASS",
+          "desc": "Elevated transit right-of-way"
+        },
+        {
+          "cls": "I",
+          "name": "Municipal Utility Network Segment",
+          "rid": "IN-MH-MUM-0000-B0000-I00001-G",
+          "z_range": [
+            -3,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Storm drain (raja kaluve) and municipal conduit"
+        }
+      ],
+      "legacy_ids": [
+        {
+          "id_system": "CTS",
+          "legacy_value": "MCGM-CTS-WORLI-4000/A",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "RERA",
+          "legacy_value": "P51900008340",
+          "relationship": "MANY_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "SURVEY",
+          "legacy_value": "SURV-MILL-1-WORLI",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "ULPIN",
+          "legacy_value": "IN-MH-MUM-000001",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        }
+      ],
+      "rrr_rights": [
+        {
+          "type": "STRATA_UNIT_TITLE",
+          "holder": "Residential Association / Proprietary Units",
+          "undivided_share": "0.21%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Maharashtra Apartment Ownership Act 1970 Sec 4",
+          "verified": true
+        },
+        {
+          "type": "FREEHOLD_OWNERSHIP",
+          "holder": "Land Owning Entity / Cadastral Parent",
+          "undivided_share": "100.00%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Transfer of Property Act 1882",
+          "verified": true
+        },
+        {
+          "type": "EASEMENT_UTILITY",
+          "holder": "BMC Municipal Utility",
+          "undivided_share": null,
+          "legal_basis_status": "VERIFIED",
+          "statute": "Indian Easements Act 1882 Sec 15",
+          "verified": true
+        },
+        {
+          "type": "RESTRICTION_METRO_PROXIMITY",
+          "holder": "Mumbai Metro Rail Corporation (MMRC Line 3)",
+          "undivided_share": null,
+          "legal_basis_status": "VERIFIED",
+          "statute": "Metro Railways (Construction of Works) Act 1978 — 50m Statutory Protection Zone",
+          "verified": true
+        }
+      ],
+      "tier_results": [
+        {
+          "tier": "T0",
+          "name": "Data Integrity",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T1",
+          "name": "Geometric Validity (val3dity 2-manifold)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T2",
+          "name": "Cadastral Topology (No-Overlap & Containment)",
+          "status": "WARN",
+          "findings": [
+            {
+              "finding_id": "FINDING-MUM-001",
+              "finding_type": "CORRIDOR_CLEARANCE_BREACH",
+              "severity": "WARN",
+              "rule_id": "T2.CLEARANCE.METRO",
+              "message": "Tower foundation approaches within 48.2m of Aqua Line tunnel (statutory 50m MMRC clearance zone)."
+            }
+          ]
+        },
+        {
+          "tier": "T3",
+          "name": "Plan-vs-As-Built Hungarian Reconciliation",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T4",
+          "name": "Administrative & RRR Consistency",
+          "status": "PASS",
+          "findings": []
+        }
+      ],
+      "explain_objects": [
+        {
+          "finding_id": "EXPLAIN-MUM-001",
+          "finding_type": "CORRIDOR_CLEARANCE_BREACH",
+          "severity": "WARN",
+          "confidence": 0.95,
+          "rule": {
+            "rule_id": "T2.CLEARANCE.METRO",
+            "description": "Structure within 50m of Metro tunnel requires MMRC structural safety approval Right",
+            "tolerance": "tau_clearance = 50.0 m",
+            "policy_reference": "Metro Railways (Construction of Works) Act 1978"
+          },
+          "evidence": {
+            "evidence_ids": [
+              "EV-MMRC-AQUA-ALIGNMENT-E5",
+              "EV-WORLI-FOUNDATION-E3"
+            ],
+            "evidence_class": "E5 (Geotechnical Tunnel Survey) + E2 (Tower Foundation)",
+            "sigma_measurement": 0.15,
+            "data_provenance": [
+              "REAL",
+              "SYNTHETIC"
+            ]
+          },
+          "geometry_overlay": {
+            "expected": "Minimum 50.0m radial clearance from tunnel extrusion",
+            "observed": "Measured clearance 48.2m at elevation z = -12.4m",
+            "intersection": "1.8m intrusion into statutory review envelope",
+            "magnitude": "1.8 m review zone proximity"
+          },
+          "plan_version": "MCGM-AUTODCR-WORLI-2021-v3",
+          "affected_rids": [
+            "IN-MH-MUM-0000-B0001-B00001-3",
+            "IN-MH-MUM-0000-B0000-T00001-F"
+          ],
+          "examiner_action": null,
+          "override_history": []
+        }
+      ],
+      "evidence_sufficiency": {
+        "available": [
+          "E1 (Airborne LiDAR)",
+          "E2 (Exterior UAV)",
+          "E4 (Sanctioned Plans)"
+        ],
+        "required_for_full_pass": [
+          "E1",
+          "E2",
+          "E3 (Interior Terrestrial Scan)",
+          "E4"
+        ],
+        "unverifiable_checks": [
+          "Unit Partition Alignment (requires E3 terrestrial scan — Zero Silent PASS Upgrades)"
+        ]
+      }
     },
     {
       "building_id": "MUM-BLD-00002",
@@ -1730,7 +7614,248 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
           "label": "Provenance Complete",
           "status": "VALID"
         }
-      ]
+      ],
+      "parent_ulpin": "IN-MH-MUM-000002",
+      "canonical_rid": "IN-MH-MUM-0000-B0002-B00001-N",
+      "cls": "B",
+      "natural_key": {
+        "digest": "NK-SHA256-0009FADD-B32-BV1",
+        "locator": "0x307E0D9A01571481",
+        "version": 1,
+        "precision": {
+          "xy": "1 cm",
+          "z": "1 cm"
+        },
+        "datum": "EPSG:4979 (WGS84 3D)"
+      },
+      "spatial_address": {
+        "morton_63": "0x307E0D9A01571481",
+        "lod": "LOD2",
+        "cell_level": 16
+      },
+      "binding_record": {
+        "version": 1,
+        "record_hash": "0x0009FADDA1B2C3D4E5F6",
+        "prev_hash": "0x0000000000000000",
+        "timestamp": "2024-01-15T10:00:00Z",
+        "sign_off": {
+          "examiner_id": "EXAMINER-MH-MCGM-401",
+          "timestamp": "2024-01-15T12:00:00Z"
+        }
+      },
+      "classes_10": [
+        {
+          "cls": "S",
+          "name": "Surface Parcel Column",
+          "rid": "IN-MH-MUM-0000-B0000-S00001-5",
+          "z_range": [
+            -15,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Cadastral surface column between statutory subterranean limit and ground"
+        },
+        {
+          "cls": "B",
+          "name": "Sanctioned Building Envelope",
+          "rid": "IN-MH-MUM-0000-B0002-B00001-N",
+          "z_range": [
+            0,
+            277.6
+          ],
+          "status": "PASS",
+          "desc": "Sanctioned physical building envelope"
+        },
+        {
+          "cls": "L",
+          "name": "Level / Storey Slabs",
+          "rid": "IN-MH-MUM-0000-B0002-L00001-C",
+          "z_range": [
+            0,
+            4
+          ],
+          "status": "PASS",
+          "desc": "73 vertical storey slabs"
+        },
+        {
+          "cls": "U",
+          "name": "Apartment / Commercial Units",
+          "rid": "IN-MH-MUM-0000-B0002-U00101-U",
+          "z_range": [
+            4,
+            267.6
+          ],
+          "status": "PASS",
+          "desc": "Residential & commercial spatial units"
+        },
+        {
+          "cls": "C",
+          "name": "Common Areas (Lobbies/Stairs)",
+          "rid": "IN-MH-MUM-0000-B0002-C00001-X",
+          "z_range": [
+            0,
+            277.6
+          ],
+          "status": "PASS",
+          "desc": "Fire exits, service shafts, and entrance lobbies"
+        },
+        {
+          "cls": "P",
+          "name": "Accessory Parking Vaults",
+          "rid": "IN-MH-MUM-0000-B0002-P00001-F",
+          "z_range": [
+            -10,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Multi-level basement parking and mechanical rooms"
+        },
+        {
+          "cls": "A",
+          "name": "Airspace Development Lot",
+          "rid": "IN-MH-MUM-0000-B0002-A00001-D",
+          "z_range": [
+            277.6,
+            302.6
+          ],
+          "status": "PASS",
+          "desc": "Transferable development air-right volume above roof"
+        },
+        {
+          "cls": "T",
+          "name": "Subterranean Infrastructure Lot",
+          "rid": "IN-MH-MUM-0000-B0000-T00001-F",
+          "z_range": [
+            -30,
+            -15
+          ],
+          "status": "PASS",
+          "desc": "Deep underground rail corridor / utility tunnel"
+        },
+        {
+          "cls": "E",
+          "name": "Elevated Corridor / Viaduct",
+          "rid": "IN-MH-MUM-0000-B0000-E00001-D",
+          "z_range": [
+            12,
+            18
+          ],
+          "status": "PASS",
+          "desc": "Elevated transit right-of-way"
+        },
+        {
+          "cls": "I",
+          "name": "Municipal Utility Network Segment",
+          "rid": "IN-MH-MUM-0000-B0000-I00001-G",
+          "z_range": [
+            -3,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Storm drain (raja kaluve) and municipal conduit"
+        }
+      ],
+      "legacy_ids": [
+        {
+          "id_system": "CTS",
+          "legacy_value": "MCGM-CTS-WORLI-4001/A",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "RERA",
+          "legacy_value": "P51900008341",
+          "relationship": "MANY_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "SURVEY",
+          "legacy_value": "SURV-MILL-2-WORLI",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "ULPIN",
+          "legacy_value": "IN-MH-MUM-000002",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        }
+      ],
+      "rrr_rights": [
+        {
+          "type": "STRATA_UNIT_TITLE",
+          "holder": "Residential Association / Proprietary Units",
+          "undivided_share": "0.34%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Maharashtra Apartment Ownership Act 1970 Sec 4",
+          "verified": true
+        },
+        {
+          "type": "FREEHOLD_OWNERSHIP",
+          "holder": "Land Owning Entity / Cadastral Parent",
+          "undivided_share": "100.00%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Transfer of Property Act 1882",
+          "verified": true
+        },
+        {
+          "type": "EASEMENT_UTILITY",
+          "holder": "BMC Municipal Utility",
+          "undivided_share": null,
+          "legal_basis_status": "VERIFIED",
+          "statute": "Indian Easements Act 1882 Sec 15",
+          "verified": true
+        }
+      ],
+      "tier_results": [
+        {
+          "tier": "T0",
+          "name": "Data Integrity",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T1",
+          "name": "Geometric Validity (val3dity 2-manifold)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T2",
+          "name": "Cadastral Topology (No-Overlap & Containment)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T3",
+          "name": "Plan-vs-As-Built Hungarian Reconciliation",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T4",
+          "name": "Administrative & RRR Consistency",
+          "status": "PASS",
+          "findings": []
+        }
+      ],
+      "explain_objects": [],
+      "evidence_sufficiency": {
+        "available": [
+          "E1 (Airborne LiDAR)",
+          "E2 (Exterior UAV)",
+          "E4 (Sanctioned Plans)"
+        ],
+        "required_for_full_pass": [
+          "E1",
+          "E2",
+          "E3 (Interior Terrestrial Scan)",
+          "E4"
+        ],
+        "unverifiable_checks": [
+          "Unit Partition Alignment (requires E3 terrestrial scan — Zero Silent PASS Upgrades)"
+        ]
+      }
     },
     {
       "building_id": "MUM-BLD-00003",
@@ -1798,7 +7923,248 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
           "label": "Provenance Complete",
           "status": "VALID"
         }
-      ]
+      ],
+      "parent_ulpin": "IN-MH-MUM-000003",
+      "canonical_rid": "IN-MH-MUM-0000-B0003-B00001-6",
+      "cls": "B",
+      "natural_key": {
+        "digest": "NK-SHA256-0009FAF4-B32-BV1",
+        "locator": "0x307E0D9A015624D9",
+        "version": 1,
+        "precision": {
+          "xy": "1 cm",
+          "z": "1 cm"
+        },
+        "datum": "EPSG:4979 (WGS84 3D)"
+      },
+      "spatial_address": {
+        "morton_63": "0x307E0D9A015624D9",
+        "lod": "LOD2",
+        "cell_level": 16
+      },
+      "binding_record": {
+        "version": 1,
+        "record_hash": "0x0009FAF4A1B2C3D4E5F6",
+        "prev_hash": "0x0000000000000000",
+        "timestamp": "2024-01-15T10:00:00Z",
+        "sign_off": {
+          "examiner_id": "EXAMINER-MH-MCGM-401",
+          "timestamp": "2024-01-15T12:00:00Z"
+        }
+      },
+      "classes_10": [
+        {
+          "cls": "S",
+          "name": "Surface Parcel Column",
+          "rid": "IN-MH-MUM-0000-B0000-S00001-5",
+          "z_range": [
+            -15,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Cadastral surface column between statutory subterranean limit and ground"
+        },
+        {
+          "cls": "B",
+          "name": "Sanctioned Building Envelope",
+          "rid": "IN-MH-MUM-0000-B0003-B00001-6",
+          "z_range": [
+            0,
+            223
+          ],
+          "status": "PASS",
+          "desc": "Sanctioned physical building envelope"
+        },
+        {
+          "cls": "L",
+          "name": "Level / Storey Slabs",
+          "rid": "IN-MH-MUM-0000-B0003-L00001-W",
+          "z_range": [
+            0,
+            4
+          ],
+          "status": "PASS",
+          "desc": "57 vertical storey slabs"
+        },
+        {
+          "cls": "U",
+          "name": "Apartment / Commercial Units",
+          "rid": "IN-MH-MUM-0000-B0003-U00101-D",
+          "z_range": [
+            4,
+            213
+          ],
+          "status": "PASS",
+          "desc": "Residential & commercial spatial units"
+        },
+        {
+          "cls": "C",
+          "name": "Common Areas (Lobbies/Stairs)",
+          "rid": "IN-MH-MUM-0000-B0003-C00001-G",
+          "z_range": [
+            0,
+            223
+          ],
+          "status": "PASS",
+          "desc": "Fire exits, service shafts, and entrance lobbies"
+        },
+        {
+          "cls": "P",
+          "name": "Accessory Parking Vaults",
+          "rid": "IN-MH-MUM-0000-B0003-P00001-8",
+          "z_range": [
+            -10,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Multi-level basement parking and mechanical rooms"
+        },
+        {
+          "cls": "A",
+          "name": "Airspace Development Lot",
+          "rid": "IN-MH-MUM-0000-B0003-A00001-X",
+          "z_range": [
+            223,
+            248
+          ],
+          "status": "PASS",
+          "desc": "Transferable development air-right volume above roof"
+        },
+        {
+          "cls": "T",
+          "name": "Subterranean Infrastructure Lot",
+          "rid": "IN-MH-MUM-0000-B0000-T00001-F",
+          "z_range": [
+            -30,
+            -15
+          ],
+          "status": "PASS",
+          "desc": "Deep underground rail corridor / utility tunnel"
+        },
+        {
+          "cls": "E",
+          "name": "Elevated Corridor / Viaduct",
+          "rid": "IN-MH-MUM-0000-B0000-E00001-D",
+          "z_range": [
+            12,
+            18
+          ],
+          "status": "PASS",
+          "desc": "Elevated transit right-of-way"
+        },
+        {
+          "cls": "I",
+          "name": "Municipal Utility Network Segment",
+          "rid": "IN-MH-MUM-0000-B0000-I00001-G",
+          "z_range": [
+            -3,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Storm drain (raja kaluve) and municipal conduit"
+        }
+      ],
+      "legacy_ids": [
+        {
+          "id_system": "CTS",
+          "legacy_value": "MCGM-CTS-WORLI-4002/A",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "RERA",
+          "legacy_value": "P51900008342",
+          "relationship": "MANY_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "SURVEY",
+          "legacy_value": "SURV-MILL-3-WORLI",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "ULPIN",
+          "legacy_value": "IN-MH-MUM-000003",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        }
+      ],
+      "rrr_rights": [
+        {
+          "type": "STRATA_UNIT_TITLE",
+          "holder": "Residential Association / Proprietary Units",
+          "undivided_share": "0.44%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Maharashtra Apartment Ownership Act 1970 Sec 4",
+          "verified": true
+        },
+        {
+          "type": "FREEHOLD_OWNERSHIP",
+          "holder": "Land Owning Entity / Cadastral Parent",
+          "undivided_share": "100.00%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Transfer of Property Act 1882",
+          "verified": true
+        },
+        {
+          "type": "EASEMENT_UTILITY",
+          "holder": "BMC Municipal Utility",
+          "undivided_share": null,
+          "legal_basis_status": "VERIFIED",
+          "statute": "Indian Easements Act 1882 Sec 15",
+          "verified": true
+        }
+      ],
+      "tier_results": [
+        {
+          "tier": "T0",
+          "name": "Data Integrity",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T1",
+          "name": "Geometric Validity (val3dity 2-manifold)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T2",
+          "name": "Cadastral Topology (No-Overlap & Containment)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T3",
+          "name": "Plan-vs-As-Built Hungarian Reconciliation",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T4",
+          "name": "Administrative & RRR Consistency",
+          "status": "PASS",
+          "findings": []
+        }
+      ],
+      "explain_objects": [],
+      "evidence_sufficiency": {
+        "available": [
+          "E1 (Airborne LiDAR)",
+          "E2 (Exterior UAV)",
+          "E4 (Sanctioned Plans)"
+        ],
+        "required_for_full_pass": [
+          "E1",
+          "E2",
+          "E3 (Interior Terrestrial Scan)",
+          "E4"
+        ],
+        "unverifiable_checks": [
+          "Unit Partition Alignment (requires E3 terrestrial scan — Zero Silent PASS Upgrades)"
+        ]
+      }
     },
     {
       "building_id": "MUM-BLD-00004",
@@ -1895,7 +8261,248 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
           "label": "Provenance Complete",
           "status": "VALID"
         }
-      ]
+      ],
+      "parent_ulpin": "IN-MH-MUM-000004",
+      "canonical_rid": "IN-MH-MUM-0000-B0004-B00001-Q",
+      "cls": "B",
+      "natural_key": {
+        "digest": "NK-SHA256-0009F93C-B32-BV1",
+        "locator": "0x307E0D9A210BF946",
+        "version": 1,
+        "precision": {
+          "xy": "1 cm",
+          "z": "1 cm"
+        },
+        "datum": "EPSG:4979 (WGS84 3D)"
+      },
+      "spatial_address": {
+        "morton_63": "0x307E0D9A210BF946",
+        "lod": "LOD2",
+        "cell_level": 16
+      },
+      "binding_record": {
+        "version": 1,
+        "record_hash": "0x0009F93CA1B2C3D4E5F6",
+        "prev_hash": "0x0000000000000000",
+        "timestamp": "2024-01-15T10:00:00Z",
+        "sign_off": {
+          "examiner_id": "EXAMINER-MH-MCGM-401",
+          "timestamp": "2024-01-15T12:00:00Z"
+        }
+      },
+      "classes_10": [
+        {
+          "cls": "S",
+          "name": "Surface Parcel Column",
+          "rid": "IN-MH-MUM-0000-B0000-S00001-5",
+          "z_range": [
+            -15,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Cadastral surface column between statutory subterranean limit and ground"
+        },
+        {
+          "cls": "B",
+          "name": "Sanctioned Building Envelope",
+          "rid": "IN-MH-MUM-0000-B0004-B00001-Q",
+          "z_range": [
+            0,
+            320
+          ],
+          "status": "PASS",
+          "desc": "Sanctioned physical building envelope"
+        },
+        {
+          "cls": "L",
+          "name": "Level / Storey Slabs",
+          "rid": "IN-MH-MUM-0000-B0004-L00001-F",
+          "z_range": [
+            0,
+            4
+          ],
+          "status": "PASS",
+          "desc": "88 vertical storey slabs"
+        },
+        {
+          "cls": "U",
+          "name": "Apartment / Commercial Units",
+          "rid": "IN-MH-MUM-0000-B0004-U00101-X",
+          "z_range": [
+            4,
+            310
+          ],
+          "status": "PASS",
+          "desc": "Residential & commercial spatial units"
+        },
+        {
+          "cls": "C",
+          "name": "Common Areas (Lobbies/Stairs)",
+          "rid": "IN-MH-MUM-0000-B0004-C00001-0",
+          "z_range": [
+            0,
+            320
+          ],
+          "status": "PASS",
+          "desc": "Fire exits, service shafts, and entrance lobbies"
+        },
+        {
+          "cls": "P",
+          "name": "Accessory Parking Vaults",
+          "rid": "IN-MH-MUM-0000-B0004-P00001-S",
+          "z_range": [
+            -10,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Multi-level basement parking and mechanical rooms"
+        },
+        {
+          "cls": "A",
+          "name": "Airspace Development Lot",
+          "rid": "IN-MH-MUM-0000-B0004-A00001-G",
+          "z_range": [
+            320,
+            345
+          ],
+          "status": "PASS",
+          "desc": "Transferable development air-right volume above roof"
+        },
+        {
+          "cls": "T",
+          "name": "Subterranean Infrastructure Lot",
+          "rid": "IN-MH-MUM-0000-B0000-T00001-F",
+          "z_range": [
+            -30,
+            -15
+          ],
+          "status": "PASS",
+          "desc": "Deep underground rail corridor / utility tunnel"
+        },
+        {
+          "cls": "E",
+          "name": "Elevated Corridor / Viaduct",
+          "rid": "IN-MH-MUM-0000-B0000-E00001-D",
+          "z_range": [
+            12,
+            18
+          ],
+          "status": "PASS",
+          "desc": "Elevated transit right-of-way"
+        },
+        {
+          "cls": "I",
+          "name": "Municipal Utility Network Segment",
+          "rid": "IN-MH-MUM-0000-B0000-I00001-G",
+          "z_range": [
+            -3,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Storm drain (raja kaluve) and municipal conduit"
+        }
+      ],
+      "legacy_ids": [
+        {
+          "id_system": "CTS",
+          "legacy_value": "MCGM-CTS-WORLI-4003/A",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "RERA",
+          "legacy_value": "P51900008343",
+          "relationship": "MANY_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "SURVEY",
+          "legacy_value": "SURV-MILL-4-WORLI",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "ULPIN",
+          "legacy_value": "IN-MH-MUM-000004",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        }
+      ],
+      "rrr_rights": [
+        {
+          "type": "STRATA_UNIT_TITLE",
+          "holder": "Residential Association / Proprietary Units",
+          "undivided_share": "0.28%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Maharashtra Apartment Ownership Act 1970 Sec 4",
+          "verified": true
+        },
+        {
+          "type": "FREEHOLD_OWNERSHIP",
+          "holder": "Land Owning Entity / Cadastral Parent",
+          "undivided_share": "100.00%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Transfer of Property Act 1882",
+          "verified": true
+        },
+        {
+          "type": "EASEMENT_UTILITY",
+          "holder": "BMC Municipal Utility",
+          "undivided_share": null,
+          "legal_basis_status": "VERIFIED",
+          "statute": "Indian Easements Act 1882 Sec 15",
+          "verified": true
+        }
+      ],
+      "tier_results": [
+        {
+          "tier": "T0",
+          "name": "Data Integrity",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T1",
+          "name": "Geometric Validity (val3dity 2-manifold)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T2",
+          "name": "Cadastral Topology (No-Overlap & Containment)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T3",
+          "name": "Plan-vs-As-Built Hungarian Reconciliation",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T4",
+          "name": "Administrative & RRR Consistency",
+          "status": "PASS",
+          "findings": []
+        }
+      ],
+      "explain_objects": [],
+      "evidence_sufficiency": {
+        "available": [
+          "E1 (Airborne LiDAR)",
+          "E2 (Exterior UAV)",
+          "E4 (Sanctioned Plans)"
+        ],
+        "required_for_full_pass": [
+          "E1",
+          "E2",
+          "E3 (Interior Terrestrial Scan)",
+          "E4"
+        ],
+        "unverifiable_checks": [
+          "Unit Partition Alignment (requires E3 terrestrial scan — Zero Silent PASS Upgrades)"
+        ]
+      }
     },
     {
       "building_id": "MUM-BLD-00005",
@@ -1972,7 +8579,248 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
           "label": "Provenance Complete",
           "status": "VALID"
         }
-      ]
+      ],
+      "parent_ulpin": "IN-MH-MUM-000005",
+      "canonical_rid": "IN-MH-MUM-0000-B0005-B00001-9",
+      "cls": "B",
+      "natural_key": {
+        "digest": "NK-SHA256-0009F93E-B32-BV1",
+        "locator": "0x307E0D932180355A",
+        "version": 1,
+        "precision": {
+          "xy": "1 cm",
+          "z": "1 cm"
+        },
+        "datum": "EPSG:4979 (WGS84 3D)"
+      },
+      "spatial_address": {
+        "morton_63": "0x307E0D932180355A",
+        "lod": "LOD2",
+        "cell_level": 16
+      },
+      "binding_record": {
+        "version": 1,
+        "record_hash": "0x0009F93EA1B2C3D4E5F6",
+        "prev_hash": "0x0000000000000000",
+        "timestamp": "2024-01-15T10:00:00Z",
+        "sign_off": {
+          "examiner_id": "EXAMINER-MH-MCGM-401",
+          "timestamp": "2024-01-15T12:00:00Z"
+        }
+      },
+      "classes_10": [
+        {
+          "cls": "S",
+          "name": "Surface Parcel Column",
+          "rid": "IN-MH-MUM-0000-B0000-S00001-5",
+          "z_range": [
+            -15,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Cadastral surface column between statutory subterranean limit and ground"
+        },
+        {
+          "cls": "B",
+          "name": "Sanctioned Building Envelope",
+          "rid": "IN-MH-MUM-0000-B0005-B00001-9",
+          "z_range": [
+            0,
+            301
+          ],
+          "status": "PASS",
+          "desc": "Sanctioned physical building envelope"
+        },
+        {
+          "cls": "L",
+          "name": "Level / Storey Slabs",
+          "rid": "IN-MH-MUM-0000-B0005-L00001-8",
+          "z_range": [
+            0,
+            4
+          ],
+          "status": "PASS",
+          "desc": "78 vertical storey slabs"
+        },
+        {
+          "cls": "U",
+          "name": "Apartment / Commercial Units",
+          "rid": "IN-MH-MUM-0000-B0005-U00101-G",
+          "z_range": [
+            4,
+            291
+          ],
+          "status": "PASS",
+          "desc": "Residential & commercial spatial units"
+        },
+        {
+          "cls": "C",
+          "name": "Common Areas (Lobbies/Stairs)",
+          "rid": "IN-MH-MUM-0000-B0005-C00001-J",
+          "z_range": [
+            0,
+            301
+          ],
+          "status": "PASS",
+          "desc": "Fire exits, service shafts, and entrance lobbies"
+        },
+        {
+          "cls": "P",
+          "name": "Accessory Parking Vaults",
+          "rid": "IN-MH-MUM-0000-B0005-P00001-B",
+          "z_range": [
+            -10,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Multi-level basement parking and mechanical rooms"
+        },
+        {
+          "cls": "A",
+          "name": "Airspace Development Lot",
+          "rid": "IN-MH-MUM-0000-B0005-A00001-0",
+          "z_range": [
+            301,
+            326
+          ],
+          "status": "PASS",
+          "desc": "Transferable development air-right volume above roof"
+        },
+        {
+          "cls": "T",
+          "name": "Subterranean Infrastructure Lot",
+          "rid": "IN-MH-MUM-0000-B0000-T00001-F",
+          "z_range": [
+            -30,
+            -15
+          ],
+          "status": "PASS",
+          "desc": "Deep underground rail corridor / utility tunnel"
+        },
+        {
+          "cls": "E",
+          "name": "Elevated Corridor / Viaduct",
+          "rid": "IN-MH-MUM-0000-B0000-E00001-D",
+          "z_range": [
+            12,
+            18
+          ],
+          "status": "PASS",
+          "desc": "Elevated transit right-of-way"
+        },
+        {
+          "cls": "I",
+          "name": "Municipal Utility Network Segment",
+          "rid": "IN-MH-MUM-0000-B0000-I00001-G",
+          "z_range": [
+            -3,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Storm drain (raja kaluve) and municipal conduit"
+        }
+      ],
+      "legacy_ids": [
+        {
+          "id_system": "CTS",
+          "legacy_value": "MCGM-CTS-WORLI-4004/A",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "RERA",
+          "legacy_value": "P51900008344",
+          "relationship": "MANY_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "SURVEY",
+          "legacy_value": "SURV-MILL-5-WORLI",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "ULPIN",
+          "legacy_value": "IN-MH-MUM-000005",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        }
+      ],
+      "rrr_rights": [
+        {
+          "type": "STRATA_UNIT_TITLE",
+          "holder": "Residential Association / Proprietary Units",
+          "undivided_share": "0.32%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Maharashtra Apartment Ownership Act 1970 Sec 4",
+          "verified": true
+        },
+        {
+          "type": "FREEHOLD_OWNERSHIP",
+          "holder": "Land Owning Entity / Cadastral Parent",
+          "undivided_share": "100.00%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Transfer of Property Act 1882",
+          "verified": true
+        },
+        {
+          "type": "EASEMENT_UTILITY",
+          "holder": "BMC Municipal Utility",
+          "undivided_share": null,
+          "legal_basis_status": "VERIFIED",
+          "statute": "Indian Easements Act 1882 Sec 15",
+          "verified": true
+        }
+      ],
+      "tier_results": [
+        {
+          "tier": "T0",
+          "name": "Data Integrity",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T1",
+          "name": "Geometric Validity (val3dity 2-manifold)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T2",
+          "name": "Cadastral Topology (No-Overlap & Containment)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T3",
+          "name": "Plan-vs-As-Built Hungarian Reconciliation",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T4",
+          "name": "Administrative & RRR Consistency",
+          "status": "PASS",
+          "findings": []
+        }
+      ],
+      "explain_objects": [],
+      "evidence_sufficiency": {
+        "available": [
+          "E1 (Airborne LiDAR)",
+          "E2 (Exterior UAV)",
+          "E4 (Sanctioned Plans)"
+        ],
+        "required_for_full_pass": [
+          "E1",
+          "E2",
+          "E3 (Interior Terrestrial Scan)",
+          "E4"
+        ],
+        "unverifiable_checks": [
+          "Unit Partition Alignment (requires E3 terrestrial scan — Zero Silent PASS Upgrades)"
+        ]
+      }
     },
     {
       "building_id": "MUM-BLD-00006",
@@ -2040,7 +8888,248 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
           "label": "Provenance Complete",
           "status": "VALID"
         }
-      ]
+      ],
+      "parent_ulpin": "IN-MH-MUM-000006",
+      "canonical_rid": "IN-MH-MUM-0000-B0006-B00001-T",
+      "cls": "B",
+      "natural_key": {
+        "digest": "NK-SHA256-0009FAD2-B32-BV1",
+        "locator": "0x307E0D9A23025BCC",
+        "version": 1,
+        "precision": {
+          "xy": "1 cm",
+          "z": "1 cm"
+        },
+        "datum": "EPSG:4979 (WGS84 3D)"
+      },
+      "spatial_address": {
+        "morton_63": "0x307E0D9A23025BCC",
+        "lod": "LOD2",
+        "cell_level": 16
+      },
+      "binding_record": {
+        "version": 1,
+        "record_hash": "0x0009FAD2A1B2C3D4E5F6",
+        "prev_hash": "0x0000000000000000",
+        "timestamp": "2024-01-15T10:00:00Z",
+        "sign_off": {
+          "examiner_id": "EXAMINER-MH-MCGM-401",
+          "timestamp": "2024-01-15T12:00:00Z"
+        }
+      },
+      "classes_10": [
+        {
+          "cls": "S",
+          "name": "Surface Parcel Column",
+          "rid": "IN-MH-MUM-0000-B0000-S00001-5",
+          "z_range": [
+            -15,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Cadastral surface column between statutory subterranean limit and ground"
+        },
+        {
+          "cls": "B",
+          "name": "Sanctioned Building Envelope",
+          "rid": "IN-MH-MUM-0000-B0006-B00001-T",
+          "z_range": [
+            0,
+            268
+          ],
+          "status": "PASS",
+          "desc": "Sanctioned physical building envelope"
+        },
+        {
+          "cls": "L",
+          "name": "Level / Storey Slabs",
+          "rid": "IN-MH-MUM-0000-B0006-L00001-S",
+          "z_range": [
+            0,
+            4
+          ],
+          "status": "PASS",
+          "desc": "78 vertical storey slabs"
+        },
+        {
+          "cls": "U",
+          "name": "Apartment / Commercial Units",
+          "rid": "IN-MH-MUM-0000-B0006-U00101-0",
+          "z_range": [
+            4,
+            258
+          ],
+          "status": "PASS",
+          "desc": "Residential & commercial spatial units"
+        },
+        {
+          "cls": "C",
+          "name": "Common Areas (Lobbies/Stairs)",
+          "rid": "IN-MH-MUM-0000-B0006-C00001-2",
+          "z_range": [
+            0,
+            268
+          ],
+          "status": "PASS",
+          "desc": "Fire exits, service shafts, and entrance lobbies"
+        },
+        {
+          "cls": "P",
+          "name": "Accessory Parking Vaults",
+          "rid": "IN-MH-MUM-0000-B0006-P00001-V",
+          "z_range": [
+            -10,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Multi-level basement parking and mechanical rooms"
+        },
+        {
+          "cls": "A",
+          "name": "Airspace Development Lot",
+          "rid": "IN-MH-MUM-0000-B0006-A00001-J",
+          "z_range": [
+            268,
+            293
+          ],
+          "status": "PASS",
+          "desc": "Transferable development air-right volume above roof"
+        },
+        {
+          "cls": "T",
+          "name": "Subterranean Infrastructure Lot",
+          "rid": "IN-MH-MUM-0000-B0000-T00001-F",
+          "z_range": [
+            -30,
+            -15
+          ],
+          "status": "PASS",
+          "desc": "Deep underground rail corridor / utility tunnel"
+        },
+        {
+          "cls": "E",
+          "name": "Elevated Corridor / Viaduct",
+          "rid": "IN-MH-MUM-0000-B0000-E00001-D",
+          "z_range": [
+            12,
+            18
+          ],
+          "status": "PASS",
+          "desc": "Elevated transit right-of-way"
+        },
+        {
+          "cls": "I",
+          "name": "Municipal Utility Network Segment",
+          "rid": "IN-MH-MUM-0000-B0000-I00001-G",
+          "z_range": [
+            -3,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Storm drain (raja kaluve) and municipal conduit"
+        }
+      ],
+      "legacy_ids": [
+        {
+          "id_system": "CTS",
+          "legacy_value": "MCGM-CTS-WORLI-4005/A",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "RERA",
+          "legacy_value": "P51900008345",
+          "relationship": "MANY_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "SURVEY",
+          "legacy_value": "SURV-MILL-6-WORLI",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "ULPIN",
+          "legacy_value": "IN-MH-MUM-000006",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        }
+      ],
+      "rrr_rights": [
+        {
+          "type": "STRATA_UNIT_TITLE",
+          "holder": "Residential Association / Proprietary Units",
+          "undivided_share": "0.32%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Maharashtra Apartment Ownership Act 1970 Sec 4",
+          "verified": true
+        },
+        {
+          "type": "FREEHOLD_OWNERSHIP",
+          "holder": "Land Owning Entity / Cadastral Parent",
+          "undivided_share": "100.00%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Transfer of Property Act 1882",
+          "verified": true
+        },
+        {
+          "type": "EASEMENT_UTILITY",
+          "holder": "BMC Municipal Utility",
+          "undivided_share": null,
+          "legal_basis_status": "VERIFIED",
+          "statute": "Indian Easements Act 1882 Sec 15",
+          "verified": true
+        }
+      ],
+      "tier_results": [
+        {
+          "tier": "T0",
+          "name": "Data Integrity",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T1",
+          "name": "Geometric Validity (val3dity 2-manifold)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T2",
+          "name": "Cadastral Topology (No-Overlap & Containment)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T3",
+          "name": "Plan-vs-As-Built Hungarian Reconciliation",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T4",
+          "name": "Administrative & RRR Consistency",
+          "status": "PASS",
+          "findings": []
+        }
+      ],
+      "explain_objects": [],
+      "evidence_sufficiency": {
+        "available": [
+          "E1 (Airborne LiDAR)",
+          "E2 (Exterior UAV)",
+          "E4 (Sanctioned Plans)"
+        ],
+        "required_for_full_pass": [
+          "E1",
+          "E2",
+          "E3 (Interior Terrestrial Scan)",
+          "E4"
+        ],
+        "unverifiable_checks": [
+          "Unit Partition Alignment (requires E3 terrestrial scan — Zero Silent PASS Upgrades)"
+        ]
+      }
     },
     {
       "building_id": "MUM-BLD-00007",
@@ -2099,7 +9188,248 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
           "label": "Provenance Complete",
           "status": "VALID"
         }
-      ]
+      ],
+      "parent_ulpin": "IN-MH-MUM-000007",
+      "canonical_rid": "IN-MH-MUM-0000-B0007-B00001-C",
+      "cls": "B",
+      "natural_key": {
+        "digest": "NK-SHA256-0009FAEA-B32-BV1",
+        "locator": "0x307E0D9A01560488",
+        "version": 1,
+        "precision": {
+          "xy": "1 cm",
+          "z": "1 cm"
+        },
+        "datum": "EPSG:4979 (WGS84 3D)"
+      },
+      "spatial_address": {
+        "morton_63": "0x307E0D9A01560488",
+        "lod": "LOD2",
+        "cell_level": 16
+      },
+      "binding_record": {
+        "version": 1,
+        "record_hash": "0x0009FAEAA1B2C3D4E5F6",
+        "prev_hash": "0x0000000000000000",
+        "timestamp": "2024-01-15T10:00:00Z",
+        "sign_off": {
+          "examiner_id": "EXAMINER-MH-MCGM-401",
+          "timestamp": "2024-01-15T12:00:00Z"
+        }
+      },
+      "classes_10": [
+        {
+          "cls": "S",
+          "name": "Surface Parcel Column",
+          "rid": "IN-MH-MUM-0000-B0000-S00001-5",
+          "z_range": [
+            -15,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Cadastral surface column between statutory subterranean limit and ground"
+        },
+        {
+          "cls": "B",
+          "name": "Sanctioned Building Envelope",
+          "rid": "IN-MH-MUM-0000-B0007-B00001-C",
+          "z_range": [
+            0,
+            281
+          ],
+          "status": "PASS",
+          "desc": "Sanctioned physical building envelope"
+        },
+        {
+          "cls": "L",
+          "name": "Level / Storey Slabs",
+          "rid": "IN-MH-MUM-0000-B0007-L00001-B",
+          "z_range": [
+            0,
+            4
+          ],
+          "status": "PASS",
+          "desc": "60 vertical storey slabs"
+        },
+        {
+          "cls": "U",
+          "name": "Apartment / Commercial Units",
+          "rid": "IN-MH-MUM-0000-B0007-U00101-J",
+          "z_range": [
+            4,
+            271
+          ],
+          "status": "PASS",
+          "desc": "Residential & commercial spatial units"
+        },
+        {
+          "cls": "C",
+          "name": "Common Areas (Lobbies/Stairs)",
+          "rid": "IN-MH-MUM-0000-B0007-C00001-M",
+          "z_range": [
+            0,
+            281
+          ],
+          "status": "PASS",
+          "desc": "Fire exits, service shafts, and entrance lobbies"
+        },
+        {
+          "cls": "P",
+          "name": "Accessory Parking Vaults",
+          "rid": "IN-MH-MUM-0000-B0007-P00001-E",
+          "z_range": [
+            -10,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Multi-level basement parking and mechanical rooms"
+        },
+        {
+          "cls": "A",
+          "name": "Airspace Development Lot",
+          "rid": "IN-MH-MUM-0000-B0007-A00001-2",
+          "z_range": [
+            281,
+            306
+          ],
+          "status": "PASS",
+          "desc": "Transferable development air-right volume above roof"
+        },
+        {
+          "cls": "T",
+          "name": "Subterranean Infrastructure Lot",
+          "rid": "IN-MH-MUM-0000-B0000-T00001-F",
+          "z_range": [
+            -30,
+            -15
+          ],
+          "status": "PASS",
+          "desc": "Deep underground rail corridor / utility tunnel"
+        },
+        {
+          "cls": "E",
+          "name": "Elevated Corridor / Viaduct",
+          "rid": "IN-MH-MUM-0000-B0000-E00001-D",
+          "z_range": [
+            12,
+            18
+          ],
+          "status": "PASS",
+          "desc": "Elevated transit right-of-way"
+        },
+        {
+          "cls": "I",
+          "name": "Municipal Utility Network Segment",
+          "rid": "IN-MH-MUM-0000-B0000-I00001-G",
+          "z_range": [
+            -3,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Storm drain (raja kaluve) and municipal conduit"
+        }
+      ],
+      "legacy_ids": [
+        {
+          "id_system": "CTS",
+          "legacy_value": "MCGM-CTS-WORLI-4006/A",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "RERA",
+          "legacy_value": "P51900008346",
+          "relationship": "MANY_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "SURVEY",
+          "legacy_value": "SURV-MILL-7-WORLI",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "ULPIN",
+          "legacy_value": "IN-MH-MUM-000007",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        }
+      ],
+      "rrr_rights": [
+        {
+          "type": "STRATA_UNIT_TITLE",
+          "holder": "Residential Association / Proprietary Units",
+          "undivided_share": "0.42%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Maharashtra Apartment Ownership Act 1970 Sec 4",
+          "verified": true
+        },
+        {
+          "type": "FREEHOLD_OWNERSHIP",
+          "holder": "Land Owning Entity / Cadastral Parent",
+          "undivided_share": "100.00%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Transfer of Property Act 1882",
+          "verified": true
+        },
+        {
+          "type": "EASEMENT_UTILITY",
+          "holder": "BMC Municipal Utility",
+          "undivided_share": null,
+          "legal_basis_status": "VERIFIED",
+          "statute": "Indian Easements Act 1882 Sec 15",
+          "verified": true
+        }
+      ],
+      "tier_results": [
+        {
+          "tier": "T0",
+          "name": "Data Integrity",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T1",
+          "name": "Geometric Validity (val3dity 2-manifold)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T2",
+          "name": "Cadastral Topology (No-Overlap & Containment)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T3",
+          "name": "Plan-vs-As-Built Hungarian Reconciliation",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T4",
+          "name": "Administrative & RRR Consistency",
+          "status": "PASS",
+          "findings": []
+        }
+      ],
+      "explain_objects": [],
+      "evidence_sufficiency": {
+        "available": [
+          "E1 (Airborne LiDAR)",
+          "E2 (Exterior UAV)",
+          "E4 (Sanctioned Plans)"
+        ],
+        "required_for_full_pass": [
+          "E1",
+          "E2",
+          "E3 (Interior Terrestrial Scan)",
+          "E4"
+        ],
+        "unverifiable_checks": [
+          "Unit Partition Alignment (requires E3 terrestrial scan — Zero Silent PASS Upgrades)"
+        ]
+      }
     },
     {
       "building_id": "MUM-BLD-00008",
@@ -2167,7 +9497,248 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
           "label": "Provenance Complete",
           "status": "VALID"
         }
-      ]
+      ],
+      "parent_ulpin": "IN-MH-MUM-000008",
+      "canonical_rid": "IN-MH-MUM-0000-B0008-B00001-W",
+      "cls": "B",
+      "natural_key": {
+        "digest": "NK-SHA256-0009FB0E-B32-BV1",
+        "locator": "0x307E0D9B05FA4530",
+        "version": 1,
+        "precision": {
+          "xy": "1 cm",
+          "z": "1 cm"
+        },
+        "datum": "EPSG:4979 (WGS84 3D)"
+      },
+      "spatial_address": {
+        "morton_63": "0x307E0D9B05FA4530",
+        "lod": "LOD2",
+        "cell_level": 16
+      },
+      "binding_record": {
+        "version": 1,
+        "record_hash": "0x0009FB0EA1B2C3D4E5F6",
+        "prev_hash": "0x0000000000000000",
+        "timestamp": "2024-01-15T10:00:00Z",
+        "sign_off": {
+          "examiner_id": "EXAMINER-MH-MCGM-401",
+          "timestamp": "2024-01-15T12:00:00Z"
+        }
+      },
+      "classes_10": [
+        {
+          "cls": "S",
+          "name": "Surface Parcel Column",
+          "rid": "IN-MH-MUM-0000-B0000-S00001-5",
+          "z_range": [
+            -15,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Cadastral surface column between statutory subterranean limit and ground"
+        },
+        {
+          "cls": "B",
+          "name": "Sanctioned Building Envelope",
+          "rid": "IN-MH-MUM-0000-B0008-B00001-W",
+          "z_range": [
+            0,
+            246
+          ],
+          "status": "PASS",
+          "desc": "Sanctioned physical building envelope"
+        },
+        {
+          "cls": "L",
+          "name": "Level / Storey Slabs",
+          "rid": "IN-MH-MUM-0000-B0008-L00001-V",
+          "z_range": [
+            0,
+            4
+          ],
+          "status": "PASS",
+          "desc": "64 vertical storey slabs"
+        },
+        {
+          "cls": "U",
+          "name": "Apartment / Commercial Units",
+          "rid": "IN-MH-MUM-0000-B0008-U00101-2",
+          "z_range": [
+            4,
+            236
+          ],
+          "status": "PASS",
+          "desc": "Residential & commercial spatial units"
+        },
+        {
+          "cls": "C",
+          "name": "Common Areas (Lobbies/Stairs)",
+          "rid": "IN-MH-MUM-0000-B0008-C00001-5",
+          "z_range": [
+            0,
+            246
+          ],
+          "status": "PASS",
+          "desc": "Fire exits, service shafts, and entrance lobbies"
+        },
+        {
+          "cls": "P",
+          "name": "Accessory Parking Vaults",
+          "rid": "IN-MH-MUM-0000-B0008-P00001-Y",
+          "z_range": [
+            -10,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Multi-level basement parking and mechanical rooms"
+        },
+        {
+          "cls": "A",
+          "name": "Airspace Development Lot",
+          "rid": "IN-MH-MUM-0000-B0008-A00001-M",
+          "z_range": [
+            246,
+            271
+          ],
+          "status": "PASS",
+          "desc": "Transferable development air-right volume above roof"
+        },
+        {
+          "cls": "T",
+          "name": "Subterranean Infrastructure Lot",
+          "rid": "IN-MH-MUM-0000-B0000-T00001-F",
+          "z_range": [
+            -30,
+            -15
+          ],
+          "status": "PASS",
+          "desc": "Deep underground rail corridor / utility tunnel"
+        },
+        {
+          "cls": "E",
+          "name": "Elevated Corridor / Viaduct",
+          "rid": "IN-MH-MUM-0000-B0000-E00001-D",
+          "z_range": [
+            12,
+            18
+          ],
+          "status": "PASS",
+          "desc": "Elevated transit right-of-way"
+        },
+        {
+          "cls": "I",
+          "name": "Municipal Utility Network Segment",
+          "rid": "IN-MH-MUM-0000-B0000-I00001-G",
+          "z_range": [
+            -3,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Storm drain (raja kaluve) and municipal conduit"
+        }
+      ],
+      "legacy_ids": [
+        {
+          "id_system": "CTS",
+          "legacy_value": "MCGM-CTS-WORLI-4007/A",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "RERA",
+          "legacy_value": "P51900008347",
+          "relationship": "MANY_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "SURVEY",
+          "legacy_value": "SURV-MILL-8-WORLI",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "ULPIN",
+          "legacy_value": "IN-MH-MUM-000008",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        }
+      ],
+      "rrr_rights": [
+        {
+          "type": "STRATA_UNIT_TITLE",
+          "holder": "Residential Association / Proprietary Units",
+          "undivided_share": "0.39%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Maharashtra Apartment Ownership Act 1970 Sec 4",
+          "verified": true
+        },
+        {
+          "type": "FREEHOLD_OWNERSHIP",
+          "holder": "Land Owning Entity / Cadastral Parent",
+          "undivided_share": "100.00%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Transfer of Property Act 1882",
+          "verified": true
+        },
+        {
+          "type": "EASEMENT_UTILITY",
+          "holder": "BMC Municipal Utility",
+          "undivided_share": null,
+          "legal_basis_status": "VERIFIED",
+          "statute": "Indian Easements Act 1882 Sec 15",
+          "verified": true
+        }
+      ],
+      "tier_results": [
+        {
+          "tier": "T0",
+          "name": "Data Integrity",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T1",
+          "name": "Geometric Validity (val3dity 2-manifold)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T2",
+          "name": "Cadastral Topology (No-Overlap & Containment)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T3",
+          "name": "Plan-vs-As-Built Hungarian Reconciliation",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T4",
+          "name": "Administrative & RRR Consistency",
+          "status": "PASS",
+          "findings": []
+        }
+      ],
+      "explain_objects": [],
+      "evidence_sufficiency": {
+        "available": [
+          "E1 (Airborne LiDAR)",
+          "E2 (Exterior UAV)",
+          "E4 (Sanctioned Plans)"
+        ],
+        "required_for_full_pass": [
+          "E1",
+          "E2",
+          "E3 (Interior Terrestrial Scan)",
+          "E4"
+        ],
+        "unverifiable_checks": [
+          "Unit Partition Alignment (requires E3 terrestrial scan — Zero Silent PASS Upgrades)"
+        ]
+      }
     },
     {
       "building_id": "MUM-BLD-00009",
@@ -2235,7 +9806,248 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
           "label": "Provenance Complete",
           "status": "VALID"
         }
-      ]
+      ],
+      "parent_ulpin": "IN-MH-MUM-000009",
+      "canonical_rid": "IN-MH-MUM-0000-B0009-B00001-F",
+      "cls": "B",
+      "natural_key": {
+        "digest": "NK-SHA256-0009FA1C-B32-BV1",
+        "locator": "0x307E0D9321C92702",
+        "version": 1,
+        "precision": {
+          "xy": "1 cm",
+          "z": "1 cm"
+        },
+        "datum": "EPSG:4979 (WGS84 3D)"
+      },
+      "spatial_address": {
+        "morton_63": "0x307E0D9321C92702",
+        "lod": "LOD2",
+        "cell_level": 16
+      },
+      "binding_record": {
+        "version": 1,
+        "record_hash": "0x0009FA1CA1B2C3D4E5F6",
+        "prev_hash": "0x0000000000000000",
+        "timestamp": "2024-01-15T10:00:00Z",
+        "sign_off": {
+          "examiner_id": "EXAMINER-MH-MCGM-401",
+          "timestamp": "2024-01-15T12:00:00Z"
+        }
+      },
+      "classes_10": [
+        {
+          "cls": "S",
+          "name": "Surface Parcel Column",
+          "rid": "IN-MH-MUM-0000-B0000-S00001-5",
+          "z_range": [
+            -15,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Cadastral surface column between statutory subterranean limit and ground"
+        },
+        {
+          "cls": "B",
+          "name": "Sanctioned Building Envelope",
+          "rid": "IN-MH-MUM-0000-B0009-B00001-F",
+          "z_range": [
+            0,
+            372
+          ],
+          "status": "PASS",
+          "desc": "Sanctioned physical building envelope"
+        },
+        {
+          "cls": "L",
+          "name": "Level / Storey Slabs",
+          "rid": "IN-MH-MUM-0000-B0009-L00001-E",
+          "z_range": [
+            0,
+            4
+          ],
+          "status": "PASS",
+          "desc": "85 vertical storey slabs"
+        },
+        {
+          "cls": "U",
+          "name": "Apartment / Commercial Units",
+          "rid": "IN-MH-MUM-0000-B0009-U00101-M",
+          "z_range": [
+            4,
+            362
+          ],
+          "status": "PASS",
+          "desc": "Residential & commercial spatial units"
+        },
+        {
+          "cls": "C",
+          "name": "Common Areas (Lobbies/Stairs)",
+          "rid": "IN-MH-MUM-0000-B0009-C00001-P",
+          "z_range": [
+            0,
+            372
+          ],
+          "status": "PASS",
+          "desc": "Fire exits, service shafts, and entrance lobbies"
+        },
+        {
+          "cls": "P",
+          "name": "Accessory Parking Vaults",
+          "rid": "IN-MH-MUM-0000-B0009-P00001-H",
+          "z_range": [
+            -10,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Multi-level basement parking and mechanical rooms"
+        },
+        {
+          "cls": "A",
+          "name": "Airspace Development Lot",
+          "rid": "IN-MH-MUM-0000-B0009-A00001-5",
+          "z_range": [
+            372,
+            397
+          ],
+          "status": "PASS",
+          "desc": "Transferable development air-right volume above roof"
+        },
+        {
+          "cls": "T",
+          "name": "Subterranean Infrastructure Lot",
+          "rid": "IN-MH-MUM-0000-B0000-T00001-F",
+          "z_range": [
+            -30,
+            -15
+          ],
+          "status": "PASS",
+          "desc": "Deep underground rail corridor / utility tunnel"
+        },
+        {
+          "cls": "E",
+          "name": "Elevated Corridor / Viaduct",
+          "rid": "IN-MH-MUM-0000-B0000-E00001-D",
+          "z_range": [
+            12,
+            18
+          ],
+          "status": "PASS",
+          "desc": "Elevated transit right-of-way"
+        },
+        {
+          "cls": "I",
+          "name": "Municipal Utility Network Segment",
+          "rid": "IN-MH-MUM-0000-B0000-I00001-G",
+          "z_range": [
+            -3,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Storm drain (raja kaluve) and municipal conduit"
+        }
+      ],
+      "legacy_ids": [
+        {
+          "id_system": "CTS",
+          "legacy_value": "MCGM-CTS-WORLI-4008/A",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "RERA",
+          "legacy_value": "P51900008348",
+          "relationship": "MANY_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "SURVEY",
+          "legacy_value": "SURV-MILL-9-WORLI",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "ULPIN",
+          "legacy_value": "IN-MH-MUM-000009",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        }
+      ],
+      "rrr_rights": [
+        {
+          "type": "STRATA_UNIT_TITLE",
+          "holder": "Residential Association / Proprietary Units",
+          "undivided_share": "0.29%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Maharashtra Apartment Ownership Act 1970 Sec 4",
+          "verified": true
+        },
+        {
+          "type": "FREEHOLD_OWNERSHIP",
+          "holder": "Land Owning Entity / Cadastral Parent",
+          "undivided_share": "100.00%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Transfer of Property Act 1882",
+          "verified": true
+        },
+        {
+          "type": "EASEMENT_UTILITY",
+          "holder": "BMC Municipal Utility",
+          "undivided_share": null,
+          "legal_basis_status": "VERIFIED",
+          "statute": "Indian Easements Act 1882 Sec 15",
+          "verified": true
+        }
+      ],
+      "tier_results": [
+        {
+          "tier": "T0",
+          "name": "Data Integrity",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T1",
+          "name": "Geometric Validity (val3dity 2-manifold)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T2",
+          "name": "Cadastral Topology (No-Overlap & Containment)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T3",
+          "name": "Plan-vs-As-Built Hungarian Reconciliation",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T4",
+          "name": "Administrative & RRR Consistency",
+          "status": "PASS",
+          "findings": []
+        }
+      ],
+      "explain_objects": [],
+      "evidence_sufficiency": {
+        "available": [
+          "E1 (Airborne LiDAR)",
+          "E2 (Exterior UAV)",
+          "E4 (Sanctioned Plans)"
+        ],
+        "required_for_full_pass": [
+          "E1",
+          "E2",
+          "E3 (Interior Terrestrial Scan)",
+          "E4"
+        ],
+        "unverifiable_checks": [
+          "Unit Partition Alignment (requires E3 terrestrial scan — Zero Silent PASS Upgrades)"
+        ]
+      }
     },
     {
       "building_id": "MUM-BLD-00010",
@@ -2294,7 +10106,248 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
           "label": "Provenance Complete",
           "status": "VALID"
         }
-      ]
+      ],
+      "parent_ulpin": "IN-MH-MUM-000010",
+      "canonical_rid": "IN-MH-MUM-0000-B0010-B00001-N",
+      "cls": "B",
+      "natural_key": {
+        "digest": "NK-SHA256-0009FA1D-B32-BV1",
+        "locator": "0x307E0D9321C905D2",
+        "version": 1,
+        "precision": {
+          "xy": "1 cm",
+          "z": "1 cm"
+        },
+        "datum": "EPSG:4979 (WGS84 3D)"
+      },
+      "spatial_address": {
+        "morton_63": "0x307E0D9321C905D2",
+        "lod": "LOD2",
+        "cell_level": 16
+      },
+      "binding_record": {
+        "version": 1,
+        "record_hash": "0x0009FA1DA1B2C3D4E5F6",
+        "prev_hash": "0x0000000000000000",
+        "timestamp": "2024-01-15T10:00:00Z",
+        "sign_off": {
+          "examiner_id": "EXAMINER-MH-MCGM-401",
+          "timestamp": "2024-01-15T12:00:00Z"
+        }
+      },
+      "classes_10": [
+        {
+          "cls": "S",
+          "name": "Surface Parcel Column",
+          "rid": "IN-MH-MUM-0000-B0000-S00001-5",
+          "z_range": [
+            -15,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Cadastral surface column between statutory subterranean limit and ground"
+        },
+        {
+          "cls": "B",
+          "name": "Sanctioned Building Envelope",
+          "rid": "IN-MH-MUM-0000-B0010-B00001-N",
+          "z_range": [
+            0,
+            260
+          ],
+          "status": "PASS",
+          "desc": "Sanctioned physical building envelope"
+        },
+        {
+          "cls": "L",
+          "name": "Level / Storey Slabs",
+          "rid": "IN-MH-MUM-0000-B0010-L00001-C",
+          "z_range": [
+            0,
+            4
+          ],
+          "status": "PASS",
+          "desc": "52 vertical storey slabs"
+        },
+        {
+          "cls": "U",
+          "name": "Apartment / Commercial Units",
+          "rid": "IN-MH-MUM-0000-B0010-U00101-U",
+          "z_range": [
+            4,
+            250
+          ],
+          "status": "PASS",
+          "desc": "Residential & commercial spatial units"
+        },
+        {
+          "cls": "C",
+          "name": "Common Areas (Lobbies/Stairs)",
+          "rid": "IN-MH-MUM-0000-B0010-C00001-X",
+          "z_range": [
+            0,
+            260
+          ],
+          "status": "PASS",
+          "desc": "Fire exits, service shafts, and entrance lobbies"
+        },
+        {
+          "cls": "P",
+          "name": "Accessory Parking Vaults",
+          "rid": "IN-MH-MUM-0000-B0010-P00001-F",
+          "z_range": [
+            -10,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Multi-level basement parking and mechanical rooms"
+        },
+        {
+          "cls": "A",
+          "name": "Airspace Development Lot",
+          "rid": "IN-MH-MUM-0000-B0010-A00001-D",
+          "z_range": [
+            260,
+            285
+          ],
+          "status": "PASS",
+          "desc": "Transferable development air-right volume above roof"
+        },
+        {
+          "cls": "T",
+          "name": "Subterranean Infrastructure Lot",
+          "rid": "IN-MH-MUM-0000-B0000-T00001-F",
+          "z_range": [
+            -30,
+            -15
+          ],
+          "status": "PASS",
+          "desc": "Deep underground rail corridor / utility tunnel"
+        },
+        {
+          "cls": "E",
+          "name": "Elevated Corridor / Viaduct",
+          "rid": "IN-MH-MUM-0000-B0000-E00001-D",
+          "z_range": [
+            12,
+            18
+          ],
+          "status": "PASS",
+          "desc": "Elevated transit right-of-way"
+        },
+        {
+          "cls": "I",
+          "name": "Municipal Utility Network Segment",
+          "rid": "IN-MH-MUM-0000-B0000-I00001-G",
+          "z_range": [
+            -3,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Storm drain (raja kaluve) and municipal conduit"
+        }
+      ],
+      "legacy_ids": [
+        {
+          "id_system": "CTS",
+          "legacy_value": "MCGM-CTS-WORLI-4009/A",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "RERA",
+          "legacy_value": "P51900008349",
+          "relationship": "MANY_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "SURVEY",
+          "legacy_value": "SURV-MILL-10-WORLI",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "ULPIN",
+          "legacy_value": "IN-MH-MUM-000010",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        }
+      ],
+      "rrr_rights": [
+        {
+          "type": "STRATA_UNIT_TITLE",
+          "holder": "Residential Association / Proprietary Units",
+          "undivided_share": "0.48%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Maharashtra Apartment Ownership Act 1970 Sec 4",
+          "verified": true
+        },
+        {
+          "type": "FREEHOLD_OWNERSHIP",
+          "holder": "Land Owning Entity / Cadastral Parent",
+          "undivided_share": "100.00%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Transfer of Property Act 1882",
+          "verified": true
+        },
+        {
+          "type": "EASEMENT_UTILITY",
+          "holder": "BMC Municipal Utility",
+          "undivided_share": null,
+          "legal_basis_status": "VERIFIED",
+          "statute": "Indian Easements Act 1882 Sec 15",
+          "verified": true
+        }
+      ],
+      "tier_results": [
+        {
+          "tier": "T0",
+          "name": "Data Integrity",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T1",
+          "name": "Geometric Validity (val3dity 2-manifold)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T2",
+          "name": "Cadastral Topology (No-Overlap & Containment)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T3",
+          "name": "Plan-vs-As-Built Hungarian Reconciliation",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T4",
+          "name": "Administrative & RRR Consistency",
+          "status": "PASS",
+          "findings": []
+        }
+      ],
+      "explain_objects": [],
+      "evidence_sufficiency": {
+        "available": [
+          "E1 (Airborne LiDAR)",
+          "E2 (Exterior UAV)",
+          "E4 (Sanctioned Plans)"
+        ],
+        "required_for_full_pass": [
+          "E1",
+          "E2",
+          "E3 (Interior Terrestrial Scan)",
+          "E4"
+        ],
+        "unverifiable_checks": [
+          "Unit Partition Alignment (requires E3 terrestrial scan — Zero Silent PASS Upgrades)"
+        ]
+      }
     },
     {
       "building_id": "MUM-BLD-00011",
@@ -2413,7 +10466,248 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
           "label": "Provenance Complete",
           "status": "VALID"
         }
-      ]
+      ],
+      "parent_ulpin": "IN-MH-MUM-000011",
+      "canonical_rid": "IN-MH-MUM-0000-B0011-B00001-6",
+      "cls": "B",
+      "natural_key": {
+        "digest": "NK-SHA256-0009F8CB-B32-BV1",
+        "locator": "0x307E0CF796362E17",
+        "version": 1,
+        "precision": {
+          "xy": "1 cm",
+          "z": "1 cm"
+        },
+        "datum": "EPSG:4979 (WGS84 3D)"
+      },
+      "spatial_address": {
+        "morton_63": "0x307E0CF796362E17",
+        "lod": "LOD2",
+        "cell_level": 16
+      },
+      "binding_record": {
+        "version": 1,
+        "record_hash": "0x0009F8CBA1B2C3D4E5F6",
+        "prev_hash": "0x0000000000000000",
+        "timestamp": "2024-01-15T10:00:00Z",
+        "sign_off": {
+          "examiner_id": "EXAMINER-MH-MCGM-401",
+          "timestamp": "2024-01-15T12:00:00Z"
+        }
+      },
+      "classes_10": [
+        {
+          "cls": "S",
+          "name": "Surface Parcel Column",
+          "rid": "IN-MH-MUM-0000-B0000-S00001-5",
+          "z_range": [
+            -15,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Cadastral surface column between statutory subterranean limit and ground"
+        },
+        {
+          "cls": "B",
+          "name": "Sanctioned Building Envelope",
+          "rid": "IN-MH-MUM-0000-B0011-B00001-6",
+          "z_range": [
+            0,
+            173
+          ],
+          "status": "PASS",
+          "desc": "Sanctioned physical building envelope"
+        },
+        {
+          "cls": "L",
+          "name": "Level / Storey Slabs",
+          "rid": "IN-MH-MUM-0000-B0011-L00001-W",
+          "z_range": [
+            0,
+            4
+          ],
+          "status": "PASS",
+          "desc": "27 vertical storey slabs"
+        },
+        {
+          "cls": "U",
+          "name": "Apartment / Commercial Units",
+          "rid": "IN-MH-MUM-0000-B0011-U00101-D",
+          "z_range": [
+            4,
+            163
+          ],
+          "status": "PASS",
+          "desc": "Residential & commercial spatial units"
+        },
+        {
+          "cls": "C",
+          "name": "Common Areas (Lobbies/Stairs)",
+          "rid": "IN-MH-MUM-0000-B0011-C00001-G",
+          "z_range": [
+            0,
+            173
+          ],
+          "status": "PASS",
+          "desc": "Fire exits, service shafts, and entrance lobbies"
+        },
+        {
+          "cls": "P",
+          "name": "Accessory Parking Vaults",
+          "rid": "IN-MH-MUM-0000-B0011-P00001-8",
+          "z_range": [
+            -10,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Multi-level basement parking and mechanical rooms"
+        },
+        {
+          "cls": "A",
+          "name": "Airspace Development Lot",
+          "rid": "IN-MH-MUM-0000-B0011-A00001-X",
+          "z_range": [
+            173,
+            198
+          ],
+          "status": "PASS",
+          "desc": "Transferable development air-right volume above roof"
+        },
+        {
+          "cls": "T",
+          "name": "Subterranean Infrastructure Lot",
+          "rid": "IN-MH-MUM-0000-B0000-T00001-F",
+          "z_range": [
+            -30,
+            -15
+          ],
+          "status": "PASS",
+          "desc": "Deep underground rail corridor / utility tunnel"
+        },
+        {
+          "cls": "E",
+          "name": "Elevated Corridor / Viaduct",
+          "rid": "IN-MH-MUM-0000-B0000-E00001-D",
+          "z_range": [
+            12,
+            18
+          ],
+          "status": "PASS",
+          "desc": "Elevated transit right-of-way"
+        },
+        {
+          "cls": "I",
+          "name": "Municipal Utility Network Segment",
+          "rid": "IN-MH-MUM-0000-B0000-I00001-G",
+          "z_range": [
+            -3,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Storm drain (raja kaluve) and municipal conduit"
+        }
+      ],
+      "legacy_ids": [
+        {
+          "id_system": "CTS",
+          "legacy_value": "MCGM-CTS-WORLI-4010/A",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "RERA",
+          "legacy_value": "P51900008350",
+          "relationship": "MANY_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "SURVEY",
+          "legacy_value": "SURV-MILL-11-WORLI",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "ULPIN",
+          "legacy_value": "IN-MH-MUM-000011",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        }
+      ],
+      "rrr_rights": [
+        {
+          "type": "STRATA_UNIT_TITLE",
+          "holder": "Residential Association / Proprietary Units",
+          "undivided_share": "0.93%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Maharashtra Apartment Ownership Act 1970 Sec 4",
+          "verified": true
+        },
+        {
+          "type": "FREEHOLD_OWNERSHIP",
+          "holder": "Land Owning Entity / Cadastral Parent",
+          "undivided_share": "100.00%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Transfer of Property Act 1882",
+          "verified": true
+        },
+        {
+          "type": "EASEMENT_UTILITY",
+          "holder": "BMC Municipal Utility",
+          "undivided_share": null,
+          "legal_basis_status": "VERIFIED",
+          "statute": "Indian Easements Act 1882 Sec 15",
+          "verified": true
+        }
+      ],
+      "tier_results": [
+        {
+          "tier": "T0",
+          "name": "Data Integrity",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T1",
+          "name": "Geometric Validity (val3dity 2-manifold)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T2",
+          "name": "Cadastral Topology (No-Overlap & Containment)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T3",
+          "name": "Plan-vs-As-Built Hungarian Reconciliation",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T4",
+          "name": "Administrative & RRR Consistency",
+          "status": "PASS",
+          "findings": []
+        }
+      ],
+      "explain_objects": [],
+      "evidence_sufficiency": {
+        "available": [
+          "E1 (Airborne LiDAR)",
+          "E2 (Exterior UAV)",
+          "E4 (Sanctioned Plans)"
+        ],
+        "required_for_full_pass": [
+          "E1",
+          "E2",
+          "E3 (Interior Terrestrial Scan)",
+          "E4"
+        ],
+        "unverifiable_checks": [
+          "Unit Partition Alignment (requires E3 terrestrial scan — Zero Silent PASS Upgrades)"
+        ]
+      }
     },
     {
       "building_id": "MUM-BLD-00012",
@@ -2481,7 +10775,248 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
           "label": "Provenance Complete",
           "status": "VALID"
         }
-      ]
+      ],
+      "parent_ulpin": "IN-MH-MUM-000012",
+      "canonical_rid": "IN-MH-MUM-0000-B0012-B00001-Q",
+      "cls": "B",
+      "natural_key": {
+        "digest": "NK-SHA256-0009F8BA-B32-BV1",
+        "locator": "0x307E0CBF96BEC3B3",
+        "version": 1,
+        "precision": {
+          "xy": "1 cm",
+          "z": "1 cm"
+        },
+        "datum": "EPSG:4979 (WGS84 3D)"
+      },
+      "spatial_address": {
+        "morton_63": "0x307E0CBF96BEC3B3",
+        "lod": "LOD2",
+        "cell_level": 16
+      },
+      "binding_record": {
+        "version": 1,
+        "record_hash": "0x0009F8BAA1B2C3D4E5F6",
+        "prev_hash": "0x0000000000000000",
+        "timestamp": "2024-01-15T10:00:00Z",
+        "sign_off": {
+          "examiner_id": "EXAMINER-MH-MCGM-401",
+          "timestamp": "2024-01-15T12:00:00Z"
+        }
+      },
+      "classes_10": [
+        {
+          "cls": "S",
+          "name": "Surface Parcel Column",
+          "rid": "IN-MH-MUM-0000-B0000-S00001-5",
+          "z_range": [
+            -15,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Cadastral surface column between statutory subterranean limit and ground"
+        },
+        {
+          "cls": "B",
+          "name": "Sanctioned Building Envelope",
+          "rid": "IN-MH-MUM-0000-B0012-B00001-Q",
+          "z_range": [
+            0,
+            256
+          ],
+          "status": "PASS",
+          "desc": "Sanctioned physical building envelope"
+        },
+        {
+          "cls": "L",
+          "name": "Level / Storey Slabs",
+          "rid": "IN-MH-MUM-0000-B0012-L00001-F",
+          "z_range": [
+            0,
+            4
+          ],
+          "status": "PASS",
+          "desc": "60 vertical storey slabs"
+        },
+        {
+          "cls": "U",
+          "name": "Apartment / Commercial Units",
+          "rid": "IN-MH-MUM-0000-B0012-U00101-X",
+          "z_range": [
+            4,
+            246
+          ],
+          "status": "PASS",
+          "desc": "Residential & commercial spatial units"
+        },
+        {
+          "cls": "C",
+          "name": "Common Areas (Lobbies/Stairs)",
+          "rid": "IN-MH-MUM-0000-B0012-C00001-0",
+          "z_range": [
+            0,
+            256
+          ],
+          "status": "PASS",
+          "desc": "Fire exits, service shafts, and entrance lobbies"
+        },
+        {
+          "cls": "P",
+          "name": "Accessory Parking Vaults",
+          "rid": "IN-MH-MUM-0000-B0012-P00001-S",
+          "z_range": [
+            -10,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Multi-level basement parking and mechanical rooms"
+        },
+        {
+          "cls": "A",
+          "name": "Airspace Development Lot",
+          "rid": "IN-MH-MUM-0000-B0012-A00001-G",
+          "z_range": [
+            256,
+            281
+          ],
+          "status": "PASS",
+          "desc": "Transferable development air-right volume above roof"
+        },
+        {
+          "cls": "T",
+          "name": "Subterranean Infrastructure Lot",
+          "rid": "IN-MH-MUM-0000-B0000-T00001-F",
+          "z_range": [
+            -30,
+            -15
+          ],
+          "status": "PASS",
+          "desc": "Deep underground rail corridor / utility tunnel"
+        },
+        {
+          "cls": "E",
+          "name": "Elevated Corridor / Viaduct",
+          "rid": "IN-MH-MUM-0000-B0000-E00001-D",
+          "z_range": [
+            12,
+            18
+          ],
+          "status": "PASS",
+          "desc": "Elevated transit right-of-way"
+        },
+        {
+          "cls": "I",
+          "name": "Municipal Utility Network Segment",
+          "rid": "IN-MH-MUM-0000-B0000-I00001-G",
+          "z_range": [
+            -3,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Storm drain (raja kaluve) and municipal conduit"
+        }
+      ],
+      "legacy_ids": [
+        {
+          "id_system": "CTS",
+          "legacy_value": "MCGM-CTS-WORLI-4011/A",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "RERA",
+          "legacy_value": "P51900008351",
+          "relationship": "MANY_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "SURVEY",
+          "legacy_value": "SURV-MILL-12-WORLI",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "ULPIN",
+          "legacy_value": "IN-MH-MUM-000012",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        }
+      ],
+      "rrr_rights": [
+        {
+          "type": "STRATA_UNIT_TITLE",
+          "holder": "Residential Association / Proprietary Units",
+          "undivided_share": "0.42%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Maharashtra Apartment Ownership Act 1970 Sec 4",
+          "verified": true
+        },
+        {
+          "type": "FREEHOLD_OWNERSHIP",
+          "holder": "Land Owning Entity / Cadastral Parent",
+          "undivided_share": "100.00%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Transfer of Property Act 1882",
+          "verified": true
+        },
+        {
+          "type": "EASEMENT_UTILITY",
+          "holder": "BMC Municipal Utility",
+          "undivided_share": null,
+          "legal_basis_status": "VERIFIED",
+          "statute": "Indian Easements Act 1882 Sec 15",
+          "verified": true
+        }
+      ],
+      "tier_results": [
+        {
+          "tier": "T0",
+          "name": "Data Integrity",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T1",
+          "name": "Geometric Validity (val3dity 2-manifold)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T2",
+          "name": "Cadastral Topology (No-Overlap & Containment)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T3",
+          "name": "Plan-vs-As-Built Hungarian Reconciliation",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T4",
+          "name": "Administrative & RRR Consistency",
+          "status": "PASS",
+          "findings": []
+        }
+      ],
+      "explain_objects": [],
+      "evidence_sufficiency": {
+        "available": [
+          "E1 (Airborne LiDAR)",
+          "E2 (Exterior UAV)",
+          "E4 (Sanctioned Plans)"
+        ],
+        "required_for_full_pass": [
+          "E1",
+          "E2",
+          "E3 (Interior Terrestrial Scan)",
+          "E4"
+        ],
+        "unverifiable_checks": [
+          "Unit Partition Alignment (requires E3 terrestrial scan — Zero Silent PASS Upgrades)"
+        ]
+      }
     },
     {
       "building_id": "MUM-BLD-00013",
@@ -2540,7 +11075,248 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
           "label": "Provenance Complete",
           "status": "VALID"
         }
-      ]
+      ],
+      "parent_ulpin": "IN-MH-MUM-000013",
+      "canonical_rid": "IN-MH-MUM-0000-B0013-B00001-9",
+      "cls": "B",
+      "natural_key": {
+        "digest": "NK-SHA256-0009F8BE-B32-BV1",
+        "locator": "0x307E0CBF96BEC7F0",
+        "version": 1,
+        "precision": {
+          "xy": "1 cm",
+          "z": "1 cm"
+        },
+        "datum": "EPSG:4979 (WGS84 3D)"
+      },
+      "spatial_address": {
+        "morton_63": "0x307E0CBF96BEC7F0",
+        "lod": "LOD2",
+        "cell_level": 16
+      },
+      "binding_record": {
+        "version": 1,
+        "record_hash": "0x0009F8BEA1B2C3D4E5F6",
+        "prev_hash": "0x0000000000000000",
+        "timestamp": "2024-01-15T10:00:00Z",
+        "sign_off": {
+          "examiner_id": "EXAMINER-MH-MCGM-401",
+          "timestamp": "2024-01-15T12:00:00Z"
+        }
+      },
+      "classes_10": [
+        {
+          "cls": "S",
+          "name": "Surface Parcel Column",
+          "rid": "IN-MH-MUM-0000-B0000-S00001-5",
+          "z_range": [
+            -15,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Cadastral surface column between statutory subterranean limit and ground"
+        },
+        {
+          "cls": "B",
+          "name": "Sanctioned Building Envelope",
+          "rid": "IN-MH-MUM-0000-B0013-B00001-9",
+          "z_range": [
+            0,
+            256
+          ],
+          "status": "PASS",
+          "desc": "Sanctioned physical building envelope"
+        },
+        {
+          "cls": "L",
+          "name": "Level / Storey Slabs",
+          "rid": "IN-MH-MUM-0000-B0013-L00001-8",
+          "z_range": [
+            0,
+            4
+          ],
+          "status": "PASS",
+          "desc": "60 vertical storey slabs"
+        },
+        {
+          "cls": "U",
+          "name": "Apartment / Commercial Units",
+          "rid": "IN-MH-MUM-0000-B0013-U00101-G",
+          "z_range": [
+            4,
+            246
+          ],
+          "status": "PASS",
+          "desc": "Residential & commercial spatial units"
+        },
+        {
+          "cls": "C",
+          "name": "Common Areas (Lobbies/Stairs)",
+          "rid": "IN-MH-MUM-0000-B0013-C00001-J",
+          "z_range": [
+            0,
+            256
+          ],
+          "status": "PASS",
+          "desc": "Fire exits, service shafts, and entrance lobbies"
+        },
+        {
+          "cls": "P",
+          "name": "Accessory Parking Vaults",
+          "rid": "IN-MH-MUM-0000-B0013-P00001-B",
+          "z_range": [
+            -10,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Multi-level basement parking and mechanical rooms"
+        },
+        {
+          "cls": "A",
+          "name": "Airspace Development Lot",
+          "rid": "IN-MH-MUM-0000-B0013-A00001-0",
+          "z_range": [
+            256,
+            281
+          ],
+          "status": "PASS",
+          "desc": "Transferable development air-right volume above roof"
+        },
+        {
+          "cls": "T",
+          "name": "Subterranean Infrastructure Lot",
+          "rid": "IN-MH-MUM-0000-B0000-T00001-F",
+          "z_range": [
+            -30,
+            -15
+          ],
+          "status": "PASS",
+          "desc": "Deep underground rail corridor / utility tunnel"
+        },
+        {
+          "cls": "E",
+          "name": "Elevated Corridor / Viaduct",
+          "rid": "IN-MH-MUM-0000-B0000-E00001-D",
+          "z_range": [
+            12,
+            18
+          ],
+          "status": "PASS",
+          "desc": "Elevated transit right-of-way"
+        },
+        {
+          "cls": "I",
+          "name": "Municipal Utility Network Segment",
+          "rid": "IN-MH-MUM-0000-B0000-I00001-G",
+          "z_range": [
+            -3,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Storm drain (raja kaluve) and municipal conduit"
+        }
+      ],
+      "legacy_ids": [
+        {
+          "id_system": "CTS",
+          "legacy_value": "MCGM-CTS-WORLI-4012/A",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "RERA",
+          "legacy_value": "P51900008352",
+          "relationship": "MANY_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "SURVEY",
+          "legacy_value": "SURV-MILL-13-WORLI",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "ULPIN",
+          "legacy_value": "IN-MH-MUM-000013",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        }
+      ],
+      "rrr_rights": [
+        {
+          "type": "STRATA_UNIT_TITLE",
+          "holder": "Residential Association / Proprietary Units",
+          "undivided_share": "0.42%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Maharashtra Apartment Ownership Act 1970 Sec 4",
+          "verified": true
+        },
+        {
+          "type": "FREEHOLD_OWNERSHIP",
+          "holder": "Land Owning Entity / Cadastral Parent",
+          "undivided_share": "100.00%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Transfer of Property Act 1882",
+          "verified": true
+        },
+        {
+          "type": "EASEMENT_UTILITY",
+          "holder": "BMC Municipal Utility",
+          "undivided_share": null,
+          "legal_basis_status": "VERIFIED",
+          "statute": "Indian Easements Act 1882 Sec 15",
+          "verified": true
+        }
+      ],
+      "tier_results": [
+        {
+          "tier": "T0",
+          "name": "Data Integrity",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T1",
+          "name": "Geometric Validity (val3dity 2-manifold)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T2",
+          "name": "Cadastral Topology (No-Overlap & Containment)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T3",
+          "name": "Plan-vs-As-Built Hungarian Reconciliation",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T4",
+          "name": "Administrative & RRR Consistency",
+          "status": "PASS",
+          "findings": []
+        }
+      ],
+      "explain_objects": [],
+      "evidence_sufficiency": {
+        "available": [
+          "E1 (Airborne LiDAR)",
+          "E2 (Exterior UAV)",
+          "E4 (Sanctioned Plans)"
+        ],
+        "required_for_full_pass": [
+          "E1",
+          "E2",
+          "E3 (Interior Terrestrial Scan)",
+          "E4"
+        ],
+        "unverifiable_checks": [
+          "Unit Partition Alignment (requires E3 terrestrial scan — Zero Silent PASS Upgrades)"
+        ]
+      }
     },
     {
       "building_id": "MUM-BLD-00014",
@@ -2599,7 +11375,248 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
           "label": "Provenance Complete",
           "status": "VALID"
         }
-      ]
+      ],
+      "parent_ulpin": "IN-MH-MUM-000014",
+      "canonical_rid": "IN-MH-MUM-0000-B0014-B00001-T",
+      "cls": "B",
+      "natural_key": {
+        "digest": "NK-SHA256-0009F994-B32-BV1",
+        "locator": "0x307E0CBEB30B4F4F",
+        "version": 1,
+        "precision": {
+          "xy": "1 cm",
+          "z": "1 cm"
+        },
+        "datum": "EPSG:4979 (WGS84 3D)"
+      },
+      "spatial_address": {
+        "morton_63": "0x307E0CBEB30B4F4F",
+        "lod": "LOD2",
+        "cell_level": 16
+      },
+      "binding_record": {
+        "version": 1,
+        "record_hash": "0x0009F994A1B2C3D4E5F6",
+        "prev_hash": "0x0000000000000000",
+        "timestamp": "2024-01-15T10:00:00Z",
+        "sign_off": {
+          "examiner_id": "EXAMINER-MH-MCGM-401",
+          "timestamp": "2024-01-15T12:00:00Z"
+        }
+      },
+      "classes_10": [
+        {
+          "cls": "S",
+          "name": "Surface Parcel Column",
+          "rid": "IN-MH-MUM-0000-B0000-S00001-5",
+          "z_range": [
+            -15,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Cadastral surface column between statutory subterranean limit and ground"
+        },
+        {
+          "cls": "B",
+          "name": "Sanctioned Building Envelope",
+          "rid": "IN-MH-MUM-0000-B0014-B00001-T",
+          "z_range": [
+            0,
+            262
+          ],
+          "status": "PASS",
+          "desc": "Sanctioned physical building envelope"
+        },
+        {
+          "cls": "L",
+          "name": "Level / Storey Slabs",
+          "rid": "IN-MH-MUM-0000-B0014-L00001-S",
+          "z_range": [
+            0,
+            4
+          ],
+          "status": "PASS",
+          "desc": "72 vertical storey slabs"
+        },
+        {
+          "cls": "U",
+          "name": "Apartment / Commercial Units",
+          "rid": "IN-MH-MUM-0000-B0014-U00101-0",
+          "z_range": [
+            4,
+            252
+          ],
+          "status": "PASS",
+          "desc": "Residential & commercial spatial units"
+        },
+        {
+          "cls": "C",
+          "name": "Common Areas (Lobbies/Stairs)",
+          "rid": "IN-MH-MUM-0000-B0014-C00001-2",
+          "z_range": [
+            0,
+            262
+          ],
+          "status": "PASS",
+          "desc": "Fire exits, service shafts, and entrance lobbies"
+        },
+        {
+          "cls": "P",
+          "name": "Accessory Parking Vaults",
+          "rid": "IN-MH-MUM-0000-B0014-P00001-V",
+          "z_range": [
+            -10,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Multi-level basement parking and mechanical rooms"
+        },
+        {
+          "cls": "A",
+          "name": "Airspace Development Lot",
+          "rid": "IN-MH-MUM-0000-B0014-A00001-J",
+          "z_range": [
+            262,
+            287
+          ],
+          "status": "PASS",
+          "desc": "Transferable development air-right volume above roof"
+        },
+        {
+          "cls": "T",
+          "name": "Subterranean Infrastructure Lot",
+          "rid": "IN-MH-MUM-0000-B0000-T00001-F",
+          "z_range": [
+            -30,
+            -15
+          ],
+          "status": "PASS",
+          "desc": "Deep underground rail corridor / utility tunnel"
+        },
+        {
+          "cls": "E",
+          "name": "Elevated Corridor / Viaduct",
+          "rid": "IN-MH-MUM-0000-B0000-E00001-D",
+          "z_range": [
+            12,
+            18
+          ],
+          "status": "PASS",
+          "desc": "Elevated transit right-of-way"
+        },
+        {
+          "cls": "I",
+          "name": "Municipal Utility Network Segment",
+          "rid": "IN-MH-MUM-0000-B0000-I00001-G",
+          "z_range": [
+            -3,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Storm drain (raja kaluve) and municipal conduit"
+        }
+      ],
+      "legacy_ids": [
+        {
+          "id_system": "CTS",
+          "legacy_value": "MCGM-CTS-WORLI-4013/A",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "RERA",
+          "legacy_value": "P51900008353",
+          "relationship": "MANY_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "SURVEY",
+          "legacy_value": "SURV-MILL-14-WORLI",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "ULPIN",
+          "legacy_value": "IN-MH-MUM-000014",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        }
+      ],
+      "rrr_rights": [
+        {
+          "type": "STRATA_UNIT_TITLE",
+          "holder": "Residential Association / Proprietary Units",
+          "undivided_share": "0.35%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Maharashtra Apartment Ownership Act 1970 Sec 4",
+          "verified": true
+        },
+        {
+          "type": "FREEHOLD_OWNERSHIP",
+          "holder": "Land Owning Entity / Cadastral Parent",
+          "undivided_share": "100.00%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Transfer of Property Act 1882",
+          "verified": true
+        },
+        {
+          "type": "EASEMENT_UTILITY",
+          "holder": "BMC Municipal Utility",
+          "undivided_share": null,
+          "legal_basis_status": "VERIFIED",
+          "statute": "Indian Easements Act 1882 Sec 15",
+          "verified": true
+        }
+      ],
+      "tier_results": [
+        {
+          "tier": "T0",
+          "name": "Data Integrity",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T1",
+          "name": "Geometric Validity (val3dity 2-manifold)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T2",
+          "name": "Cadastral Topology (No-Overlap & Containment)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T3",
+          "name": "Plan-vs-As-Built Hungarian Reconciliation",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T4",
+          "name": "Administrative & RRR Consistency",
+          "status": "PASS",
+          "findings": []
+        }
+      ],
+      "explain_objects": [],
+      "evidence_sufficiency": {
+        "available": [
+          "E1 (Airborne LiDAR)",
+          "E2 (Exterior UAV)",
+          "E4 (Sanctioned Plans)"
+        ],
+        "required_for_full_pass": [
+          "E1",
+          "E2",
+          "E3 (Interior Terrestrial Scan)",
+          "E4"
+        ],
+        "unverifiable_checks": [
+          "Unit Partition Alignment (requires E3 terrestrial scan — Zero Silent PASS Upgrades)"
+        ]
+      }
     },
     {
       "building_id": "MUM-BLD-00015",
@@ -2691,7 +11708,248 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
           "label": "Provenance Complete",
           "status": "VALID"
         }
-      ]
+      ],
+      "parent_ulpin": "IN-MH-MUM-000015",
+      "canonical_rid": "IN-MH-MUM-0000-B0015-B00001-C",
+      "cls": "B",
+      "natural_key": {
+        "digest": "NK-SHA256-0009F6D4-B32-BV1",
+        "locator": "0x307E0D9B1A41E844",
+        "version": 1,
+        "precision": {
+          "xy": "1 cm",
+          "z": "1 cm"
+        },
+        "datum": "EPSG:4979 (WGS84 3D)"
+      },
+      "spatial_address": {
+        "morton_63": "0x307E0D9B1A41E844",
+        "lod": "LOD2",
+        "cell_level": 16
+      },
+      "binding_record": {
+        "version": 1,
+        "record_hash": "0x0009F6D4A1B2C3D4E5F6",
+        "prev_hash": "0x0000000000000000",
+        "timestamp": "2024-01-15T10:00:00Z",
+        "sign_off": {
+          "examiner_id": "EXAMINER-MH-MCGM-401",
+          "timestamp": "2024-01-15T12:00:00Z"
+        }
+      },
+      "classes_10": [
+        {
+          "cls": "S",
+          "name": "Surface Parcel Column",
+          "rid": "IN-MH-MUM-0000-B0000-S00001-5",
+          "z_range": [
+            -15,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Cadastral surface column between statutory subterranean limit and ground"
+        },
+        {
+          "cls": "B",
+          "name": "Sanctioned Building Envelope",
+          "rid": "IN-MH-MUM-0000-B0015-B00001-C",
+          "z_range": [
+            0,
+            73
+          ],
+          "status": "PASS",
+          "desc": "Sanctioned physical building envelope"
+        },
+        {
+          "cls": "L",
+          "name": "Level / Storey Slabs",
+          "rid": "IN-MH-MUM-0000-B0015-L00001-B",
+          "z_range": [
+            0,
+            4
+          ],
+          "status": "PASS",
+          "desc": "20 vertical storey slabs"
+        },
+        {
+          "cls": "U",
+          "name": "Apartment / Commercial Units",
+          "rid": "IN-MH-MUM-0000-B0015-U00101-J",
+          "z_range": [
+            4,
+            63
+          ],
+          "status": "PASS",
+          "desc": "Residential & commercial spatial units"
+        },
+        {
+          "cls": "C",
+          "name": "Common Areas (Lobbies/Stairs)",
+          "rid": "IN-MH-MUM-0000-B0015-C00001-M",
+          "z_range": [
+            0,
+            73
+          ],
+          "status": "PASS",
+          "desc": "Fire exits, service shafts, and entrance lobbies"
+        },
+        {
+          "cls": "P",
+          "name": "Accessory Parking Vaults",
+          "rid": "IN-MH-MUM-0000-B0015-P00001-E",
+          "z_range": [
+            -10,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Multi-level basement parking and mechanical rooms"
+        },
+        {
+          "cls": "A",
+          "name": "Airspace Development Lot",
+          "rid": "IN-MH-MUM-0000-B0015-A00001-2",
+          "z_range": [
+            73,
+            98
+          ],
+          "status": "PASS",
+          "desc": "Transferable development air-right volume above roof"
+        },
+        {
+          "cls": "T",
+          "name": "Subterranean Infrastructure Lot",
+          "rid": "IN-MH-MUM-0000-B0000-T00001-F",
+          "z_range": [
+            -30,
+            -15
+          ],
+          "status": "PASS",
+          "desc": "Deep underground rail corridor / utility tunnel"
+        },
+        {
+          "cls": "E",
+          "name": "Elevated Corridor / Viaduct",
+          "rid": "IN-MH-MUM-0000-B0000-E00001-D",
+          "z_range": [
+            12,
+            18
+          ],
+          "status": "PASS",
+          "desc": "Elevated transit right-of-way"
+        },
+        {
+          "cls": "I",
+          "name": "Municipal Utility Network Segment",
+          "rid": "IN-MH-MUM-0000-B0000-I00001-G",
+          "z_range": [
+            -3,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Storm drain (raja kaluve) and municipal conduit"
+        }
+      ],
+      "legacy_ids": [
+        {
+          "id_system": "CTS",
+          "legacy_value": "MCGM-CTS-WORLI-4014/A",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "RERA",
+          "legacy_value": "P51900008354",
+          "relationship": "MANY_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "SURVEY",
+          "legacy_value": "SURV-MILL-15-WORLI",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "ULPIN",
+          "legacy_value": "IN-MH-MUM-000015",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        }
+      ],
+      "rrr_rights": [
+        {
+          "type": "STRATA_UNIT_TITLE",
+          "holder": "Residential Association / Proprietary Units",
+          "undivided_share": "1.25%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Maharashtra Apartment Ownership Act 1970 Sec 4",
+          "verified": true
+        },
+        {
+          "type": "FREEHOLD_OWNERSHIP",
+          "holder": "Land Owning Entity / Cadastral Parent",
+          "undivided_share": "100.00%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Transfer of Property Act 1882",
+          "verified": true
+        },
+        {
+          "type": "EASEMENT_UTILITY",
+          "holder": "BMC Municipal Utility",
+          "undivided_share": null,
+          "legal_basis_status": "VERIFIED",
+          "statute": "Indian Easements Act 1882 Sec 15",
+          "verified": true
+        }
+      ],
+      "tier_results": [
+        {
+          "tier": "T0",
+          "name": "Data Integrity",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T1",
+          "name": "Geometric Validity (val3dity 2-manifold)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T2",
+          "name": "Cadastral Topology (No-Overlap & Containment)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T3",
+          "name": "Plan-vs-As-Built Hungarian Reconciliation",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T4",
+          "name": "Administrative & RRR Consistency",
+          "status": "PASS",
+          "findings": []
+        }
+      ],
+      "explain_objects": [],
+      "evidence_sufficiency": {
+        "available": [
+          "E1 (Airborne LiDAR)",
+          "E2 (Exterior UAV)",
+          "E4 (Sanctioned Plans)"
+        ],
+        "required_for_full_pass": [
+          "E1",
+          "E2",
+          "E3 (Interior Terrestrial Scan)",
+          "E4"
+        ],
+        "unverifiable_checks": [
+          "Unit Partition Alignment (requires E3 terrestrial scan — Zero Silent PASS Upgrades)"
+        ]
+      }
     },
     {
       "building_id": "MUM-BLD-00016",
@@ -2759,7 +12017,248 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
           "label": "Provenance Complete",
           "status": "VALID"
         }
-      ]
+      ],
+      "parent_ulpin": "IN-MH-MUM-000016",
+      "canonical_rid": "IN-MH-MUM-0000-B0016-B00001-W",
+      "cls": "B",
+      "natural_key": {
+        "digest": "NK-SHA256-0009F6E6-B32-BV1",
+        "locator": "0x307E0D9A3A42794F",
+        "version": 1,
+        "precision": {
+          "xy": "1 cm",
+          "z": "1 cm"
+        },
+        "datum": "EPSG:4979 (WGS84 3D)"
+      },
+      "spatial_address": {
+        "morton_63": "0x307E0D9A3A42794F",
+        "lod": "LOD2",
+        "cell_level": 16
+      },
+      "binding_record": {
+        "version": 1,
+        "record_hash": "0x0009F6E6A1B2C3D4E5F6",
+        "prev_hash": "0x0000000000000000",
+        "timestamp": "2024-01-15T10:00:00Z",
+        "sign_off": {
+          "examiner_id": "EXAMINER-MH-MCGM-401",
+          "timestamp": "2024-01-15T12:00:00Z"
+        }
+      },
+      "classes_10": [
+        {
+          "cls": "S",
+          "name": "Surface Parcel Column",
+          "rid": "IN-MH-MUM-0000-B0000-S00001-5",
+          "z_range": [
+            -15,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Cadastral surface column between statutory subterranean limit and ground"
+        },
+        {
+          "cls": "B",
+          "name": "Sanctioned Building Envelope",
+          "rid": "IN-MH-MUM-0000-B0016-B00001-W",
+          "z_range": [
+            0,
+            85
+          ],
+          "status": "PASS",
+          "desc": "Sanctioned physical building envelope"
+        },
+        {
+          "cls": "L",
+          "name": "Level / Storey Slabs",
+          "rid": "IN-MH-MUM-0000-B0016-L00001-V",
+          "z_range": [
+            0,
+            4
+          ],
+          "status": "PASS",
+          "desc": "18 vertical storey slabs"
+        },
+        {
+          "cls": "U",
+          "name": "Apartment / Commercial Units",
+          "rid": "IN-MH-MUM-0000-B0016-U00101-2",
+          "z_range": [
+            4,
+            75
+          ],
+          "status": "PASS",
+          "desc": "Residential & commercial spatial units"
+        },
+        {
+          "cls": "C",
+          "name": "Common Areas (Lobbies/Stairs)",
+          "rid": "IN-MH-MUM-0000-B0016-C00001-5",
+          "z_range": [
+            0,
+            85
+          ],
+          "status": "PASS",
+          "desc": "Fire exits, service shafts, and entrance lobbies"
+        },
+        {
+          "cls": "P",
+          "name": "Accessory Parking Vaults",
+          "rid": "IN-MH-MUM-0000-B0016-P00001-Y",
+          "z_range": [
+            -10,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Multi-level basement parking and mechanical rooms"
+        },
+        {
+          "cls": "A",
+          "name": "Airspace Development Lot",
+          "rid": "IN-MH-MUM-0000-B0016-A00001-M",
+          "z_range": [
+            85,
+            110
+          ],
+          "status": "PASS",
+          "desc": "Transferable development air-right volume above roof"
+        },
+        {
+          "cls": "T",
+          "name": "Subterranean Infrastructure Lot",
+          "rid": "IN-MH-MUM-0000-B0000-T00001-F",
+          "z_range": [
+            -30,
+            -15
+          ],
+          "status": "PASS",
+          "desc": "Deep underground rail corridor / utility tunnel"
+        },
+        {
+          "cls": "E",
+          "name": "Elevated Corridor / Viaduct",
+          "rid": "IN-MH-MUM-0000-B0000-E00001-D",
+          "z_range": [
+            12,
+            18
+          ],
+          "status": "PASS",
+          "desc": "Elevated transit right-of-way"
+        },
+        {
+          "cls": "I",
+          "name": "Municipal Utility Network Segment",
+          "rid": "IN-MH-MUM-0000-B0000-I00001-G",
+          "z_range": [
+            -3,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Storm drain (raja kaluve) and municipal conduit"
+        }
+      ],
+      "legacy_ids": [
+        {
+          "id_system": "CTS",
+          "legacy_value": "MCGM-CTS-WORLI-4015/A",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "RERA",
+          "legacy_value": "P51900008355",
+          "relationship": "MANY_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "SURVEY",
+          "legacy_value": "SURV-MILL-16-WORLI",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "ULPIN",
+          "legacy_value": "IN-MH-MUM-000016",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        }
+      ],
+      "rrr_rights": [
+        {
+          "type": "STRATA_UNIT_TITLE",
+          "holder": "Residential Association / Proprietary Units",
+          "undivided_share": "1.39%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Maharashtra Apartment Ownership Act 1970 Sec 4",
+          "verified": true
+        },
+        {
+          "type": "FREEHOLD_OWNERSHIP",
+          "holder": "Land Owning Entity / Cadastral Parent",
+          "undivided_share": "100.00%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Transfer of Property Act 1882",
+          "verified": true
+        },
+        {
+          "type": "EASEMENT_UTILITY",
+          "holder": "BMC Municipal Utility",
+          "undivided_share": null,
+          "legal_basis_status": "VERIFIED",
+          "statute": "Indian Easements Act 1882 Sec 15",
+          "verified": true
+        }
+      ],
+      "tier_results": [
+        {
+          "tier": "T0",
+          "name": "Data Integrity",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T1",
+          "name": "Geometric Validity (val3dity 2-manifold)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T2",
+          "name": "Cadastral Topology (No-Overlap & Containment)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T3",
+          "name": "Plan-vs-As-Built Hungarian Reconciliation",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T4",
+          "name": "Administrative & RRR Consistency",
+          "status": "PASS",
+          "findings": []
+        }
+      ],
+      "explain_objects": [],
+      "evidence_sufficiency": {
+        "available": [
+          "E1 (Airborne LiDAR)",
+          "E2 (Exterior UAV)",
+          "E4 (Sanctioned Plans)"
+        ],
+        "required_for_full_pass": [
+          "E1",
+          "E2",
+          "E3 (Interior Terrestrial Scan)",
+          "E4"
+        ],
+        "unverifiable_checks": [
+          "Unit Partition Alignment (requires E3 terrestrial scan — Zero Silent PASS Upgrades)"
+        ]
+      }
     },
     {
       "building_id": "MUM-BLD-00017",
@@ -2818,7 +12317,248 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
           "label": "Provenance Complete",
           "status": "VALID"
         }
-      ]
+      ],
+      "parent_ulpin": "IN-MH-MUM-000017",
+      "canonical_rid": "IN-MH-MUM-0000-B0017-B00001-F",
+      "cls": "B",
+      "natural_key": {
+        "digest": "NK-SHA256-0009F6B2-B32-BV1",
+        "locator": "0x307E0D9B1A41EC5F",
+        "version": 1,
+        "precision": {
+          "xy": "1 cm",
+          "z": "1 cm"
+        },
+        "datum": "EPSG:4979 (WGS84 3D)"
+      },
+      "spatial_address": {
+        "morton_63": "0x307E0D9B1A41EC5F",
+        "lod": "LOD2",
+        "cell_level": 16
+      },
+      "binding_record": {
+        "version": 1,
+        "record_hash": "0x0009F6B2A1B2C3D4E5F6",
+        "prev_hash": "0x0000000000000000",
+        "timestamp": "2024-01-15T10:00:00Z",
+        "sign_off": {
+          "examiner_id": "EXAMINER-MH-MCGM-401",
+          "timestamp": "2024-01-15T12:00:00Z"
+        }
+      },
+      "classes_10": [
+        {
+          "cls": "S",
+          "name": "Surface Parcel Column",
+          "rid": "IN-MH-MUM-0000-B0000-S00001-5",
+          "z_range": [
+            -15,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Cadastral surface column between statutory subterranean limit and ground"
+        },
+        {
+          "cls": "B",
+          "name": "Sanctioned Building Envelope",
+          "rid": "IN-MH-MUM-0000-B0017-B00001-F",
+          "z_range": [
+            0,
+            82
+          ],
+          "status": "PASS",
+          "desc": "Sanctioned physical building envelope"
+        },
+        {
+          "cls": "L",
+          "name": "Level / Storey Slabs",
+          "rid": "IN-MH-MUM-0000-B0017-L00001-E",
+          "z_range": [
+            0,
+            4
+          ],
+          "status": "PASS",
+          "desc": "21 vertical storey slabs"
+        },
+        {
+          "cls": "U",
+          "name": "Apartment / Commercial Units",
+          "rid": "IN-MH-MUM-0000-B0017-U00101-M",
+          "z_range": [
+            4,
+            72
+          ],
+          "status": "PASS",
+          "desc": "Residential & commercial spatial units"
+        },
+        {
+          "cls": "C",
+          "name": "Common Areas (Lobbies/Stairs)",
+          "rid": "IN-MH-MUM-0000-B0017-C00001-P",
+          "z_range": [
+            0,
+            82
+          ],
+          "status": "PASS",
+          "desc": "Fire exits, service shafts, and entrance lobbies"
+        },
+        {
+          "cls": "P",
+          "name": "Accessory Parking Vaults",
+          "rid": "IN-MH-MUM-0000-B0017-P00001-H",
+          "z_range": [
+            -10,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Multi-level basement parking and mechanical rooms"
+        },
+        {
+          "cls": "A",
+          "name": "Airspace Development Lot",
+          "rid": "IN-MH-MUM-0000-B0017-A00001-5",
+          "z_range": [
+            82,
+            107
+          ],
+          "status": "PASS",
+          "desc": "Transferable development air-right volume above roof"
+        },
+        {
+          "cls": "T",
+          "name": "Subterranean Infrastructure Lot",
+          "rid": "IN-MH-MUM-0000-B0000-T00001-F",
+          "z_range": [
+            -30,
+            -15
+          ],
+          "status": "PASS",
+          "desc": "Deep underground rail corridor / utility tunnel"
+        },
+        {
+          "cls": "E",
+          "name": "Elevated Corridor / Viaduct",
+          "rid": "IN-MH-MUM-0000-B0000-E00001-D",
+          "z_range": [
+            12,
+            18
+          ],
+          "status": "PASS",
+          "desc": "Elevated transit right-of-way"
+        },
+        {
+          "cls": "I",
+          "name": "Municipal Utility Network Segment",
+          "rid": "IN-MH-MUM-0000-B0000-I00001-G",
+          "z_range": [
+            -3,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Storm drain (raja kaluve) and municipal conduit"
+        }
+      ],
+      "legacy_ids": [
+        {
+          "id_system": "CTS",
+          "legacy_value": "MCGM-CTS-WORLI-4016/A",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "RERA",
+          "legacy_value": "P51900008356",
+          "relationship": "MANY_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "SURVEY",
+          "legacy_value": "SURV-MILL-17-WORLI",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "ULPIN",
+          "legacy_value": "IN-MH-MUM-000017",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        }
+      ],
+      "rrr_rights": [
+        {
+          "type": "STRATA_UNIT_TITLE",
+          "holder": "Residential Association / Proprietary Units",
+          "undivided_share": "1.19%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Maharashtra Apartment Ownership Act 1970 Sec 4",
+          "verified": true
+        },
+        {
+          "type": "FREEHOLD_OWNERSHIP",
+          "holder": "Land Owning Entity / Cadastral Parent",
+          "undivided_share": "100.00%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Transfer of Property Act 1882",
+          "verified": true
+        },
+        {
+          "type": "EASEMENT_UTILITY",
+          "holder": "BMC Municipal Utility",
+          "undivided_share": null,
+          "legal_basis_status": "VERIFIED",
+          "statute": "Indian Easements Act 1882 Sec 15",
+          "verified": true
+        }
+      ],
+      "tier_results": [
+        {
+          "tier": "T0",
+          "name": "Data Integrity",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T1",
+          "name": "Geometric Validity (val3dity 2-manifold)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T2",
+          "name": "Cadastral Topology (No-Overlap & Containment)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T3",
+          "name": "Plan-vs-As-Built Hungarian Reconciliation",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T4",
+          "name": "Administrative & RRR Consistency",
+          "status": "PASS",
+          "findings": []
+        }
+      ],
+      "explain_objects": [],
+      "evidence_sufficiency": {
+        "available": [
+          "E1 (Airborne LiDAR)",
+          "E2 (Exterior UAV)",
+          "E4 (Sanctioned Plans)"
+        ],
+        "required_for_full_pass": [
+          "E1",
+          "E2",
+          "E3 (Interior Terrestrial Scan)",
+          "E4"
+        ],
+        "unverifiable_checks": [
+          "Unit Partition Alignment (requires E3 terrestrial scan — Zero Silent PASS Upgrades)"
+        ]
+      }
     },
     {
       "building_id": "MUM-BLD-00018",
@@ -2877,7 +12617,248 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
           "label": "Provenance Complete",
           "status": "VALID"
         }
-      ]
+      ],
+      "parent_ulpin": "IN-MH-MUM-000018",
+      "canonical_rid": "IN-MH-MUM-0000-B0018-B00001-8",
+      "cls": "B",
+      "natural_key": {
+        "digest": "NK-SHA256-0009F689-B32-BV1",
+        "locator": "0x307E0D9A3A426D4F",
+        "version": 1,
+        "precision": {
+          "xy": "1 cm",
+          "z": "1 cm"
+        },
+        "datum": "EPSG:4979 (WGS84 3D)"
+      },
+      "spatial_address": {
+        "morton_63": "0x307E0D9A3A426D4F",
+        "lod": "LOD2",
+        "cell_level": 16
+      },
+      "binding_record": {
+        "version": 1,
+        "record_hash": "0x0009F689A1B2C3D4E5F6",
+        "prev_hash": "0x0000000000000000",
+        "timestamp": "2024-01-15T10:00:00Z",
+        "sign_off": {
+          "examiner_id": "EXAMINER-MH-MCGM-401",
+          "timestamp": "2024-01-15T12:00:00Z"
+        }
+      },
+      "classes_10": [
+        {
+          "cls": "S",
+          "name": "Surface Parcel Column",
+          "rid": "IN-MH-MUM-0000-B0000-S00001-5",
+          "z_range": [
+            -15,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Cadastral surface column between statutory subterranean limit and ground"
+        },
+        {
+          "cls": "B",
+          "name": "Sanctioned Building Envelope",
+          "rid": "IN-MH-MUM-0000-B0018-B00001-8",
+          "z_range": [
+            0,
+            78
+          ],
+          "status": "PASS",
+          "desc": "Sanctioned physical building envelope"
+        },
+        {
+          "cls": "L",
+          "name": "Level / Storey Slabs",
+          "rid": "IN-MH-MUM-0000-B0018-L00001-Y",
+          "z_range": [
+            0,
+            4
+          ],
+          "status": "PASS",
+          "desc": "19 vertical storey slabs"
+        },
+        {
+          "cls": "U",
+          "name": "Apartment / Commercial Units",
+          "rid": "IN-MH-MUM-0000-B0018-U00101-5",
+          "z_range": [
+            4,
+            68
+          ],
+          "status": "PASS",
+          "desc": "Residential & commercial spatial units"
+        },
+        {
+          "cls": "C",
+          "name": "Common Areas (Lobbies/Stairs)",
+          "rid": "IN-MH-MUM-0000-B0018-C00001-I",
+          "z_range": [
+            0,
+            78
+          ],
+          "status": "PASS",
+          "desc": "Fire exits, service shafts, and entrance lobbies"
+        },
+        {
+          "cls": "P",
+          "name": "Accessory Parking Vaults",
+          "rid": "IN-MH-MUM-0000-B0018-P00001-Z",
+          "z_range": [
+            -10,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Multi-level basement parking and mechanical rooms"
+        },
+        {
+          "cls": "A",
+          "name": "Airspace Development Lot",
+          "rid": "IN-MH-MUM-0000-B0018-A00001-P",
+          "z_range": [
+            78,
+            103
+          ],
+          "status": "PASS",
+          "desc": "Transferable development air-right volume above roof"
+        },
+        {
+          "cls": "T",
+          "name": "Subterranean Infrastructure Lot",
+          "rid": "IN-MH-MUM-0000-B0000-T00001-F",
+          "z_range": [
+            -30,
+            -15
+          ],
+          "status": "PASS",
+          "desc": "Deep underground rail corridor / utility tunnel"
+        },
+        {
+          "cls": "E",
+          "name": "Elevated Corridor / Viaduct",
+          "rid": "IN-MH-MUM-0000-B0000-E00001-D",
+          "z_range": [
+            12,
+            18
+          ],
+          "status": "PASS",
+          "desc": "Elevated transit right-of-way"
+        },
+        {
+          "cls": "I",
+          "name": "Municipal Utility Network Segment",
+          "rid": "IN-MH-MUM-0000-B0000-I00001-G",
+          "z_range": [
+            -3,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Storm drain (raja kaluve) and municipal conduit"
+        }
+      ],
+      "legacy_ids": [
+        {
+          "id_system": "CTS",
+          "legacy_value": "MCGM-CTS-WORLI-4017/A",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "RERA",
+          "legacy_value": "P51900008357",
+          "relationship": "MANY_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "SURVEY",
+          "legacy_value": "SURV-MILL-18-WORLI",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "ULPIN",
+          "legacy_value": "IN-MH-MUM-000018",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        }
+      ],
+      "rrr_rights": [
+        {
+          "type": "STRATA_UNIT_TITLE",
+          "holder": "Residential Association / Proprietary Units",
+          "undivided_share": "1.32%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Maharashtra Apartment Ownership Act 1970 Sec 4",
+          "verified": true
+        },
+        {
+          "type": "FREEHOLD_OWNERSHIP",
+          "holder": "Land Owning Entity / Cadastral Parent",
+          "undivided_share": "100.00%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Transfer of Property Act 1882",
+          "verified": true
+        },
+        {
+          "type": "EASEMENT_UTILITY",
+          "holder": "BMC Municipal Utility",
+          "undivided_share": null,
+          "legal_basis_status": "VERIFIED",
+          "statute": "Indian Easements Act 1882 Sec 15",
+          "verified": true
+        }
+      ],
+      "tier_results": [
+        {
+          "tier": "T0",
+          "name": "Data Integrity",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T1",
+          "name": "Geometric Validity (val3dity 2-manifold)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T2",
+          "name": "Cadastral Topology (No-Overlap & Containment)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T3",
+          "name": "Plan-vs-As-Built Hungarian Reconciliation",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T4",
+          "name": "Administrative & RRR Consistency",
+          "status": "PASS",
+          "findings": []
+        }
+      ],
+      "explain_objects": [],
+      "evidence_sufficiency": {
+        "available": [
+          "E1 (Airborne LiDAR)",
+          "E2 (Exterior UAV)",
+          "E4 (Sanctioned Plans)"
+        ],
+        "required_for_full_pass": [
+          "E1",
+          "E2",
+          "E3 (Interior Terrestrial Scan)",
+          "E4"
+        ],
+        "unverifiable_checks": [
+          "Unit Partition Alignment (requires E3 terrestrial scan — Zero Silent PASS Upgrades)"
+        ]
+      }
     },
     {
       "building_id": "MUM-BLD-00019",
@@ -2945,7 +12926,248 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
           "label": "Provenance Complete",
           "status": "VALID"
         }
-      ]
+      ],
+      "parent_ulpin": "IN-MH-MUM-000019",
+      "canonical_rid": "IN-MH-MUM-0000-B0019-B00001-S",
+      "cls": "B",
+      "natural_key": {
+        "digest": "NK-SHA256-0009FFD6-B32-BV1",
+        "locator": "0x307A9EFE871BE8BF",
+        "version": 1,
+        "precision": {
+          "xy": "1 cm",
+          "z": "1 cm"
+        },
+        "datum": "EPSG:4979 (WGS84 3D)"
+      },
+      "spatial_address": {
+        "morton_63": "0x307A9EFE871BE8BF",
+        "lod": "LOD2",
+        "cell_level": 16
+      },
+      "binding_record": {
+        "version": 1,
+        "record_hash": "0x0009FFD6A1B2C3D4E5F6",
+        "prev_hash": "0x0000000000000000",
+        "timestamp": "2024-01-15T10:00:00Z",
+        "sign_off": {
+          "examiner_id": "EXAMINER-MH-MCGM-401",
+          "timestamp": "2024-01-15T12:00:00Z"
+        }
+      },
+      "classes_10": [
+        {
+          "cls": "S",
+          "name": "Surface Parcel Column",
+          "rid": "IN-MH-MUM-0000-B0000-S00001-5",
+          "z_range": [
+            -15,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Cadastral surface column between statutory subterranean limit and ground"
+        },
+        {
+          "cls": "B",
+          "name": "Sanctioned Building Envelope",
+          "rid": "IN-MH-MUM-0000-B0019-B00001-S",
+          "z_range": [
+            0,
+            108
+          ],
+          "status": "PASS",
+          "desc": "Sanctioned physical building envelope"
+        },
+        {
+          "cls": "L",
+          "name": "Level / Storey Slabs",
+          "rid": "IN-MH-MUM-0000-B0019-L00001-H",
+          "z_range": [
+            0,
+            4
+          ],
+          "status": "PASS",
+          "desc": "23 vertical storey slabs"
+        },
+        {
+          "cls": "U",
+          "name": "Apartment / Commercial Units",
+          "rid": "IN-MH-MUM-0000-B0019-U00101-P",
+          "z_range": [
+            4,
+            98
+          ],
+          "status": "PASS",
+          "desc": "Residential & commercial spatial units"
+        },
+        {
+          "cls": "C",
+          "name": "Common Areas (Lobbies/Stairs)",
+          "rid": "IN-MH-MUM-0000-B0019-C00001-1",
+          "z_range": [
+            0,
+            108
+          ],
+          "status": "PASS",
+          "desc": "Fire exits, service shafts, and entrance lobbies"
+        },
+        {
+          "cls": "P",
+          "name": "Accessory Parking Vaults",
+          "rid": "IN-MH-MUM-0000-B0019-P00001-K",
+          "z_range": [
+            -10,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Multi-level basement parking and mechanical rooms"
+        },
+        {
+          "cls": "A",
+          "name": "Airspace Development Lot",
+          "rid": "IN-MH-MUM-0000-B0019-A00001-I",
+          "z_range": [
+            108,
+            133
+          ],
+          "status": "PASS",
+          "desc": "Transferable development air-right volume above roof"
+        },
+        {
+          "cls": "T",
+          "name": "Subterranean Infrastructure Lot",
+          "rid": "IN-MH-MUM-0000-B0000-T00001-F",
+          "z_range": [
+            -30,
+            -15
+          ],
+          "status": "PASS",
+          "desc": "Deep underground rail corridor / utility tunnel"
+        },
+        {
+          "cls": "E",
+          "name": "Elevated Corridor / Viaduct",
+          "rid": "IN-MH-MUM-0000-B0000-E00001-D",
+          "z_range": [
+            12,
+            18
+          ],
+          "status": "PASS",
+          "desc": "Elevated transit right-of-way"
+        },
+        {
+          "cls": "I",
+          "name": "Municipal Utility Network Segment",
+          "rid": "IN-MH-MUM-0000-B0000-I00001-G",
+          "z_range": [
+            -3,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Storm drain (raja kaluve) and municipal conduit"
+        }
+      ],
+      "legacy_ids": [
+        {
+          "id_system": "CTS",
+          "legacy_value": "MCGM-CTS-WORLI-4018/A",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "RERA",
+          "legacy_value": "P51900008358",
+          "relationship": "MANY_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "SURVEY",
+          "legacy_value": "SURV-MILL-19-WORLI",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "ULPIN",
+          "legacy_value": "IN-MH-MUM-000019",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        }
+      ],
+      "rrr_rights": [
+        {
+          "type": "STRATA_UNIT_TITLE",
+          "holder": "Residential Association / Proprietary Units",
+          "undivided_share": "1.09%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Maharashtra Apartment Ownership Act 1970 Sec 4",
+          "verified": true
+        },
+        {
+          "type": "FREEHOLD_OWNERSHIP",
+          "holder": "Land Owning Entity / Cadastral Parent",
+          "undivided_share": "100.00%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Transfer of Property Act 1882",
+          "verified": true
+        },
+        {
+          "type": "EASEMENT_UTILITY",
+          "holder": "BMC Municipal Utility",
+          "undivided_share": null,
+          "legal_basis_status": "VERIFIED",
+          "statute": "Indian Easements Act 1882 Sec 15",
+          "verified": true
+        }
+      ],
+      "tier_results": [
+        {
+          "tier": "T0",
+          "name": "Data Integrity",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T1",
+          "name": "Geometric Validity (val3dity 2-manifold)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T2",
+          "name": "Cadastral Topology (No-Overlap & Containment)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T3",
+          "name": "Plan-vs-As-Built Hungarian Reconciliation",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T4",
+          "name": "Administrative & RRR Consistency",
+          "status": "PASS",
+          "findings": []
+        }
+      ],
+      "explain_objects": [],
+      "evidence_sufficiency": {
+        "available": [
+          "E1 (Airborne LiDAR)",
+          "E2 (Exterior UAV)",
+          "E4 (Sanctioned Plans)"
+        ],
+        "required_for_full_pass": [
+          "E1",
+          "E2",
+          "E3 (Interior Terrestrial Scan)",
+          "E4"
+        ],
+        "unverifiable_checks": [
+          "Unit Partition Alignment (requires E3 terrestrial scan — Zero Silent PASS Upgrades)"
+        ]
+      }
     },
     {
       "building_id": "MUM-BLD-00020",
@@ -3004,7 +13226,248 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
           "label": "Provenance Complete",
           "status": "VALID"
         }
-      ]
+      ],
+      "parent_ulpin": "IN-MH-MUM-000020",
+      "canonical_rid": "IN-MH-MUM-0000-B0020-B00001-Q",
+      "cls": "B",
+      "natural_key": {
+        "digest": "NK-SHA256-0009FFEF-B32-BV1",
+        "locator": "0x307A9EFE871B5AEE",
+        "version": 1,
+        "precision": {
+          "xy": "1 cm",
+          "z": "1 cm"
+        },
+        "datum": "EPSG:4979 (WGS84 3D)"
+      },
+      "spatial_address": {
+        "morton_63": "0x307A9EFE871B5AEE",
+        "lod": "LOD2",
+        "cell_level": 16
+      },
+      "binding_record": {
+        "version": 1,
+        "record_hash": "0x0009FFEFA1B2C3D4E5F6",
+        "prev_hash": "0x0000000000000000",
+        "timestamp": "2024-01-15T10:00:00Z",
+        "sign_off": {
+          "examiner_id": "EXAMINER-MH-MCGM-401",
+          "timestamp": "2024-01-15T12:00:00Z"
+        }
+      },
+      "classes_10": [
+        {
+          "cls": "S",
+          "name": "Surface Parcel Column",
+          "rid": "IN-MH-MUM-0000-B0000-S00001-5",
+          "z_range": [
+            -15,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Cadastral surface column between statutory subterranean limit and ground"
+        },
+        {
+          "cls": "B",
+          "name": "Sanctioned Building Envelope",
+          "rid": "IN-MH-MUM-0000-B0020-B00001-Q",
+          "z_range": [
+            0,
+            105
+          ],
+          "status": "PASS",
+          "desc": "Sanctioned physical building envelope"
+        },
+        {
+          "cls": "L",
+          "name": "Level / Storey Slabs",
+          "rid": "IN-MH-MUM-0000-B0020-L00001-F",
+          "z_range": [
+            0,
+            4
+          ],
+          "status": "PASS",
+          "desc": "25 vertical storey slabs"
+        },
+        {
+          "cls": "U",
+          "name": "Apartment / Commercial Units",
+          "rid": "IN-MH-MUM-0000-B0020-U00101-X",
+          "z_range": [
+            4,
+            95
+          ],
+          "status": "PASS",
+          "desc": "Residential & commercial spatial units"
+        },
+        {
+          "cls": "C",
+          "name": "Common Areas (Lobbies/Stairs)",
+          "rid": "IN-MH-MUM-0000-B0020-C00001-0",
+          "z_range": [
+            0,
+            105
+          ],
+          "status": "PASS",
+          "desc": "Fire exits, service shafts, and entrance lobbies"
+        },
+        {
+          "cls": "P",
+          "name": "Accessory Parking Vaults",
+          "rid": "IN-MH-MUM-0000-B0020-P00001-S",
+          "z_range": [
+            -10,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Multi-level basement parking and mechanical rooms"
+        },
+        {
+          "cls": "A",
+          "name": "Airspace Development Lot",
+          "rid": "IN-MH-MUM-0000-B0020-A00001-G",
+          "z_range": [
+            105,
+            130
+          ],
+          "status": "PASS",
+          "desc": "Transferable development air-right volume above roof"
+        },
+        {
+          "cls": "T",
+          "name": "Subterranean Infrastructure Lot",
+          "rid": "IN-MH-MUM-0000-B0000-T00001-F",
+          "z_range": [
+            -30,
+            -15
+          ],
+          "status": "PASS",
+          "desc": "Deep underground rail corridor / utility tunnel"
+        },
+        {
+          "cls": "E",
+          "name": "Elevated Corridor / Viaduct",
+          "rid": "IN-MH-MUM-0000-B0000-E00001-D",
+          "z_range": [
+            12,
+            18
+          ],
+          "status": "PASS",
+          "desc": "Elevated transit right-of-way"
+        },
+        {
+          "cls": "I",
+          "name": "Municipal Utility Network Segment",
+          "rid": "IN-MH-MUM-0000-B0000-I00001-G",
+          "z_range": [
+            -3,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Storm drain (raja kaluve) and municipal conduit"
+        }
+      ],
+      "legacy_ids": [
+        {
+          "id_system": "CTS",
+          "legacy_value": "MCGM-CTS-WORLI-4019/A",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "RERA",
+          "legacy_value": "P51900008359",
+          "relationship": "MANY_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "SURVEY",
+          "legacy_value": "SURV-MILL-20-WORLI",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "ULPIN",
+          "legacy_value": "IN-MH-MUM-000020",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        }
+      ],
+      "rrr_rights": [
+        {
+          "type": "STRATA_UNIT_TITLE",
+          "holder": "Residential Association / Proprietary Units",
+          "undivided_share": "1.00%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Maharashtra Apartment Ownership Act 1970 Sec 4",
+          "verified": true
+        },
+        {
+          "type": "FREEHOLD_OWNERSHIP",
+          "holder": "Land Owning Entity / Cadastral Parent",
+          "undivided_share": "100.00%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Transfer of Property Act 1882",
+          "verified": true
+        },
+        {
+          "type": "EASEMENT_UTILITY",
+          "holder": "BMC Municipal Utility",
+          "undivided_share": null,
+          "legal_basis_status": "VERIFIED",
+          "statute": "Indian Easements Act 1882 Sec 15",
+          "verified": true
+        }
+      ],
+      "tier_results": [
+        {
+          "tier": "T0",
+          "name": "Data Integrity",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T1",
+          "name": "Geometric Validity (val3dity 2-manifold)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T2",
+          "name": "Cadastral Topology (No-Overlap & Containment)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T3",
+          "name": "Plan-vs-As-Built Hungarian Reconciliation",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T4",
+          "name": "Administrative & RRR Consistency",
+          "status": "PASS",
+          "findings": []
+        }
+      ],
+      "explain_objects": [],
+      "evidence_sufficiency": {
+        "available": [
+          "E1 (Airborne LiDAR)",
+          "E2 (Exterior UAV)",
+          "E4 (Sanctioned Plans)"
+        ],
+        "required_for_full_pass": [
+          "E1",
+          "E2",
+          "E3 (Interior Terrestrial Scan)",
+          "E4"
+        ],
+        "unverifiable_checks": [
+          "Unit Partition Alignment (requires E3 terrestrial scan — Zero Silent PASS Upgrades)"
+        ]
+      }
     },
     {
       "building_id": "MUM-INF-00001",
@@ -3080,7 +13543,248 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
           "label": "Provenance Complete",
           "status": "VALID"
         }
-      ]
+      ],
+      "parent_ulpin": "IN-MH-MUM-000021",
+      "canonical_rid": "IN-MH-MUM-0000-B0021-B00001-9",
+      "cls": "B",
+      "natural_key": {
+        "digest": "NK-SHA256-0009F6F5-B32-BV1",
+        "locator": "0x307E0D9A3A435B8C",
+        "version": 1,
+        "precision": {
+          "xy": "1 cm",
+          "z": "1 cm"
+        },
+        "datum": "EPSG:4979 (WGS84 3D)"
+      },
+      "spatial_address": {
+        "morton_63": "0x307E0D9A3A435B8C",
+        "lod": "LOD2",
+        "cell_level": 16
+      },
+      "binding_record": {
+        "version": 1,
+        "record_hash": "0x0009F6F5A1B2C3D4E5F6",
+        "prev_hash": "0x0000000000000000",
+        "timestamp": "2024-01-15T10:00:00Z",
+        "sign_off": {
+          "examiner_id": "EXAMINER-MH-MCGM-401",
+          "timestamp": "2024-01-15T12:00:00Z"
+        }
+      },
+      "classes_10": [
+        {
+          "cls": "S",
+          "name": "Surface Parcel Column",
+          "rid": "IN-MH-MUM-0000-B0000-S00001-5",
+          "z_range": [
+            -15,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Cadastral surface column between statutory subterranean limit and ground"
+        },
+        {
+          "cls": "B",
+          "name": "Sanctioned Building Envelope",
+          "rid": "IN-MH-MUM-0000-B0021-B00001-9",
+          "z_range": [
+            0,
+            -18.5
+          ],
+          "status": "PASS",
+          "desc": "Sanctioned physical building envelope"
+        },
+        {
+          "cls": "L",
+          "name": "Level / Storey Slabs",
+          "rid": "IN-MH-MUM-0000-B0021-L00001-8",
+          "z_range": [
+            0,
+            4
+          ],
+          "status": "PASS",
+          "desc": "3 vertical storey slabs"
+        },
+        {
+          "cls": "U",
+          "name": "Apartment / Commercial Units",
+          "rid": "IN-MH-MUM-0000-B0021-U00101-G",
+          "z_range": [
+            4,
+            -28.5
+          ],
+          "status": "PASS",
+          "desc": "Residential & commercial spatial units"
+        },
+        {
+          "cls": "C",
+          "name": "Common Areas (Lobbies/Stairs)",
+          "rid": "IN-MH-MUM-0000-B0021-C00001-J",
+          "z_range": [
+            0,
+            -18.5
+          ],
+          "status": "PASS",
+          "desc": "Fire exits, service shafts, and entrance lobbies"
+        },
+        {
+          "cls": "P",
+          "name": "Accessory Parking Vaults",
+          "rid": "IN-MH-MUM-0000-B0021-P00001-B",
+          "z_range": [
+            -10,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Multi-level basement parking and mechanical rooms"
+        },
+        {
+          "cls": "A",
+          "name": "Airspace Development Lot",
+          "rid": "IN-MH-MUM-0000-B0021-A00001-0",
+          "z_range": [
+            -18.5,
+            6.5
+          ],
+          "status": "PASS",
+          "desc": "Transferable development air-right volume above roof"
+        },
+        {
+          "cls": "T",
+          "name": "Subterranean Infrastructure Lot",
+          "rid": "IN-MH-MUM-0000-B0000-T00001-F",
+          "z_range": [
+            -30,
+            -15
+          ],
+          "status": "PASS",
+          "desc": "Deep underground rail corridor / utility tunnel"
+        },
+        {
+          "cls": "E",
+          "name": "Elevated Corridor / Viaduct",
+          "rid": "IN-MH-MUM-0000-B0000-E00001-D",
+          "z_range": [
+            12,
+            18
+          ],
+          "status": "PASS",
+          "desc": "Elevated transit right-of-way"
+        },
+        {
+          "cls": "I",
+          "name": "Municipal Utility Network Segment",
+          "rid": "IN-MH-MUM-0000-B0000-I00001-G",
+          "z_range": [
+            -3,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Storm drain (raja kaluve) and municipal conduit"
+        }
+      ],
+      "legacy_ids": [
+        {
+          "id_system": "CTS",
+          "legacy_value": "MCGM-CTS-WORLI-4020/A",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "RERA",
+          "legacy_value": "P51900008360",
+          "relationship": "MANY_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "SURVEY",
+          "legacy_value": "SURV-MILL-21-WORLI",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "ULPIN",
+          "legacy_value": "IN-MH-MUM-000021",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        }
+      ],
+      "rrr_rights": [
+        {
+          "type": "STRATA_UNIT_TITLE",
+          "holder": "Residential Association / Proprietary Units",
+          "undivided_share": "8.33%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Maharashtra Apartment Ownership Act 1970 Sec 4",
+          "verified": true
+        },
+        {
+          "type": "FREEHOLD_OWNERSHIP",
+          "holder": "Land Owning Entity / Cadastral Parent",
+          "undivided_share": "100.00%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Transfer of Property Act 1882",
+          "verified": true
+        },
+        {
+          "type": "EASEMENT_UTILITY",
+          "holder": "BMC Municipal Utility",
+          "undivided_share": null,
+          "legal_basis_status": "VERIFIED",
+          "statute": "Indian Easements Act 1882 Sec 15",
+          "verified": true
+        }
+      ],
+      "tier_results": [
+        {
+          "tier": "T0",
+          "name": "Data Integrity",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T1",
+          "name": "Geometric Validity (val3dity 2-manifold)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T2",
+          "name": "Cadastral Topology (No-Overlap & Containment)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T3",
+          "name": "Plan-vs-As-Built Hungarian Reconciliation",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T4",
+          "name": "Administrative & RRR Consistency",
+          "status": "PASS",
+          "findings": []
+        }
+      ],
+      "explain_objects": [],
+      "evidence_sufficiency": {
+        "available": [
+          "E1 (Airborne LiDAR)",
+          "E2 (Exterior UAV)",
+          "E4 (Sanctioned Plans)"
+        ],
+        "required_for_full_pass": [
+          "E1",
+          "E2",
+          "E3 (Interior Terrestrial Scan)",
+          "E4"
+        ],
+        "unverifiable_checks": [
+          "Unit Partition Alignment (requires E3 terrestrial scan — Zero Silent PASS Upgrades)"
+        ]
+      }
     },
     {
       "building_id": "MUM-INF-00002",
@@ -3142,7 +13846,248 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
           "label": "Identifier Uniqueness",
           "status": "VALID"
         }
-      ]
+      ],
+      "parent_ulpin": "IN-MH-MUM-000022",
+      "canonical_rid": "IN-MH-MUM-0000-B0022-B00001-T",
+      "cls": "B",
+      "natural_key": {
+        "digest": "NK-SHA256-0009FAA3-B32-BV1",
+        "locator": "0x307E0D9A015BB6C3",
+        "version": 1,
+        "precision": {
+          "xy": "1 cm",
+          "z": "1 cm"
+        },
+        "datum": "EPSG:4979 (WGS84 3D)"
+      },
+      "spatial_address": {
+        "morton_63": "0x307E0D9A015BB6C3",
+        "lod": "LOD2",
+        "cell_level": 16
+      },
+      "binding_record": {
+        "version": 1,
+        "record_hash": "0x0009FAA3A1B2C3D4E5F6",
+        "prev_hash": "0x0000000000000000",
+        "timestamp": "2024-01-15T10:00:00Z",
+        "sign_off": {
+          "examiner_id": "EXAMINER-MH-MCGM-401",
+          "timestamp": "2024-01-15T12:00:00Z"
+        }
+      },
+      "classes_10": [
+        {
+          "cls": "S",
+          "name": "Surface Parcel Column",
+          "rid": "IN-MH-MUM-0000-B0000-S00001-5",
+          "z_range": [
+            -15,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Cadastral surface column between statutory subterranean limit and ground"
+        },
+        {
+          "cls": "B",
+          "name": "Sanctioned Building Envelope",
+          "rid": "IN-MH-MUM-0000-B0022-B00001-T",
+          "z_range": [
+            0,
+            -20.2
+          ],
+          "status": "PASS",
+          "desc": "Sanctioned physical building envelope"
+        },
+        {
+          "cls": "L",
+          "name": "Level / Storey Slabs",
+          "rid": "IN-MH-MUM-0000-B0022-L00001-S",
+          "z_range": [
+            0,
+            4
+          ],
+          "status": "PASS",
+          "desc": "3 vertical storey slabs"
+        },
+        {
+          "cls": "U",
+          "name": "Apartment / Commercial Units",
+          "rid": "IN-MH-MUM-0000-B0022-U00101-0",
+          "z_range": [
+            4,
+            -30.2
+          ],
+          "status": "PASS",
+          "desc": "Residential & commercial spatial units"
+        },
+        {
+          "cls": "C",
+          "name": "Common Areas (Lobbies/Stairs)",
+          "rid": "IN-MH-MUM-0000-B0022-C00001-2",
+          "z_range": [
+            0,
+            -20.2
+          ],
+          "status": "PASS",
+          "desc": "Fire exits, service shafts, and entrance lobbies"
+        },
+        {
+          "cls": "P",
+          "name": "Accessory Parking Vaults",
+          "rid": "IN-MH-MUM-0000-B0022-P00001-V",
+          "z_range": [
+            -10,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Multi-level basement parking and mechanical rooms"
+        },
+        {
+          "cls": "A",
+          "name": "Airspace Development Lot",
+          "rid": "IN-MH-MUM-0000-B0022-A00001-J",
+          "z_range": [
+            -20.2,
+            4.800000000000001
+          ],
+          "status": "PASS",
+          "desc": "Transferable development air-right volume above roof"
+        },
+        {
+          "cls": "T",
+          "name": "Subterranean Infrastructure Lot",
+          "rid": "IN-MH-MUM-0000-B0000-T00001-F",
+          "z_range": [
+            -30,
+            -15
+          ],
+          "status": "PASS",
+          "desc": "Deep underground rail corridor / utility tunnel"
+        },
+        {
+          "cls": "E",
+          "name": "Elevated Corridor / Viaduct",
+          "rid": "IN-MH-MUM-0000-B0000-E00001-D",
+          "z_range": [
+            12,
+            18
+          ],
+          "status": "PASS",
+          "desc": "Elevated transit right-of-way"
+        },
+        {
+          "cls": "I",
+          "name": "Municipal Utility Network Segment",
+          "rid": "IN-MH-MUM-0000-B0000-I00001-G",
+          "z_range": [
+            -3,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Storm drain (raja kaluve) and municipal conduit"
+        }
+      ],
+      "legacy_ids": [
+        {
+          "id_system": "CTS",
+          "legacy_value": "MCGM-CTS-WORLI-4021/A",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "RERA",
+          "legacy_value": "P51900008361",
+          "relationship": "MANY_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "SURVEY",
+          "legacy_value": "SURV-MILL-22-WORLI",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "ULPIN",
+          "legacy_value": "IN-MH-MUM-000022",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        }
+      ],
+      "rrr_rights": [
+        {
+          "type": "STRATA_UNIT_TITLE",
+          "holder": "Residential Association / Proprietary Units",
+          "undivided_share": "8.33%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Maharashtra Apartment Ownership Act 1970 Sec 4",
+          "verified": true
+        },
+        {
+          "type": "FREEHOLD_OWNERSHIP",
+          "holder": "Land Owning Entity / Cadastral Parent",
+          "undivided_share": "100.00%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Transfer of Property Act 1882",
+          "verified": true
+        },
+        {
+          "type": "EASEMENT_UTILITY",
+          "holder": "BMC Municipal Utility",
+          "undivided_share": null,
+          "legal_basis_status": "VERIFIED",
+          "statute": "Indian Easements Act 1882 Sec 15",
+          "verified": true
+        }
+      ],
+      "tier_results": [
+        {
+          "tier": "T0",
+          "name": "Data Integrity",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T1",
+          "name": "Geometric Validity (val3dity 2-manifold)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T2",
+          "name": "Cadastral Topology (No-Overlap & Containment)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T3",
+          "name": "Plan-vs-As-Built Hungarian Reconciliation",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T4",
+          "name": "Administrative & RRR Consistency",
+          "status": "PASS",
+          "findings": []
+        }
+      ],
+      "explain_objects": [],
+      "evidence_sufficiency": {
+        "available": [
+          "E1 (Airborne LiDAR)",
+          "E2 (Exterior UAV)",
+          "E4 (Sanctioned Plans)"
+        ],
+        "required_for_full_pass": [
+          "E1",
+          "E2",
+          "E3 (Interior Terrestrial Scan)",
+          "E4"
+        ],
+        "unverifiable_checks": [
+          "Unit Partition Alignment (requires E3 terrestrial scan — Zero Silent PASS Upgrades)"
+        ]
+      }
     },
     {
       "building_id": "MUM-INF-00003",
@@ -3204,7 +14149,248 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
           "label": "Identifier Uniqueness",
           "status": "VALID"
         }
-      ]
+      ],
+      "parent_ulpin": "IN-MH-MUM-000023",
+      "canonical_rid": "IN-MH-MUM-0000-B0023-B00001-C",
+      "cls": "B",
+      "natural_key": {
+        "digest": "NK-SHA256-0009FF87-B32-BV1",
+        "locator": "0x307A9EF690639F42",
+        "version": 1,
+        "precision": {
+          "xy": "1 cm",
+          "z": "1 cm"
+        },
+        "datum": "EPSG:4979 (WGS84 3D)"
+      },
+      "spatial_address": {
+        "morton_63": "0x307A9EF690639F42",
+        "lod": "LOD2",
+        "cell_level": 16
+      },
+      "binding_record": {
+        "version": 1,
+        "record_hash": "0x0009FF87A1B2C3D4E5F6",
+        "prev_hash": "0x0000000000000000",
+        "timestamp": "2024-01-15T10:00:00Z",
+        "sign_off": {
+          "examiner_id": "EXAMINER-MH-MCGM-401",
+          "timestamp": "2024-01-15T12:00:00Z"
+        }
+      },
+      "classes_10": [
+        {
+          "cls": "S",
+          "name": "Surface Parcel Column",
+          "rid": "IN-MH-MUM-0000-B0000-S00001-5",
+          "z_range": [
+            -15,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Cadastral surface column between statutory subterranean limit and ground"
+        },
+        {
+          "cls": "B",
+          "name": "Sanctioned Building Envelope",
+          "rid": "IN-MH-MUM-0000-B0023-B00001-C",
+          "z_range": [
+            0,
+            -25
+          ],
+          "status": "PASS",
+          "desc": "Sanctioned physical building envelope"
+        },
+        {
+          "cls": "L",
+          "name": "Level / Storey Slabs",
+          "rid": "IN-MH-MUM-0000-B0023-L00001-B",
+          "z_range": [
+            0,
+            4
+          ],
+          "status": "PASS",
+          "desc": "2 vertical storey slabs"
+        },
+        {
+          "cls": "U",
+          "name": "Apartment / Commercial Units",
+          "rid": "IN-MH-MUM-0000-B0023-U00101-J",
+          "z_range": [
+            4,
+            -35
+          ],
+          "status": "PASS",
+          "desc": "Residential & commercial spatial units"
+        },
+        {
+          "cls": "C",
+          "name": "Common Areas (Lobbies/Stairs)",
+          "rid": "IN-MH-MUM-0000-B0023-C00001-M",
+          "z_range": [
+            0,
+            -25
+          ],
+          "status": "PASS",
+          "desc": "Fire exits, service shafts, and entrance lobbies"
+        },
+        {
+          "cls": "P",
+          "name": "Accessory Parking Vaults",
+          "rid": "IN-MH-MUM-0000-B0023-P00001-E",
+          "z_range": [
+            -10,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Multi-level basement parking and mechanical rooms"
+        },
+        {
+          "cls": "A",
+          "name": "Airspace Development Lot",
+          "rid": "IN-MH-MUM-0000-B0023-A00001-2",
+          "z_range": [
+            -25,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Transferable development air-right volume above roof"
+        },
+        {
+          "cls": "T",
+          "name": "Subterranean Infrastructure Lot",
+          "rid": "IN-MH-MUM-0000-B0000-T00001-F",
+          "z_range": [
+            -30,
+            -15
+          ],
+          "status": "PASS",
+          "desc": "Deep underground rail corridor / utility tunnel"
+        },
+        {
+          "cls": "E",
+          "name": "Elevated Corridor / Viaduct",
+          "rid": "IN-MH-MUM-0000-B0000-E00001-D",
+          "z_range": [
+            12,
+            18
+          ],
+          "status": "PASS",
+          "desc": "Elevated transit right-of-way"
+        },
+        {
+          "cls": "I",
+          "name": "Municipal Utility Network Segment",
+          "rid": "IN-MH-MUM-0000-B0000-I00001-G",
+          "z_range": [
+            -3,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Storm drain (raja kaluve) and municipal conduit"
+        }
+      ],
+      "legacy_ids": [
+        {
+          "id_system": "CTS",
+          "legacy_value": "MCGM-CTS-WORLI-4022/A",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "RERA",
+          "legacy_value": "P51900008362",
+          "relationship": "MANY_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "SURVEY",
+          "legacy_value": "SURV-MILL-23-WORLI",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "ULPIN",
+          "legacy_value": "IN-MH-MUM-000023",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        }
+      ],
+      "rrr_rights": [
+        {
+          "type": "STRATA_UNIT_TITLE",
+          "holder": "Residential Association / Proprietary Units",
+          "undivided_share": "12.50%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Maharashtra Apartment Ownership Act 1970 Sec 4",
+          "verified": true
+        },
+        {
+          "type": "FREEHOLD_OWNERSHIP",
+          "holder": "Land Owning Entity / Cadastral Parent",
+          "undivided_share": "100.00%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Transfer of Property Act 1882",
+          "verified": true
+        },
+        {
+          "type": "EASEMENT_UTILITY",
+          "holder": "BMC Municipal Utility",
+          "undivided_share": null,
+          "legal_basis_status": "VERIFIED",
+          "statute": "Indian Easements Act 1882 Sec 15",
+          "verified": true
+        }
+      ],
+      "tier_results": [
+        {
+          "tier": "T0",
+          "name": "Data Integrity",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T1",
+          "name": "Geometric Validity (val3dity 2-manifold)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T2",
+          "name": "Cadastral Topology (No-Overlap & Containment)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T3",
+          "name": "Plan-vs-As-Built Hungarian Reconciliation",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T4",
+          "name": "Administrative & RRR Consistency",
+          "status": "PASS",
+          "findings": []
+        }
+      ],
+      "explain_objects": [],
+      "evidence_sufficiency": {
+        "available": [
+          "E1 (Airborne LiDAR)",
+          "E2 (Exterior UAV)",
+          "E4 (Sanctioned Plans)"
+        ],
+        "required_for_full_pass": [
+          "E1",
+          "E2",
+          "E3 (Interior Terrestrial Scan)",
+          "E4"
+        ],
+        "unverifiable_checks": [
+          "Unit Partition Alignment (requires E3 terrestrial scan — Zero Silent PASS Upgrades)"
+        ]
+      }
     },
     {
       "building_id": "MUM-INF-00004",
@@ -3266,7 +14452,248 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
           "label": "Identifier Uniqueness",
           "status": "VALID"
         }
-      ]
+      ],
+      "parent_ulpin": "IN-MH-MUM-000024",
+      "canonical_rid": "IN-MH-MUM-0000-B0024-B00001-W",
+      "cls": "B",
+      "natural_key": {
+        "digest": "NK-SHA256-0009FED2-B32-BV1",
+        "locator": "0x307A9EFEA75DEC51",
+        "version": 1,
+        "precision": {
+          "xy": "1 cm",
+          "z": "1 cm"
+        },
+        "datum": "EPSG:4979 (WGS84 3D)"
+      },
+      "spatial_address": {
+        "morton_63": "0x307A9EFEA75DEC51",
+        "lod": "LOD2",
+        "cell_level": 16
+      },
+      "binding_record": {
+        "version": 1,
+        "record_hash": "0x0009FED2A1B2C3D4E5F6",
+        "prev_hash": "0x0000000000000000",
+        "timestamp": "2024-01-15T10:00:00Z",
+        "sign_off": {
+          "examiner_id": "EXAMINER-MH-MCGM-401",
+          "timestamp": "2024-01-15T12:00:00Z"
+        }
+      },
+      "classes_10": [
+        {
+          "cls": "S",
+          "name": "Surface Parcel Column",
+          "rid": "IN-MH-MUM-0000-B0000-S00001-5",
+          "z_range": [
+            -15,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Cadastral surface column between statutory subterranean limit and ground"
+        },
+        {
+          "cls": "B",
+          "name": "Sanctioned Building Envelope",
+          "rid": "IN-MH-MUM-0000-B0024-B00001-W",
+          "z_range": [
+            0,
+            -24
+          ],
+          "status": "PASS",
+          "desc": "Sanctioned physical building envelope"
+        },
+        {
+          "cls": "L",
+          "name": "Level / Storey Slabs",
+          "rid": "IN-MH-MUM-0000-B0024-L00001-V",
+          "z_range": [
+            0,
+            4
+          ],
+          "status": "PASS",
+          "desc": "3 vertical storey slabs"
+        },
+        {
+          "cls": "U",
+          "name": "Apartment / Commercial Units",
+          "rid": "IN-MH-MUM-0000-B0024-U00101-2",
+          "z_range": [
+            4,
+            -34
+          ],
+          "status": "PASS",
+          "desc": "Residential & commercial spatial units"
+        },
+        {
+          "cls": "C",
+          "name": "Common Areas (Lobbies/Stairs)",
+          "rid": "IN-MH-MUM-0000-B0024-C00001-5",
+          "z_range": [
+            0,
+            -24
+          ],
+          "status": "PASS",
+          "desc": "Fire exits, service shafts, and entrance lobbies"
+        },
+        {
+          "cls": "P",
+          "name": "Accessory Parking Vaults",
+          "rid": "IN-MH-MUM-0000-B0024-P00001-Y",
+          "z_range": [
+            -10,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Multi-level basement parking and mechanical rooms"
+        },
+        {
+          "cls": "A",
+          "name": "Airspace Development Lot",
+          "rid": "IN-MH-MUM-0000-B0024-A00001-M",
+          "z_range": [
+            -24,
+            1
+          ],
+          "status": "PASS",
+          "desc": "Transferable development air-right volume above roof"
+        },
+        {
+          "cls": "T",
+          "name": "Subterranean Infrastructure Lot",
+          "rid": "IN-MH-MUM-0000-B0000-T00001-F",
+          "z_range": [
+            -30,
+            -15
+          ],
+          "status": "PASS",
+          "desc": "Deep underground rail corridor / utility tunnel"
+        },
+        {
+          "cls": "E",
+          "name": "Elevated Corridor / Viaduct",
+          "rid": "IN-MH-MUM-0000-B0000-E00001-D",
+          "z_range": [
+            12,
+            18
+          ],
+          "status": "PASS",
+          "desc": "Elevated transit right-of-way"
+        },
+        {
+          "cls": "I",
+          "name": "Municipal Utility Network Segment",
+          "rid": "IN-MH-MUM-0000-B0000-I00001-G",
+          "z_range": [
+            -3,
+            0
+          ],
+          "status": "PASS",
+          "desc": "Storm drain (raja kaluve) and municipal conduit"
+        }
+      ],
+      "legacy_ids": [
+        {
+          "id_system": "CTS",
+          "legacy_value": "MCGM-CTS-WORLI-4023/A",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "RERA",
+          "legacy_value": "P51900008363",
+          "relationship": "MANY_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "SURVEY",
+          "legacy_value": "SURV-MILL-24-WORLI",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        },
+        {
+          "id_system": "ULPIN",
+          "legacy_value": "IN-MH-MUM-000024",
+          "relationship": "ONE_TO_ONE",
+          "verified": true
+        }
+      ],
+      "rrr_rights": [
+        {
+          "type": "STRATA_UNIT_TITLE",
+          "holder": "Residential Association / Proprietary Units",
+          "undivided_share": "8.33%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Maharashtra Apartment Ownership Act 1970 Sec 4",
+          "verified": true
+        },
+        {
+          "type": "FREEHOLD_OWNERSHIP",
+          "holder": "Land Owning Entity / Cadastral Parent",
+          "undivided_share": "100.00%",
+          "legal_basis_status": "VERIFIED",
+          "statute": "Transfer of Property Act 1882",
+          "verified": true
+        },
+        {
+          "type": "EASEMENT_UTILITY",
+          "holder": "BMC Municipal Utility",
+          "undivided_share": null,
+          "legal_basis_status": "VERIFIED",
+          "statute": "Indian Easements Act 1882 Sec 15",
+          "verified": true
+        }
+      ],
+      "tier_results": [
+        {
+          "tier": "T0",
+          "name": "Data Integrity",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T1",
+          "name": "Geometric Validity (val3dity 2-manifold)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T2",
+          "name": "Cadastral Topology (No-Overlap & Containment)",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T3",
+          "name": "Plan-vs-As-Built Hungarian Reconciliation",
+          "status": "PASS",
+          "findings": []
+        },
+        {
+          "tier": "T4",
+          "name": "Administrative & RRR Consistency",
+          "status": "PASS",
+          "findings": []
+        }
+      ],
+      "explain_objects": [],
+      "evidence_sufficiency": {
+        "available": [
+          "E1 (Airborne LiDAR)",
+          "E2 (Exterior UAV)",
+          "E4 (Sanctioned Plans)"
+        ],
+        "required_for_full_pass": [
+          "E1",
+          "E2",
+          "E3 (Interior Terrestrial Scan)",
+          "E4"
+        ],
+        "unverifiable_checks": [
+          "Unit Partition Alignment (requires E3 terrestrial scan — Zero Silent PASS Upgrades)"
+        ]
+      }
     }
   ],
   "netherlands": [
@@ -4943,8 +16370,8 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
       "building_id": "SGP-BLD-00001",
       "name": "Marina Bay Financial Centre — Tower 3",
       "city": "singapore",
-      "lat": 1.2796,
-      "lon": 103.8546,
+      "lat": 1.279,
+      "lon": 103.8549,
       "ground_elevation": 3.2,
       "roof_elevation": 248.2,
       "height": 245,
@@ -4954,62 +16381,238 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
       "validation_status": "VALID",
       "prototype_3d_id": "3D-SGP-MBF-b2c9d4e1f803",
       "data_label": "DERIVED",
+      "bim_enabled": true,
+      "bim_standard": "IFC4 (CORENET X / SLA 3D Strata Cadastre)",
+      "sla_survey_plan": "CP/SLA/2024-MBFC3",
       "provenance": {
-        "source_dataset": "OneMap SLA 2024 + URA Master Plan",
+        "source_dataset": "OneMap SLA 2024 + URA Master Plan + CORENET X BIM",
         "crs": "EPSG:3414",
         "acquired_at": "2024-10-01",
         "processing_version": "0.1.0",
         "operator": "PROTOTYPE-PIPELINE",
         "transformations": [
           "SVY21→WGS84",
-          "DEM-elevation-merge"
+          "DEM-elevation-merge",
+          "IFC4→B-Rep"
         ]
       },
       "floors": [
         {
           "floor_id": "SGP-BLD-00001-F00",
           "level_index": 0,
-          "label": "Podium Grand Lobby & Retail",
+          "label": "Podium Grand Lobby & Retail Concourse",
           "z_min": 3.2,
           "z_max": 8.5,
           "confidence": "DERIVED_HIGH",
-          "status": "VALID"
+          "status": "VALID",
+          "strata_units": [
+            {
+              "unit_id": "MK01-U0001R",
+              "name": "Ground Banking Atrium & Retail Wing",
+              "ifc_space": "IfcSpace:RetailBanking:00",
+              "gross_area_sqm": 480,
+              "net_internal_area_sqm": 442,
+              "share_value": "32/1000",
+              "ceiling_height": 5.3,
+              "tenure": "99-year Leasehold",
+              "boundary_type": "Physical Structural Curtain & Common Property",
+              "rooms": [
+                {
+                  "name": "Main Banking Hall",
+                  "area_sqm": 240
+                },
+                {
+                  "name": "Client Lounge & Concierge",
+                  "area_sqm": 110
+                },
+                {
+                  "name": "Safe Deposit Vault",
+                  "area_sqm": 92
+                }
+              ]
+            }
+          ]
         },
         {
           "floor_id": "SGP-BLD-00001-F01",
           "level_index": 1,
-          "label": "Floor 1 — Financial Suite",
+          "label": "Floor 1 — Financial & Advisory Suites",
           "z_min": 8.5,
           "z_max": 13,
           "confidence": "DERIVED_HIGH",
-          "status": "VALID"
+          "status": "VALID",
+          "strata_units": [
+            {
+              "unit_id": "MK01-U0101A",
+              "name": "Strata Suite 01-A (Corner Wealth Advisory)",
+              "ifc_space": "IfcSpace:CommercialUnit:01-A",
+              "gross_area_sqm": 168.4,
+              "net_internal_area_sqm": 154.2,
+              "share_value": "14/1000",
+              "ceiling_height": 3.8,
+              "tenure": "99-year Leasehold",
+              "boundary_type": "Physical 200mm RC Wall + Glass Curtain",
+              "rooms": [
+                {
+                  "name": "Private Advisory Suite",
+                  "area_sqm": 42
+                },
+                {
+                  "name": "Executive Boardroom",
+                  "area_sqm": 38.5
+                },
+                {
+                  "name": "Trading Workstations",
+                  "area_sqm": 54.7
+                },
+                {
+                  "name": "Server Vault",
+                  "area_sqm": 19
+                }
+              ]
+            },
+            {
+              "unit_id": "MK01-U0102B",
+              "name": "Strata Suite 01-B (Trading & Tech Hub)",
+              "ifc_space": "IfcSpace:CommercialUnit:01-B",
+              "gross_area_sqm": 215,
+              "net_internal_area_sqm": 198.6,
+              "share_value": "18/1000",
+              "ceiling_height": 3.8,
+              "tenure": "99-year Leasehold",
+              "boundary_type": "Physical Drywall + Structural Column Core",
+              "rooms": [
+                {
+                  "name": "Open Collaborative Floor",
+                  "area_sqm": 112
+                },
+                {
+                  "name": "Conference Alpha",
+                  "area_sqm": 44.6
+                },
+                {
+                  "name": "Pantry & Breakout",
+                  "area_sqm": 26
+                },
+                {
+                  "name": "Data Center (UPS Redundant)",
+                  "area_sqm": 16
+                }
+              ]
+            }
+          ]
         },
         {
           "floor_id": "SGP-BLD-00001-F25",
           "level_index": 25,
-          "label": "Floor 25 — Sky Terrace",
+          "label": "Floor 25 — Sky Terrace & Wellness Garden",
           "z_min": 118,
           "z_max": 122.5,
           "confidence": "DERIVED_HIGH",
-          "status": "VALID"
+          "status": "VALID",
+          "strata_units": [
+            {
+              "unit_id": "MK01-U2501S",
+              "name": "Common Property Sky Terrace",
+              "ifc_space": "IfcSpace:Amenity:SkyTerrace",
+              "gross_area_sqm": 320,
+              "net_internal_area_sqm": 298,
+              "share_value": "Common Property (MCST 3812)",
+              "ceiling_height": 4.5,
+              "tenure": "Common Property",
+              "boundary_type": "Open Air Parcel with LADM Volumetric Boundary",
+              "rooms": [
+                {
+                  "name": "Landscaped Sky Lounge",
+                  "area_sqm": 180
+                },
+                {
+                  "name": "Observation Walkway",
+                  "area_sqm": 85
+                },
+                {
+                  "name": "Service Plant Buffer",
+                  "area_sqm": 33
+                }
+              ]
+            }
+          ]
         },
         {
           "floor_id": "SGP-BLD-00001-F50",
           "level_index": 50,
-          "label": "Floor 50 — Executive Suite",
+          "label": "Floor 50 — Executive Penthouse Boardroom",
           "z_min": 243,
           "z_max": 248.2,
           "confidence": "DERIVED_HIGH",
-          "status": "VALID"
+          "status": "VALID",
+          "strata_units": [
+            {
+              "unit_id": "MK01-U5001P",
+              "name": "Apex Executive Penthouse Suite",
+              "ifc_space": "IfcSpace:ExecutivePenthouse:50",
+              "gross_area_sqm": 385,
+              "net_internal_area_sqm": 362,
+              "share_value": "35/1000",
+              "ceiling_height": 4.8,
+              "tenure": "99-year Leasehold",
+              "boundary_type": "Physical 250mm Reinforced Structural Wall",
+              "rooms": [
+                {
+                  "name": "Global Boardroom (360° Marina Panorama)",
+                  "area_sqm": 160
+                },
+                {
+                  "name": "Private Dining Salon",
+                  "area_sqm": 78
+                },
+                {
+                  "name": "Executive Chairman Office",
+                  "area_sqm": 82
+                },
+                {
+                  "name": "Helipad Access Lobby",
+                  "area_sqm": 42
+                }
+              ]
+            }
+          ]
         },
         {
           "floor_id": "SGP-BLD-00001-B1",
           "level_index": -1,
-          "label": "Basement Carpark & UPN Mall",
+          "label": "Basement 1 — Subterranean MRT Concourse Link",
           "z_min": -1.5,
           "z_max": 3.2,
-          "confidence": "INFERRED",
-          "status": "REVIEW"
+          "confidence": "DERIVED_HIGH",
+          "status": "VALID",
+          "strata_units": [
+            {
+              "unit_id": "MK01-SUB-B101",
+              "name": "Downtown MRT Subterranean Transit Link",
+              "ifc_space": "IfcSpace:SubterraneanInfrastructure:TransitLink",
+              "gross_area_sqm": 420,
+              "net_internal_area_sqm": 395,
+              "share_value": "Statutory SLA Subterranean Easement",
+              "ceiling_height": 4.2,
+              "tenure": "State Land Subterranean Lot",
+              "boundary_type": "Underground Cast-in-place Diaphragm Wall",
+              "rooms": [
+                {
+                  "name": "Subterranean Pedestrian Concourse",
+                  "area_sqm": 280
+                },
+                {
+                  "name": "Faregate & Ticketing Hub",
+                  "area_sqm": 75
+                },
+                {
+                  "name": "District Cooling Distribution Vault",
+                  "area_sqm": 40
+                }
+              ]
+            }
+          ]
         }
       ],
       "validation_checks": [
@@ -5054,8 +16657,8 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
       "building_id": "SGP-BLD-00002",
       "name": "Marina Bay Financial Centre — Tower 1",
       "city": "singapore",
-      "lat": 1.2805,
-      "lon": 103.853,
+      "lat": 1.2801,
+      "lon": 103.8533,
       "ground_elevation": 3.2,
       "roof_elevation": 189.2,
       "height": 186,
@@ -5127,8 +16730,8 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
       "building_id": "SGP-BLD-00003",
       "name": "Marina Bay Financial Centre — Tower 2",
       "city": "singapore",
-      "lat": 1.28,
-      "lon": 103.8538,
+      "lat": 1.2806,
+      "lon": 103.8541,
       "ground_elevation": 3.2,
       "roof_elevation": 242.2,
       "height": 239,
@@ -5186,8 +16789,8 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
       "building_id": "SGP-BLD-00004",
       "name": "Marina Bay Sands — Towers & SkyPark",
       "city": "singapore",
-      "lat": 1.2838,
-      "lon": 103.8591,
+      "lat": 1.2834,
+      "lon": 103.8607,
       "ground_elevation": 3,
       "roof_elevation": 203,
       "height": 200,
@@ -5288,8 +16891,8 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
       "building_id": "SGP-BLD-00005",
       "name": "Marina One — West Tower (Commercial)",
       "city": "singapore",
-      "lat": 1.2778,
-      "lon": 103.853,
+      "lat": 1.277,
+      "lon": 103.8528,
       "ground_elevation": 3,
       "roof_elevation": 143,
       "height": 140,
@@ -5356,7 +16959,7 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
       "building_id": "SGP-BLD-00006",
       "name": "Marina One — East Tower (Residences)",
       "city": "singapore",
-      "lat": 1.2782,
+      "lat": 1.2776,
       "lon": 103.8538,
       "ground_elevation": 3,
       "roof_elevation": 143,
@@ -5415,8 +17018,8 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
       "building_id": "SGP-BLD-00007",
       "name": "Ocean Financial Centre",
       "city": "singapore",
-      "lat": 1.2828,
-      "lon": 103.8522,
+      "lat": 1.283,
+      "lon": 103.8525,
       "ground_elevation": 2.8,
       "roof_elevation": 247.8,
       "height": 245,
@@ -5474,8 +17077,8 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
       "building_id": "SGP-BLD-00008",
       "name": "Guoco Tower (Tanjong Pagar Centre)",
       "city": "singapore",
-      "lat": 1.2766,
-      "lon": 103.8458,
+      "lat": 1.2764,
+      "lon": 103.8457,
       "ground_elevation": 4,
       "roof_elevation": 287.7,
       "height": 283.7,
@@ -5585,7 +17188,7 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
       "building_id": "SGP-BLD-00009",
       "name": "One Raffles Place — Tower 1",
       "city": "singapore",
-      "lat": 1.284,
+      "lat": 1.2842,
       "lon": 103.8512,
       "ground_elevation": 2.8,
       "roof_elevation": 283.8,
@@ -5653,7 +17256,7 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
       "building_id": "SGP-BLD-00010",
       "name": "One Raffles Place — Tower 2",
       "city": "singapore",
-      "lat": 1.2843,
+      "lat": 1.2847,
       "lon": 103.8518,
       "ground_elevation": 2.8,
       "roof_elevation": 211.8,
@@ -5712,8 +17315,8 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
       "building_id": "SGP-BLD-00011",
       "name": "Republic Plaza",
       "city": "singapore",
-      "lat": 1.283,
-      "lon": 103.8507,
+      "lat": 1.2832,
+      "lon": 103.8506,
       "ground_elevation": 2.8,
       "roof_elevation": 282.8,
       "height": 280,
@@ -5839,8 +17442,8 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
       "building_id": "SGP-BLD-00013",
       "name": "CapitaSpring (88 Market St)",
       "city": "singapore",
-      "lat": 1.2845,
-      "lon": 103.8501,
+      "lat": 1.2843,
+      "lon": 103.85,
       "ground_elevation": 3,
       "roof_elevation": 283,
       "height": 280,
@@ -5930,7 +17533,7 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
       "building_id": "SGP-BLD-00014",
       "name": "CapitaGreen",
       "city": "singapore",
-      "lat": 1.2818,
+      "lat": 1.282,
       "lon": 103.8508,
       "ground_elevation": 3,
       "roof_elevation": 245,
@@ -5989,8 +17592,8 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
       "building_id": "SGP-BLD-00015",
       "name": "Asia Square — Tower 1",
       "city": "singapore",
-      "lat": 1.2788,
-      "lon": 103.8518,
+      "lat": 1.2785,
+      "lon": 103.8511,
       "ground_elevation": 3.2,
       "roof_elevation": 232.2,
       "height": 229,
@@ -6048,8 +17651,8 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
       "building_id": "SGP-BLD-00016",
       "name": "Asia Square — Tower 2 (The Westin)",
       "city": "singapore",
-      "lat": 1.2792,
-      "lon": 103.8525,
+      "lat": 1.279,
+      "lon": 103.852,
       "ground_elevation": 3.2,
       "roof_elevation": 224.2,
       "height": 221,
@@ -6316,8 +17919,8 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
       "building_id": "SGP-INF-00001",
       "name": "Bayfront MRT Underground Interchange (Circle & Downtown Lines)",
       "city": "singapore",
-      "lat": 1.2822,
-      "lon": 103.8594,
+      "lat": 1.2818,
+      "lon": 103.859,
       "ground_elevation": 3,
       "roof_elevation": 3,
       "height": -22.5,
@@ -6387,7 +17990,7 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
       "building_id": "SGP-INF-00002",
       "name": "Raffles Place MRT Subterranean 4-Tier Complex",
       "city": "singapore",
-      "lat": 1.2835,
+      "lat": 1.2838,
       "lon": 103.8515,
       "ground_elevation": 2.8,
       "roof_elevation": 2.8,
@@ -6458,8 +18061,8 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
       "building_id": "SGP-INF-00003",
       "name": "Marina Bay Underground Pedestrian Network (UPN)",
       "city": "singapore",
-      "lat": 1.2808,
-      "lon": 103.8535,
+      "lat": 1.2782,
+      "lon": 103.8533,
       "ground_elevation": 3.2,
       "roof_elevation": 3.2,
       "height": -7.5,
@@ -6511,8 +18114,8 @@ BUILDINGS_DB: Dict[str, List[dict]] = json.loads('''{
       "building_id": "SGP-INF-00004",
       "name": "Marina Bay Common Services Tunnel (CST)",
       "city": "singapore",
-      "lat": 1.2815,
-      "lon": 103.856,
+      "lat": 1.2795,
+      "lon": 103.854,
       "ground_elevation": 3,
       "roof_elevation": 3,
       "height": -16,

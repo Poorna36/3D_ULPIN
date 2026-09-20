@@ -1,0 +1,44 @@
+# ==============================================================================
+# 3D ULPIN Backend - Python Dependencies
+# ==============================================================================
+
+# Core Computational Geometry & Math
+numpy>=1.24.0
+scipy>=1.10.0
+shapely>=2.0.0
+trimesh[easy]>=4.0.0
+manifold3d>=3.5.0
+mapbox-earcut>=2.1.0
+pyproj>=3.5.0
+rtree>=1.0.1
+
+# API & Web Framework
+fastapi>=0.110.0
+uvicorn[standard]>=0.28.0
+pydantic>=2.6.0
+pydantic-settings>=2.2.0
+python-multipart>=0.0.9
+
+# Vector & Raster Geospatial Data
+geopandas>=0.14.0
+ezdxf>=1.2.0
+laspy[lazrs]>=2.5.0
+
+# Database & Utilities
+# SQLite3 is part of the Python Standard Library
+python-dotenv>=1.0.0
+requests>=2.31.0
+
+# Testing & Verification
+pytest>=8.0.0
+pytest-asyncio>=0.23.0
+httpx>=0.27.0
+pytest-cov>=4.1.0
+
+# Optional / Advanced Extensions (Uncomment when reaching Phase 6/AI modules):
+# torch>=2.2.0
+# torchvision>=0.17.0
+# onnxruntime>=1.17.0
+# scikit-learn>=1.4.0
+# open3d>=0.18.0
+# ifcopenshell>=0.7.0

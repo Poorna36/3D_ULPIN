@@ -1,25 +1,23 @@
 import { useState } from 'react';
 import ModelEarth from './ModelEarth.jsx';
 
-export default function LandingPage({ onEnter }) {
+export default function LandingPage({ onEnter, isExiting = false }) {
   const [activeTab, setActiveTab] = useState('OVERVIEW');
   const [showDossier, setShowDossier] = useState(false);
 
   return (
     <div style={{
       position: 'fixed', inset: 0, zIndex: 90,
-      background: activeTab === 'OVERVIEW'
-        ? '#000000'
-        : 'rgba(2, 4, 8, 0.94)',
+      background: activeTab === 'OVERVIEW' ? '#000000' : 'rgba(2, 4, 8, 0.94)',
       backdropFilter: activeTab === 'OVERVIEW' ? 'none' : 'blur(24px)',
       fontFamily: "'Space Grotesk', 'Inter', system-ui, sans-serif",
       overflow: 'hidden',
       display: 'flex', flexDirection: 'column',
       color: '#ffffff',
-      pointerEvents: 'auto',
-      transition: 'background 0.3s ease',
+      pointerEvents: isExiting ? 'none' : 'auto',
+      opacity: isExiting ? 0 : 1,
+      transition: isExiting ? 'opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1)' : 'background 0.3s ease',
     }}>
-
       {/* ── Top Navigation ─────────────────────────────────────── */}
       <nav style={{
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
@@ -394,7 +392,7 @@ export default function LandingPage({ onEnter }) {
                   ],
                 },
                 {
-                  id: 'rotterdam',
+                  id: 'netherlands',
                   name: 'Rotterdam, Netherlands',
                   badge: 'EU 3D STANDARD REFERENCE',
                   badgeColor: '#f43f5e',
@@ -406,50 +404,77 @@ export default function LandingPage({ onEnter }) {
                     { label: 'Type', val: 'Mixed-Use Vertical City' },
                   ],
                 },
-              ].map(city => (
-                <div key={city.id} style={{
-                  background: '#090a0f',
-                  border: '1px solid rgba(255,255,255,0.08)',
-                  borderRadius: 14,
-                  padding: 24,
-                  display: 'flex', flexDirection: 'column', gap: 14,
-                }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <div style={{ fontSize: 20, fontWeight: 800, fontFamily: "'Syne', sans-serif" }}>{city.name}</div>
-                    <span style={{
-                      fontSize: 9, fontWeight: 700, padding: '3px 8px', borderRadius: 999,
-                      background: 'rgba(255,255,255,0.06)', border: `1px solid ${city.badgeColor}`, color: city.badgeColor,
-                    }}>
-                      {city.badge}
-                    </span>
-                  </div>
-                  <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', lineHeight: 1.6 }}>{city.desc}</div>
+                {
+                  id: 'simcity',
+                  name: 'Riverview (SimCity 3D Twin)',
+                  badge: 'MUNICIPAL ZONING & CADASTRE LAB',
+                  badgeColor: '#2563eb',
+                  desc: 'Interactive 3D SimCity urban simulation sandbox. Features complete R-C-I cadastral zoning, City Hall, suburban neighborhoods, commercial high-rises, power/water grids, animated traffic, and municipal tax yield analytics.',
+                  stats: [
+                    { label: 'Population', val: '154,820' },
+                    { label: 'Zoning Units', val: '10 R-C-I' },
+                    { label: 'Approval', val: '94% Trust' },
+                    { label: 'Type', val: 'SimCity Sandbox' },
+                  ],
+                  realm: 'simcity',
+                },
+              ].map(city => {
+                const isSim = city.id === 'simcity' || city.id === 'simulation';
+                return (
+                  <div key={city.id} style={{
+                    background: isSim ? 'rgba(15, 23, 42, 0.85)' : '#090a0f',
+                    border: isSim ? '1px solid rgba(59, 130, 246, 0.4)' : '1px solid rgba(255,255,255,0.08)',
+                    borderRadius: 14,
+                    padding: 24,
+                    display: 'flex', flexDirection: 'column', gap: 14,
+                    boxShadow: isSim ? '0 0 24px rgba(37, 99, 235, 0.2)' : 'none',
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <div style={{ fontSize: 20, fontWeight: 800, fontFamily: "'Syne', sans-serif" }}>{city.name}</div>
+                      <span style={{
+                        fontSize: 9, fontWeight: 700, padding: '3px 8px', borderRadius: 999,
+                        background: `${city.badgeColor}20`, color: city.badgeColor,
+                        border: `1px solid ${city.badgeColor}50`, letterSpacing: 0.6,
+                      }}>
+                        {city.badge}
+                      </span>
+                    </div>
+                    <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.6)', lineHeight: 1.6 }}>{city.desc}</div>
 
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8, padding: '12px 0', borderTop: '1px solid rgba(255,255,255,0.06)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-                    {city.stats.map(s => (
-                      <div key={s.label}>
-                        <div style={{ fontSize: 15, fontWeight: 700, color: '#fff', fontFamily: "'Syne', sans-serif" }}>{s.val}</div>
-                        <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.4)', marginTop: 2 }}>{s.label}</div>
-                      </div>
-                    ))}
-                  </div>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8, padding: '12px 0', borderTop: '1px solid rgba(255,255,255,0.06)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+                      {city.stats.map(s => (
+                        <div key={s.label}>
+                          <div style={{ fontSize: 15, fontWeight: 700, color: '#fff', fontFamily: "'Syne', sans-serif" }}>{s.val}</div>
+                          <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.4)', marginTop: 2 }}>{s.label}</div>
+                        </div>
+                      ))}
+                    </div>
 
-                  <button
-                    onClick={() => onEnter(city.id)}
-                    style={{
-                      marginTop: 4, padding: '10px 16px', borderRadius: 8,
-                      background: 'rgba(37,99,235,0.15)', border: '1px solid #2563eb',
-                      color: '#60a5fa', fontSize: 12, fontWeight: 700, cursor: 'pointer',
-                      fontFamily: 'inherit', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
-                      transition: 'all 0.15s',
-                    }}
-                    onMouseEnter={e => { e.currentTarget.style.background = '#2563eb'; e.currentTarget.style.color = '#fff'; }}
-                    onMouseLeave={e => { e.currentTarget.style.background = 'rgba(37,99,235,0.15)'; e.currentTarget.style.color = '#60a5fa'; }}
-                  >
-                    Launch {city.name.split(',')[0]} in 3D Viewer <span style={{ fontSize: 14 }}>›</span>
-                  </button>
-                </div>
-              ))}
+                    <button
+                      onClick={() => onEnter(city.id, city.realm || 'globe')}
+                      style={{
+                        marginTop: 4, padding: '10px 16px', borderRadius: 8,
+                        background: isSim ? 'rgba(37, 99, 235, 0.25)' : 'rgba(37,99,235,0.15)',
+                        border: isSim ? '1px solid #3b82f6' : '1px solid #2563eb',
+                        color: isSim ? '#60a5fa' : '#60a5fa',
+                        fontSize: 12, fontWeight: 700, cursor: 'pointer',
+                        fontFamily: 'inherit', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+                        transition: 'all 0.15s',
+                      }}
+                      onMouseEnter={e => {
+                        e.currentTarget.style.background = '#2563eb';
+                        e.currentTarget.style.color = '#fff';
+                      }}
+                      onMouseLeave={e => {
+                        e.currentTarget.style.background = isSim ? 'rgba(37, 99, 235, 0.25)' : 'rgba(37,99,235,0.15)';
+                        e.currentTarget.style.color = '#60a5fa';
+                      }}
+                    >
+                      {isSim ? '🎮 Enter SimCity Sandbox (Urban Twin)' : `Launch ${city.name.split(',')[0]} in 3D Viewer`} <span style={{ fontSize: 14 }}>›</span>
+                    </button>
+                  </div>
+                );
+              })}
             </div>
           </div>
         )}

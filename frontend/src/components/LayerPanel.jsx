@@ -2,14 +2,14 @@
 import { useMemo } from 'react';
 
 const LAYER_DEFS = [
-  { id: 'google3d',   label: 'Google Photorealistic 3D', icon: '🌐', desc: 'Google 3D Photogrammetry Tileset' },
-  { id: 'tileset3d',  label: '3D Real Buildings (OSM)', icon: '🏙', desc: 'Detailed architectural 3D structures' },
-  { id: 'shadows',    label: 'Sun & Shadows',          icon: '☀', desc: 'Solar shadows & atmospheric lighting' },
-  { id: 'parcels',    label: 'Parcel Boundaries',      icon: '◻', desc: '2D cadastral plots' },
-  { id: 'buildings',  label: 'ULPIN Property Sheath',  icon: '⬡', desc: 'Cadastral glass volumes' },
-  { id: 'interior',   label: 'Interior X-Ray',         icon: '🔬', desc: 'Corridors & floor slabs (selected)' },
-  { id: 'volumes',    label: 'Floor Strata Volumes',   icon: '⬢', desc: 'Floor & unit property levels' },
-  { id: 'underground',label: 'Underground Infrastructure', icon: '⊗', desc: 'Subsurface metro & utilities' },
+  { id: 'google3d',   label: 'Google Photorealistic 3D', icon: '🌐', desc: 'Photogrammetric contextual mesh' },
+  { id: 'tileset3d',  label: '3D Buildings (OSM / LoD2)', icon: '🏙', desc: 'Building outlines & LoD2 geometry' },
+  { id: 'parcels',    label: 'NAKSHA Cadastral Parcels (Class S)', icon: '◻', desc: 'DoLR 2D cadastre & 5% tolerance anchor' },
+  { id: 'buildings',  label: 'LiDAR Envelopes (Class B)', icon: '⬡', desc: 'Airborne LiDAR (E1) extruded envelope' },
+  { id: 'interior',   label: 'BIM Interior Layout (Class U & C)', icon: '🔬', desc: 'As-built BIM units, corridors & stairwells' },
+  { id: 'volumes',    label: 'Vertical Storey Slabs (Class L)', icon: '⬢', desc: 'Floor plates inferred via Viterbi DP' },
+  { id: 'underground',label: 'Subterranean & GPR Utilities (Class T & I)', icon: '⊗', desc: 'Deep metro rail & storm water corridors' },
+  { id: 'shadows',    label: 'Sun & Shadow Analysis',    icon: '☀', desc: 'Solar path & volumetric shadowing' },
 ];
 
 export default function LayerPanel({ layers, onToggle, buildings, currentCity, onCityChange, onResetOrbit }) {
@@ -171,6 +171,31 @@ export default function LayerPanel({ layers, onToggle, buildings, currentCity, o
           </div>
         </div>
       )}
+
+      <div className="divider" style={{ margin: '10px 0' }} />
+      <div className="panel-header"><h3 style={{ fontSize: '13px' }}>Standards & Evidence Stack</h3></div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', fontSize: '11px', color: 'var(--text-secondary)', marginBottom: '8px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 6px', background: 'rgba(255,255,255,0.02)', borderRadius: '4px' }}>
+          <span>NAKSHA 5% Precedent</span>
+          <span className="mono" style={{ color: '#34d399' }}>2σ_c = 0.34m</span>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 6px', background: 'rgba(255,255,255,0.02)', borderRadius: '4px' }}>
+          <span>Airborne LiDAR (E1)</span>
+          <span className="mono" style={{ color: '#38bdf8' }}>KPConv / U-Net</span>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 6px', background: 'rgba(255,255,255,0.02)', borderRadius: '4px' }}>
+          <span>BIM / As-Built (E4)</span>
+          <span className="mono" style={{ color: '#a78bfa' }}>IFC 4.3 Space</span>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 6px', background: 'rgba(255,255,255,0.02)', borderRadius: '4px' }}>
+          <span>SoI CORS Covariance</span>
+          <span className="mono" style={{ color: '#f59e0b' }}>σ_xy: 2.4cm</span>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 6px', background: 'rgba(255,255,255,0.02)', borderRadius: '4px' }}>
+          <span>Subsurface GPR (E5)</span>
+          <span className="mono" style={{ color: '#ef4444' }}>Tunnels & Drains</span>
+        </div>
+      </div>
 
       {hasSynthetic && (
         <>
