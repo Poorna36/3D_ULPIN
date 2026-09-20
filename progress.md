@@ -1856,3 +1856,16 @@ Implement the end-to-end Drone Photogrammetry, 3D Geometry, Vertical Slicing, an
 ### Status
 Complete and fully verified.
 
+---
+
+## Task: Photogrammetry & 3D Cadastre Release V1 Push
+- **Objective**: Commit Cesium token-free fallback rendering fixes and push integrated prototypev0.2 photogrammetry release to remote branch `Photogrammetry` under commit tag `V1`.
+- **Commit**: `45b482e` (`V1`)
+- **Remote Target**: `https://github.com/Poorna36/3D_ULPIN/tree/Photogrammetry`
+- **Result**:
+  1. Resolved Cesium 401 Unauthorized errors by integrating free OpenStreetMap imagery and EllipsoidTerrain fallback.
+  2. Gated ULPIN entities to render immediately without getting blocked on external Ion asset timeouts.
+  3. Ran test suite with 162/162 passing tests.
+  4. Committed as `V1` and pushed to `origin/Photogrammetry` (0df0791..45b482e).
+
+

@@ -11,6 +11,7 @@ import {
   PolygonHierarchy, ConstantProperty, ColorMaterialProperty,
   ShadowMode, EasingFunction, ImageryLayer,
   Terrain, IonWorldImageryStyle,
+  OpenStreetMapImageryProvider, EllipsoidTerrainProvider,
   BoundingSphere, HeadingPitchRange, JulianDate,
   sampleTerrainMostDetailed, RequestScheduler,
 } from 'cesium';
@@ -1236,16 +1237,17 @@ export default function CesiumViewer({
   useEffect(() => {
     if (!containerRef.current || viewerRef.current) return;
 
-    // High-resolution photorealistic satellite imagery directly from Cesium Ion
-    const baseLayer = ImageryLayer.fromWorldImagery({
-      style: IonWorldImageryStyle.AERIAL,
-    });
+    // Free OpenStreetMap Satellite imagery — synchronous, no Cesium Ion token required
+    // Provides global street map coverage without any authentication
+    const baseLayer = new ImageryLayer(
+      new OpenStreetMapImageryProvider({
+        url: 'https://tile.openstreetmap.org/',
+      })
+    );
 
-    // 3D elevation terrain with realistic water masking & normals
-    const terrain = Terrain.fromWorldTerrain({
-      requestWaterMask: true,
-      requestVertexNormals: true,
-    });
+    // Flat ellipsoid terrain — no Cesium Ion token required
+    // (upgrade to Terrain.fromWorldTerrain() once a valid Ion token is configured)
+    const terrain = new Terrain(new EllipsoidTerrainProvider());
 
     const viewer = new Viewer(containerRef.current, {
       animation:            false,
@@ -1428,7 +1430,11 @@ export default function CesiumViewer({
         viewer.scene.primitives.add(googleTileset);
         googleTilesetRef.current = googleTileset;
         googleTileset.show = layers.google3d ?? true;
-        tileReadyRef.current = true;
+        tileReadyRef.current = true; // Google tiles loaded — entities already shown below
+        // Immediately reveal entities; initialTilesLoaded may fire much later
+        cityEntitiesRef.current.forEach(e => {
+          if (e && !e.isDestroyed?.()) e.show = true;
+        });
 
         // ── Reveal ULPIN entities once the first batch of map tiles are visible ──
         // initialTilesLoaded fires when the visible-area tiles reach their
