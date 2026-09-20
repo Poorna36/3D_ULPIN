@@ -52,6 +52,8 @@ The backend dependencies are divided into 4 logical tiers according to the phase
 | `scipy` | `^1.10` | `scipy.spatial` (KDTree, ConvexHull, Voronoi) for fast 3D spatial queries |
 | `shapely` | `^2.0` | 2D footprint topology, polygon intersection/union, buffering, AutoDCR floor slicing |
 | `trimesh` | `^4.0` | 3D polyhedron meshes, watertight verification, volumetric boolean intersection (`vol(A ∩ B)`), ray-tracing |
+| `manifold3d` | `^3.5` | Fast exact CSG 3D constructive solid boolean engine (`manifold` backend for trimesh) |
+| `mapbox-earcut` | `^2.1` | High-performance 2D-to-3D polygon triangulation engine for AutoDCR floor extrusion |
 | `pyproj` | `^3.5` | Geodetic transformations between WGS84 (EPSG:4326), UTM 43N/44N (EPSG:32643/32644), and Everest 1830 |
 | `rtree` | `^1.0` | Spatial index for Spatial Address (SA) grid cover lookups |
 

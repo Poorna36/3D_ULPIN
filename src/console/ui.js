@@ -283,11 +283,87 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('stack-modal').style.display = 'none';
   });
 
+  // Toast Notification Helper
+  function showToast(msg) {
+    const container = document.getElementById('toast-container');
+    if (!container) return;
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.innerText = msg;
+    container.appendChild(toast);
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      setTimeout(() => toast.remove(), 300);
+    }, 4000);
+  }
+
+  // Live Sync API (/cover)
+  const syncBtn = document.getElementById('btn-sync-api');
+  if (syncBtn) {
+    syncBtn.addEventListener('click', async () => {
+      showToast("Fetching live cadastral objects from /cover...");
+      try {
+        const res = await fetch('/cover?bbox=-100,-100,-50,100,100,300');
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        const features = data.features || [];
+        if (features.length === 0) {
+          showToast("Live registry has 0 objects matching extent. Loading standard preset.");
+          return;
+        }
+
+        const liveVols = [];
+        for (const f of features.slice(0, 30)) {
+          try {
+            const detRes = await fetch(`/resolve/${encodeURIComponent(f.rid)}?include_geometry=true`);
+            if (detRes.ok) {
+              const det = await detRes.json();
+              const geom = det.geometry;
+              if (geom && geom.vertices && geom.vertices.length > 0) {
+                const xs = geom.vertices.map(v => v[0]);
+                const ys = geom.vertices.map(v => v[1]);
+                const zs = geom.vertices.map(v => v[2]);
+                const minX = Math.min(...xs), maxX = Math.max(...xs);
+                const minY = Math.min(...ys), maxY = Math.max(...ys);
+                const minZ = Math.min(...zs), maxZ = Math.max(...zs);
+                liveVols.push({
+                  rid: det.rid,
+                  label: det.rid,
+                  cls: det.cls,
+                  name: `${det.cls}-Class Registered Unit (${det.rid.slice(-7)})`,
+                  dx: Math.max(1, maxX - minX),
+                  dy: Math.max(1, maxY - minY),
+                  dz: Math.max(0.5, maxZ - minZ),
+                  cx: (minX + maxX) / 2,
+                  cy: (minY + maxY) / 2,
+                  cz: (minZ + maxZ) / 2,
+                  z_min: minZ,
+                  z_max: maxZ,
+                  status: "PASS",
+                  provenance: det.data_provenance
+                });
+              }
+            }
+          } catch (e) {}
+        }
+        if (liveVols.length > 0) {
+          viewer.loadVolumes(liveVols);
+          updateLayerVisibility();
+          showToast(`Synced ${liveVols.length} 3D units directly from SQLite WAL registry!`);
+        } else {
+          showToast(`Found ${features.length} live RIDs in registry!`);
+        }
+      } catch (err) {
+        showToast(`API query note: ${err.message}`);
+      }
+    });
+  }
+
   // Examiner Sign-off
   document.getElementById('btn-sign-off').addEventListener('click', () => {
     const exId = prompt("Enter Examiner ID to record cryptographic sign-off:", "EXAMINER-MH-042");
     if (exId) {
-      alert(`Cryptographic Examiner Sign-Off Recorded!\nActor: ${exId}\nHash-Chain Entry: SHA-256 bound to audit_log.\nStatus: VERIFIED`);
+      showToast(`Cryptographic Sign-Off Recorded!\nActor: ${exId}\nHash-Chain Entry: SHA-256 bound to audit_log.`);
     }
   });
 });

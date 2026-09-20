@@ -3,10 +3,12 @@
 # ==============================================================================
 
 # Core Computational Geometry & Math
-numpy>=1.24.0,<2.0.0
+numpy>=1.24.0
 scipy>=1.10.0
 shapely>=2.0.0
 trimesh[easy]>=4.0.0
+manifold3d>=3.5.0
+mapbox-earcut>=2.1.0
 pyproj>=3.5.0
 rtree>=1.0.1
 

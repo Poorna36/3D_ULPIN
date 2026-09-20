@@ -132,7 +132,7 @@ def test_api_lineage_and_cover_and_validate(client_with_isolated_db):
     assert len(lin_data["versions"]) >= 1
 
     # 2. GET /cover
-    cover_resp = client.get("/cover?bbox=72.82,18.98,0,72.83,18.99,100&cls=U")
+    cover_resp = client.get("/cover?bbox=-10,-10,-5,10,10,10&cls=U")
     assert cover_resp.status_code == 200
     cov_data = cover_resp.json()
     assert cov_data["type"] == "FeatureCollection"
@@ -159,3 +159,78 @@ def test_api_console_static_mount(client_with_isolated_db):
     resp = client.get("/console/index.html")
     assert resp.status_code == 200
     assert "3D ULPIN Examiner Console" in resp.text
+
+
+def test_api_validate_with_registered_rights(client_with_isolated_db):
+    """Verifies that GET /validate/{rid} correctly executes T4 checks when rights exist."""
+    client = client_with_isolated_db
+    rrr_store = api_main.get_rrr_store()
+
+    # Allocate unit
+    payload = {
+        "parent_ulpin": "MH2700010001AA",
+        "building_seq": "B0001",
+        "cls": "U",
+        "geometry": {
+            "type": "Solid",
+            "extents": [10.0, 10.0, 3.0]
+        },
+        "data_provenance": "SYNTHETIC"
+    }
+    alloc_resp = client.post("/allocate", json=payload).json()
+    rid = alloc_resp["rid"]
+
+    # Register an ownership right with 100% UDS (1.0)
+    rrr_store.insert_right(Right(
+        right_id="RIGHT-TEST-01",
+        rid=rid,
+        right_type=RightType.OWNERSHIP,
+        holder_pseudonym="CITIZEN-001",
+        uds_fraction=1.0,
+        legal_basis_status="ENACTED",
+        legal_act_ref="Maharashtra Apartment Ownership Act 1970 § 5",
+        valid_from="2026-09-20T00:00:00Z"
+    ))
+
+    val_resp = client.get(f"/validate/{rid}?tiers=T4")
+    assert val_resp.status_code == 200
+    data = val_resp.json()
+    assert data["overall_status"] == "PASS"
+    t4_result = [t for t in data["tier_results"] if t["tier"] == "T4"][0]
+    assert t4_result["status"] == "PASS"
+    assert len(t4_result["findings"]) == 1
+    assert t4_result["findings"][0]["predicate"] == "T4_UDS_SUM"
+
+
+def test_api_cover_spatial_bounding_box_filtering(client_with_isolated_db):
+    """Verifies that GET /cover accurately filters based on 3D spatial extents."""
+    client = client_with_isolated_db
+
+    # Allocate Unit A at (10, 10, 5)
+    payload_a = {
+        "parent_ulpin": "MH2700010001AA",
+        "building_seq": "B0001",
+        "cls": "U",
+        "geometry": {
+            "type": "Solid",
+            "vertices": [
+                [10, 10, 0], [20, 10, 0], [20, 20, 0], [10, 20, 0],
+                [10, 10, 5], [20, 10, 5], [20, 20, 5], [10, 20, 5]
+            ],
+            "faces": [[0, 1, 2], [0, 2, 3], [4, 5, 6], [4, 6, 7]]
+        },
+        "data_provenance": "SYNTHETIC"
+    }
+    resp_a = client.post("/allocate", json=payload_a).json()
+    rid_a = resp_a["rid"]
+
+    # Query bounding box that covers Unit A
+    in_box = client.get("/cover?bbox=5,5,-1,25,25,10").json()
+    rids_in = [f["rid"] for f in in_box["features"]]
+    assert rid_a in rids_in
+
+    # Query bounding box that is completely disjoint from Unit A
+    out_box = client.get("/cover?bbox=100,100,0,150,150,20").json()
+    rids_out = [f["rid"] for f in out_box["features"]]
+    assert rid_a not in rids_out
+

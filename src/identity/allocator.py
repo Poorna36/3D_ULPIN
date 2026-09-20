@@ -36,8 +36,12 @@ class ULPIN3DAllocator:
         self.store = store
         self._seq_counter = 1
 
-    def _next_b32_seq(self) -> str:
-        """Generates sequential 5-character Crockford Base-32 sequence."""
+    def _next_b32_seq(self, ulpin14: str = "", bld_seq: str = "", cls: str = "") -> str:
+        """Generates sequential 5-character Crockford Base-32 sequence with persistent sync."""
+        if ulpin14 and bld_seq and cls and hasattr(self.store, "get_max_sequence"):
+            existing_count = self.store.get_max_sequence(ulpin14, bld_seq, cls)
+            self._seq_counter = max(self._seq_counter, existing_count + 1)
+
         n = self._seq_counter
         self._seq_counter += 1
         chars = []
@@ -95,7 +99,7 @@ class ULPIN3DAllocator:
             status = "REVISED"
         else:
             # New physical entity or Split/Merge -> allocate new RID
-            seq = self._next_b32_seq()
+            seq = self._next_b32_seq(ulpin14=ulpin14, bld_seq=bld_seq, cls=cls)
             target_rid = format_rid(ulpin14=ulpin14, bld_seq=bld_seq, cls=cls, seq=seq)
             status = "ALLOCATED"
 
@@ -112,6 +116,17 @@ class ULPIN3DAllocator:
                 legal_basis_status=legal_basis_status,
                 spans=spans
             )
+
+            # Record lineage edge if this object evolved from an existing object
+            if existing_rid and hasattr(self.store, "insert_lineage_edge"):
+                edge_type = "SPLIT_FROM" if ict_res.decision == ICTDecision.SPLIT else (
+                    "MERGED_INTO" if ict_res.decision == ICTDecision.MERGE else "SUPERSEDES"
+                )
+                self.store.insert_lineage_edge(
+                    source_rid=existing_rid,
+                    target_rid=target_rid,
+                    edge_type=edge_type
+                )
 
         # 4. Append immutable, hash-chained Binding Version
         b_ver: BindingVersion = self.store.append_binding_version(

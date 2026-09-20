@@ -290,10 +290,19 @@ def get_lineage(rid: str = Path(..., description="The RID to inspect")):
             sign_off={"examiner_id": "SYS_ADMIN", "timestamp": v["created_at"]}
         ))
 
+    edges = []
+    for e in res.get("lineage_edges", []):
+        edges.append(LineageEdge(
+            type=e["edge_type"],
+            from_rid=e["source_rid"],
+            to_rid=e["target_rid"],
+            timestamp=e["created_at"]
+        ))
+
     return LineageResponse(
         rid=rid,
         versions=versions,
-        lineage_edges=[]
+        lineage_edges=edges
     )
 
 
@@ -328,7 +337,7 @@ def get_cover(
 
     matches = store.search_cover(
         min_lon=min_lon, min_lat=min_lat, min_h=min_h,
-        max_lon=max_lon, max_lat=max_h, max_h=max_h,
+        max_lon=max_lon, max_lat=max_lat, max_h=max_h,
         cls_filter=cls_list,
         provenance_filter=prov_list
     )
@@ -439,7 +448,12 @@ def validate_rid(
         rrr_store = get_rrr_store()
         rights = rrr_store.get_rights_for_rid(rid)
         if rights:
-            t4_finding = T4AdminValidator.check_uds_balance([rights], rid)
+            uds_fractions = [r.uds_fraction for r in rights]
+            t4_finding = T4AdminValidator.check_uds_sum(
+                building_rid=rid,
+                uds_fractions=uds_fractions,
+                data_provenance=rec["data_provenance"]
+            )
             t4_status = t4_finding.status
             t4_findings = [t4_finding]
             _FINDINGS_CACHE[t4_finding.finding_id] = t4_finding

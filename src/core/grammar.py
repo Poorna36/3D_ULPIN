@@ -3,10 +3,11 @@
 Conforms strictly to docs/features.md and docs/implementation_plan.md Phase 2.
 """
 from dataclasses import dataclass
+from functools import lru_cache
 import hashlib
 import base64
 import math
-from typing import List, Tuple, Optional, Set
+from typing import List, Tuple, Optional, Set, Dict, Any
 import numpy as np
 import trimesh
 
@@ -369,7 +370,8 @@ def compute_nk(
     digest_b32 = base64.b32encode(sha256_hash)[:16].decode("ascii")
 
     interior_pt = compute_interior_point(mesh)
-    morton_code = morton_encode_3d(interior_pt[0], interior_pt[1], interior_pt[2])
+    origin_z = -1000.0 if interior_pt[2] < 0 else 0.0
+    morton_code = morton_encode_3d(interior_pt[0], interior_pt[1], interior_pt[2], origin=(0.0, 0.0, origin_z))
     locator = f"M3D{morton_code:016X}"
 
     return NaturalKey(
@@ -393,20 +395,75 @@ def compute_sa_cover(
     for cell_size in levels:
         x_min, y_min, z_min = bounds[0]
         x_max, y_max, z_max = bounds[1]
+        origin_z = -1000.0 if z_min < 0 else 0.0
 
         # Calculate bounding voxel indices
         ix_min = int(math.floor(x_min / cell_size))
         ix_max = int(math.floor(x_max / cell_size))
         iy_min = int(math.floor(y_min / cell_size))
         iy_max = int(math.floor(y_max / cell_size))
-        iz_min = int(math.floor(z_min / cell_size))
-        iz_max = int(math.floor(z_max / cell_size))
+        iz_min = int(math.floor((z_min - origin_z) / cell_size))
+        iz_max = int(math.floor((z_max - origin_z) / cell_size))
 
         # Sample grid points inside bounding volume
         for ix in range(ix_min, min(ix_max + 1, ix_min + 5)):
             for iy in range(iy_min, min(iy_max + 1, iy_min + 5)):
                 for iz in range(iz_min, min(iz_max + 1, iz_min + 5)):
-                    m = morton_encode_3d(ix * cell_size, iy * cell_size, iz * cell_size, cell_size_m=cell_size)
+                    m = morton_encode_3d(
+                        ix * cell_size,
+                        iy * cell_size,
+                        origin_z + iz * cell_size,
+                        origin=(0.0, 0.0, origin_z),
+                        cell_size_m=cell_size
+                    )
                     sa_codes.append(f"SA-{int(cell_size)}M-{m:016X}")
 
     return sorted(list(set(sa_codes)))
+
+
+@lru_cache(maxsize=4096)
+def sa_lookup(cell_code: str) -> Dict[str, Any]:
+    """
+    Decodes a multi-resolution Spatial Address (SA) cell code into its 3D bounding extent.
+    Conforms to Phase 2C.2 with lru_cache for sub-millisecond retrieval.
+    Format: SA-{level}M-{morton_hex} (e.g. 'SA-10M-0000000000001A3F')
+    """
+    parts = cell_code.split("-")
+    if len(parts) != 3 or parts[0] != "SA":
+        raise ValueError(f"Invalid SA cell code format '{cell_code}'. Expected 'SA-{{level}}M-{{hex}}'")
+
+    level_str = parts[1]
+    if not level_str.endswith("M"):
+        raise ValueError(f"Invalid resolution level in cell code '{cell_code}'")
+    cell_size = float(level_str[:-1])
+    morton_code = int(parts[2], 16)
+    min_corner = morton_decode_3d(morton_code, cell_size_m=cell_size)
+    max_corner = (
+        round(min_corner[0] + cell_size, 3),
+        round(min_corner[1] + cell_size, 3),
+        round(min_corner[2] + cell_size, 3)
+    )
+    return {
+        "cell_code": cell_code,
+        "cell_size_m": cell_size,
+        "bounds": [min_corner[0], min_corner[1], min_corner[2], max_corner[0], max_corner[1], max_corner[2]],
+        "min_corner": min_corner,
+        "max_corner": max_corner
+    }
+
+
+class SpatialAddressIndex:
+    """In-memory Spatial Address Index mapping 3D Morton cell codes to registered RIDs."""
+
+    def __init__(self):
+        self._cell_to_rids: Dict[str, List[str]] = {}
+
+    def insert(self, sa_codes: List[str], rid: str) -> None:
+        for code in sa_codes:
+            if code not in self._cell_to_rids:
+                self._cell_to_rids[code] = []
+            if rid not in self._cell_to_rids[code]:
+                self._cell_to_rids[code].append(rid)
+
+    def lookup(self, cell_code: str) -> List[str]:
+        return self._cell_to_rids.get(cell_code, [])

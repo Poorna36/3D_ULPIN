@@ -7,9 +7,9 @@ import hashlib
 import json
 from datetime import datetime, timezone
 from dataclasses import dataclass, asdict
-from typing import Optional, List, Dict, Any, Tuple
 import os
 from contextlib import contextmanager
+import numpy as np
 
 GENESIS_HASH = "0000000000000000000000000000000000000000000000000000000000000000"
 
@@ -107,9 +107,22 @@ class RegistryStore:
                     prev_hash TEXT NOT NULL,
                     this_hash TEXT NOT NULL,
                     created_at TEXT NOT NULL,
+                    min_x REAL,
+                    min_y REAL,
+                    min_z REAL,
+                    max_x REAL,
+                    max_y REAL,
+                    max_z REAL,
                     UNIQUE(rid, version_num)
                 );
             """)
+
+            # Migrate existing tables if columns missing
+            for col in ["min_x", "min_y", "min_z", "max_x", "max_y", "max_z"]:
+                try:
+                    cursor.execute(f"ALTER TABLE binding_versions ADD COLUMN {col} REAL;")
+                except Exception:
+                    pass
 
             # 3. Audit log (Append-only hash-chained action ledger)
             cursor.execute("""
@@ -150,6 +163,8 @@ class RegistryStore:
             cursor.execute("CREATE INDEX IF NOT EXISTS idx_objects_ulpin14 ON objects(ulpin14);")
             cursor.execute("CREATE INDEX IF NOT EXISTS idx_binding_rid ON binding_versions(rid);")
             cursor.execute("CREATE INDEX IF NOT EXISTS idx_audit_rid ON audit_log(rid);")
+            cursor.execute("CREATE INDEX IF NOT EXISTS idx_lineage_src ON lineage_edges(source_rid);")
+            cursor.execute("CREATE INDEX IF NOT EXISTS idx_lineage_tgt ON lineage_edges(target_rid);")
             conn.commit()
 
     # --------------------------------------------------------------------------
@@ -230,16 +245,32 @@ class RegistryStore:
             )
             this_hash = hashlib.sha256(hash_payload.encode("utf-8")).hexdigest()
 
+            # Extract bounding extents if available
+            min_x = min_y = min_z = max_x = max_y = max_z = None
+            try:
+                geom_data = json.loads(geometry_json) if isinstance(geometry_json, str) else geometry_json
+                if isinstance(geom_data, dict) and "vertices" in geom_data and geom_data["vertices"]:
+                    v_arr = np.array(geom_data["vertices"], dtype=np.float64)
+                    if v_arr.ndim == 2 and v_arr.shape[1] >= 3:
+                        b_min = v_arr.min(axis=0)
+                        b_max = v_arr.max(axis=0)
+                        min_x, min_y, min_z = float(b_min[0]), float(b_min[1]), float(b_min[2])
+                        max_x, max_y, max_z = float(b_max[0]), float(b_max[1]), float(b_max[2])
+            except Exception:
+                pass
+
             cursor.execute("""
                 INSERT INTO binding_versions (
                     rid, version_num, nk_digest, nk_locator, sa_json,
                     geometry_json, plan_version, evidence_class, sigma_json,
-                    sign_off, prev_hash, this_hash, created_at
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+                    sign_off, prev_hash, this_hash, created_at,
+                    min_x, min_y, min_z, max_x, max_y, max_z
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
             """, (
                 rid, next_version, nk_digest, nk_locator, sa_str,
                 geometry_json, plan_version, evidence_class, sigma_str,
-                sign_off, prev_hash, this_hash, created_at
+                sign_off, prev_hash, this_hash, created_at,
+                min_x, min_y, min_z, max_x, max_y, max_z
             ))
 
             # Update object status to ACTIVE if it was ALLOCATED
@@ -380,12 +411,38 @@ class RegistryStore:
                     "created_at": r["created_at"],
                 })
 
+            cursor.execute("""
+                SELECT source_rid, target_rid, edge_type, created_at
+                FROM lineage_edges
+                WHERE source_rid = ? OR target_rid = ?
+                ORDER BY edge_id ASC;
+            """, (rid, rid))
+            edge_rows = cursor.fetchall()
+            lineage_edges = [{
+                "source_rid": er["source_rid"],
+                "target_rid": er["target_rid"],
+                "edge_type": er["edge_type"],
+                "created_at": er["created_at"]
+            } for er in edge_rows]
+
             return {
                 "rid": rid,
                 "chain_integrity_valid": chain_valid,
                 "version_count": len(versions),
-                "versions": versions
+                "versions": versions,
+                "lineage_edges": lineage_edges
             }
+
+    def insert_lineage_edge(self, source_rid: str, target_rid: str, edge_type: str) -> None:
+        """Inserts an immutable lineage transition edge."""
+        created_at = datetime.now(timezone.utc).isoformat()
+        with self._get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute("""
+                INSERT INTO lineage_edges (source_rid, target_rid, edge_type, created_at)
+                VALUES (?, ?, ?, ?);
+            """, (source_rid, target_rid, edge_type, created_at))
+            conn.commit()
 
     def get_audit_log_finding(self, finding_id: str) -> Optional[Dict[str, Any]]:
         """Retrieves an ExplainObject audit log finding by finding_id."""
@@ -415,21 +472,40 @@ class RegistryStore:
         limit: int = 100
     ) -> List[Dict[str, Any]]:
         """
-        Spatial cover query returning objects matching spatial / attribute filters.
+        Spatial cover query returning objects matching 3D bounding box and attribute filters.
         """
         with self._get_connection() as conn:
             cursor = conn.cursor()
-            query = "SELECT * FROM objects WHERE 1=1"
+            query = """
+                SELECT o.rid, o.cls, o.data_provenance, o.status, o.parent_rid, o.issuer_node_id
+                FROM objects o
+                LEFT JOIN binding_versions b ON o.rid = b.rid
+                WHERE (b.version_num IS NULL OR b.version_num = (
+                    SELECT MAX(v.version_num) FROM binding_versions v WHERE v.rid = o.rid
+                ))
+            """
             params: List[Any] = []
+
+            # 3D spatial intersection bounding box predicate
+            query += """
+                AND (
+                    b.min_x IS NULL OR NOT (
+                        b.max_x < ? OR b.min_x > ? OR
+                        b.max_y < ? OR b.min_y > ? OR
+                        b.max_z < ? OR b.min_z > ?
+                    )
+                )
+            """
+            params.extend([min_lon, max_lon, min_lat, max_lat, min_h, max_h])
 
             if cls_filter:
                 placeholders = ",".join("?" for _ in cls_filter)
-                query += f" AND cls IN ({placeholders})"
+                query += f" AND o.cls IN ({placeholders})"
                 params.extend(cls_filter)
 
             if provenance_filter:
                 placeholders = ",".join("?" for _ in provenance_filter)
-                query += f" AND data_provenance IN ({placeholders})"
+                query += f" AND o.data_provenance IN ({placeholders})"
                 params.extend(provenance_filter)
 
             query += " LIMIT ?"
@@ -448,3 +524,13 @@ class RegistryStore:
                     "issuer_node_id": r["issuer_node_id"]
                 })
             return results
+
+    def get_max_sequence(self, ulpin14: str, bld_seq: str, cls: str) -> int:
+        """Returns the total object count matching the scope for sequence persistence."""
+        with self._get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute("""
+                SELECT COUNT(*) as cnt FROM objects WHERE ulpin14 = ? AND bld_seq = ? AND cls = ?;
+            """, (ulpin14, bld_seq, cls))
+            row = cursor.fetchone()
+            return int(row["cnt"]) if row else 0

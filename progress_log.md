@@ -61,12 +61,12 @@
 - [x] **2B.3** Implement `morton_encode_3d(x, y, z, origin, cell_size_m) → int` — 21-bit/axis, 63-bit total → `src/core/grammar.py`
 - [x] **2B.4** Implement `compute_nk(mesh, crs_epsg) → str` = `base32(sha256(canonical))[:16] + "_" + morton_b32` → `src/core/grammar.py`
 - [x] **2B.5** Write `tests/conformance/test_nk_determinism.py` — same mesh, two independent processes → identical NK (1,000 iterations)
-- [ ] **2B.6** Write `tests/conformance/test_nk_collision.py` — 10^6 distinct 1 m³ voxel meshes → zero NK collisions
+- [x] **2B.6** Write `tests/conformance/test_nk_collision.py` — 10^6 distinct 1 m³ voxel meshes → zero NK collisions
 
 ### 2C — Spatial Address (SA) Grid
 - [x] **2C.1** Implement `compute_sa_cover(mesh, levels=[100, 10, 1]) → list[str]` — Morton cell codes at each resolution → `src/core/grammar.py`
-- [ ] **2C.2** Implement `sa_lookup(cell_code) → list[str]` — R-tree / Morton index with `lru_cache` → `src/core/grammar.py`
-- [ ] **2C.3** Benchmark `sa_lookup` over 10^6-object index — assert < 100 ms; record result in `docs/eval_results.md`
+- [x] **2C.2** Implement `sa_lookup(cell_code) → list[str]` — R-tree / Morton index with `lru_cache` → `src/core/grammar.py`
+- [x] **2C.3** Benchmark `sa_lookup` over 10^6-object index — assert < 100 ms; record result in `docs/eval_results.md`
 
 ### 2D — SQLite WAL Registry Schema
 - [x] **2D.1** Write `src/core/registry.py` with `init_db(path)` — WAL mode; create 5 tables on first call
