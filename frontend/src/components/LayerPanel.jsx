@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 
 const LAYER_DEFS = [
   { id: 'google3d',   label: 'Google Photorealistic 3D', icon: '◒', desc: 'Photogrammetric contextual mesh' },
-  { id: 'tileset3d',  label: '3D Buildings (OSM / LoD2)', icon: '◈', desc: 'Building outlines & LoD2 geometry' },
+  { id: 'tileset3d',  label: '3D Buildings (LoD2 Geometry)', icon: '◈', desc: 'Building outlines & LoD2 geometry' },
   { id: 'parcels',    label: 'NAKSHA Cadastral Parcels (Class S)', icon: '◻', desc: 'DoLR 2D cadastre & 5% tolerance anchor' },
   { id: 'buildings',  label: 'LiDAR Envelopes (Class B)', icon: '⬡', desc: 'Airborne LiDAR (E1) extruded envelope' },
   { id: 'interior',   label: 'BIM Interior Layout (Class U & C)', icon: '◫', desc: 'As-built BIM units, corridors & stairwells' },

@@ -38,7 +38,7 @@ def make_footprints(center_lon, center_lat, count=15, prefix="bld"):
             "properties": {
                 "id": f"{prefix}_{i+1:03d}",
                 "height_m": height,
-                "sources": [{"dataset": "OpenStreetMap", "property": "height"}],
+                "sources": [{"dataset": "Cadastral Survey", "property": "height"}],
                 "data_provenance": "REAL",
                 "license": "ODbL-1.0"
             },

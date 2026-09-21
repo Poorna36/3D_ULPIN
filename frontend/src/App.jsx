@@ -190,7 +190,7 @@ export default function App() {
 
   const handleBuildingClick = useCallback((buildingId, buildingObj) => {
     if (!buildingId) { setSelected(null); setExplodedFloor(null); setInteriorActive(false); return; }
-    // buildingObj is provided for OSM virtual buildings not in the buildings state array
+    // buildingObj is provided for dynamic virtual buildings not in the buildings state array
     const b = buildingObj ?? buildings.find(b => b.building_id === buildingId);
     setSelected(b ?? null);
     setExplodedFloor(null);

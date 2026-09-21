@@ -487,7 +487,7 @@ export default function LandingPage({ onEnter, isExiting = false }) {
                 {
                   step: '01',
                   title: 'Multi-Source Spatial Ingestion',
-                  tech: 'CityGML LoD1–LoD3 · OSM 3D Overpass · BIM/IFC Schemas',
+                  tech: 'CityGML LoD1–LoD3 · Drone Photogrammetry · BIM/IFC Schemas',
                   desc: 'Ingests building boundary footprints, terrain elevation models, and architectural structural data with coordinate harmonization into WGS84 EPSG:4979.',
                 },
                 {

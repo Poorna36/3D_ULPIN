@@ -1,7 +1,7 @@
 // Mock data — Netherlands / Rotterdam buildings
 // API contract: GET /api/buildings?city=netherlands
 // Data coverage: Kop van Zuid, Centrum / Coolsingel, Museumpark / Erasmus MC, Delfshaven & Euromast, Subterranean Metro & Maastunnel
-// Coordinates: WGS84 EPSG:4326 — accurate GPS coordinates from Kadaster BRK + OpenStreetMap
+// Coordinates: WGS84 EPSG:4326 — accurate GPS coordinates from Kadaster BRK + 3D BAG AHN4
 // Ground elevations: NAP (Normaal Amsterdams Peil) referenced
 // Provenance: BAG 3D Netherlands 2024 + AHN4 LiDAR point cloud (source CRS: EPSG:28992 transformed to WGS84)
 

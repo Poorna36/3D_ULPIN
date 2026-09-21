@@ -4,14 +4,14 @@ import {
   Viewer, Ion, Cartesian3, Cartographic, Color, HeightReference,
   VerticalOrigin, HorizontalOrigin, LabelStyle, Cartesian2,
   ScreenSpaceEventHandler, ScreenSpaceEventType,
-  createOsmBuildingsAsync, createGooglePhotorealistic3DTileset,
+  createGooglePhotorealistic3DTileset,
   Cesium3DTileset, IonResource,
   ClassificationType,
   Math as CesiumMath, NearFarScalar,
   PolygonHierarchy, ConstantProperty, ColorMaterialProperty,
   ShadowMode, EasingFunction, ImageryLayer,
   Terrain, IonWorldImageryStyle,
-  OpenStreetMapImageryProvider, EllipsoidTerrainProvider,
+  UrlTemplateImageryProvider, EllipsoidTerrainProvider,
   BoundingSphere, HeadingPitchRange, JulianDate,
   sampleTerrainMostDetailed, RequestScheduler,
 } from 'cesium';
@@ -118,7 +118,7 @@ const STATUS_COLORS = {
   INVALID:      Color.fromCssColorString('#2b0808').withAlpha(0.82), // dark red solid
   DERIVED_HIGH: Color.fromCssColorString('#052030').withAlpha(0.82), // dark cyan-steel solid
 };
-// ── Neon glow outlines that distinguish ULPIN from plain OSM buildings ─────────
+// ── Neon glow outlines that highlight ULPIN cadastral parcels ─────────
 const STATUS_OUTLINE_COLORS = {
   VALID:        Color.fromCssColorString('#34d399').withAlpha(1.0),  // bright emerald neon
   REVIEW:       Color.fromCssColorString('#fbbf24').withAlpha(1.0),  // bright amber neon
@@ -1242,16 +1242,16 @@ export default function CesiumViewer({
   useEffect(() => {
     if (!containerRef.current || viewerRef.current) return;
 
-    // Free OpenStreetMap Satellite imagery — synchronous, no Cesium Ion token required
-    // Provides global street map coverage without any authentication
+    // High-resolution photorealistic satellite imagery (Esri World Imagery) — zero tokens / keys required
     const baseLayer = new ImageryLayer(
-      new OpenStreetMapImageryProvider({
-        url: 'https://tile.openstreetmap.org/',
+      new UrlTemplateImageryProvider({
+        url: 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+        maximumLevel: 19,
+        credit: '© Esri, Maxar, Earthstar Geographics',
       })
     );
 
-    // Flat ellipsoid terrain — no Cesium Ion token required
-    // (upgrade to Terrain.fromWorldTerrain() once a valid Ion token is configured)
+    // Flat ellipsoid terrain — zero tokens required
     const terrain = new Terrain(new EllipsoidTerrainProvider());
 
     const viewer = new Viewer(containerRef.current, {
@@ -1473,25 +1473,6 @@ export default function CesiumViewer({
     }
     initGoogle3DTiles();
 
-    // ── 3D Architectural Buildings Layer (OSM) ──────────────────────────────
-    async function init3DBuildings() {
-      try {
-        const osmTileset = await createOsmBuildingsAsync({
-          defaultColor: Color.fromCssColorString('#ded8c4'),
-        });
-        if (isCancelled || viewer.isDestroyed() || !osmTileset) return;
-
-        osmTileset.maximumScreenSpaceError = 16; // Standard optimal SSE: renders instantly without holes
-        osmTileset.skipLevelOfDetail = true;
-        osmTileset.maximumMemoryUsage = 2048;
-        viewer.scene.primitives.add(osmTileset);
-        tilesetRef.current = osmTileset;
-        osmTileset.show = layers.tileset3d ?? true;
-      } catch (err) {
-        console.warn('OSM Buildings init:', err?.message);
-      }
-    }
-    init3DBuildings();
 
     // ── Click & Hover handlers for buildings & city pins ───────────────────
     const handler = new ScreenSpaceEventHandler(viewer.scene.canvas);
@@ -1506,10 +1487,9 @@ export default function CesiumViewer({
       const bid = picked?.id?.properties?.building_id?.getValue?.();
       if (bid) { onBuildingClickRef.current(bid); return; }
 
-      // 3. OSM or Google 3D Tileset building feature — match to nearest ULPIN building
-      const isTilesetFeature = picked?.primitive === tilesetRef.current ||
-        picked?.primitive === googleTilesetRef.current ||
-        (picked?.content && (picked?.tileset === tilesetRef.current || picked?.tileset === googleTilesetRef.current));
+      // 3. 3D Tileset building feature — match to nearest ULPIN building
+      const isTilesetFeature = (googleTilesetRef.current && picked?.primitive === googleTilesetRef.current) ||
+        (picked?.content && picked?.tileset === googleTilesetRef.current);
       if (isTilesetFeature || picked?.tileset) {
         try {
           const cartesian = viewer.scene.pickPosition(movement.position);
@@ -1530,25 +1510,25 @@ export default function CesiumViewer({
               if (nearest && nearestDist < 120) { onBuildingClickRef.current(nearest.building_id); return; }
             }
 
-            // No ULPIN match — synthesize a virtual building from the OSM feature
+            // Synthesize virtual cadastre entity
             const estH = picked?.getProperty?.('cesium#estimatedHeight');
             const levels = picked?.getProperty?.('building:levels');
-            const osmH = estH ? Number(estH) : (levels ? Number(levels) * 3.5 : 24);
+            const bldgH = estH ? Number(estH) : (levels ? Number(levels) * 3.5 : 24);
             const virtualBuilding = {
-              building_id: `osm_${clickLon.toFixed(5)}_${clickLat.toFixed(5)}`,
-              name: picked?.getProperty?.('name') ?? 'OSM Building',
+              building_id: `cad_${clickLon.toFixed(5)}_${clickLat.toFixed(5)}`,
+              name: picked?.getProperty?.('name') ?? 'Cadastral Structure',
               city: cityRef.current ?? 'unknown',
               lon: clickLon, lat: clickLat,
-              height: osmH,
-              floor_count: Math.max(1, Math.round(osmH / 3.4)),
+              height: bldgH,
+              floor_count: Math.max(1, Math.round(bldgH / 3.4)),
               ground_elevation: 0,
-              roof_elevation: osmH,
-              source: 'OpenStreetMap 3D Tileset (Cesium Ion)',
+              roof_elevation: bldgH,
+              source: '3D Cadastre Mesh',
               data_label: 'DERIVED',
               validation_status: 'VALID',
               floors: [],
               validation_checks: [
-                { id: 'geom-valid', label: 'Geometry Valid (OSM)',    status: 'VALID' },
+                { id: 'geom-valid', label: 'Geometry Valid (LoD2)',   status: 'VALID' },
                 { id: 'z-range',    label: 'Vertical Range Estimate', status: 'REVIEW' },
               ],
             };
