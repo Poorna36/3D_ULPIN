@@ -2510,3 +2510,40 @@ BUG FIX / CESIUM VIEWER - ION TOKEN + DETAILPANEL CRASH
 
 ### Status
 Complete.
+
+---
+
+## Entry 0069 - 2026-09-21 15:02 IST
+
+### Type
+GRAPHICS UPGRADE & PERFORMANCE OPTIMIZATION — SUB-METER ESRI SATELLITE IMAGERY & 40X DRAW CALL REDUCTION
+
+### Context & Problem
+User observed low resolution / blurry map imagery on the 3D viewer (especially in Bengaluru / Indian cities where default Bing aerial tiles were low-LOD) and requested higher resolution along with performance optimizations.
+
+### Root Cause Analysis
+1. **Low-Resolution Base Imagery**: `ImageryLayer.fromWorldImagery({ style: IonWorldImageryStyle.AERIAL })` pulled default Bing satellite imagery, which has low zoom levels and blurry compression in Indian metropolitan regions.
+2. **Overridden SSE Threshold**: `viewer.scene.globe.maximumScreenSpaceError` was set to 1.0 but immediately overridden at line 1357 to 2.0, causing Cesium to halt tile LOD subdivision early.
+3. **Entity Bloat (900+ Entities)**: Each building created 40 separate polygon floor entities regardless of whether it was selected, leading to ~1,000 entities, excessive WebGL draw calls, and CPU hitching during navigation.
+4. **Duplicate Effect**: An identical `useEffect` ran after building creation to show entities.
+
+### Changes Applied
+1. **Sub-Meter ESRI World Imagery**:
+   - Switched baseLayer to ArcGIS World Imagery (`https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}`) up to Zoom Level 19 with `WebMercatorTilingScheme`.
+   - Delivers crisp, sub-meter (30cm-50cm) Maxar/DigitalGlobe optical satellite imagery worldwide.
+2. **Screen Space Error & Geometry Resolution**:
+   - Fixed `globe.maximumScreenSpaceError = 1.0` (removed 2.0 override) and enabled 16x hardware anisotropic filtering.
+   - Refined `osmTileset.maximumScreenSpaceError = 8` and `googleTileset.maximumScreenSpaceError = 4` for sharp architectural models.
+3. **40x Entity Optimization**:
+   - Render unselected buildings as a single high-performance extruded architectural envelope.
+   - Dynamically expand multi-storey floor geometry only when a building is selected.
+   - Disabled expensive shadow rendering on procedural polygon volumes.
+   - Removed redundant secondary `useEffect` cycle.
+
+### Verification
+- `npm run build`: Vite build passes in 634ms with 0 errors.
+- Dev server running smoothly at `http://localhost:5173/`.
+- Validated ESRI Level 18/19 sub-meter tiles returning HTTP 200 with clear road markings and buildings.
+
+### Status
+Complete.

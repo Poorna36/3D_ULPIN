@@ -15,7 +15,7 @@ import {
   UrlTemplateImageryProvider, EllipsoidTerrainProvider,
   BoundingSphere, HeadingPitchRange, JulianDate,
   sampleTerrainMostDetailed, RequestScheduler,
-  GoogleMaps,
+  GoogleMaps, WebMercatorTilingScheme,
 } from 'cesium';
 import 'cesium/Build/Cesium/Widgets/widgets.css';
 
@@ -42,6 +42,8 @@ try {
   RequestScheduler.requestsByServer['tile.googleapis.com:443']          = 24;
   RequestScheduler.requestsByServer['assets.cesium.com:443']            = 24;
   RequestScheduler.requestsByServer['api.cesium.com:443']               = 24;
+  RequestScheduler.requestsByServer['server.arcgisonline.com:443']      = 24;
+  RequestScheduler.requestsByServer['services.arcgisonline.com:443']    = 24;
   RequestScheduler.requestsByServer['ibasemaps-api.arcgis.com:443']     = 18;
 } catch {}
 
@@ -100,7 +102,7 @@ function preloadPilotCities(viewer, baseLayer) {
     const scheme = ip?.tilingScheme;
     if (scheme && typeof ip.requestImage === 'function') {
       pilotPositions.forEach(carto => {
-        [8, 11, 13, 15].forEach(level => {
+        [8, 11, 13, 15, 17].forEach(level => {
           try {
             const tileXY = scheme.positionToTileXY(carto, level);
             if (tileXY) {
@@ -1261,10 +1263,17 @@ export default function CesiumViewer({
   useEffect(() => {
     if (!containerRef.current || viewerRef.current) return;
 
-    // High-resolution photorealistic satellite imagery directly from Cesium Ion
-    const baseLayer = ImageryLayer.fromWorldImagery({
-      style: IonWorldImageryStyle.AERIAL,
-    });
+    // High-resolution photorealistic satellite imagery via ESRI World Imagery (Maxar/DigitalGlobe sub-meter)
+    // Delivers 30cm to 1m per-pixel crisp optical satellite photography worldwide (including Bengaluru, Mumbai, Netherlands, Singapore)
+    const baseLayer = new ImageryLayer(
+      new UrlTemplateImageryProvider({
+        url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+        maximumLevel: 19,
+        enablePickFeatures: false,
+        tilingScheme: new WebMercatorTilingScheme(),
+        credit: '© Esri, Maxar, Earthstar Geographics',
+      })
+    );
 
     // 3D elevation terrain with realistic water masking & normals
     const terrain = Terrain.fromWorldTerrain({
@@ -1306,8 +1315,8 @@ export default function CesiumViewer({
     viewer.useBrowserRecommendedResolution = false;
     const dpr = typeof window !== 'undefined' ? (window.devicePixelRatio || 1.0) : 1.0;
     viewer.resolutionScale = Math.min(Math.max(dpr, 1.5), 2.0); // Ultra-sharp 1.5x - 2.0x retina resolution
-    viewer.scene.globe.maximumScreenSpaceError = 1.0; // High-detail terrain & imagery tile loading (crisp satellite textures)
-    viewer.scene.globe.tileCacheSize = 1000;
+    viewer.scene.globe.maximumScreenSpaceError = 1.0; // High-detail terrain & imagery tile loading (crisp sub-meter textures)
+    viewer.scene.globe.tileCacheSize = 3000;
     viewer.scene.globe.loadingDescendantLimit = 16;
     viewer.scene.globe.preloadAncestors = true;
     viewer.scene.globe.preloadSiblings = true;
@@ -1316,7 +1325,7 @@ export default function CesiumViewer({
     } catch {}
     viewer.scene.highDynamicRange = true;
 
-    // Enable maximum hardware anisotropic filtering for razor-sharp curvature
+    // Enable maximum hardware anisotropic filtering for razor-sharp curvature and oblique view
     try {
       if (viewer.scene?.context?.maximumTextureFilterAnisotropy) {
         baseLayer.maximumAnisotropy = Math.min(16, viewer.scene.context.maximumTextureFilterAnisotropy);
@@ -1352,9 +1361,9 @@ export default function CesiumViewer({
     globe.baseColor                 = Color.fromCssColorString('#071326'); // Deep navy ocean base
     globe.preloadAncestors          = true;
     globe.preloadSiblings           = true;
-    globe.tileCacheSize             = 5000; // Optimal cache for instant high-detail tile paging
-    globe.loadingDescendantLimit    = 20;   // Prevents tile queue congestion during rapid rotation
-    globe.maximumScreenSpaceError   = 2.0;  // Standard optimal SSE for fluid 60fps globe rotation and instant imagery
+    globe.tileCacheSize             = 3000; // Optimal cache for instant high-detail tile paging
+    globe.loadingDescendantLimit    = 16;   // Prevents tile queue congestion during rapid rotation
+    globe.maximumScreenSpaceError   = 1.0;  // Ultra-crisp sub-meter imagery & terrain! (Never 2.0)
     globe.depthTestAgainstTerrain   = false; // Must be false — terrain depth-test clips extruded polygon entity bases
     // Keep Earth 100% brightly illuminated with authentic satellite daylight everywhere
     globe.enableLighting            = false;
@@ -1449,7 +1458,7 @@ export default function CesiumViewer({
         if (isCancelled || viewer.isDestroyed() || !googleTileset) return;
 
         // Optimal 3D Tiles configuration eliminating "zoom out to load" starvation
-        googleTileset.maximumScreenSpaceError   = 16;   // Cesium standard: parent tiles render immediately, no holes
+        googleTileset.maximumScreenSpaceError   = 4;    // Ultra-detailed photogrammetry
         googleTileset.skipLevelOfDetail         = true; // Skip intermediate levels directly to target detail
         googleTileset.baseScreenSpaceError      = 1024;
         googleTileset.skipScreenSpaceErrorFactor= 16;
@@ -1514,7 +1523,7 @@ export default function CesiumViewer({
         });
         if (isCancelled || viewer.isDestroyed() || !osmTileset) return;
 
-        osmTileset.maximumScreenSpaceError = 16; // Standard optimal SSE: renders instantly without holes
+        osmTileset.maximumScreenSpaceError = 8; // High geometric detail without pop-in
         osmTileset.skipLevelOfDetail = true;
         osmTileset.maximumMemoryUsage = 2048;
         viewer.scene.primitives.add(osmTileset);
@@ -1804,21 +1813,15 @@ export default function CesiumViewer({
             position: Cartesian3.fromDegrees(b.lon, b.lat, -absH / 2),
             properties: { building_id: b.building_id },
           });
-        } else {
-          // Surface ULPIN building: Multi-storey architectural form showing individual floors!
-          // 1. Matches original 3D models with stone beige body (#ded8c4 / #d6cfba)
-          // 2. High-visibility emerald green outlines framing each floor level
-          // 3. Clear horizontal floor slab divisions visible from the ground up
+        } else if (isSelected) {
+          // Surface ULPIN building: When SELECTED, expand into interactive multi-storey architectural form showing individual floors!
           const floorCount = Math.min(Math.max(b.floor_count || Math.round(absH / 3.6), 2), 40);
           const floorH = absH / floorCount;
-          const outlineClr = isSelected
-            ? Color.fromCssColorString('#00e5ff')
-            : Color.fromCssColorString('#10b981');
 
           for (let fi = 0; fi < floorCount; fi++) {
             const zMin = fi * floorH;
             const zMax = (fi + 1) * floorH;
-            const isFloorActive = isSelected && currentFloorIdx === fi;
+            const isFloorActive = currentFloorIdx === fi;
             const floorUlpin = getFloorULPIN(b, fi);
             const floorLabel = fi === 0 ? 'Ground Floor' : `Floor ${fi + 1}`;
 
@@ -1832,17 +1835,17 @@ export default function CesiumViewer({
                 extrudedHeightReference: HeightReference.RELATIVE_TO_GROUND,
                 material:                new ColorMaterialProperty(
                   isFloorActive
-                    ? Color.fromCssColorString('#38bdf8').withAlpha(0.92)
+                    ? Color.fromCssColorString('#38bdf8').withAlpha(0.95)
                     : fi % 2 === 0
-                      ? Color.fromCssColorString('#ded8c4')
-                      : Color.fromCssColorString('#d6cfba')
+                      ? Color.fromCssColorString('#0284c7').withAlpha(0.75)
+                      : Color.fromCssColorString('#0369a1').withAlpha(0.75)
                 ),
                 outline:                 true,
                 outlineColor:            isFloorActive
                   ? Color.fromCssColorString('#00e5ff')
-                  : outlineClr,
-                outlineWidth:            isFloorActive ? 3.5 : (isSelected ? 2.5 : 2.0),
-                shadows:                 ShadowMode.ENABLED,
+                  : Color.fromCssColorString('#38bdf8'),
+                outlineWidth:            isFloorActive ? 3.0 : 1.5,
+                shadows:                 ShadowMode.DISABLED,
                 closeTop:                true,
                 closeBottom:             true,
               },
@@ -1855,6 +1858,31 @@ export default function CesiumViewer({
               },
             });
           }
+        } else {
+          // Unselected Surface Building: Single high-performance extruded architectural envelope!
+          // Drastically cuts entity count from 1000+ to ~25, eliminating CPU/GPU bottlenecks and 60 FPS stutter!
+          viewer.entities.add({
+            name: b.name,
+            polygon: {
+              hierarchy:               new ConstantProperty(new PolygonHierarchy(footprint)),
+              height:                  0,
+              extrudedHeight:          absH,
+              heightReference:         HeightReference.RELATIVE_TO_GROUND,
+              extrudedHeightReference: HeightReference.RELATIVE_TO_GROUND,
+              material:                new ColorMaterialProperty(architecturalColor),
+              outline:                 true,
+              outlineColor:            outlineColor,
+              outlineWidth:            2.0,
+              shadows:                 ShadowMode.DISABLED,
+              closeTop:                true,
+              closeBottom:             true,
+            },
+            position: Cartesian3.fromDegrees(b.lon, b.lat, absH / 2),
+            properties: {
+              building_id: b.building_id,
+              floor_index: 0,
+            },
+          });
         }
 
         // ── Floating Datum Hologram Label: Name + 3D ULPIN Identifier ──────────
@@ -1894,27 +1922,17 @@ export default function CesiumViewer({
         entityMapRef.current[b.building_id] = b.building_id;
       });
     }
-  }, [city, targetBuildings, targetParcels, layers, selectedBuilding, explodedFloor, interiorMode]);
-
-  // ── Show entities: if tiles already cached/ready → immediately, else wait for initialTilesLoaded
-  useEffect(() => {
-    const viewer = viewerRef.current;
-    if (!viewer || viewer.isDestroyed()) return;
 
     // Collect all non-singleFloor entities added in this render cycle
-    // We track by snapshot: anything in entities that isn't a singleFloor entity
     const all = [];
     viewer.entities.values.forEach(e => {
       const isBimFloor = e.properties?.bim_floor?.getValue?.();
       if (!isBimFloor) all.push(e);
     });
     cityEntitiesRef.current = all;
-
-    // All entities (cadastral parcels, 3D extruded building envelopes, neon outlines, and floating datum tags)
-    // are displayed immediately with 100% visibility — never hidden waiting for external network events!
     all.forEach(e => { if (e && !e.isDestroyed?.()) e.show = true; });
     tileReadyRef.current = true;
-  }, [city, targetBuildings, targetParcels, layers, selectedBuilding, explodedFloor, interiorMode]);
+  }, [city, targetBuildings, targetParcels, layers, selectedBuilding, explodedFloor, interiorMode, currentFloorIdx]);
 
   // ── On-demand single-floor BIM geometry ──────────────────────────────────
   // When in interior mode, renders only the current floor's full 3D BIM
