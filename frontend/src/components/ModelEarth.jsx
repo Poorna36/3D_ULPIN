@@ -11,17 +11,17 @@ export default function ModelEarth() {
     const width = container.clientWidth || 540;
     const height = container.clientHeight || 540;
 
-    // 1. Scene & Camera (Positioned so the globe is elegantly framed without clipping)
+    // 1. Scene & Camera (Calibrated for bold, impactful scale without clipping)
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
-    camera.position.set(0, 0, 7.2);
+    camera.position.set(0, 0, 5.9);
 
     // 2. Renderer
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.1;
+    renderer.toneMappingExposure = 1.15;
     container.appendChild(renderer.domElement);
 
     // 3. Earth Group (Real 23.4 deg axial tilt)
@@ -29,8 +29,8 @@ export default function ModelEarth() {
     earthGroup.rotation.z = (23.4 * Math.PI) / 180;
     scene.add(earthGroup);
 
-    // 4. Geometry & Texture (Balanced 1.65 radius)
-    const geometry = new THREE.SphereGeometry(1.65, 96, 96);
+    // 4. Geometry & Texture (Bold 2.0 radius)
+    const geometry = new THREE.SphereGeometry(2, 96, 96);
     const textureLoader = new THREE.TextureLoader();
     const earthTexture = textureLoader.load(
       '/earth-blue-marble.jpg',

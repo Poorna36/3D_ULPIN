@@ -177,8 +177,8 @@ export default function LandingPage({ onEnter, isExiting = false }) {
           }}>
             <div style={{
               width: '100%',
-              maxWidth: 500,
-              maxHeight: 500,
+              maxWidth: 640,
+              maxHeight: 640,
               aspectRatio: '1 / 1',
               display: 'flex',
               alignItems: 'center',
