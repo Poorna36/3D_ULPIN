@@ -41,3 +41,6 @@ Thumbs.db
 # Specialist branch reference folder
 specialist_branch/
 
+# Local venv and cache
+.venv/
+.cache/

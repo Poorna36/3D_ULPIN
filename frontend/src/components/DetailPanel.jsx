@@ -6,6 +6,7 @@ import { OBJECT_CLASSES } from '../utils/grammar.js';
 // Derives visual identity from building name using keyword matching.
 // Returns: { type, label, accent, dimAccent, icon }
 function classifyBuilding(name = '', height = 0, floorCount = 0) {
+  const n = name.toLowerCase();
   // Drone / Photogrammetry
   if (/drone|uav|photogrammetry|cadastre hub|sfm/.test(n)) {
     return {

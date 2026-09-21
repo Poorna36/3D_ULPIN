@@ -4,7 +4,7 @@ Write-Host " Starting 3D ULPIN System (Backend + Frontend)" -ForegroundColor Gre
 Write-Host "===================================================" -ForegroundColor Cyan
 
 Write-Host "`n[1/2] Starting FastAPI Backend on http://127.0.0.1:8000 ..." -ForegroundColor Yellow
-Start-Process powershell -ArgumentList "-NoExit", "-Command", "python -m uvicorn backend.api.main:app --host 127.0.0.1 --port 8000"
+Start-Process powershell -ArgumentList "-NoExit", "-Command", ".\.venv\Scripts\python.exe -m uvicorn backend.api.main:app --host 127.0.0.1 --port 8000"
 
 Write-Host "[2/2] Starting React + Vite Frontend on http://127.0.0.1:5173 ..." -ForegroundColor Yellow
 Start-Process powershell -ArgumentList "-NoExit", "-Command", "Set-Location frontend; npm run dev -- --host 127.0.0.1 --port 5173"
