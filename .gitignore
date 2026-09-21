@@ -44,3 +44,4 @@ specialist_branch/
 # Local venv and cache
 .venv/
 .cache/
+.tmp/

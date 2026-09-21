@@ -79,6 +79,7 @@ export default function App() {
   const [showStrata, setShowStrata]         = useState(false);
   const [showSandbox, setShowSandbox]       = useState(false);
   const [showExport, setShowExport]         = useState(false);
+  const [showAtlas, setShowAtlas]           = useState(false);
   const cameraControlsRef = useRef(null);
   const flyToFloorFnRef = useRef(null);
   const bannerTimer = useRef(null);
@@ -195,11 +196,9 @@ export default function App() {
     if (!b) return;
     setSelected(b);
     setExplodedFloor(null);
-    const targetFloorIdx = typeof floorIdx === 'number' && floorIdx >= 0 ? floorIdx : 0;
-    setCurrentFloorIdx(targetFloorIdx);
-    setInteriorActive(true); // Automatically enters Walk Inside view
-    const floorList = buildFullFloorList(b);
-    flyToFloorFnRef.current?.(b, targetFloorIdx, floorList);
+    // Interior mode is NOT auto-entered on building click.
+    // User must explicitly press the "Walk Inside 3D" button to enter interior.
+    setInteriorActive(false);
   }, [buildings, allBuildings]);
 
   const handleToggleLayer = useCallback((id) => {
@@ -211,10 +210,10 @@ export default function App() {
       handleCitySelect(b.city);
     }
     setSelected(b);
-    setInteriorActive(true);
+    // Interior mode is NOT auto-entered on search selection.
+    // User must explicitly press the "Walk Inside 3D" button.
+    setInteriorActive(false);
     setCurrentFloorIdx(0);
-    const floorList = buildFullFloorList(b);
-    flyToFloorFnRef.current?.(b, 0, floorList);
   }, [city, handleCitySelect]);
 
   // Interior walkthrough handlers
@@ -289,6 +288,7 @@ export default function App() {
           currentCity={city}
           onCityChange={handleCitySelect}
           onResetOrbit={() => handleCitySelect(null)}
+          onClose={() => setLayerPanelOpen(false)}
         />
       )}
 

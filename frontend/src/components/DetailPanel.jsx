@@ -944,12 +944,13 @@ export default function DetailPanel({
         <button
           className="panel-expand-btn"
           onClick={onToggleCollapse}
-          title="Expand Details Panel"
-          aria-label="Expand Details Panel"
+          title="Expand panel"
+          aria-label="Expand panel"
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="15 18 9 12 15 6"/>
+            <polyline points="9 18 15 12 9 6"/>
           </svg>
+          <span style={{ fontSize: '11px', fontWeight: 600, marginLeft: '4px' }}>Show Panel</span>
         </button>
       </div>
     );
@@ -991,20 +992,40 @@ export default function DetailPanel({
               </svg>
               <span>All buildings in {meta.label}</span>
             </button>
-            <button
-              onClick={onClose}
-              title="Close panel"
-              style={{
-                background: 'none',
-                border: 'none',
-                color: '#71717a',
-                cursor: 'pointer',
-                fontSize: '14px',
-                padding: '2px 6px',
-              }}
-            >
-              ✕
-            </button>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <button
+                onClick={onToggleCollapse}
+                title="Collapse panel"
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: '#71717a',
+                  cursor: 'pointer',
+                  fontSize: '14px',
+                  padding: '2px 6px',
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="15 18 9 12 15 6"/>
+                </svg>
+              </button>
+              <button
+                onClick={onClose}
+                title="Close panel"
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: '#71717a',
+                  cursor: 'pointer',
+                  fontSize: '14px',
+                  padding: '2px 6px',
+                }}
+              >
+                ✕
+              </button>
+            </div>
           </div>
 
           <div className="panel-scroll" style={{ flex: 1, overflowY: 'auto', padding: '14px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -1246,9 +1267,30 @@ export default function DetailPanel({
               </svg>
               <span>Back to Earth Orbit</span>
             </button>
-            <span style={{ fontSize: '11px', color: '#71717a', fontWeight: 600 }}>
-              {meta.label} Pilot
-            </span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <span style={{ fontSize: '11px', color: '#71717a', fontWeight: 600 }}>
+                {meta.label} Pilot
+              </span>
+              <button
+                onClick={onToggleCollapse}
+                title="Collapse panel"
+                style={{
+                  background: 'none',
+                  border: '1px solid #3f3f46',
+                  borderRadius: '5px',
+                  color: '#71717a',
+                  cursor: 'pointer',
+                  padding: '3px 5px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  lineHeight: 1,
+                }}
+              >
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="15 18 9 12 15 6"/>
+                </svg>
+              </button>
+            </div>
           </div>
 
           {/* Top Search & Filter Bar */}
