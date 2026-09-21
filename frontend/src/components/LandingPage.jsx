@@ -66,11 +66,13 @@ export default function LandingPage({ onEnter, isExiting = false }) {
       </nav>
 
       {/* ── Main Hero Content ────────────────────────────────────── */}
-      <div style={{ flex: 1, position: 'relative', overflow: 'hidden', display: 'flex' }}>
+      <div style={{ flex: 1, position: 'relative', overflow: 'hidden', display: 'flex', alignItems: 'center' }}>
         <div style={{
           flex: 1, display: 'grid',
-          gridTemplateColumns: '1.05fr 0.95fr',
+          gridTemplateColumns: '1.15fr 0.85fr',
           position: 'relative', overflow: 'hidden',
+          maxWidth: 1400, margin: '0 auto', width: '100%',
+          height: '100%',
         }}>
           {/* Left: Text & Metrics */}
           <div style={{
@@ -165,14 +167,26 @@ export default function LandingPage({ onEnter, isExiting = false }) {
             </div>
           </div>
 
-          {/* Right: Model 3D Earth Globe with subtle orbital satellite */}
+          {/* Right: Model 3D Earth Globe - properly framed and sized */}
           <div style={{
             flex: 1,
             position: 'relative',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            overflow: 'visible',
+            overflow: 'hidden',
+            padding: '24px 32px',
           }}>
-            <ModelEarth />
+            <div style={{
+              width: '100%',
+              maxWidth: 500,
+              maxHeight: 500,
+              aspectRatio: '1 / 1',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              position: 'relative',
+            }}>
+              <ModelEarth />
+            </div>
           </div>
         </div>
       </div>
