@@ -106,7 +106,7 @@ def extract_metadata_from_file(image_path: str) -> DroneImageMetadata:
                         pass
 
         return DroneImageMetadata(
-            filename=image_path.split("/")[-1],
+            filename=image_path.replace("\\", "/").split("/")[-1],
             latitude=lat,
             longitude=lon,
             altitude_msl=alt_msl,

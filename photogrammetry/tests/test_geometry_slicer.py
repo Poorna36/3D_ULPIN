@@ -2,12 +2,12 @@
 Unit Tests for 3D Geometry and Vertical Property Slicer
 """
 import unittest
-from services.geometry.computational_geometry import (
+from photogrammetry.geometry.computational_geometry import (
     polygon_area_2d_meters,
     point_in_polygon,
     calculate_3d_volume_m3
 )
-from services.geometry.vertical_slicer import VerticalPropertySlicer
+from photogrammetry.geometry.vertical_slicer import VerticalPropertySlicer
 
 class TestGeometryAndSlicer(unittest.TestCase):
 

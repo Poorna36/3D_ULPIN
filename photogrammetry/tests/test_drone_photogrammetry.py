@@ -2,9 +2,9 @@
 Unit Tests for Drone EXIF, Photogrammetry Engine, and Indian CRS Transformation
 """
 import unittest
-from services.ingestion.drone_exif import DroneImageMetadata
-from services.ingestion.photogrammetry_engine import PhotogrammetryEngine
-from adapters.india.crs_transformer import wgs84_to_utm, get_utm_zone_for_india, haversine_distance_m
+from photogrammetry.ingestion.drone_exif import DroneImageMetadata
+from photogrammetry.ingestion.photogrammetry_engine import PhotogrammetryEngine
+from photogrammetry.adapters.india.crs_transformer import wgs84_to_utm, get_utm_zone_for_india, haversine_distance_m
 
 class TestDronePhotogrammetry(unittest.TestCase):
 

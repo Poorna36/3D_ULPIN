@@ -101,3 +101,58 @@ Scalability (R24) is demonstrated separately with **geometry-free synthetic regi
 | Consent for personal data processing | Synthetic rights records with pseudonymised holders; no real personal data used |
 | Data minimisation | Only public counts and schema formats used from RERA; no restricted personal files |
 | Pseudonymisation | Every `Right.holder` field is a pseudonym (synthetic UUID); no link to real persons |
+
+---
+
+### 2.6 Canonical 3D Property Data Model
+
+```text
+Parcel:
+  parcel_id, source_parcel_id, country, city, geometry_2d, elevation_reference, source, provenance
+
+Building:
+  building_id, source_building_id, parcel_id[], footprint, geometry_3d,
+  ground_elevation, roof_elevation, height, source, confidence
+
+Floor:
+  floor_id, building_id, level_index, z_min, z_max, geometry_3d, source, confidence
+
+PropertyVolume:
+  property_volume_id, building_id, parent_parcel_id, floor_id, unit_id,
+  geometry_3d, z_min, z_max, volume, confidence, status, prototype_3d_identifier,
+  source_property_record_ref (OPTIONAL — populated only when authorized source explicitly supplies it)
+
+InfrastructureVolume:
+  infrastructure_id, type, geometry_3d, z_min, z_max, source, confidence
+
+Provenance:
+  source_dataset, source_object_id, source_version, acquired_at, processing_version,
+  transformations[], operator/agent
+
+ValidationReport:
+  validation_id, object_id, run_at, engine_version, checks[], overall_status, warnings[], errors[]
+```
+
+---
+
+### 2.7 City Pilot Strategy
+
+Validate the unified 3D engine across diverse urban environments without code rewrites:
+1. **Bengaluru (Primary Engineering Pilot)**: Mixed-use high-rise and subterranean metro alignment (Electronic City / Tech Corridor).
+2. **Mumbai (Primary Indian Validation)**: Extreme vertical density, high-rise residential towers (Lower Parel), and complex multi-level basements.
+3. **Singapore (International Strata Benchmark)**: Subterranean infrastructure, sky-bridges, and multi-tier airspace rights.
+4. **Rotterdam / Netherlands (Geospatial Benchmark)**: Open BAG/AHN4 LiDAR comparison, maritime strata, and CityJSON exchange.
+
+---
+
+### 2.8 External Licensing, Provenance & City Adapter Contract
+
+For every external dataset, the system tracks: provider, dataset name, official URL, licence, access method, attribution requirement, date accessed, and permitted use.
+
+#### Universal Adapter Output Contract
+Every city adapter implements the uniform canonical output schema:
+```text
+source_country, source_city, source_dataset, source_object_id,
+geometry_2d, geometry_3d, crs, z_reference,
+vertical_accuracy, horizontal_accuracy, source_version, provenance, confidence
+```

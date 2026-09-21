@@ -6,7 +6,7 @@ strictly compliant with validation-pipeline.md and data-model.md.
 from typing import Dict, Any, List, Optional
 import time
 import uuid
-from services.geometry.computational_geometry import (
+from photogrammetry.geometry.computational_geometry import (
     polygon_area_2d_meters,
     has_self_intersection,
     polygon_centroid,

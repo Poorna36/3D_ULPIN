@@ -57,31 +57,3 @@ class Parcel(BaseModel):
     source: str
     status: str = "VALID"
 
-class DroneSurveyRequest(BaseModel):
-    survey_id: Optional[str] = "SURV-IN-BLR-UAV-01"
-    city: str = "bengaluru"
-    survey_name: str = "Bengaluru Electronic City Tech Corridor UAV Photogrammetry"
-    flight_altitude_m: float = 120.0
-    gsd_cm: float = 2.5
-    has_underground: bool = True
-    units_per_floor: int = 2
-
-class DroneSurveySummary(BaseModel):
-    survey_id: str
-    name: str
-    city: str
-    total_images: int
-    mean_gsd_cm: float
-    flight_altitude_m: float
-    crs: str
-    status: str
-    rtk_fix: str
-
-class DroneProcessResponse(BaseModel):
-    success: bool
-    message: str
-    survey_id: str
-    prototype_3d_id: str
-    reconstructed_building: Building
-    validation_report: Dict[str, Any]
-    processing_time_s: float

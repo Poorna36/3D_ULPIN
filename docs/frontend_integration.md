@@ -498,3 +498,23 @@ When an examiner switches the viewer into **"Defect Mode"**:
 
 ## 7. Recommended Questions & Feedback Channel
 If your frontend team needs additional custom projections, streaming 3D tiles, or custom query filters, reach out to the backend team. The backend is designed to be easily extensible!
+
+---
+
+## 8. CesiumJS User Journey & Visualization Principles
+
+### 8.1 Spatial Drill-Down Hierarchy
+```text
+Earth Orbit (Space Realm)
+  -> Country / Pilot Zone
+  -> City Cadastral Cluster
+  -> Parcel Boundary & Setback Footprint
+  -> Building 3D Shell (LOD2 / LOD3)
+  -> Floor Strata Slab (Ground / Levels / Basements)
+  -> Property Unit Ownership Volume (LOD4 / BIM)
+```
+
+### 8.2 Visual Integrity Rules
+- **Color Independence**: Never rely exclusively on color to convey legal validity; always pair hues with explicit badge text and icon indicators (`VALID`, `WARN`, `REVIEW`, `FAIL`).
+- **Clear Provenance Watermarking**: Synthetic / simulated sandbox objects must be visibly badged with their data provenance class (`REAL`, `DERIVED`, or `SYNTHETIC`).
+- **Exploded Floor & Interior Isolation**: Enable single-click exploded vertical separation so examiners can inspect mid-tower units without occlusion from upper slabs.

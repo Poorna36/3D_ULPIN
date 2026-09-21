@@ -5,6 +5,7 @@ import LayerPanel          from './components/LayerPanel.jsx';
 import CesiumViewer        from './components/CesiumViewer.jsx';
 import DetailPanel         from './components/DetailPanel.jsx';
 import AIPipelinePanel     from './components/AIPipelinePanel.jsx';
+import PhotogrammetryPanel from './photogrammetry/PhotogrammetryPanel.jsx';
 import InteriorWalkthrough, { buildFullFloorList } from './components/InteriorWalkthrough.jsx';
 import LandingPage         from './components/LandingPage.jsx';
 import ValidationConsole   from './components/ValidationConsole.jsx';
@@ -74,6 +75,7 @@ export default function App() {
   const [explodedFloor, setExplodedFloor] = useState(null);
   const [aiStatus, setAIStatus]           = useState('idle');
   const [showAI, setShowAI]               = useState(false);
+  const [showPhotogrammetry, setShowPhotogrammetry] = useState(false);
   const [cityBanner, setCityBanner]       = useState(null);
   const [simBannerDismissed, setSimBannerDismissed] = useState(false);
   const [showLanding, setShowLanding]     = useState(true);
@@ -271,6 +273,7 @@ export default function App() {
           onOpenSandbox={() => setShowSandbox(true)}
           onOpenExport={() => setShowExport(true)}
           onOpenAtlas={() => setShowAtlas(true)}
+          onOpenPhotogrammetry={() => setShowPhotogrammetry(true)}
         />
       )}
 
@@ -437,21 +440,46 @@ export default function App() {
         </div>
       )}
 
-      {/* Floating AI panel toggle */}
-      <button
-        id="ai-panel-toggle-btn"
-        className="btn ai-fab"
-        onClick={() => setShowAI(v => !v)}
-        title="Toggle AI/ML Pipeline panel"
-      >
-        <span>⚙</span>
-        <span>AI Pipeline</span>
-      </button>
+      {/* Floating Action Buttons: AI Pipeline & Photogrammetry */}
+      <div style={{
+        position: 'fixed',
+        bottom: 24, left: '50%', transform: 'translateX(-50%)',
+        zIndex: 70,
+        display: 'flex', gap: '10px', alignItems: 'center'
+      }}>
+        <button
+          id="ai-panel-toggle-btn"
+          className="btn ai-fab"
+          onClick={() => setShowAI(v => !v)}
+          title="Toggle AI/ML Pipeline panel (H1–H4)"
+          style={{ position: 'static', transform: 'none' }}
+        >
+          <span>🧠</span>
+          <span>AI Pipeline</span>
+        </button>
+
+        <button
+          id="photogrammetry-toggle-btn"
+          className="btn photogrammetry-fab"
+          onClick={() => setShowPhotogrammetry(v => !v)}
+          title="Toggle Photogrammetry & Drone Ingestion panel"
+        >
+          <span>🚁</span>
+          <span>Photogrammetry</span>
+        </button>
+      </div>
 
       {showAI && (
         <AIPipelinePanel
           onStatusChange={setAIStatus}
+          onClose={() => setShowAI(false)}
+        />
+      )}
+
+      {showPhotogrammetry && (
+        <PhotogrammetryPanel
           currentCity={city}
+          onClose={() => setShowPhotogrammetry(false)}
           onBuildingGenerated={(bld) => {
             setSelected(bld);
             setBuildings(prev => [bld, ...prev.filter(b => b.building_id !== bld.building_id)]);
@@ -475,6 +503,23 @@ export default function App() {
         .ai-fab:hover {
           background: rgba(124,58,237,0.25);
           box-shadow: 0 0 28px rgba(124,58,237,0.5);
+        }
+
+        .photogrammetry-fab {
+          background: rgba(56, 189, 248, 0.15);
+          border-color: #38bdf8;
+          color: #38bdf8;
+          padding: 8px 20px;
+          font-size: 13px; font-weight: 500;
+          border-radius: var(--r-pill);
+          box-shadow: 0 0 16px rgba(56, 189, 248, 0.3);
+          transition: all var(--t-normal);
+          cursor: pointer;
+          display: flex; align-items: center; gap: 8px;
+        }
+        .photogrammetry-fab:hover {
+          background: rgba(56, 189, 248, 0.28);
+          box-shadow: 0 0 28px rgba(56, 189, 248, 0.5);
         }
 
         /* City loading indicator */

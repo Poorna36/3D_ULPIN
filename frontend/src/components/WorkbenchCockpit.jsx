@@ -74,6 +74,7 @@ export default function WorkbenchCockpit({
   onOpenStrata,
   onOpenSandbox,
   onOpenExport,
+  onOpenPhotogrammetry,
 }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const fileInputRef = useRef(null);
@@ -180,6 +181,23 @@ export default function WorkbenchCockpit({
           >
             <span>⚡</span>
             <span>REST API</span>
+          </button>
+
+          <button
+            onClick={onOpenPhotogrammetry}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 6,
+              background: 'rgba(56, 189, 248, 0.12)',
+              border: '1px solid rgba(56, 189, 248, 0.35)',
+              borderRadius: 999, height: 30, padding: '0 12px',
+              color: '#38bdf8', fontSize: 11, fontWeight: 600,
+              fontFamily: "'Space Grotesk', sans-serif",
+              cursor: 'pointer', transition: 'all 0.15s',
+            }}
+            title="UAV Photogrammetry & Ingestion (SVAMITVA / ODM SfM)"
+          >
+            <span>🚁</span>
+            <span>Drone</span>
           </button>
 
           <button

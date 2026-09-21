@@ -2,7 +2,7 @@
 Unit Tests for 3D Topology and Cadastral Validation Engine
 """
 import unittest
-from services.validation.engine import TopologyValidationEngine
+from photogrammetry.validation.engine import TopologyValidationEngine
 
 class TestTopologyValidation(unittest.TestCase):
 

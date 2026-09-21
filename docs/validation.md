@@ -320,3 +320,53 @@ All parameters are configurable assumptions, seeded from real accuracy classes w
 | H4 anomaly ranking Precision@k | Reported vs k | ML |
 | Resolution latency at 10^6 objects | Sub-millisecond `/resolve` | Performance |
 | Spatial query at 10^6 objects | < 100 ms `/cover` | Performance |
+
+---
+
+## Appendix C: Execution Pipeline & Confidence Classification
+
+### C.1 Validation Flowchart
+
+```text
+RAW INPUT
+   |
+Schema validation
+   |
+CRS/unit validation
+   |
+Geometry repair (only when safe + logged)
+   |
+3D reconstruction
+   |
+Vertical extent validation
+   |
+Parent-child relationship validation
+   |
+Overlap/intersection tests
+   |
+Topology checks
+   |
+Semantic checks
+   |
+Provenance check
+   |
+Identifier uniqueness check
+   |
+VALID / INVALID / REVIEW
+```
+
+### C.2 Validation Classes Summary
+- **Class A (Source Validation)**: Required fields, source IDs, data version, CRS, units, missing geometry.
+- **Class B (2D Geometry)**: Valid polygon, no self-intersection, expected ring orientation, reasonable area.
+- **Class C (3D Solid)**: Watertight/closed solid, non-zero volume, no self-intersection, valid faces, consistent Z range.
+- **Class D (Vertical Logic)**: $Z_{\text{min}} < Z_{\text{max}}$, non-overlapping floors, monotonic ordering, basement below ground datum.
+- **Class E (Parcel/Building Relation)**: Boundary containment, parent parcel relationship, flag crossings for examiner triage.
+- **Class F (Overlap Detection)**: Duplicate volumes, unintended unit collisions, infrastructure conflict analysis.
+- **Class G (Identifier Uniqueness)**: Deterministic natural key generation, collision resistance, hash chain integrity.
+
+### C.3 Explicit Confidence Classification
+- `AUTHORITATIVE` — Directly supplied by an authorized cadastral agency (e.g. Survey of India, MCGM).
+- `DERIVED_HIGH` — Deterministic derivation from authoritative geometry.
+- `DERIVED` — Computed/estimated from multi-source spatial data.
+- `INFERRED` — Machine learning / heuristic inference.
+- `SYNTHETIC` — Controlled simulation / evaluation datasets.

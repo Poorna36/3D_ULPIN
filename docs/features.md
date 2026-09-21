@@ -304,3 +304,27 @@ Computed using `trimesh` mesh boolean operations.
 | **Collision** | 10^6 to 10^7 synthetic allocations | Zero RID duplicates; zero digest collisions |
 | **ICT** | Scripted remodel/split/merge scenarios | >= 95% correct on known expected outcomes |
 | **Round-trip** | RID to LADM to IFC to CityGML export/import | ID preserved across all formats |
+
+---
+
+### 3.11 Prototype 3D Identifier Specification & Canonicalization
+
+> **Important Legal / Status Disclaimer:**
+> This is a **prototype identifier design** for research and evaluation. It is NOT the official Indian national ULPIN standard and is explicitly designated as a prototype schema.
+
+#### Design Goals
+- **Deterministic**: Given identical canonical geometry and coordinates, the identifier is mathematically invariant.
+- **Unique**: Distinct within configured national/state namespaces without collisions.
+- **Privacy-Preserving**: Opaque hashes preventing leakage of personal owner identities.
+- **Versioned**: Any material geometry or semantic change issues a new lineage record without silent reuse.
+
+#### Canonicalization Input Vector
+```text
+3D-<COUNTRY>-<CITY>-<CANONICAL_HASH>
+```
+Inputs to the canonical digest:
+1. State/City LGD namespace
+2. Parent parcel statutory anchor
+3. Vertical object type code (Floor, Unit, Basement, Void)
+4. Normalized spatial geometry WKT / Morton coordinate index
+5. Floor elevation limits ($Z_{\text{min}}, Z_{\text{max}}$)

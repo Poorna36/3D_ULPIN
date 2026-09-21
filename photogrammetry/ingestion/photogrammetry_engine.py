@@ -7,7 +7,7 @@ from dataclasses import dataclass, field
 from typing import List, Dict, Any, Optional, Tuple
 import math
 import time
-from services.ingestion.drone_exif import DroneImageMetadata
+from photogrammetry.ingestion.drone_exif import DroneImageMetadata
 
 @dataclass
 class PhotogrammetrySurveyResult:
@@ -77,7 +77,7 @@ class PhotogrammetryEngine:
             [round(center_lon - d_lon, 6), round(center_lat - d_lat, 6)],
             [round(center_lon + d_lon, 6), round(center_lat - d_lat, 6)],
             [round(center_lon + d_lon, 6), round(center_lat + d_lat, 6)],
-            [round(center_lon - d_lon, 6), round(center_lat + d_lat, 6)],
+            [round(center_lon - d_lon, 6), round(center_lat - d_lat, 6)],
         ]
 
         # Estimated building height based on SfM disparity / photogrammetric elevation

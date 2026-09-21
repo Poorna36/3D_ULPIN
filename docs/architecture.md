@@ -273,3 +273,69 @@ graph TB
 | **Won't** | Real Land Stack live API integration, legal title issuance, nationwide production deployment, survey-grade field claims. | Explicitly out of current pilot scope. |
 
 > **The Architectural Claim:** *"A standard-shaped, verifiable 3D identity layer and validation pipeline, prototyped on named Indian zones"* — not *"3D cadastre solved for India."*
+
+---
+
+## 7. End-to-End Pipeline & Component Topology
+
+```text
+                 DATA SOURCES
+                     |
+      +--------------+----------------+
+      |              |                |
+   Parcels        Buildings       Elevation
+      |              |             / LiDAR
+      |              |                |
+   Imagery       BIM/Floor plans   GNSS/CORS
+      |              |                |
+      +--------------+----------------+
+                     |
+              DATA ADAPTER LAYER
+                     |
+              CANONICAL DATA MODEL
+                     |
+          +----------+-----------+
+          |                      |
+    2D/3D geometry          Metadata/provenance
+          |                      |
+          +----------+-----------+
+                     |
+             3D PROPERTY ENGINE
+                     |
+       +-------------+-------------+
+       |             |             |
+  Reconstruction  Segmentation  Volume model
+       |             |             |
+       +-------------+-------------+
+                     |
+              VALIDATION ENGINE
+                     |
+              3D IDENTIFIER ENGINE
+                     |
+            +--------+--------+
+            |                 |
+         PostGIS          Object storage
+            |                 |
+            +--------+--------+
+                     |
+                   API
+                     |
+               CesiumJS client
+                     |
+                 3D Tiles
+```
+
+### Core Subsystems
+1. **Data Adapters**: Source-specific schemas (India, Singapore, Netherlands) mapping into common objects.
+2. **Canonical Model**: Standardized Parcel, Building, Floor, Unit/PropertyVolume, UndergroundVolume, AirspaceVolume, SourceRecord, and ValidationReport.
+3. **3D Engine**: Extrusion, surface reconstruction, vertical subdivision, volume generation, geometry conversion.
+4. **Validation Engine**: Geometry validity, topology, containment, overlaps, elevation consistency, provenance completeness.
+5. **Identifier Engine**: Creates deterministic prototype IDs from canonical spatial/property references.
+6. **Persistence**: Spatial storage for 2D/3D geometry, spatial indexes, relationships, validation state, and provenance.
+7. **CesiumJS Client**: Globe, terrain, camera, 3D Tiles, building inspection, and interactive strata layers.
+
+### Target Scale-Out Architecture
+- Spatial 3D Tiles streaming (never load an entire national 3D city model into one browser scene)
+- Asynchronous processing workers for compute-heavy triangulation
+- GiST / SP-GiST spatial indexing for low-latency bounding box range queries
+- Multi-tier Level-of-Detail geometry caching

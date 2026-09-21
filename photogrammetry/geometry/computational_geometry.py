@@ -5,7 +5,7 @@ Shoelace area calculation, ray-casting containment, and 3D prism volumetric anal
 """
 from typing import List, Tuple, Dict, Any, Optional
 import math
-from adapters.india.crs_transformer import wgs84_to_utm
+from photogrammetry.adapters.india.crs_transformer import wgs84_to_utm
 
 def polygon_area_2d_meters(coords_lon_lat: List[List[float]]) -> float:
     """
