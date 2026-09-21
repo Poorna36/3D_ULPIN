@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import CitySelector from './CitySelector.jsx';
+import BuildingSearchQuery from './BuildingSearchQuery.jsx';
 
 const CITIES = [
   {
@@ -65,6 +66,8 @@ export default function WorkbenchCockpit({
   onOpenExport,
   sidebarOpen = false,
   onOpenPhotogrammetry,
+  allBuildings = [],
+  onSelectBuilding,
 }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const fileInputRef = useRef(null);
@@ -84,7 +87,7 @@ export default function WorkbenchCockpit({
 
   return (
     <>
-      {/* ── Top Bar (Clean & Minimal Header) ────────────────────── */}
+      {/* ── Top Bar (Clean & Minimal Header with 3D ULPIN Query Engine) ──────── */}
       <header style={{
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 90,
         height: 52, padding: '0 24px',
@@ -122,162 +125,20 @@ export default function WorkbenchCockpit({
           <CitySelector city={city} onChange={onCityChange} />
         </div>
 
-        {/* Right side: 3D ULPIN Registry & Dispute Workflows */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <button
-            onClick={onOpenDisputes}
-            style={{
-              display: 'flex', alignItems: 'center', gap: 7,
-              background: '#0a0a0c',
-              border: '1px solid rgba(255, 255, 255, 0.14)',
-              borderRadius: 999, height: 30, padding: '0 13px',
-              color: '#f3f4f6', fontSize: 11, fontWeight: 600,
-              fontFamily: "'Space Grotesk', sans-serif",
-              cursor: 'pointer', transition: 'all 0.15s',
-              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.6)',
-            }}
-            onMouseEnter={e => { e.currentTarget.style.background = '#141418'; e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.28)'; }}
-            onMouseLeave={e => { e.currentTarget.style.background = '#0a0a0c'; e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.14)'; }}
-            title="Real-World 3D Cadastral Disputes (docs/decisions.md Section 9.4)"
-          >
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.85 }}>
-              <path d="M12 3v18M6 8l6-5 6 5M6 8v4a6 6 0 0 0 12 0V8"/>
-              <path d="M4 14h4M16 14h4"/>
-            </svg>
-            <span>Disputes</span>
-          </button>
-
-          <button
-            onClick={onOpenStrata}
-            style={{
-              display: 'flex', alignItems: 'center', gap: 7,
-              background: '#0a0a0c',
-              border: '1px solid rgba(255, 255, 255, 0.14)',
-              borderRadius: 999, height: 30, padding: '0 13px',
-              color: '#f3f4f6', fontSize: 11, fontWeight: 600,
-              fontFamily: "'Space Grotesk', sans-serif",
-              cursor: 'pointer', transition: 'all 0.15s',
-              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.6)',
-            }}
-            onMouseEnter={e => { e.currentTarget.style.background = '#141418'; e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.28)'; }}
-            onMouseLeave={e => { e.currentTarget.style.background = '#0a0a0c'; e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.14)'; }}
-            title="R1 Headline Query: What is Below / Above This Parcel? (docs/eval_results.md)"
-          >
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.85 }}>
-              <rect x="4" y="2" width="16" height="20" rx="2" ry="2"/>
-              <path d="M9 22v-4h6v4M8 6h.01M16 6h.01M8 10h.01M16 10h.01M8 14h.01M16 14h.01"/>
-            </svg>
-            <span>Strata (R1)</span>
-          </button>
-
-          <button
-            onClick={onOpenSandbox}
-            style={{
-              display: 'flex', alignItems: 'center', gap: 7,
-              background: '#0a0a0c',
-              border: '1px solid rgba(255, 255, 255, 0.14)',
-              borderRadius: 999, height: 30, padding: '0 13px',
-              color: '#f3f4f6', fontSize: 11, fontWeight: 600,
-              fontFamily: "'Space Grotesk', sans-serif",
-              cursor: 'pointer', transition: 'all 0.15s',
-              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.6)',
-            }}
-            onMouseEnter={e => { e.currentTarget.style.background = '#141418'; e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.28)'; }}
-            onMouseLeave={e => { e.currentTarget.style.background = '#0a0a0c'; e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.14)'; }}
-            title="OpenAPI REST Registry Operations (docs/contracts.md)"
-          >
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.85 }}>
-              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-            </svg>
-            <span>REST API</span>
-          </button>
-
-          <button
-            onClick={onOpenPhotogrammetry}
-            id="photogrammetry-btn"
-            style={{
-              display: 'flex', alignItems: 'center', gap: 7,
-              background: '#0a0a0c',
-              border: '1px solid rgba(56, 189, 248, 0.45)',
-              borderRadius: 999, height: 30, padding: '0 13px',
-              color: '#38bdf8', fontSize: 11, fontWeight: 600,
-              fontFamily: "'Space Grotesk', sans-serif",
-              cursor: 'pointer', transition: 'all 0.15s',
-              boxShadow: '0 0 12px rgba(56, 189, 248, 0.20)',
-            }}
-            onMouseEnter={e => { e.currentTarget.style.background = '#141418'; e.currentTarget.style.borderColor = '#38bdf8'; e.currentTarget.style.boxShadow = '0 0 18px rgba(56, 189, 248, 0.40)'; }}
-            onMouseLeave={e => { e.currentTarget.style.background = '#0a0a0c'; e.currentTarget.style.borderColor = 'rgba(56, 189, 248, 0.45)'; e.currentTarget.style.boxShadow = '0 0 12px rgba(56, 189, 248, 0.20)'; }}
-            title="UAV Drone Photogrammetry, ODM SfM Triangulation & 3D Vertical Slicing"
-          >
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.9 }}>
-              <circle cx="12" cy="12" r="3" />
-              <path d="M5 5l4 4m6 0l4-4M5 19l4-4m6 0l4 4" />
-              <line x1="3" y1="5" x2="7" y2="5" />
-              <line x1="17" y1="5" x2="21" y2="5" />
-              <line x1="3" y1="19" x2="7" y2="19" />
-              <line x1="17" y1="19" x2="21" y2="19" />
-            </svg>
-            <span>Photogrammetry</span>
-          </button>
-
-          <button
-            onClick={onOpenExport}
-            style={{
-              display: 'flex', alignItems: 'center', gap: 7,
-              background: '#0a0a0c',
-              border: '1px solid rgba(255, 255, 255, 0.14)',
-              borderRadius: 999, height: 30, padding: '0 13px',
-              color: '#f3f4f6', fontSize: 11, fontWeight: 600,
-              fontFamily: "'Space Grotesk', sans-serif",
-              cursor: 'pointer', transition: 'all 0.15s',
-              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.6)',
-            }}
-            onMouseEnter={e => { e.currentTarget.style.background = '#141418'; e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.28)'; }}
-            onMouseLeave={e => { e.currentTarget.style.background = '#0a0a0c'; e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.14)'; }}
-            title="Lossless Cadastre Export: ISO 19152 LADM, IFC 4.3, CityJSON 1.1"
-          >
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.85 }}>
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
-            </svg>
-            <span>Export</span>
-          </button>
+        {/* Right: Global 3D ULPIN Query & Search System */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <BuildingSearchQuery
+            buildings={allBuildings}
+            currentCity={city}
+            onSelectBuilding={onSelectBuilding}
+            placeholder="Search structure or 3D ULPIN… [/]"
+          />
         </div>
+
       </header>
 
 
-      {/* ── Right Floating Status (Matching Voyage Pipeline: Ready LIVE) ── */}
-      <div style={{
-        position: 'fixed',
-        right: rightOffset, top: '50%',
-        transform: 'translateY(-50%)',
-        zIndex: 85,
-        display: 'flex', alignItems: 'center', gap: 8,
-        background: 'rgba(0, 0, 0, 0.75)',
-        backdropFilter: 'blur(16px)',
-        border: '1px solid rgba(255, 255, 255, 0.12)',
-        borderRadius: 999,
-        padding: '6px 14px',
-        fontSize: 11, fontWeight: 600,
-        color: '#ffffff',
-        fontFamily: "'Space Grotesk', sans-serif",
-        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.7)',
-        userSelect: 'none',
-        transition: 'right 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
-      }}>
-        <span style={{
-          width: 7, height: 7, borderRadius: '50%',
-          background: '#22c55e',
-          boxShadow: '0 0 10px #22c55e',
-        }} />
-        <span>Cadastre Engine: <strong>Ready</strong></span>
-        <span style={{
-          fontSize: 9, fontWeight: 800, padding: '2px 6px',
-          borderRadius: 4, background: 'rgba(34, 197, 94, 0.15)',
-          color: '#22c55e', letterSpacing: '0.6px',
-        }}>
-          LIVE
-        </span>
-      </div>
+
 
       {/* ── Bottom Controls ─────────────────────────────────────── */}
       {/* Bottom Left: Layers Toggle Pill */}
@@ -308,13 +169,8 @@ export default function WorkbenchCockpit({
         </button>
       </div>
 
-      {/* Bottom Center: Primary Action Pill */}
-      <div style={{
-        position: 'fixed',
-        bottom: 20, left: '50%',
-        transform: 'translateX(-50%)',
-        zIndex: 90,
-      }}>
+      {/* Bottom Center: Primary Action Pill — removed per user request */}
+      <div style={{ display: 'none' }}>
         {isOrbit ? (
           <button
             onClick={() => setDropdownOpen(prev => !prev)}

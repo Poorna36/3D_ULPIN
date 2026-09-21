@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import Building3DView from './Building3DView.jsx';
 import { floorMeta, getFloorRooms, typeColor } from '../utils/floorLayouts.js';
+import { getFloorULPIN } from '../utils/ulpinGenerator.js';
 
 // ── Build a COMPLETE floor list from a building object ────────────────────────
 // When building.floors has only key/representative floors (e.g., 8 out of 117),
@@ -23,13 +24,22 @@ export function buildFullFloorList(building) {
     .map(Number)
     .filter(n => n < 0)
     .sort((a, b) => a - b); // B3 first, B1 last
-  basementIdxs.forEach(idx => result.push(namedByLevel[idx]));
+  basementIdxs.forEach((idx, bi) => {
+    const f = namedByLevel[idx];
+    const floorUlpin = f.canonical_rid || f.ulpin || getFloorULPIN(building, -(bi + 1));
+    result.push({ ...f, ulpin: floorUlpin, canonical_rid: floorUlpin });
+  });
 
   // 2. Above-ground floors 0 → totalAboveGround-1
   for (let i = 0; i < totalAboveGround; i++) {
+    const floorUlpin = getFloorULPIN(building, i);
     if (namedByLevel[i]) {
       // Use named floor data (has real label, z_min, z_max)
-      result.push(namedByLevel[i]);
+      result.push({
+        ...namedByLevel[i],
+        ulpin: namedByLevel[i].canonical_rid || namedByLevel[i].ulpin || floorUlpin,
+        canonical_rid: namedByLevel[i].canonical_rid || namedByLevel[i].ulpin || floorUlpin,
+      });
     } else {
       // Synthesize from geometry
       const label = i === 0
@@ -78,12 +88,14 @@ export function buildFullFloorList(building) {
         floor_id:    `${building.building_id}_GEN_F${i}`,
         level_index: i,
         label,
+        ulpin:       floorUlpin,
+        canonical_rid: floorUlpin,
         z_min: gElev + i * floorH,
         z_max: gElev + (i + 1) * floorH,
         unit_count: strataUnits.length,
         strata_units: strataUnits,
         confidence: 'INFERRED',
-        status: 'REVIEW',
+        status: 'VALID',
       });
     }
   }
@@ -230,8 +242,8 @@ export default function InteriorWalkthrough({ building, currentFloorIdx, onFloor
   })();
 
 
-  // ── viewMode state: 'floor' = single floor perspective, 'section' = all-floors stacked ─
-  const [viewMode, setViewMode] = useState('floor');
+  // ── viewMode state: 'section' = whole building 3D dissection (default), 'floor' = single floor perspective ─
+  const [viewMode, setViewMode] = useState('section');
 
   // ── Architectural Floor Plate Generator ──────────────────────────────────────
   // Produces a realistic floor plan (core + corridors + units) based on building archetype

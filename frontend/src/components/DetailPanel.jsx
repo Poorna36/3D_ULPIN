@@ -1,6 +1,8 @@
 import { useState, useMemo } from 'react';
 import StatusBadge from './StatusBadge.jsx';
 import { OBJECT_CLASSES } from '../utils/grammar.js';
+import { searchBuildingsQuery, getFloorULPIN } from '../utils/ulpinGenerator.js';
+import { buildFullFloorList } from './InteriorWalkthrough.jsx';
 
 // ── Building Type Classifier ────────────────────────────────────────────────
 // Derives visual identity from building name using keyword matching.
@@ -527,42 +529,56 @@ function LegalRRRCard({ building }) {
   );
 }
 
-// FloorUnitList — list of floors for selected building
+// FloorUnitList — list of floors for selected building with authentic 3D Floor ULPINs
 function FloorUnitList({ building, explodedFloor, onFloorClick, onEnterInterior }) {
-  const floors = [...(building.floors ?? [])].sort((a, b) => b.level_index - a.level_index);
+  const fullList = useMemo(() => {
+    const list = (building.floors && building.floors.length >= (building.floor_count || 5))
+      ? building.floors
+      : buildFullFloorList(building);
+    return [...list].sort((a, b) => b.level_index - a.level_index);
+  }, [building]);
+
   return (
     <div className="card">
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-        <h3 className="card-head-title" style={{ margin: 0 }}>Floors & Units ({floors.length})</h3>
+        <h3 className="card-head-title" style={{ margin: 0 }}>Floors & 3D ULPINs ({fullList.length})</h3>
         {onEnterInterior && (
           <button className="btn btn-primary" style={{ fontSize: '11px', padding: '4px 10px', display: 'flex', alignItems: 'center', gap: '5px' }} onClick={onEnterInterior}>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
               <polyline points="9 22 9 12 15 12 15 22"/>
             </svg>
-            <span>Walkthrough</span>
+            <span>Walk Inside 3D</span>
           </button>
         )}
       </div>
-      <div className="floor-list" style={{ maxHeight: '240px', overflowY: 'auto' }}>
-        {floors.map(f => (
-          <button
-            key={f.floor_id}
-            className={`floor-item ${explodedFloor === f.floor_id ? 'floor-item--active' : ''}`}
-            onClick={() => onFloorClick(f.floor_id === explodedFloor ? null : f.floor_id)}
-          >
-            <div className="floor-level">
-              {f.level_index >= 0 ? `L${f.level_index}` : `B${Math.abs(f.level_index)}`}
-            </div>
-            <div className="floor-details">
-              <div className="floor-label">{f.label}</div>
-              <div className="floor-z mono" style={{ fontSize: '10px', color: 'var(--text-dim)' }}>
-                z {f.z_min.toFixed(1)} — {f.z_max.toFixed(1)} m
+      <div className="floor-list" style={{ maxHeight: '280px', overflowY: 'auto' }}>
+        {fullList.map(f => {
+          const floorUlpin = f.ulpin || f.canonical_rid || getFloorULPIN(building, f.level_index);
+          const isAct = explodedFloor === f.floor_id;
+          return (
+            <button
+              key={f.floor_id || `floor_${f.level_index}`}
+              className={`floor-item ${isAct ? 'floor-item--active' : ''}`}
+              onClick={() => onFloorClick(isAct ? null : f.floor_id)}
+              style={{ padding: '8px 10px' }}
+            >
+              <div className="floor-level">
+                {f.level_index >= 0 ? `L${f.level_index}` : `B${Math.abs(f.level_index)}`}
               </div>
-            </div>
-            <StatusBadge status={f.status} />
-          </button>
-        ))}
+              <div className="floor-details">
+                <div className="floor-label" style={{ fontWeight: 700 }}>{f.label}</div>
+                <div className="floor-ulpin mono" style={{ fontSize: '9.5px', color: '#38bdf8', fontWeight: 600, marginTop: '2px' }}>
+                  🔑 {floorUlpin}
+                </div>
+                <div className="floor-z mono" style={{ fontSize: '9px', color: 'var(--text-dim)', marginTop: '1px' }}>
+                  z {Number(f.z_min).toFixed(1)} — {Number(f.z_max).toFixed(1)} m
+                </div>
+              </div>
+              <StatusBadge status={f.status || 'VALID'} />
+            </button>
+          );
+        })}
       </div>
     </div>
   );
@@ -686,6 +702,15 @@ export default function DetailPanel({
   onOpenExport
 }) {
   const [activeTab, setActiveTab] = useState('identity');
+  const [filterQuery, setFilterQuery] = useState('');
+  const [filterCategory, setFilterCategory] = useState('all');
+
+  const filteredBuildings = useMemo(() => {
+    return searchBuildingsQuery(buildings, filterQuery, {
+      category: filterCategory,
+      limit: 100,
+    });
+  }, [buildings, filterQuery, filterCategory]);
 
   if (!city) return null;
 

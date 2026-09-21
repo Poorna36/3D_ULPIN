@@ -20,14 +20,15 @@ import mumbaiBuildings       from './mumbai_buildings.js';
 import netherlandsBuildings  from './netherlands_buildings.js';
 import singaporeBuildings    from './singapore_buildings.js';
 import { computeCheckSymbol, formatRID, verifyCheckSymbol, generateNaturalKey, encodeMorton3D, evaluateICT } from '../utils/grammar.js';
+import { ensureBuildingULPIN, searchBuildingsQuery } from '../utils/ulpinGenerator.js';
 
 const BACKEND_BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000';
 
-const FALLBACK_BUILDINGS = {
-  bengaluru:   bengaluruBuildings,
-  mumbai:      mumbaiBuildings,
-  netherlands: netherlandsBuildings,
-  singapore:   singaporeBuildings,
+export const FALLBACK_BUILDINGS = {
+  bengaluru:   bengaluruBuildings.map((b, i) => ensureBuildingULPIN(b, i + 1)),
+  mumbai:      mumbaiBuildings.map((b, i) => ensureBuildingULPIN(b, i + 1)),
+  netherlands: netherlandsBuildings.map((b, i) => ensureBuildingULPIN(b, i + 1)),
+  singapore:   singaporeBuildings.map((b, i) => ensureBuildingULPIN(b, i + 1)),
 };
 
 const FALLBACK_PARCELS = {
@@ -626,40 +627,58 @@ export async function getBuildings(city) {
     const res = await fetchWithTimeout(`${BACKEND_BASE_URL}/api/buildings?city=${city}`);
     if (res.ok) {
       const data = await res.json();
-      if (Array.isArray(data) && data.length > 0) return data;
+      if (Array.isArray(data) && data.length > 0) return data.map((b, i) => ensureBuildingULPIN(b, i + 1));
     }
   } catch {}
-  await delay(200);
-  return FALLBACK_BUILDINGS[city] ?? [];
+  await delay(100);
+  return (FALLBACK_BUILDINGS[city] ?? []).map((b, i) => ensureBuildingULPIN(b, i + 1));
 }
 
 export async function getBuilding(buildingId) {
   try {
     const res = await fetchWithTimeout(`${BACKEND_BASE_URL}/api/buildings/${buildingId}`);
-    if (res.ok) return await res.json();
+    if (res.ok) {
+      const data = await res.json();
+      return ensureBuildingULPIN(data);
+    }
   } catch {}
-  await delay(100);
+  await delay(60);
   for (const buildings of Object.values(FALLBACK_BUILDINGS)) {
-    const found = buildings.find(b => b.building_id === buildingId || b.canonical_rid === buildingId);
-    if (found) return found;
+    const found = buildings.find(b =>
+      b.building_id === buildingId ||
+      b.canonical_rid === buildingId ||
+      b.ulpin === buildingId ||
+      b.prototype_3d_id === buildingId
+    );
+    if (found) return ensureBuildingULPIN(found);
   }
   return null;
 }
 
-export async function searchBuildings(city, query) {
+export async function searchBuildings(city, query, options = {}) {
   try {
-    const res = await fetchWithTimeout(`${BACKEND_BASE_URL}/api/search?city=${city}&q=${encodeURIComponent(query)}`);
-    if (res.ok) return await res.json();
+    const cityParam = city && city !== 'all' ? `city=${city}&` : '';
+    const res = await fetchWithTimeout(`${BACKEND_BASE_URL}/api/search?${cityParam}q=${encodeURIComponent(query)}`);
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data) && data.length > 0) return data.map((b, i) => ensureBuildingULPIN(b, i + 1));
+    }
   } catch {}
-  await delay(100);
-  const buildings = FALLBACK_BUILDINGS[city] ?? [];
-  const q = query.toLowerCase();
-  return buildings.filter(b =>
-    b.name.toLowerCase().includes(q) ||
-    b.building_id.toLowerCase().includes(q) ||
-    (b.canonical_rid && b.canonical_rid.toLowerCase().includes(q)) ||
-    (b.prototype_3d_id && b.prototype_3d_id.toLowerCase().includes(q))
-  );
+  await delay(60);
+  
+  let pool = [];
+  if (city && city !== 'all' && FALLBACK_BUILDINGS[city]) {
+    pool = FALLBACK_BUILDINGS[city];
+  } else {
+    pool = [
+      ...FALLBACK_BUILDINGS.bengaluru,
+      ...FALLBACK_BUILDINGS.mumbai,
+      ...FALLBACK_BUILDINGS.netherlands,
+      ...FALLBACK_BUILDINGS.singapore,
+    ];
+  }
+
+  return searchBuildingsQuery(pool, query, { city, ...options });
 }
 
 export async function getValidationReport(buildingId) {

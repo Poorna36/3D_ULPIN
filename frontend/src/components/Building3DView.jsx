@@ -979,6 +979,9 @@ export default function Building3DView({
             }}>
               L{clampedIdx} · {currentFloorObj.label}
             </span>
+            <span style={{ fontSize: 9.5, color: '#38bdf8', fontFamily: "'JetBrains Mono', monospace", fontWeight: 700 }}>
+              🔑 {currentFloorObj.ulpin || currentFloorObj.canonical_rid || '3D-ULPIN'}
+            </span>
             <span style={{ fontSize: 9, color: '#94a3b8' }}>
               {(floorH * Math.max(0, clampedIdx)).toFixed(0)}m AGL · {currentMeta.category}
             </span>

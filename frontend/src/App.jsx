@@ -188,15 +188,19 @@ export default function App() {
     return () => clearTimeout(bannerTimer.current);
   }, [city, allBuildings, allParcels]);
 
-  const handleBuildingClick = useCallback((buildingId, buildingObj) => {
+  const handleBuildingClick = useCallback((buildingId, buildingObj, floorIdx = 0) => {
     if (!buildingId) { setSelected(null); setExplodedFloor(null); setInteriorActive(false); return; }
     // buildingObj is provided for dynamic virtual buildings not in the buildings state array
-    const b = buildingObj ?? buildings.find(b => b.building_id === buildingId);
-    setSelected(b ?? null);
+    const b = buildingObj ?? buildings.find(b => b.building_id === buildingId) ?? allBuildings.find(b => b.building_id === buildingId);
+    if (!b) return;
+    setSelected(b);
     setExplodedFloor(null);
-    setInteriorActive(false);
-    setCurrentFloorIdx(0);
-  }, [buildings]);
+    const targetFloorIdx = typeof floorIdx === 'number' && floorIdx >= 0 ? floorIdx : 0;
+    setCurrentFloorIdx(targetFloorIdx);
+    setInteriorActive(true); // Automatically enters Walk Inside view
+    const floorList = buildFullFloorList(b);
+    flyToFloorFnRef.current?.(b, targetFloorIdx, floorList);
+  }, [buildings, allBuildings]);
 
   const handleToggleLayer = useCallback((id) => {
     setLayers(prev => ({ ...prev, [id]: !prev[id] }));
@@ -270,6 +274,8 @@ export default function App() {
           onOpenExport={() => setShowExport(true)}
           onOpenAtlas={() => setShowAtlas(true)}
           onOpenPhotogrammetry={() => setShowPhotogrammetryPage(true)}
+          allBuildings={allBuildings}
+          onSelectBuilding={handleBuildingSelectFromSearch}
         />
       )}
 
@@ -389,46 +395,7 @@ export default function App() {
         </div>
       )}
 
-      {/* Floating Action Buttons: AI Pipeline & Photogrammetry (Main Globe Page Only) */}
-      {!showLanding && (
-        <div style={{
-          position: 'fixed',
-          bottom: 24, left: '50%', transform: 'translateX(-50%)',
-          zIndex: 70,
-          display: 'flex', gap: '10px', alignItems: 'center'
-        }}>
-          <button
-            id="ai-panel-toggle-btn"
-            className="btn ai-fab"
-            onClick={() => setShowAI(v => !v)}
-            title="Toggle AI/ML Pipeline panel (H1–H4)"
-            style={{ position: 'static', transform: 'none' }}
-          >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ verticalAlign: '-1px' }}>
-              <circle cx="12" cy="12" r="3"/>
-              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-            </svg>
-            <span>AI Pipeline</span>
-          </button>
-
-          <button
-            id="photogrammetry-toggle-btn"
-            className="btn photogrammetry-fab"
-            onClick={() => setShowPhotogrammetryPage(v => !v)}
-            title="Toggle Photogrammetry & Drone Ingestion Studio"
-          >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ verticalAlign: '-1px' }}>
-              <circle cx="12" cy="12" r="3" />
-              <path d="M5 5l4 4m6 0l4-4M5 19l4-4m6 0l4 4" />
-              <line x1="3" y1="5" x2="7" y2="5" />
-              <line x1="17" y1="5" x2="21" y2="5" />
-              <line x1="3" y1="19" x2="7" y2="19" />
-              <line x1="17" y1="19" x2="21" y2="19" />
-            </svg>
-            <span>Photogrammetry</span>
-          </button>
-        </div>
-      )}
+      {/* Floating Action Buttons removed per user request */}
 
       {showAI && (
         <AIPipelinePanel
