@@ -65,6 +65,7 @@ export default function WorkbenchCockpit({
   onOpenExport,
   sidebarOpen = false,
   onOpenPhotogrammetry,
+  onOpenSpecialist,
 }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const fileInputRef = useRef(null);
@@ -239,6 +240,29 @@ export default function WorkbenchCockpit({
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
             </svg>
             <span>Export</span>
+          </button>
+
+          <button
+            onClick={onOpenSpecialist}
+            id="specialist-branch-btn"
+            style={{
+              display: 'flex', alignItems: 'center', gap: 7,
+              background: 'linear-gradient(135deg, #130e22 0%, #0d1222 100%)',
+              border: '1px solid rgba(192, 132, 252, 0.45)',
+              borderRadius: 999, height: 30, padding: '0 13px',
+              color: '#e9d5ff', fontSize: 11, fontWeight: 600,
+              fontFamily: "'Space Grotesk', sans-serif",
+              cursor: 'pointer', transition: 'all 0.15s',
+              boxShadow: '0 0 12px rgba(168, 85, 247, 0.25)',
+            }}
+            onMouseEnter={e => { e.currentTarget.style.borderColor = '#c084fc'; e.currentTarget.style.boxShadow = '0 0 18px rgba(168, 85, 247, 0.50)'; }}
+            onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(192, 132, 252, 0.45)'; e.currentTarget.style.boxShadow = '0 0 12px rgba(168, 85, 247, 0.25)'; }}
+            title="Open Specialist Branch Hub (Full Specialist Code, Digital Twin Labs & Drone Photogrammetry)"
+          >
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: '#c084fc' }}>
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+            </svg>
+            <span>Specialist Branch</span>
           </button>
         </div>
       </header>

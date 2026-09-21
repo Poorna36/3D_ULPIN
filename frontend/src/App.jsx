@@ -13,6 +13,7 @@ import ConflictWorkflowModal from './components/ConflictWorkflowModal.jsx';
 import VerticalStrataExplorer from './components/VerticalStrataExplorer.jsx';
 import OpenAPISandboxModal from './components/OpenAPISandboxModal.jsx';
 import CadastreExportModal from './components/CadastreExportModal.jsx';
+import SpecialistPage      from './components/SpecialistPage.jsx';
 import { getBuildings, getParcels, getAllPilotData } from './mock/api.js';
 
 const DEFAULT_LAYERS = {
@@ -63,6 +64,7 @@ export default function App() {
   const [aiStatus, setAIStatus]           = useState('idle');
   const [showAI, setShowAI]               = useState(false);
   const [showPhotogrammetry, setShowPhotogrammetry] = useState(false);
+  const [showSpecialist, setShowSpecialist]         = useState(false);
   const [cityBanner, setCityBanner]       = useState(null);
   const [showLanding, setShowLanding]     = useState(true);
   const [landingExiting, setLandingExiting] = useState(false);
@@ -224,7 +226,13 @@ export default function App() {
   return (
     <>
       {/* 1. Landing Page (Rendered directly over the live Cesium Globe) */}
-      {(showLanding || landingExiting) && <LandingPage onEnter={handleEnterApp} isExiting={landingExiting} />}
+      {(showLanding || landingExiting) && (
+        <LandingPage
+          onEnter={handleEnterApp}
+          onOpenSpecialist={() => { setShowLanding(false); setShowSpecialist(true); }}
+          isExiting={landingExiting}
+        />
+      )}
 
       {/* 2. Inner App Cockpit (Shown once user enters the 3D Cadastre) */}
       {!showLanding && (
@@ -249,6 +257,7 @@ export default function App() {
           onOpenExport={() => setShowExport(true)}
           onOpenAtlas={() => setShowAtlas(true)}
           onOpenPhotogrammetry={() => setShowPhotogrammetry(true)}
+          onOpenSpecialist={() => setShowSpecialist(true)}
         />
       )}
 
@@ -422,6 +431,12 @@ export default function App() {
             setSelected(bld);
             setBuildings(prev => [bld, ...prev.filter(b => b.building_id !== bld.building_id)]);
           }}
+        />
+      )}
+
+      {showSpecialist && (
+        <SpecialistPage
+          onBack={() => setShowSpecialist(false)}
         />
       )}
 
