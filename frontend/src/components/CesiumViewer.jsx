@@ -95,13 +95,13 @@ function preloadPilotCities(viewer, baseLayer) {
     }
   } catch {}
 
-  // 2. Preemptively fetch satellite imagery tiles across zoom levels 8, 11, 13, 15
+  // 2. Preemptively fetch satellite imagery tiles across zoom levels 8–19
   try {
     const ip = baseLayer?.imageryProvider;
     const scheme = ip?.tilingScheme;
     if (scheme && typeof ip.requestImage === 'function') {
       pilotPositions.forEach(carto => {
-        [8, 11, 13, 15, 17].forEach(level => {
+        [8, 11, 13, 15, 17, 18, 19].forEach(level => {
           try {
             const tileXY = scheme.positionToTileXY(carto, level);
             if (tileXY) {
@@ -112,6 +112,66 @@ function preloadPilotCities(viewer, baseLayer) {
       });
     }
   } catch {}
+}
+
+// ── Pre-Warm City Views: Silent camera cycling behind landing page ────────────
+// After Google 3D tiles initialize, this function silently positions the camera
+// at each pilot city for ~2s to force Cesium to download city-level 3D mesh tiles
+// and high-res imagery. The landing page (z-index 90) covers the Cesium viewer
+// (z-index 1), so the user sees nothing. After warming all 4 cities, the camera
+// returns to orbit. Result: when the user enters a city, tiles are already cached.
+// Accepts an optional cityRef to bail out if the user navigates to a city mid-warm.
+function preWarmCityViews(viewer, cityRef) {
+  if (!viewer || viewer.isDestroyed()) return;
+
+  const cities = Object.keys(CITY_POSITIONS);
+  let idx = 0;
+  const DWELL_MS = 2200; // ms at each city to allow tile requests to fire
+
+  function warmNext() {
+    // Bail out if user has already selected a city (landing page dismissed)
+    if (cityRef?.current) return;
+    if (idx >= cities.length || viewer.isDestroyed()) {
+      // All cities warmed — return camera to orbit view
+      if (!cityRef?.current) {
+        try {
+          viewer.camera.setView({
+            destination: Cartesian3.fromDegrees(75.0, 19.0, 12500000),
+            orientation: {
+              heading: 0,
+              pitch: CesiumMath.toRadians(-89.9),
+              roll: 0,
+            },
+          });
+        } catch {}
+      }
+      return;
+    }
+
+    const cityKey = cities[idx];
+    const pos = CITY_POSITIONS[cityKey];
+    if (!pos) { idx++; warmNext(); return; }
+
+    try {
+      // Instantly jump camera to city viewpoint (no animation — invisible behind landing page)
+      viewer.camera.setView({
+        destination: Cartesian3.fromDegrees(pos.lon, pos.lat, pos.height),
+        orientation: {
+          heading: CesiumMath.toRadians(pos.headingDeg ?? 0),
+          pitch:   CesiumMath.toRadians(pos.pitchDeg   ?? -24),
+          roll:    0,
+        },
+      });
+      // Force a render frame to trigger tile requests at this position
+      viewer.scene.requestRender();
+    } catch {}
+
+    idx++;
+    setTimeout(warmNext, DWELL_MS);
+  }
+
+  // Start warming after a brief delay to let Google 3D tiles finish initializing
+  setTimeout(warmNext, 800);
 }
 
 // Pre-generate building textures for pilot city buildings during idle time
@@ -1572,7 +1632,15 @@ export default function CesiumViewer({
         });
       }
     }
-    initGoogle3DTiles();
+    initGoogle3DTiles().then(() => {
+      // Once Google 3D tiles are initialized, silently cycle camera through all
+      // 4 pilot cities behind the landing page to pre-cache city-level mesh tiles.
+      // The landing page overlay (z-index 90) hides the camera jumps completely.
+      preWarmCityViews(viewer, cityRef);
+    }).catch(() => {
+      // Even if Google tiles fail, still pre-warm imagery and terrain
+      preWarmCityViews(viewer, cityRef);
+    });
 
     // ── 3D Architectural Buildings Layer (OSM) ──────────────────────────────
     async function init3DBuildings() {

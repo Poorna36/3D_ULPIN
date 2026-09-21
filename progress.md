@@ -2547,3 +2547,43 @@ User observed low resolution / blurry map imagery on the 3D viewer (especially i
 
 ### Status
 Complete.
+
+---
+
+## Entry 0070 - 2026-09-21 23:10 IST
+
+### Type
+PERFORMANCE OPTIMIZATION — PRE-WARM ALL 4 PILOT CITIES RENDERING FROM LANDING PAGE
+
+### Context & Problem
+User observed that when clicking "Launch" and navigating to a pilot city, the 3D photorealistic tiles and high-res imagery took noticeable time to stream in, causing a delayed rendering experience. The goal: start all heavy rendering (Google 3D tiles, satellite imagery, terrain) while the landing page is still visible, so cities render instantly when the user enters them.
+
+### Root Cause Analysis
+1. **Camera at orbit altitude during landing page**: CesiumViewer is always mounted behind the landing page (z-index 1 vs 90), but the camera starts at 12,500km orbit. At this altitude, Cesium only downloads coarse global-level tiles — city-level 3D mesh tiles and high-res imagery are not fetched.
+2. **Tile loading is camera-driven**: Google Photorealistic 3D Tiles (Ion Asset 2275207) and ESRI satellite imagery tiles are loaded on-demand based on the camera frustum and screen-space error. Without positioning the camera at city-level altitude, the CDN never receives requests for the detailed tiles.
+3. **Imagery zoom levels**: The `preloadPilotCities` function only pre-fetched imagery at zoom levels 8, 11, 13, 15, 17 — missing the critical high-zoom levels 18 and 19 needed for sub-meter clarity.
+
+### Changes Applied
+1. **`preWarmCityViews()` function** (CesiumViewer.jsx):
+   - New function that silently cycles the camera through all 4 pilot city positions (Bengaluru → Mumbai → Rotterdam → Singapore) at city-level altitude.
+   - Dwells ~2.2 seconds at each city to trigger tile request bursts for Google 3D mesh tiles, OSM building tiles, and ESRI satellite imagery.
+   - All camera jumps are invisible to the user because the landing page overlay (z-index 90) completely covers the Cesium viewer (z-index 1).
+   - Accepts a `cityRef` parameter to bail out immediately if the user navigates to a city mid-warm (avoids fighting with the user's camera flight).
+   - Returns camera to orbit view after all 4 cities are warmed (unless user already selected a city).
+
+2. **Enhanced `preloadPilotCities()` imagery zoom levels**:
+   - Extended pre-fetch from `[8, 11, 13, 15, 17]` → `[8, 11, 13, 15, 17, 18, 19]` for sub-meter satellite tile pre-caching.
+
+3. **Integration with Google 3D Tiles init**:
+   - `preWarmCityViews()` is called after `initGoogle3DTiles()` completes (both success and error paths), ensuring the warming starts once the tile streaming infrastructure is ready.
+
+### Files Modified
+- `frontend/src/components/CesiumViewer.jsx`
+
+### Verification
+- `npm run build`: Vite build passes in 1.85s with 0 errors.
+- Dev server running at `http://localhost:5173/` with successful HMR updates.
+- No git commits or pushes made (per user instruction).
+
+### Status
+Complete.
