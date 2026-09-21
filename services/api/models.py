@@ -56,3 +56,4 @@ class Parcel(BaseModel):
     elevation_reference: float
     source: str
     status: str = "VALID"
+

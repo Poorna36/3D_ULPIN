@@ -172,13 +172,31 @@ if os.path.isdir(console_dir):
 
 # Legacy & prototype compatibility stores
 try:
-    from services.api.models import Building, Parcel, ValidationCheck
+    from services.api.models import (
+        Building, Parcel, ValidationCheck,
+        Floor, Provenance
+    )
     from services.api.store import BUILDINGS_DB, PARCELS_DB
     from services.identifiers.generator import generate_prototype_3d_id
     HAS_LEGACY_STORE = True
 except ImportError:
     HAS_LEGACY_STORE = False
     BUILDINGS_DB, PARCELS_DB = {}, {}
+
+# Topology validation engine
+try:
+    from photogrammetry.validation.engine import TopologyValidationEngine
+    validation_engine = TopologyValidationEngine()
+except ImportError:
+    validation_engine = None
+
+# Isolated Photogrammetry & Drone Ingestion Module (mounted as sub-router)
+try:
+    from photogrammetry.api.routes import router as photogrammetry_router
+    app.include_router(photogrammetry_router)
+except ImportError:
+    pass
+
 
 @app.get("/health", summary="Health check endpoint")
 def health_check():
@@ -189,7 +207,8 @@ def health_check():
         "cadastral_registry": "active",
         "endpoints": [
             "/allocate", "/resolve/{rid}", "/verify", "/lineage/{rid}",
-            "/cover", "/explain/{finding_id}", "/validate/{rid}", "/console"
+            "/cover", "/explain/{finding_id}", "/validate/{rid}", "/console",
+            "/api/drone/surveys", "/api/drone/process"
         ]
     }
 
@@ -246,6 +265,31 @@ if HAS_LEGACY_STORE:
             is_underground=is_underground
         )
         return {"prototype_3d_id": identifier}
+
+
+    @app.post("/api/validation/run")
+    def run_topology_validation(building_id: str):
+        """Run full 3D topology validation on any building in the database."""
+        found_building = None
+        city_found = "bengaluru"
+        for c_name, c_buildings in BUILDINGS_DB.items():
+            for b in c_buildings:
+                if b["building_id"] == building_id:
+                    found_building = b
+                    city_found = c_name
+                    break
+            if found_building:
+                break
+
+        if not found_building:
+            raise HTTPException(status_code=404, detail=f"Building '{building_id}' not found")
+
+        parent_parcel_id = found_building.get("parent_parcel_id")
+        parcels = PARCELS_DB.get(city_found, [])
+        matched_parcel = next((p for p in parcels if p.get("parcel_id") == parent_parcel_id), None)
+
+        report = validation_engine.validate_building_volume(found_building, matched_parcel)
+        return report
 
 
 # ------------------------------------------------------------------------------

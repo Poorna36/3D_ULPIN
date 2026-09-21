@@ -343,3 +343,30 @@ This table is the single best "show, don't tell" artifact for a judge panel: ide
 | **SRA mixed-tenure** | — | (MZ-3) SRA redevelopment tower with mixed free-sale + rehabilitation-tenement units in one building — a distinctive Indian vertical-property class not exercised elsewhere |
 | **Heritage-over-infrastructure** | — | (MZ-4) Heritage-protected, height-restricted Art Deco/Fort precinct above the deepest, densest underground infrastructure in the pilot — demonstrates why 2D records cannot show what is beneath a surface parcel |
 | **IT-park commercial** | (BZ-3) Large single-owner commercial towers in Electronics City SEZ — fewer, larger U/C objects than residential; Yellow Line elevated corridor crossing IT parcels | — |
+
+---
+
+## Appendix H: Security, Privacy, Traceability & PS Source Status
+
+### H.1 Security & Privacy Principles (DPDP Act 2023)
+- **Zero PII in Identifiers**: Never encode owner names, Aadhaar numbers, phone numbers, or private contact details into spatial identifiers.
+- **Role-Based Conceptual Access**: Distinct access policies for Public Viewer, Cadastral Analyst, Administrator, and Data Steward.
+- **Forensic Traceability**: Every externally sourced layer binds immutable cryptographic provenance metadata.
+- **Legal Wording Integrity**: Use honest terminology: *"derived 3D property volume"*, *"source record indicates"*, *"prototype 3D ULPIN"*; never assert official state land title issuance.
+
+### H.2 Requirements Traceability Matrix
+| ID | Requirement | Status | Evidence / Implementation |
+|---|---|---|---|
+| R-001 | 3D ULPIN Generation | CONFIRMED | Three-layer identity model (RID, Natural Key, Statutory Anchor) |
+| R-002 | Vertical Property Mapping | CONFIRMED | Extruded polyhedral floor slabs & property unit solids |
+| R-003 | Multi-Storey Apartments | CONFIRMED | Floor & unit volumetric subdivision with RERA carpet-area tolerance |
+| R-004 | Underground Infrastructure | CONFIRMED | Subterranean Class `T` (tunnels, foundations, basements) |
+| R-005 | Elevated Transport Corridors | CONFIRMED | Class `E` (Metro viaducts, flyovers with vertical clearance buffers) |
+| R-006 | Parking Spaces | CONFIRMED | Class `P` (designated subterranean and podium parking bays) |
+| R-007 | Air-Rights | CONFIRMED | Class `A` (airspace property volumes, TDR envelopes) |
+| R-008 | Subsurface Utility Networks | CONFIRMED | Class `I` (pipes, drainage, power conduits with easement overlap queries) |
+
+### H.3 Problem Statement Source Verification
+- `ps.md` maintains the exact verbatim transcription of the confirmed problem statement.
+- `ps-2.md` documents continuation provisions and verified requirements.
+- Core rules: No silent modifications; design decisions and interpretations are documented in `solution.md` and `docs/decisions.md`.

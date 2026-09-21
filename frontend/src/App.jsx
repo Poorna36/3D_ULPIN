@@ -5,6 +5,7 @@ import LayerPanel          from './components/LayerPanel.jsx';
 import CesiumViewer        from './components/CesiumViewer.jsx';
 import DetailPanel         from './components/DetailPanel.jsx';
 import AIPipelinePanel     from './components/AIPipelinePanel.jsx';
+import PhotogrammetryPanel from './photogrammetry/PhotogrammetryPanel.jsx';
 import InteriorWalkthrough, { buildFullFloorList } from './components/InteriorWalkthrough.jsx';
 import LandingPage         from './components/LandingPage.jsx';
 import ValidationConsole   from './components/ValidationConsole.jsx';
@@ -61,6 +62,7 @@ export default function App() {
   const [explodedFloor, setExplodedFloor] = useState(null);
   const [aiStatus, setAIStatus]           = useState('idle');
   const [showAI, setShowAI]               = useState(false);
+  const [showPhotogrammetry, setShowPhotogrammetry] = useState(false);
   const [cityBanner, setCityBanner]       = useState(null);
   const [showLanding, setShowLanding]     = useState(true);
   const [landingExiting, setLandingExiting] = useState(false);
@@ -246,6 +248,7 @@ export default function App() {
           onOpenSandbox={() => setShowSandbox(true)}
           onOpenExport={() => setShowExport(true)}
           onOpenAtlas={() => setShowAtlas(true)}
+          onOpenPhotogrammetry={() => setShowPhotogrammetry(true)}
         />
       )}
 
@@ -365,22 +368,61 @@ export default function App() {
         </div>
       )}
 
-      {/* Floating AI panel toggle */}
-      <button
-        id="ai-panel-toggle-btn"
-        className="btn ai-fab"
-        onClick={() => setShowAI(v => !v)}
-        title="Toggle AI/ML Pipeline panel"
-      >
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ verticalAlign: '-1px' }}>
-          <circle cx="12" cy="12" r="3"/>
-          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-        </svg>
-        <span>AI Pipeline</span>
-      </button>
+      {/* Floating Action Buttons: AI Pipeline & Photogrammetry */}
+      <div style={{
+        position: 'fixed',
+        bottom: 24, left: '50%', transform: 'translateX(-50%)',
+        zIndex: 70,
+        display: 'flex', gap: '10px', alignItems: 'center'
+      }}>
+        <button
+          id="ai-panel-toggle-btn"
+          className="btn ai-fab"
+          onClick={() => setShowAI(v => !v)}
+          title="Toggle AI/ML Pipeline panel (H1–H4)"
+          style={{ position: 'static', transform: 'none' }}
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ verticalAlign: '-1px' }}>
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+          <span>AI Pipeline</span>
+        </button>
+
+        <button
+          id="photogrammetry-toggle-btn"
+          className="btn photogrammetry-fab"
+          onClick={() => setShowPhotogrammetry(v => !v)}
+          title="Toggle Photogrammetry & Drone Ingestion panel"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ verticalAlign: '-1px' }}>
+            <circle cx="12" cy="12" r="3" />
+            <path d="M5 5l4 4m6 0l4-4M5 19l4-4m6 0l4 4" />
+            <line x1="3" y1="5" x2="7" y2="5" />
+            <line x1="17" y1="5" x2="21" y2="5" />
+            <line x1="3" y1="19" x2="7" y2="19" />
+            <line x1="17" y1="19" x2="21" y2="19" />
+          </svg>
+          <span>Photogrammetry</span>
+        </button>
+      </div>
 
       {showAI && (
-        <AIPipelinePanel onStatusChange={setAIStatus} />
+        <AIPipelinePanel
+          onStatusChange={setAIStatus}
+          onClose={() => setShowAI(false)}
+        />
+      )}
+
+      {showPhotogrammetry && (
+        <PhotogrammetryPanel
+          currentCity={city}
+          onClose={() => setShowPhotogrammetry(false)}
+          onBuildingGenerated={(bld) => {
+            setSelected(bld);
+            setBuildings(prev => [bld, ...prev.filter(b => b.building_id !== bld.building_id)]);
+          }}
+        />
       )}
 
       <style>{`
@@ -399,6 +441,23 @@ export default function App() {
         .ai-fab:hover {
           background: rgba(124,58,237,0.25);
           box-shadow: 0 0 28px rgba(124,58,237,0.5);
+        }
+
+        .photogrammetry-fab {
+          background: rgba(56, 189, 248, 0.15);
+          border-color: #38bdf8;
+          color: #38bdf8;
+          padding: 8px 20px;
+          font-size: 13px; font-weight: 500;
+          border-radius: var(--r-pill);
+          box-shadow: 0 0 16px rgba(56, 189, 248, 0.3);
+          transition: all var(--t-normal);
+          cursor: pointer;
+          display: flex; align-items: center; gap: 8px;
+        }
+        .photogrammetry-fab:hover {
+          background: rgba(56, 189, 248, 0.28);
+          box-shadow: 0 0 28px rgba(56, 189, 248, 0.5);
         }
 
         /* City loading indicator */

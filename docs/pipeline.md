@@ -147,3 +147,16 @@ The end-to-end pipeline integrates four dedicated AI/ML models:
 - **H4 (Intelligent Topology Validation):** Isolation Forest + Graph Anomaly Scorer + Active Learning loop.
 
 *For complete model architectures, training datasets, loss functions, and failure mode analysis, see [aiml.md](aiml.md).*
+
+---
+
+## 8-Stage Live Demonstration Script
+
+1. **Earth Space Orbit View**: Open Cesium globe showcasing international benchmark and Indian pilot zones.
+2. **Bengaluru Flight**: Fly to Bengaluru Electronic City Tech Corridor; load terrain, cadastral parcel boundaries, and 3D buildings.
+3. **Exploded Vertical Strata**: Select tower; trigger vertical floor explosion to inspect individual levels, parking basements, and units.
+4. **Automated Cadastral Validation**: Display T0–T4 geometric/topological checks, watertightness tests, and provenance badges.
+5. **Subsurface / Underground Inspection**: Toggle subterranean layer revealing basements, metro alignment, and utility conduits.
+6. **Mumbai High-Density Validation**: Switch to Mumbai Lower Parel to demonstrate extreme vertical density and complex parcel relations.
+7. **International Multi-Schema Benchmark**: Switch to Rotterdam/Singapore, demonstrating canonical data model stability without engine alteration.
+8. **Core SIH Takeaway**: *"The platform identifies and validates true 3D volumes of urban property space, not merely 2D plots or visual building boxes."*

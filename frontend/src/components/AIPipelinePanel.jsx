@@ -79,97 +79,110 @@ const AI_PIPELINE_STEPS = [
 ];
 
 export default function AIPipelinePanel({ onStatusChange, onClose }) {
-  const [steps, setSteps] = useState(AI_PIPELINE_STEPS.map(s => ({ ...s, progress: 0, status: 'idle' })));
-  const [running, setRunning] = useState(false);
-  const [done, setDone] = useState(false);
-  const [activeTab, setActiveTab] = useState('pipeline');
+  const [mlSteps, setMlSteps] = useState(AI_PIPELINE_STEPS.map(s => ({ ...s, progress: 0, status: 'idle' })));
+  const [mlRunning, setMlRunning] = useState(false);
+  const [mlDone, setMlDone] = useState(false);
 
-  const runPipeline = () => {
-    if (running || done) return;
-    setRunning(true);
+  // Run ML Pipeline
+  const runMlPipeline = () => {
+    if (mlRunning || mlDone) return;
+    setMlRunning(true);
     onStatusChange?.('running');
     let i = 0;
     const runStep = () => {
       if (i >= AI_PIPELINE_STEPS.length) {
-        setRunning(false);
-        setDone(true);
+        setMlRunning(false);
+        setMlDone(true);
         onStatusChange?.('done');
         return;
       }
-      setSteps(prev => prev.map((s, idx) => idx === i ? { ...s, status: 'running', progress: 0 } : s));
+      setMlSteps(prev => prev.map((s, idx) => idx === i ? { ...s, status: 'running', progress: 0 } : s));
       let p = 0;
       const tick = setInterval(() => {
         p += Math.random() * 20 + 8;
         if (p >= 100) {
           p = 100;
           clearInterval(tick);
-          setSteps(prev => prev.map((s, idx) => idx === i ? { ...s, progress: 100, status: 'done' } : s));
+          setMlSteps(prev => prev.map((s, idx) => idx === i ? { ...s, progress: 100, status: 'done' } : s));
           i++;
           setTimeout(runStep, 250);
         } else {
-          setSteps(prev => prev.map((s, idx) => idx === i ? { ...s, progress: p } : s));
+          setMlSteps(prev => prev.map((s, idx) => idx === i ? { ...s, progress: p } : s));
         }
       }, 70);
     };
     runStep();
   };
 
-  const reset = () => {
-    setSteps(AI_PIPELINE_STEPS.map(s => ({ ...s, progress: 0, status: 'idle' })));
-    setRunning(false);
-    setDone(false);
+  const resetMl = () => {
+    setMlSteps(AI_PIPELINE_STEPS.map(s => ({ ...s, progress: 0, status: 'idle' })));
+    setMlRunning(false);
+    setMlDone(false);
     onStatusChange?.('idle');
   };
 
-  const overallProgress = steps.reduce((a, s) => a + s.progress, 0) / steps.length;
+  const mlOverallProgress = mlSteps.reduce((a, s) => a + s.progress, 0) / mlSteps.length;
 
   return (
-    <div className="ai-panel glass anim-fade-up" id="ai-pipeline-panel" style={{ width: '480px', maxWidth: '94vw', maxHeight: '85vh', display: 'flex', flexDirection: 'column' }}>
-      <div className="ai-panel-header">
-        <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span className="badge badge-primary">AI/ML SUBSYSTEMS (H1–H4)</span>
-            <span className="mono" style={{ fontSize: '10px', color: 'var(--text-secondary)' }}>docs/aiml.md</span>
+    <div className="ai-panel glass anim-fade-up" id="ai-pipeline-panel" style={{ width: '560px', maxWidth: '95vw', maxHeight: '88vh', display: 'flex', flexDirection: 'column' }}>
+      
+      {/* Header */}
+      <div className="ai-panel-header" style={{ padding: '14px 18px', borderBottom: '1px solid var(--border)' }}>
+        <div style={{ flex: 1 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+            <span style={{ fontSize: '18px' }}>🧠</span>
+            <h2 style={{ margin: 0, fontSize: '16px', fontWeight: 600 }}>AI/ML Cadastral Pipeline (H1–H4)</h2>
           </div>
-          <h2 style={{ margin: '4px 0 0 0', fontSize: '17px' }}>Geospatial AI & Topology Engine</h2>
+          <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
+            Deep Learning Extractor &bull; Plan-Side Vectoriser &bull; Viterbi Alignment &bull; Topology Validation
+          </div>
         </div>
-        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-          {!done
-            ? <button className="btn btn-primary" onClick={runPipeline} disabled={running} id="run-pipeline-btn" style={{ fontSize: '11px', padding: '6px 14px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-                  <polygon points="5 3 19 12 5 21 5 3"/>
-                </svg>
-                <span>{running ? 'Processing…' : 'Execute AI Stack'}</span>
-              </button>
-            : <button className="btn" onClick={reset} id="reset-pipeline-btn" style={{ fontSize: '11px', padding: '6px 12px' }}>
-                Reset Stack
-              </button>
-          }
-          {onClose && (
-            <button className="btn-icon" onClick={onClose} style={{ marginLeft: '4px' }} title="Close">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="18" y1="6" x2="6" y2="18"/>
-                <line x1="6" y1="6" x2="18" y2="18"/>
+        {onClose && (
+          <button className="btn-icon" onClick={onClose} style={{ marginLeft: '4px' }} title="Close">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        )}
+      </div>
+
+      {/* Controls Bar */}
+      <div style={{ padding: '12px 18px', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div>
+          <span className="badge badge-primary" style={{ fontSize: '10px', marginRight: '6px' }}>H1–H4 DEEP MODELS</span>
+          <span className="mono" style={{ fontSize: '10px', color: 'var(--text-secondary)' }}>docs/aiml.md</span>
+        </div>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          {!mlDone ? (
+            <button className="btn btn-primary" onClick={runMlPipeline} disabled={mlRunning} id="run-pipeline-btn" style={{ fontSize: '11px', padding: '6px 14px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="5 3 19 12 5 21 5 3"/>
               </svg>
+              <span>{mlRunning ? 'Executing Stack…' : 'Execute AI Stack'}</span>
+            </button>
+          ) : (
+            <button className="btn" onClick={resetMl} id="reset-pipeline-btn" style={{ fontSize: '11px', padding: '6px 14px' }}>
+              Reset Stack
             </button>
           )}
         </div>
       </div>
 
-      {/* Overall progress */}
-      <div style={{ padding: '12px 16px', borderBottom: '1px solid var(--border)' }}>
-        <div className="ai-overall-row" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
-          <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>End-to-End Extraction Pipeline Progress</span>
-          <span className="mono" style={{ fontSize: '12px', fontWeight: 600, color: 'var(--accent)' }}>{overallProgress.toFixed(0)}%</span>
+      {/* Progress row */}
+      <div style={{ padding: '10px 18px', borderBottom: '1px solid var(--border)' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
+          <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>AI Extraction Stack Progress</span>
+          <span className="mono" style={{ fontSize: '12px', fontWeight: 600, color: 'var(--accent)' }}>{mlOverallProgress.toFixed(0)}%</span>
         </div>
         <div className="progress-bar" style={{ height: '6px', background: 'rgba(255,255,255,0.08)', borderRadius: '3px', overflow: 'hidden' }}>
-          <div className="progress-fill" style={{ width: `${overallProgress}%`, height: '100%', background: 'linear-gradient(90deg, #38bdf8, #818cf8)', transition: 'width 0.15s ease' }} />
+          <div className="progress-fill" style={{ width: `${mlOverallProgress}%`, height: '100%', background: 'linear-gradient(90deg, #818cf8, #38bdf8)', transition: 'width 0.15s ease' }} />
         </div>
       </div>
 
-      {/* Pipeline Steps List */}
-      <div className="ai-steps" style={{ overflowY: 'auto', padding: '12px 16px', flex: 1, display: 'flex', flexDirection: 'column', gap: '10px' }}>
-        {steps.map((s, idx) => (
+      {/* ML Steps List */}
+      <div style={{ padding: '12px 18px', display: 'flex', flexDirection: 'column', gap: '10px', flex: 1, overflowY: 'auto' }}>
+        {mlSteps.map((s) => (
           <div
             key={s.id}
             className={`ai-step ${s.status}`}
@@ -216,7 +229,7 @@ export default function AIPipelinePanel({ onStatusChange, onClose }) {
         ))}
       </div>
 
-      <div style={{ padding: '10px 16px', borderTop: '1px solid var(--border)', fontSize: '11px', color: 'var(--text-secondary)', display: 'flex', justifyContent: 'space-between' }}>
+      <div style={{ padding: '10px 18px', borderTop: '1px solid var(--border)', fontSize: '11px', color: 'var(--text-secondary)', display: 'flex', justifyContent: 'space-between' }}>
         <span>Active Learning Triage: <strong style={{ color: '#10b981' }}>ONLINE</strong></span>
         <span>GNN Optimization: <strong style={{ color: '#38bdf8' }}>WATERTIGHT</strong></span>
       </div>

@@ -64,6 +64,7 @@ export default function WorkbenchCockpit({
   onOpenSandbox,
   onOpenExport,
   sidebarOpen = false,
+  onOpenPhotogrammetry,
 }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const fileInputRef = useRef(null);
@@ -189,6 +190,33 @@ export default function WorkbenchCockpit({
               <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
             </svg>
             <span>REST API</span>
+          </button>
+
+          <button
+            onClick={onOpenPhotogrammetry}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 7,
+              background: '#0a0a0c',
+              border: '1px solid rgba(255, 255, 255, 0.14)',
+              borderRadius: 999, height: 30, padding: '0 13px',
+              color: '#f3f4f6', fontSize: 11, fontWeight: 600,
+              fontFamily: "'Space Grotesk', sans-serif",
+              cursor: 'pointer', transition: 'all 0.15s',
+              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.6)',
+            }}
+            onMouseEnter={e => { e.currentTarget.style.background = '#141418'; e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.28)'; }}
+            onMouseLeave={e => { e.currentTarget.style.background = '#0a0a0c'; e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.14)'; }}
+            title="UAV Photogrammetry & Ingestion (SVAMITVA / ODM SfM)"
+          >
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.85 }}>
+              <circle cx="12" cy="12" r="3" />
+              <path d="M5 5l4 4m6 0l4-4M5 19l4-4m6 0l4 4" />
+              <line x1="3" y1="5" x2="7" y2="5" />
+              <line x1="17" y1="5" x2="21" y2="5" />
+              <line x1="3" y1="19" x2="7" y2="19" />
+              <line x1="17" y1="19" x2="21" y2="19" />
+            </svg>
+            <span>Drone (UAV)</span>
           </button>
 
           <button
