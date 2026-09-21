@@ -44,3 +44,6 @@ scratch/
 .DS_Store
 Thumbs.db
 
+# Specialist branch reference folder
+specialist_branch/
+
