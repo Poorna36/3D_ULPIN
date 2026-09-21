@@ -488,22 +488,23 @@ export default function InteriorWalkthrough({ building, currentFloorIdx, onFloor
 
           {/* Bottom status */}
           <div style={{
-            position:'absolute', bottom:12, left:'50%', transform:'translateX(-50%)',
-            display:'flex', alignItems:'center', gap:14,
-            background:'rgba(0,0,0,0.70)', backdropFilter:'blur(16px)',
-            border:`1px solid ${accentClr}22`, borderRadius:999, padding:'5px 20px',
-            fontSize:10.5, color:'rgba(255,255,255,0.60)',
-            fontFamily:"'JetBrains Mono',monospace", userSelect:'none', whiteSpace:'nowrap',
+            position: 'absolute', bottom: 20, left: '50%', transform: 'translateX(-50%)',
+            display: 'flex', alignItems: 'center', gap: 12,
+            background: 'rgba(24, 24, 27, 0.94)', backdropFilter: 'blur(20px)',
+            border: '1px solid #27272a', borderRadius: 10, padding: '6px 16px',
+            fontSize: 12, color: '#a1a1aa',
+            userSelect: 'none', whiteSpace: 'nowrap',
+            boxShadow: '0 8px 30px rgba(0, 0, 0, 0.5)',
           }}>
-            <span style={{color:accentClr,fontWeight:700}}>{floorLabel}</span>
-            <span style={{color:'rgba(255,255,255,0.2)'}}>|</span>
+            <span style={{ color: '#f4f4f5', fontWeight: 600 }}>{floorLabel}</span>
+            <span style={{ color: '#3f3f46' }}>·</span>
             <span>{elev}m AGL</span>
-            <span style={{color:'rgba(255,255,255,0.2)'}}>|</span>
-            <span>Ceil {ceilH}m</span>
-            <span style={{color:'rgba(255,255,255,0.2)'}}>|</span>
-            <span style={{color:'#64748b'}}>{clampedIdx+1} / {totalFloors} Floors</span>
-            <span style={{color:'rgba(255,255,255,0.2)'}}>|</span>
-            <span style={{color:'#64748b'}}>{floorRooms.length} Spaces</span>
+            <span style={{ color: '#3f3f46' }}>·</span>
+            <span>Ceiling {ceilH}m</span>
+            <span style={{ color: '#3f3f46' }}>·</span>
+            <span>{clampedIdx + 1} of {totalFloors} Floors</span>
+            <span style={{ color: '#3f3f46' }}>·</span>
+            <span>{floorRooms.length} Spaces</span>
           </div>
         </div>
       );
@@ -1045,16 +1046,13 @@ export default function InteriorWalkthrough({ building, currentFloorIdx, onFloor
           max-height: calc(100vh - 84px);
           overflow-y: auto;
           scrollbar-width: none;
-          border-radius: 16px;
-          border: 1px solid rgba(6, 182, 212, 0.35);
-          background: rgba(2, 8, 18, 0.92);
-          backdrop-filter: blur(28px) saturate(1.5);
-          box-shadow:
-            0 0 0 1px rgba(6,182,212,0.08),
-            0 8px 32px rgba(0,0,0,0.7),
-            0 0 40px rgba(6,182,212,0.10);
+          border-radius: 12px;
+          border: 1px solid #27272a;
+          background: rgba(24, 24, 27, 0.94);
+          backdrop-filter: blur(20px);
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
           overflow: hidden;
-          animation: hudSlideIn 0.4s cubic-bezier(0.16,1,0.3,1) forwards;
+          animation: hudSlideIn 0.3s cubic-bezier(0.16,1,0.3,1) forwards;
         }
         @keyframes hudSlideIn {
           from { opacity: 0; transform: translateX(32px) scale(0.96); }

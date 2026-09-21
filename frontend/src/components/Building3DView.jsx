@@ -23,6 +23,7 @@ export default function Building3DView({
   const [hoveredFloor, setHoveredFloor] = useState(null);
   const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
   const [selectedRoom, setSelectedRoom] = useState(null);
+  const [ulpinCopied, setUlpinCopied] = useState(false);
 
   // Building geometry metrics in Three.js units (1 unit = 1 metre)
   const BLDG_W = 38;
@@ -860,181 +861,274 @@ export default function Building3DView({
         </div>
       )}
 
-      {/* ── Bottom Control Deck (Dissection Slider + Facade Modes + Quick Inspect) ── */}
+      {/* ── Professional Human Architectural Bottom Navigation Bar ── */}
       <div style={{
         position: 'absolute',
-        bottom: 24,
+        bottom: 20,
         left: '50%',
         transform: 'translateX(-50%)',
         zIndex: 150,
         display: 'flex',
         alignItems: 'center',
-        gap: 16,
-        background: 'rgba(2, 6, 20, 0.90)',
-        backdropFilter: 'blur(28px)',
-        border: '1px solid rgba(56, 189, 248, 0.32)',
-        borderRadius: 16,
-        padding: '10px 22px',
-        boxShadow: '0 8px 40px rgba(0,0,0,0.75), 0 0 25px rgba(56, 189, 248, 0.15)',
+        gap: 12,
+        background: 'rgba(24, 24, 27, 0.94)',
+        backdropFilter: 'blur(20px)',
+        border: '1px solid #27272a',
+        borderRadius: 12,
+        padding: '6px 12px',
+        boxShadow: '0 8px 30px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(0, 0, 0, 0.4)',
+        maxWidth: 'calc(100vw - 32px)',
+        whiteSpace: 'nowrap',
       }}>
 
-        {/* 1. Floor Dissection Spacing Slider */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-            <div style={{
-              fontSize: 9.5,
-              fontWeight: 800,
-              letterSpacing: '0.8px',
-              color: '#38bdf8',
-              textTransform: 'uppercase',
-              fontFamily: "'JetBrains Mono', monospace",
+        {/* 1. Floor Stepper & Level Info */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <button
+            onClick={() => clampedIdx > 0 && doFloorChange(clampedIdx - 1)}
+            disabled={clampedIdx <= 0}
+            title="Previous Floor (Down)"
+            style={{
+              width: 28,
+              height: 28,
+              borderRadius: 6,
+              border: 'none',
+              background: 'rgba(255, 255, 255, 0.06)',
+              color: clampedIdx <= 0 ? '#52525b' : '#d4d4d8',
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'space-between',
-            }}>
-              <span>Floor Dissection</span>
-              <span style={{ color: '#94a3b8' }}>{dissection}%</span>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <button
-                onClick={() => setDissection(0)}
-                title="Compact Cuboid (0%)"
-                style={{
-                  background: 'transparent',
-                  border: 'none',
-                  color: dissection === 0 ? '#38bdf8' : '#64748b',
-                  fontSize: 9,
-                  cursor: 'pointer',
-                  fontWeight: 700,
-                }}
-              >
-                COMPACT
-              </button>
-              <input
-                type="range"
-                min="0"
-                max="100"
-                value={dissection}
-                onChange={(e) => setDissection(Number(e.target.value))}
-                style={{
-                  width: 140,
-                  height: 4,
-                  accentColor: '#38bdf8',
-                  cursor: 'pointer',
-                }}
-              />
-              <button
-                onClick={() => setDissection(100)}
-                title="Full Exploded Dissection (100%)"
-                style={{
-                  background: 'transparent',
-                  border: 'none',
-                  color: dissection === 100 ? '#38bdf8' : '#64748b',
-                  fontSize: 9,
-                  cursor: 'pointer',
-                  fontWeight: 700,
-                }}
-              >
-                EXPLODE
-              </button>
-            </div>
-          </div>
-        </div>
+              justifyContent: 'center',
+              cursor: clampedIdx <= 0 ? 'not-allowed' : 'pointer',
+              transition: 'all 0.12s ease',
+            }}
+            onMouseEnter={(e) => {
+              if (clampedIdx > 0) e.currentTarget.style.background = '#27272a';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.06)';
+            }}
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <polyline points="15 18 9 12 15 6" />
+            </svg>
+          </button>
 
-        <div style={{ width: 1, height: 28, background: 'rgba(255,255,255,0.12)' }} />
-
-        {/* 2. Facade Modes Toggle */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          <span style={{ fontSize: 9.5, color: '#64748b', fontWeight: 700, textTransform: 'uppercase' }}>
-            Facade:
-          </span>
-          {[
-            { id: 'cutaway', label: 'Cutaway' },
-            { id: 'glass', label: 'Glass Cuboid' },
-            { id: 'wireframe', label: 'Wireframe' },
-            { id: 'open', label: 'Open' },
-          ].map(mode => (
-            <button
-              key={mode.id}
-              onClick={() => setFacadeMode(mode.id)}
-              style={{
-                padding: '4px 9px',
-                borderRadius: 6,
-                border: 'none',
-                background: facadeMode === mode.id ? 'rgba(56, 189, 248, 0.22)' : 'rgba(255,255,255,0.05)',
-                color: facadeMode === mode.id ? '#38bdf8' : '#94a3b8',
-                outline: facadeMode === mode.id ? '1px solid rgba(56, 189, 248, 0.45)' : 'none',
+          <div style={{ display: 'flex', flexDirection: 'column', minWidth: 140 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <span style={{ fontSize: 13, fontWeight: 600, color: '#f4f4f5' }}>
+                {currentFloorObj.label}
+              </span>
+              <span style={{ fontSize: 11, color: '#71717a', fontVariantNumeric: 'tabular-nums' }}>
+                {(floorH * Math.max(0, clampedIdx)).toFixed(0)}m AGL
+              </span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 1 }}>
+              <span style={{
                 fontSize: 10,
-                fontWeight: 700,
-                cursor: 'pointer',
-                transition: 'all 0.15s',
-              }}
-            >
-              {mode.label}
-            </button>
-          ))}
-        </div>
-
-        <div style={{ width: 1, height: 28, background: 'rgba(255,255,255,0.12)' }} />
-
-        {/* 3. Selected Floor Inspector & Jump Button */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <div style={{
-            width: 9,
-            height: 9,
-            borderRadius: '50%',
-            background: currentMeta.color,
-            boxShadow: `0 0 10px ${currentMeta.color}`,
-          }} />
-          <div style={{ display: 'flex', flexDirection: 'column', minWidth: 230 }}>
-            <span style={{
-              fontSize: 11.5,
-              fontWeight: 800,
-              color: '#f8fafc',
-              fontFamily: "'JetBrains Mono', monospace",
-            }}>
-              L{clampedIdx} · {currentFloorObj.label}
-            </span>
-            <span style={{
-              fontSize: 10,
-              color: '#38bdf8',
-              fontFamily: "'JetBrains Mono', monospace",
-              fontWeight: 700,
-              letterSpacing: '0.2px',
-              marginTop: 2,
-              whiteSpace: 'nowrap',
-            }}>
-              🔑 {currentFloorObj.ulpin || currentFloorObj.canonical_rid || getFloorULPIN(building, clampedIdx)}
-            </span>
-            <span style={{ fontSize: 9, color: '#94a3b8', marginTop: 1 }}>
-              {(floorH * Math.max(0, clampedIdx)).toFixed(0)}m AGL · {currentMeta.category}
-            </span>
+                color: '#38bdf8',
+                fontFamily: "'JetBrains Mono', monospace",
+                fontWeight: 500,
+                letterSpacing: '0.1px',
+              }}>
+                {currentFloorObj.ulpin || currentFloorObj.canonical_rid || getFloorULPIN(building, clampedIdx)}
+              </span>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  const code = currentFloorObj.ulpin || currentFloorObj.canonical_rid || getFloorULPIN(building, clampedIdx);
+                  navigator.clipboard?.writeText(code);
+                  setUlpinCopied(true);
+                  setTimeout(() => setUlpinCopied(false), 1400);
+                }}
+                title="Copy Floor 3D-ULPIN"
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  color: ulpinCopied ? '#34d399' : '#71717a',
+                  fontSize: 9.5,
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  padding: '0 2px',
+                }}
+              >
+                {ulpinCopied ? 'Copied' : 'Copy'}
+              </button>
+            </div>
           </div>
 
           <button
-            onClick={() => setViewMode('floor')}
+            onClick={() => clampedIdx < totalFloors - 1 && doFloorChange(clampedIdx + 1)}
+            disabled={clampedIdx >= totalFloors - 1}
+            title="Next Floor (Up)"
             style={{
-              padding: '6px 14px',
-              borderRadius: 8,
+              width: 28,
+              height: 28,
+              borderRadius: 6,
               border: 'none',
-              background: 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)',
-              color: '#ffffff',
-              fontSize: 10.5,
-              fontWeight: 800,
-              cursor: 'pointer',
+              background: 'rgba(255, 255, 255, 0.06)',
+              color: clampedIdx >= totalFloors - 1 ? '#52525b' : '#d4d4d8',
               display: 'flex',
               alignItems: 'center',
-              gap: 6,
-              boxShadow: '0 2px 10px rgba(2, 132, 199, 0.40)',
-              marginLeft: 4,
+              justifyContent: 'center',
+              cursor: clampedIdx >= totalFloors - 1 ? 'not-allowed' : 'pointer',
+              transition: 'all 0.12s ease',
+            }}
+            onMouseEnter={(e) => {
+              if (clampedIdx < totalFloors - 1) e.currentTarget.style.background = '#27272a';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.06)';
             }}
           >
-            <span>Inspect Floor</span>
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
               <polyline points="9 18 15 12 9 6" />
             </svg>
           </button>
         </div>
+
+        <div style={{ width: 1, height: 22, background: '#27272a' }} />
+
+        {/* 2. Facade Modes Segmented Control */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 2,
+          background: '#09090b',
+          borderRadius: 8,
+          padding: 2,
+        }}>
+          {[
+            {
+              id: 'cutaway',
+              label: 'Cutaway',
+              icon: (
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                  <rect x="3" y="3" width="18" height="18" rx="2" />
+                  <line x1="3" y1="12" x2="21" y2="12" />
+                </svg>
+              ),
+            },
+            {
+              id: 'glass',
+              label: 'Glass',
+              icon: (
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                </svg>
+              ),
+            },
+            {
+              id: 'wireframe',
+              label: 'Wireframe',
+              icon: (
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                  <line x1="4" y1="9" x2="20" y2="9" />
+                  <line x1="4" y1="15" x2="20" y2="15" />
+                  <line x1="10" y1="3" x2="8" y2="21" />
+                  <line x1="16" y1="3" x2="14" y2="21" />
+                </svg>
+              ),
+            },
+            {
+              id: 'open',
+              label: 'Solid',
+              icon: (
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                  <rect x="4" y="2" width="16" height="20" rx="2" />
+                  <line x1="9" y1="22" x2="9" y2="18" />
+                  <line x1="15" y1="22" x2="15" y2="18" />
+                </svg>
+              ),
+            },
+          ].map((mode) => (
+            <button
+              key={mode.id}
+              onClick={() => setFacadeMode(mode.id)}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 5,
+                padding: '4px 8px',
+                borderRadius: 6,
+                border: 'none',
+                background: facadeMode === mode.id ? '#27272a' : 'transparent',
+                color: facadeMode === mode.id ? '#ffffff' : '#a1a1aa',
+                boxShadow: facadeMode === mode.id ? '0 1px 2px rgba(0,0,0,0.4)' : 'none',
+                fontSize: 11,
+                fontWeight: facadeMode === mode.id ? 600 : 500,
+                cursor: 'pointer',
+                transition: 'all 0.12s ease',
+              }}
+            >
+              {mode.icon}
+              <span>{mode.label}</span>
+            </button>
+          ))}
+        </div>
+
+        <div style={{ width: 1, height: 22, background: '#27272a' }} />
+
+        {/* 3. Slab Spacing / Dissection Slider */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 5, color: '#a1a1aa' }}>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <polygon points="12 2 2 7 12 12 22 7 12 2" />
+              <polyline points="2 17 12 22 22 17" />
+              <polyline points="2 12 12 17 22 12" />
+            </svg>
+            <span style={{ fontSize: 11, fontWeight: 500 }}>Spacing</span>
+          </div>
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={dissection}
+            onChange={(e) => setDissection(Number(e.target.value))}
+            style={{
+              width: 80,
+              height: 4,
+              accentColor: '#3b82f6',
+              cursor: 'pointer',
+            }}
+          />
+          <span style={{
+            fontSize: 11,
+            color: '#71717a',
+            fontVariantNumeric: 'tabular-nums',
+            minWidth: 26,
+          }}>
+            {dissection}%
+          </span>
+        </div>
+
+        <div style={{ width: 1, height: 22, background: '#27272a' }} />
+
+        {/* 4. Primary View Action */}
+        <button
+          onClick={() => setViewMode('floor')}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 6,
+            padding: '6px 12px',
+            borderRadius: 8,
+            border: 'none',
+            background: '#2563eb',
+            color: '#ffffff',
+            fontSize: 12,
+            fontWeight: 600,
+            cursor: 'pointer',
+            transition: 'background 0.12s ease',
+            boxShadow: '0 1px 3px rgba(37, 99, 235, 0.3)',
+          }}
+          onMouseEnter={(e) => (e.currentTarget.style.background = '#1d4ed8')}
+          onMouseLeave={(e) => (e.currentTarget.style.background = '#2563eb')}
+        >
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+            <rect x="3" y="3" width="18" height="18" rx="2" />
+            <path d="M3 9h18M9 21V9" />
+          </svg>
+          <span>Floor Plan</span>
+        </button>
 
       </div>
 
@@ -1048,23 +1142,25 @@ export default function Building3DView({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'flex-start',
-        gap: 6,
-        background: 'rgba(2, 6, 20, 0.70)',
+        gap: 3,
+        background: 'rgba(24, 24, 27, 0.90)',
         backdropFilter: 'blur(16px)',
-        border: '1px solid rgba(255,255,255,0.08)',
-        borderRadius: 10,
-        padding: '10px 10px',
+        border: '1px solid #27272a',
+        borderRadius: 8,
+        padding: '8px 6px',
         maxHeight: '45vh',
         overflowY: 'auto',
         scrollbarWidth: 'none',
+        boxShadow: '0 4px 20px rgba(0,0,0,0.4)',
       }}>
         <span style={{
           fontSize: 8.5,
-          fontWeight: 800,
-          color: '#64748b',
-          letterSpacing: '1px',
+          fontWeight: 700,
+          color: '#71717a',
+          letterSpacing: '0.8px',
           textTransform: 'uppercase',
-          marginBottom: 4,
+          marginBottom: 3,
+          paddingLeft: 2,
         }}>
           Floors
         </span>
@@ -1083,23 +1179,22 @@ export default function Building3DView({
                 cursor: 'pointer',
                 padding: '2px 4px',
                 borderRadius: 4,
-                background: isAct ? 'rgba(56, 189, 248, 0.20)' : 'transparent',
-                transition: 'all 0.12s',
+                background: isAct ? '#27272a' : 'transparent',
+                transition: 'all 0.12s ease',
               }}
             >
               <div style={{
-                width: 5,
-                height: 5,
+                width: 4,
+                height: 4,
                 borderRadius: '50%',
-                background: isAct ? fm.color : 'rgba(255,255,255,0.25)',
-                boxShadow: isAct ? `0 0 6px ${fm.color}` : 'none',
+                background: isAct ? '#38bdf8' : 'rgba(255,255,255,0.2)',
               }} />
               <span style={{
-                fontSize: 9,
-                fontWeight: isAct ? 800 : 500,
-                color: isAct ? '#38bdf8' : 'rgba(255,255,255,0.40)',
+                fontSize: 9.5,
+                fontWeight: isAct ? 600 : 400,
+                color: isAct ? '#f4f4f5' : '#71717a',
                 fontFamily: "'JetBrains Mono', monospace",
-                minWidth: 26,
+                minWidth: 24,
               }}>
                 L{fi}
               </span>
