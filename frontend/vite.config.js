@@ -7,4 +7,7 @@ export default defineConfig({
     react(),
     cesium(),
   ],
+  preview: {
+    allowedHosts: ['all', '.railway.app'],
+  },
 })
