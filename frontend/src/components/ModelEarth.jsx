@@ -11,10 +11,25 @@ export default function ModelEarth() {
     const width = container.clientWidth || 540;
     const height = container.clientHeight || 540;
 
-    // 1. Scene & Camera (Grand, impactful scale filling the hero viewpoint)
+    // 1. Scene & Camera
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
-    camera.position.set(0, 0, 5.1);
+
+    // Dynamic distance calculation: guarantees the sphere is ALWAYS 100% unclipped
+    // with smooth breathing room whether the viewport is wide, square, or tall
+    const updateCameraDistance = (w, h) => {
+      const aspect = w / h;
+      camera.aspect = aspect;
+      const fovRad = (camera.fov * Math.PI) / 180;
+      const halfTan = Math.tan(fovRad / 2);
+      // Calibrated fill factor: 82% of the minimum dimension ensures the sphere
+      // is bold and large while leaving clean padding so no box edge ever slices it
+      const minFactor = Math.min(1.0, aspect);
+      const targetZ = 2.0 / (0.82 * halfTan * minFactor);
+      camera.position.set(0, 0, targetZ);
+      camera.updateProjectionMatrix();
+    };
+    updateCameraDistance(width, height);
 
     // 2. Renderer
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -138,8 +153,7 @@ export default function ModelEarth() {
       const w = container.clientWidth;
       const h = container.clientHeight;
       if (w === 0 || h === 0) return;
-      camera.aspect = w / h;
-      camera.updateProjectionMatrix();
+      updateCameraDistance(w, h);
       renderer.setSize(w, h);
     });
     resizeObserver.observe(container);
