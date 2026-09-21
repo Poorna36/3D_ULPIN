@@ -22,10 +22,10 @@ export default function ModelEarth() {
       camera.aspect = aspect;
       const fovRad = (camera.fov * Math.PI) / 180;
       const halfTan = Math.tan(fovRad / 2);
-      // Calibrated fill factor: 82% of the minimum dimension ensures the sphere
-      // is bold and large while leaving clean padding so no box edge ever slices it
+      // 75% fill factor guarantees 12.5% safety margin on all sides:
+      // completely circular, zero clipping on canvas edges in any viewport ratio
       const minFactor = Math.min(1.0, aspect);
-      const targetZ = 2.0 / (0.82 * halfTan * minFactor);
+      const targetZ = 2.0 / (0.75 * halfTan * minFactor);
       camera.position.set(0, 0, targetZ);
       camera.updateProjectionMatrix();
     };

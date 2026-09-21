@@ -66,12 +66,12 @@ export default function LandingPage({ onEnter, isExiting = false }) {
       </nav>
 
       {/* ── Main Hero Content ────────────────────────────────────── */}
-      <div style={{ flex: 1, position: 'relative', overflow: 'hidden', display: 'flex', alignItems: 'center' }}>
+      <div style={{ flex: 1, position: 'relative', display: 'flex', alignItems: 'center', width: '100%', height: '100%' }}>
         <div style={{
           flex: 1, display: 'grid',
-          gridTemplateColumns: '1.15fr 0.85fr',
-          position: 'relative', overflow: 'hidden',
-          maxWidth: 1400, margin: '0 auto', width: '100%',
+          gridTemplateColumns: 'minmax(460px, 1fr) 1.25fr',
+          position: 'relative',
+          width: '100%',
           height: '100%',
         }}>
           {/* Left: Text & Metrics */}
@@ -167,27 +167,17 @@ export default function LandingPage({ onEnter, isExiting = false }) {
             </div>
           </div>
 
-          {/* Right: Model 3D Earth Globe - Perfectly framed, unclipped */}
+          {/* Right: Model 3D Earth Globe - Completely unrestricted, zero box clipping */}
           <div style={{
             flex: 1,
             height: '100%',
+            width: '100%',
             position: 'relative',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            overflow: 'visible',
-            padding: '16px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
           }}>
-            <div style={{
-              width: '100%',
-              height: '100%',
-              maxWidth: 780,
-              maxHeight: 'min(780px, 85vh)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              position: 'relative',
-            }}>
-              <ModelEarth />
-            </div>
+            <ModelEarth />
           </div>
         </div>
       </div>
