@@ -10,6 +10,7 @@ from contextlib import asynccontextmanager
 from typing import Optional, List, Dict, Any
 
 from fastapi import FastAPI, HTTPException, Query, Path, status
+from fastapi.responses import RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
 
 from backend.api.schemas import (
@@ -196,6 +197,11 @@ try:
     app.include_router(photogrammetry_router)
 except ImportError:
     pass
+
+
+@app.get("/", include_in_schema=False)
+def root():
+    return RedirectResponse(url="/docs")
 
 
 @app.get("/health", summary="Health check endpoint")
