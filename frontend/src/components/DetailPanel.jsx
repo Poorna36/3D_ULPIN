@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 import StatusBadge from './StatusBadge.jsx';
 import { OBJECT_CLASSES } from '../utils/grammar.js';
 import { searchBuildingsQuery, getFloorULPIN } from '../utils/ulpinGenerator.js';
