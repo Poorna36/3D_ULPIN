@@ -10,7 +10,7 @@ const PHOTOGRAMMETRY_STEPS = [
   { id: 'identify',  label: 'Prototype 3D ULPIN Assignment',   desc: 'Deterministic vertical cadastral spatial ID',    icon: '🔑' },
 ];
 
-export default function PhotogrammetryPanel({ onStatusChange, onBuildingGenerated, currentCity, onClose }) {
+export default function PhotogrammetryPanel({ onStatusChange, onBuildingGenerated, onFlyToBuilding, currentCity, onClose }) {
   const [surveys, setSurveys] = useState([]);
   const [selectedSurveyId, setSelectedSurveyId] = useState('SURV-IN-BLR-UAV-01');
   const [steps, setSteps] = useState(PHOTOGRAMMETRY_STEPS.map(s => ({ ...s, progress: 0, status: 'idle' })));
@@ -236,6 +236,40 @@ export default function PhotogrammetryPanel({ onStatusChange, onBuildingGenerate
               <span style={{ color: 'var(--text-secondary)' }}>GNSS Georeference: </span>
               <span style={{ color: '#10b981' }}>RTK Fixed (Sub-5cm)</span>
             </div>
+          </div>
+
+          <div style={{ marginTop: '12px', display: 'flex', gap: '10px' }}>
+            <button
+              className="btn btn-primary"
+              id="fly-to-building-btn"
+              onClick={() => {
+                if (result?.reconstructed_building && onFlyToBuilding) {
+                  onFlyToBuilding(result.reconstructed_building);
+                }
+              }}
+              style={{
+                flex: 1,
+                padding: '9px 16px',
+                fontSize: '12px',
+                fontWeight: 700,
+                background: 'linear-gradient(135deg, #0284c7 0%, #06b6d4 100%)',
+                boxShadow: '0 0 16px rgba(6, 182, 212, 0.45)',
+                border: 'none',
+                borderRadius: '6px',
+                color: '#ffffff',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                transition: 'all 0.2s ease'
+              }}
+              onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 0 24px rgba(6, 182, 212, 0.7)'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
+              onMouseLeave={e => { e.currentTarget.style.boxShadow = '0 0 16px rgba(6, 182, 212, 0.45)'; e.currentTarget.style.transform = 'translateY(0)'; }}
+            >
+              <span>🌐</span>
+              <span>Fly to Reconstructed 3D Building on Globe</span>
+            </button>
           </div>
         </div>
       )}

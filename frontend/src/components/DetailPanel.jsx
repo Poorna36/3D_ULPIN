@@ -6,7 +6,26 @@ import { OBJECT_CLASSES } from '../utils/grammar.js';
 // Derives visual identity from building name using keyword matching.
 // Returns: { type, label, accent, dimAccent, icon }
 function classifyBuilding(name = '', height = 0, floorCount = 0) {
-  const n = name.toLowerCase();
+  // Drone / Photogrammetry
+  if (/drone|uav|photogrammetry|cadastre hub|sfm/.test(n)) {
+    return {
+      type: 'drone',
+      label: 'UAV SURVEY',
+      accent: '#06b6d4',
+      dimAccent: 'rgba(6, 182, 212, 0.12)',
+      borderAccent: 'rgba(6, 182, 212, 0.35)',
+      icon: (
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="3" />
+          <path d="M5 5l4 4m6 0l4-4M5 19l4-4m6 0l4 4" />
+          <line x1="3" y1="5" x2="7" y2="5" />
+          <line x1="17" y1="5" x2="21" y2="5" />
+          <line x1="3" y1="19" x2="7" y2="19" />
+          <line x1="17" y1="19" x2="21" y2="19" />
+        </svg>
+      ),
+    };
+  }
 
   // Metro / Underground Infrastructure
   if (/metro|underground|station|viaduct|tunnel|railway|rail|airport|flyover/.test(n)) {

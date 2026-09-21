@@ -89,12 +89,34 @@ export async function processDroneSurvey(surveyParams) {
   await delay(600);
   const city = surveyParams.city || 'bengaluru';
   const prefix = city.slice(0, 3).toUpperCase();
+  const bldId = `${prefix}-DRONE-${Math.floor(1000 + Math.random() * 9000)}`;
   return {
     success: true,
     survey_id: surveyParams.survey_id || "SURV-IN-BLR-UAV-01",
     prototype_3d_id: `3D-IN-${prefix}-F08-A9F3C1`,
     message: "Reconstructed 3D building and vertical volumes from drone photogrammetry",
     processing_time_s: 0.35,
+    reconstructed_building: {
+      building_id: bldId,
+      name: `UAV Reconstructed: ${city.toUpperCase()} Cadastre Hub`,
+      city: city,
+      lat: 12.9736,
+      lon: 77.5950,
+      ground_elevation: 920.0,
+      roof_elevation: 956.0,
+      height: 36.0,
+      floor_count: 12,
+      source: "Drone Photogrammetry (GSD 2.4cm)",
+      confidence: "AUTHORITATIVE_SURVEY",
+      validation_status: "VALID",
+      prototype_3d_id: `3D-IN-${prefix}-F08-A9F3C1`,
+      units: Array.from({ length: 12 }).map((_, idx) => ({
+        unit_id: `U${idx + 1 < 10 ? '0' + (idx + 1) : idx + 1}`,
+        floor: idx + 1,
+        z_min: 920 + idx * 3,
+        z_max: 920 + (idx + 1) * 3
+      }))
+    },
     validation_report: {
       overall_status: "VALID",
       checks: [

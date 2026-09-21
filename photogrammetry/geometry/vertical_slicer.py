@@ -148,3 +148,7 @@ class VerticalPropertySlicer:
             "total_volumes": len(property_volumes),
             "total_volume_m3": sum(v["volume_m3"] for v in property_volumes)
         }
+
+
+# Alias for backward compatibility
+VerticalSlicer = VerticalPropertySlicer

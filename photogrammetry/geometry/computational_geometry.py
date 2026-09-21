@@ -85,15 +85,17 @@ def segments_intersect(p1, p2, p3, p4) -> bool:
 
 def has_self_intersection(polygon: List[List[float]]) -> bool:
     """Check if a polygon self-intersects."""
-    n = len(polygon)
+    # Strip closing duplicate vertex if present (standard GeoJSON polygon closes with first vertex)
+    pts = polygon[:-1] if len(polygon) > 3 and polygon[0] == polygon[-1] else polygon
+    n = len(pts)
     if n < 4:
         return False
     for i in range(n):
         for j in range(i + 2, n):
             if (i == 0 and j == n - 1):
                 continue
-            p1, p2 = polygon[i], polygon[(i + 1) % n]
-            p3, p4 = polygon[j], polygon[(j + 1) % n]
+            p1, p2 = pts[i], pts[(i + 1) % n]
+            p3, p4 = pts[j], pts[(j + 1) % n]
             if segments_intersect(p1, p2, p3, p4):
                 return True
     return False

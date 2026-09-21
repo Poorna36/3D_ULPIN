@@ -139,6 +139,9 @@ function strHash(s) {
 
 // ── Proportional architectural building footprints ───────────────────────────
 function buildingFootprint(b) {
+  if (b.footprint && Array.isArray(b.footprint) && b.footprint.length >= 3) {
+    return b.footprint.map(([lon, lat]) => Cartesian3.fromDegrees(lon, lat, 0));
+  }
   const id    = b.building_id || 'BLD000';
   const hash  = strHash(id);
   const shape = hash % 8;
@@ -1049,8 +1052,10 @@ export default function CesiumViewer({
   const viewerRef            = useRef(null);
   const entityMapRef         = useRef({});
   const pendingCityRef       = useRef(city);
-  const targetBuildings      = (allBuildings && allBuildings.length) ? allBuildings : buildings;
-  const targetParcels        = (allParcels && allParcels.length)     ? allParcels   : parcels;
+  const dynamicBuildings = (buildings || []).filter(b => !(allBuildings || []).some(ab => ab.building_id === b.building_id));
+  const targetBuildings      = [...dynamicBuildings, ...(allBuildings || [])];
+  const dynamicParcels   = (parcels || []).filter(p => !(allParcels || []).some(ap => ap.parcel_id === p.parcel_id));
+  const targetParcels        = [...dynamicParcels, ...(allParcels || [])];
   const buildingsRef         = useRef(targetBuildings);
   const tilesetRef           = useRef(null);
   const googleTilesetRef     = useRef(null);

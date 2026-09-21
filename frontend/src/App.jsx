@@ -13,7 +13,7 @@ import ConflictWorkflowModal from './components/ConflictWorkflowModal.jsx';
 import VerticalStrataExplorer from './components/VerticalStrataExplorer.jsx';
 import OpenAPISandboxModal from './components/OpenAPISandboxModal.jsx';
 import CadastreExportModal from './components/CadastreExportModal.jsx';
-import SpecialistPage      from './components/SpecialistPage.jsx';
+import PhotogrammetryPage  from './components/PhotogrammetryPage.jsx';
 import { getBuildings, getParcels, getAllPilotData } from './mock/api.js';
 
 const DEFAULT_LAYERS = {
@@ -63,8 +63,7 @@ export default function App() {
   const [explodedFloor, setExplodedFloor] = useState(null);
   const [aiStatus, setAIStatus]           = useState('idle');
   const [showAI, setShowAI]               = useState(false);
-  const [showPhotogrammetry, setShowPhotogrammetry] = useState(false);
-  const [showSpecialist, setShowSpecialist]         = useState(false);
+  const [showPhotogrammetryPage, setShowPhotogrammetryPage] = useState(false);
   const [cityBanner, setCityBanner]       = useState(null);
   const [showLanding, setShowLanding]     = useState(true);
   const [landingExiting, setLandingExiting] = useState(false);
@@ -142,6 +141,21 @@ export default function App() {
       setLandingExiting(false);
     }, 520);
   }, [handleCitySelect]);
+
+  // Seamless jump from Photogrammetry reconstruction to live 3D Cesium globe
+  const handleFlyToBuilding = useCallback((bld) => {
+    if (!bld) return;
+    const targetCity = bld.city || 'bengaluru';
+    if (city !== targetCity) {
+      setCity(targetCity);
+      setFlyTimestamp(Date.now());
+    }
+    setBuildings(prev => [bld, ...prev.filter(b => b.building_id !== bld.building_id)]);
+    setSelected(bld);
+    setShowLanding(false);
+    setShowPhotogrammetryPage(false);
+    setSidebarCollapsed(false);
+  }, [city]);
 
   // Load buildings & parcels when city changes — instant preloaded resolution prevents flight lag
   useEffect(() => {
@@ -229,7 +243,6 @@ export default function App() {
       {(showLanding || landingExiting) && (
         <LandingPage
           onEnter={handleEnterApp}
-          onOpenSpecialist={() => { setShowLanding(false); setShowSpecialist(true); }}
           isExiting={landingExiting}
         />
       )}
@@ -256,8 +269,7 @@ export default function App() {
           onOpenSandbox={() => setShowSandbox(true)}
           onOpenExport={() => setShowExport(true)}
           onOpenAtlas={() => setShowAtlas(true)}
-          onOpenPhotogrammetry={() => setShowPhotogrammetry(true)}
-          onOpenSpecialist={() => setShowSpecialist(true)}
+          onOpenPhotogrammetry={() => setShowPhotogrammetryPage(true)}
         />
       )}
 
@@ -377,44 +389,46 @@ export default function App() {
         </div>
       )}
 
-      {/* Floating Action Buttons: AI Pipeline & Photogrammetry */}
-      <div style={{
-        position: 'fixed',
-        bottom: 24, left: '50%', transform: 'translateX(-50%)',
-        zIndex: 70,
-        display: 'flex', gap: '10px', alignItems: 'center'
-      }}>
-        <button
-          id="ai-panel-toggle-btn"
-          className="btn ai-fab"
-          onClick={() => setShowAI(v => !v)}
-          title="Toggle AI/ML Pipeline panel (H1–H4)"
-          style={{ position: 'static', transform: 'none' }}
-        >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ verticalAlign: '-1px' }}>
-            <circle cx="12" cy="12" r="3"/>
-            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-          </svg>
-          <span>AI Pipeline</span>
-        </button>
+      {/* Floating Action Buttons: AI Pipeline & Photogrammetry (Main Globe Page Only) */}
+      {!showLanding && (
+        <div style={{
+          position: 'fixed',
+          bottom: 24, left: '50%', transform: 'translateX(-50%)',
+          zIndex: 70,
+          display: 'flex', gap: '10px', alignItems: 'center'
+        }}>
+          <button
+            id="ai-panel-toggle-btn"
+            className="btn ai-fab"
+            onClick={() => setShowAI(v => !v)}
+            title="Toggle AI/ML Pipeline panel (H1–H4)"
+            style={{ position: 'static', transform: 'none' }}
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ verticalAlign: '-1px' }}>
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+            <span>AI Pipeline</span>
+          </button>
 
-        <button
-          id="photogrammetry-toggle-btn"
-          className="btn photogrammetry-fab"
-          onClick={() => setShowPhotogrammetry(v => !v)}
-          title="Toggle Photogrammetry & Drone Ingestion panel"
-        >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ verticalAlign: '-1px' }}>
-            <circle cx="12" cy="12" r="3" />
-            <path d="M5 5l4 4m6 0l4-4M5 19l4-4m6 0l4 4" />
-            <line x1="3" y1="5" x2="7" y2="5" />
-            <line x1="17" y1="5" x2="21" y2="5" />
-            <line x1="3" y1="19" x2="7" y2="19" />
-            <line x1="17" y1="19" x2="21" y2="19" />
-          </svg>
-          <span>Photogrammetry</span>
-        </button>
-      </div>
+          <button
+            id="photogrammetry-toggle-btn"
+            className="btn photogrammetry-fab"
+            onClick={() => setShowPhotogrammetryPage(v => !v)}
+            title="Toggle Photogrammetry & Drone Ingestion Studio"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ verticalAlign: '-1px' }}>
+              <circle cx="12" cy="12" r="3" />
+              <path d="M5 5l4 4m6 0l4-4M5 19l4-4m6 0l4 4" />
+              <line x1="3" y1="5" x2="7" y2="5" />
+              <line x1="17" y1="5" x2="21" y2="5" />
+              <line x1="3" y1="19" x2="7" y2="19" />
+              <line x1="17" y1="19" x2="21" y2="19" />
+            </svg>
+            <span>Photogrammetry</span>
+          </button>
+        </div>
+      )}
 
       {showAI && (
         <AIPipelinePanel
@@ -423,20 +437,19 @@ export default function App() {
         />
       )}
 
-      {showPhotogrammetry && (
-        <PhotogrammetryPanel
-          currentCity={city}
-          onClose={() => setShowPhotogrammetry(false)}
+      {showPhotogrammetryPage && (
+        <PhotogrammetryPage
+          onBack={() => setShowPhotogrammetryPage(false)}
           onBuildingGenerated={(bld) => {
+            const targetCity = bld.city || 'bengaluru';
+            if (city !== targetCity) {
+              setCity(targetCity);
+              setFlyTimestamp(Date.now());
+            }
             setSelected(bld);
             setBuildings(prev => [bld, ...prev.filter(b => b.building_id !== bld.building_id)]);
           }}
-        />
-      )}
-
-      {showSpecialist && (
-        <SpecialistPage
-          onBack={() => setShowSpecialist(false)}
+          onFlyToBuilding={handleFlyToBuilding}
         />
       )}
 

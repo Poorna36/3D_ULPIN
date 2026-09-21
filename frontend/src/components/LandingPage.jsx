@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import ModelEarth from './ModelEarth.jsx';
 
-export default function LandingPage({ onEnter, onOpenSpecialist, isExiting = false }) {
+export default function LandingPage({ onEnter, isExiting = false }) {
   const [activeTab, setActiveTab] = useState('OVERVIEW');
   const [showDossier, setShowDossier] = useState(false);
 
@@ -80,29 +80,6 @@ export default function LandingPage({ onEnter, onOpenSpecialist, isExiting = fal
 
         {/* Right actions */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          {onOpenSpecialist && (
-            <button
-              onClick={onOpenSpecialist}
-              id="landing-specialist-btn"
-              style={{
-                padding: '6px 14px', borderRadius: 999,
-                background: 'rgba(168, 85, 247, 0.15)',
-                border: '1px solid rgba(168, 85, 247, 0.45)',
-                color: '#e9d5ff',
-                fontFamily: 'inherit', fontWeight: 600, fontSize: 11,
-                cursor: 'pointer', letterSpacing: '0.3px',
-                transition: 'all 0.15s',
-                display: 'flex', alignItems: 'center', gap: 6,
-              }}
-              onMouseEnter={e => { e.currentTarget.style.borderColor = '#c084fc'; e.currentTarget.style.background = 'rgba(168, 85, 247, 0.28)'; }}
-              onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(168, 85, 247, 0.45)'; e.currentTarget.style.background = 'rgba(168, 85, 247, 0.15)'; }}
-              title="Open Specialist Branch Hub"
-            >
-              <span style={{ color: '#c084fc' }}>⚡</span>
-              <span>SPECIALIST LAB</span>
-            </button>
-          )}
-
           <button
             onClick={() => setShowDossier(true)}
             style={{

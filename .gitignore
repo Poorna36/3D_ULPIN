@@ -28,15 +28,9 @@ scratch/
 *.sqlite
 *.sqlite3
 
-# Environment files
-.env
-.env.*
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-*.env
-!.env.example
+# Environment files (strict: exclude any env file, normal or example)
+.env*
+*.env*
 
 # IDE
 .vscode/

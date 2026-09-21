@@ -65,7 +65,6 @@ export default function WorkbenchCockpit({
   onOpenExport,
   sidebarOpen = false,
   onOpenPhotogrammetry,
-  onOpenSpecialist,
 }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const fileInputRef = useRef(null);
@@ -195,21 +194,22 @@ export default function WorkbenchCockpit({
 
           <button
             onClick={onOpenPhotogrammetry}
+            id="photogrammetry-btn"
             style={{
               display: 'flex', alignItems: 'center', gap: 7,
               background: '#0a0a0c',
-              border: '1px solid rgba(255, 255, 255, 0.14)',
+              border: '1px solid rgba(56, 189, 248, 0.45)',
               borderRadius: 999, height: 30, padding: '0 13px',
-              color: '#f3f4f6', fontSize: 11, fontWeight: 600,
+              color: '#38bdf8', fontSize: 11, fontWeight: 600,
               fontFamily: "'Space Grotesk', sans-serif",
               cursor: 'pointer', transition: 'all 0.15s',
-              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.6)',
+              boxShadow: '0 0 12px rgba(56, 189, 248, 0.20)',
             }}
-            onMouseEnter={e => { e.currentTarget.style.background = '#141418'; e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.28)'; }}
-            onMouseLeave={e => { e.currentTarget.style.background = '#0a0a0c'; e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.14)'; }}
-            title="UAV Photogrammetry & Ingestion (SVAMITVA / ODM SfM)"
+            onMouseEnter={e => { e.currentTarget.style.background = '#141418'; e.currentTarget.style.borderColor = '#38bdf8'; e.currentTarget.style.boxShadow = '0 0 18px rgba(56, 189, 248, 0.40)'; }}
+            onMouseLeave={e => { e.currentTarget.style.background = '#0a0a0c'; e.currentTarget.style.borderColor = 'rgba(56, 189, 248, 0.45)'; e.currentTarget.style.boxShadow = '0 0 12px rgba(56, 189, 248, 0.20)'; }}
+            title="UAV Drone Photogrammetry, ODM SfM Triangulation & 3D Vertical Slicing"
           >
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.85 }}>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.9 }}>
               <circle cx="12" cy="12" r="3" />
               <path d="M5 5l4 4m6 0l4-4M5 19l4-4m6 0l4 4" />
               <line x1="3" y1="5" x2="7" y2="5" />
@@ -217,7 +217,7 @@ export default function WorkbenchCockpit({
               <line x1="3" y1="19" x2="7" y2="19" />
               <line x1="17" y1="19" x2="21" y2="19" />
             </svg>
-            <span>Drone (UAV)</span>
+            <span>Photogrammetry</span>
           </button>
 
           <button
@@ -240,29 +240,6 @@ export default function WorkbenchCockpit({
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
             </svg>
             <span>Export</span>
-          </button>
-
-          <button
-            onClick={onOpenSpecialist}
-            id="specialist-branch-btn"
-            style={{
-              display: 'flex', alignItems: 'center', gap: 7,
-              background: 'linear-gradient(135deg, #130e22 0%, #0d1222 100%)',
-              border: '1px solid rgba(192, 132, 252, 0.45)',
-              borderRadius: 999, height: 30, padding: '0 13px',
-              color: '#e9d5ff', fontSize: 11, fontWeight: 600,
-              fontFamily: "'Space Grotesk', sans-serif",
-              cursor: 'pointer', transition: 'all 0.15s',
-              boxShadow: '0 0 12px rgba(168, 85, 247, 0.25)',
-            }}
-            onMouseEnter={e => { e.currentTarget.style.borderColor = '#c084fc'; e.currentTarget.style.boxShadow = '0 0 18px rgba(168, 85, 247, 0.50)'; }}
-            onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(192, 132, 252, 0.45)'; e.currentTarget.style.boxShadow = '0 0 12px rgba(168, 85, 247, 0.25)'; }}
-            title="Open Specialist Branch Hub (Full Specialist Code, Digital Twin Labs & Drone Photogrammetry)"
-          >
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: '#c084fc' }}>
-              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-            </svg>
-            <span>Specialist Branch</span>
           </button>
         </div>
       </header>
