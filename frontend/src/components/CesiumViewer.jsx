@@ -17,7 +17,8 @@ import {
 } from 'cesium';
 import 'cesium/Build/Cesium/Widgets/widgets.css';
 
-Ion.defaultAccessToken = import.meta.env.VITE_CESIUM_ION_TOKEN ?? '';
+const CESIUM_ION_DEFAULT_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJub25jZSI6Im1fdHMtZlgyVUlLckFFMW0iLCJqdGkiOiJmODlmMDIxZi1hZTNiLTQwYTQtYTQ3Ny0xNjU0Y2Y5OGJlZDAiLCJpZCI6NDc2MjM5LCJzdWIiOiJ6b2dyYXRpcyIsImlzcyI6Imh0dHBzOi8vYXBpLmNlc2l1bS5jb20iLCJhdWQiOiJoYWNrYXRob24iLCJpYXQiOjE3ODk3MzU5Njh9.JQSDT4EmP0MXaKawkKy4AHPE-qc1iG_Chm2kim7wFTs';
+Ion.defaultAccessToken = import.meta.env.VITE_CESIUM_ION_TOKEN || CESIUM_ION_DEFAULT_TOKEN;
 
 // Maximize parallel HTTP/2 tile streaming to eliminate blank tile delays
 try {
@@ -1242,17 +1243,16 @@ export default function CesiumViewer({
   useEffect(() => {
     if (!containerRef.current || viewerRef.current) return;
 
-    // High-resolution photorealistic satellite imagery (Esri World Imagery) — zero tokens / keys required
-    const baseLayer = new ImageryLayer(
-      new UrlTemplateImageryProvider({
-        url: 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-        maximumLevel: 19,
-        credit: '© Esri, Maxar, Earthstar Geographics',
-      })
-    );
+    // High-resolution photorealistic satellite imagery directly from Cesium Ion
+    const baseLayer = ImageryLayer.fromWorldImagery({
+      style: IonWorldImageryStyle.AERIAL,
+    });
 
-    // Flat ellipsoid terrain — zero tokens required
-    const terrain = new Terrain(new EllipsoidTerrainProvider());
+    // 3D elevation terrain with realistic water masking & normals
+    const terrain = Terrain.fromWorldTerrain({
+      requestWaterMask: true,
+      requestVertexNormals: true,
+    });
 
     const viewer = new Viewer(containerRef.current, {
       animation:            false,
