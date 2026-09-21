@@ -181,7 +181,7 @@ export default function LandingPage({ onEnter, isExiting = false }) {
                   onMouseEnter={e => { e.currentTarget.style.background = '#e5e7eb'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
                   onMouseLeave={e => { e.currentTarget.style.background = '#ffffff'; e.currentTarget.style.transform = 'translateY(0)'; }}
                 >
-                  Launch 3D Workbench
+                  Launch
                 </button>
                 <button
                   onClick={() => setActiveTab('PIPELINE')}
