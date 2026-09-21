@@ -272,7 +272,7 @@ export default function App() {
           onOpenStrata={() => setShowStrata(true)}
           onOpenSandbox={() => setShowSandbox(true)}
           onOpenExport={() => setShowExport(true)}
-          onOpenAtlas={() => setShowAtlas(true)}
+          onOpenAtlas={() => {}}
           onOpenPhotogrammetry={() => setShowPhotogrammetry(true)}
         />
       )}
@@ -440,34 +440,7 @@ export default function App() {
         </div>
       )}
 
-      {/* Floating Action Buttons: AI Pipeline & Photogrammetry */}
-      <div style={{
-        position: 'fixed',
-        bottom: 24, left: '50%', transform: 'translateX(-50%)',
-        zIndex: 70,
-        display: 'flex', gap: '10px', alignItems: 'center'
-      }}>
-        <button
-          id="ai-panel-toggle-btn"
-          className="btn ai-fab"
-          onClick={() => setShowAI(v => !v)}
-          title="Toggle AI/ML Pipeline panel (H1–H4)"
-          style={{ position: 'static', transform: 'none' }}
-        >
-          <span>🧠</span>
-          <span>AI Pipeline</span>
-        </button>
 
-        <button
-          id="photogrammetry-toggle-btn"
-          className="btn photogrammetry-fab"
-          onClick={() => setShowPhotogrammetry(v => !v)}
-          title="Toggle Photogrammetry & Drone Ingestion panel"
-        >
-          <span>🚁</span>
-          <span>Photogrammetry</span>
-        </button>
-      </div>
 
       {showAI && (
         <AIPipelinePanel

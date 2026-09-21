@@ -92,7 +92,21 @@ export default function PhotogrammetryPanel({ onStatusChange, onBuildingGenerate
   const overallProgress = steps.reduce((a, s) => a + s.progress, 0) / steps.length;
 
   return (
-    <div className="ai-panel glass anim-fade-up" id="photogrammetry-panel" style={{ width: '580px', maxWidth: '95vw', maxHeight: '88vh', display: 'flex', flexDirection: 'column' }}>
+    <div style={{
+      position: 'fixed', inset: 0, zIndex: 300,
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      background: 'rgba(0,0,0,0.45)', backdropFilter: 'blur(4px)',
+    }}>
+    <div className="glass anim-fade-up" id="photogrammetry-panel" style={{
+      position: 'relative',
+      width: '600px', maxWidth: '96vw', maxHeight: '90vh',
+      display: 'flex', flexDirection: 'column',
+      background: 'rgba(8,16,30,0.97)',
+      border: '1px solid rgba(56,189,248,0.35)',
+      borderRadius: '14px',
+      boxShadow: '0 0 60px rgba(56,189,248,0.18), 0 24px 80px rgba(0,0,0,0.7)',
+      overflow: 'hidden',
+    }}>
       
       {/* Header */}
       <div className="ai-panel-header" style={{ padding: '14px 18px', borderBottom: '1px solid var(--border)' }}>
@@ -244,6 +258,7 @@ export default function PhotogrammetryPanel({ onStatusChange, onBuildingGenerate
       <div style={{ padding: '10px 18px', borderTop: '1px solid var(--border)', fontSize: '11px', color: 'var(--text-secondary)' }}>
         ℹ OpenDroneMap (ODM) Structure-from-Motion geometry. Compliant with <strong>Survey of India CORS Network</strong> and <strong>SVAMITVA Drone Cadastre Specification</strong>.
       </div>
+    </div>
     </div>
   );
 }
