@@ -159,7 +159,7 @@ export default function App() {
 
   // Load buildings & parcels when city changes — instant preloaded resolution prevents flight lag
   useEffect(() => {
-    setSelected(null);
+    setSelected(prev => (prev?.city === city ? prev : null));
     setExplodedFloor(null);
     if (!city) {
       setBuildings([]);
@@ -211,8 +211,10 @@ export default function App() {
       handleCitySelect(b.city);
     }
     setSelected(b);
-    setInteriorActive(false);
+    setInteriorActive(true);
     setCurrentFloorIdx(0);
+    const floorList = buildFullFloorList(b);
+    flyToFloorFnRef.current?.(b, 0, floorList);
   }, [city, handleCitySelect]);
 
   // Interior walkthrough handlers
@@ -327,6 +329,9 @@ export default function App() {
           onOpenValidationConsole={() => setShowValidation(true)}
           onOpenStrata={() => setShowStrata(true)}
           onOpenExport={() => setShowExport(true)}
+          onReturnToEarth={handleReturnToEarth}
+          onCitySelect={handleCitySelect}
+          allBuildings={allBuildings}
         />
       )}
 

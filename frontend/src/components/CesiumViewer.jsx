@@ -1302,10 +1302,19 @@ export default function CesiumViewer({
     // Preemptively pre-warm elevation and satellite tiles for Bengaluru, Mumbai, Rotterdam, Singapore
     preloadPilotCities(viewer, baseLayer);
 
-    // ── Native 1:1 Hardware Pixel Resolution & Razor-Sharp Imagery ───────────
+    // ── Ultra-Sharp High-DPI Resolution & High-Detail Globe Imagery ─────────
     viewer.useBrowserRecommendedResolution = false;
-    viewer.resolutionScale = 1.0; // 1.0 guarantees locked 60fps without high-DPI GPU frame drops
-    viewer.scene.highDynamicRange = false;
+    const dpr = typeof window !== 'undefined' ? (window.devicePixelRatio || 1.0) : 1.0;
+    viewer.resolutionScale = Math.min(Math.max(dpr, 1.5), 2.0); // Ultra-sharp 1.5x - 2.0x retina resolution
+    viewer.scene.globe.maximumScreenSpaceError = 1.0; // High-detail terrain & imagery tile loading (crisp satellite textures)
+    viewer.scene.globe.tileCacheSize = 1000;
+    viewer.scene.globe.loadingDescendantLimit = 16;
+    viewer.scene.globe.preloadAncestors = true;
+    viewer.scene.globe.preloadSiblings = true;
+    try {
+      viewer.scene.msaaSamples = 4; // 4x hardware multisample anti-aliasing
+    } catch {}
+    viewer.scene.highDynamicRange = true;
 
     // Enable maximum hardware anisotropic filtering for razor-sharp curvature
     try {

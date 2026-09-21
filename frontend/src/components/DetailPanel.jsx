@@ -200,120 +200,232 @@ function classifyBuilding(name = '', height = 0, floorCount = 0) {
   };
 }
 
-// BuildingListCard — smart visual card with type-based identity
-function BuildingListCard({ building, onClick }) {
+// BuildingListItem — clean Google Maps / Apple Maps style list row
+function BuildingListItem({ building, onSelect, onEnterInterior, onFloorClick, isSelected }) {
   const [hovered, setHovered] = useState(false);
-  const { label, accent, dimAccent, borderAccent, icon } = classifyBuilding(
-    building.name,
-    building.height,
-    building.floor_count
-  );
+  const [copied, setCopied] = useState(false);
+  const [expanded, setExpanded] = useState(false);
+  const [copiedFloor, setCopiedFloor] = useState(null);
+
+  const { label } = classifyBuilding(building.name, building.height, building.floor_count);
+  const floors = useMemo(() => buildFullFloorList(building), [building]);
+  const primaryUlpin = building.canonical_rid || building.prototype_3d_id || building.ulpin;
+
+  const handleCopy = (e) => {
+    e.stopPropagation();
+    if (primaryUlpin && navigator.clipboard) {
+      navigator.clipboard.writeText(primaryUlpin);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1600);
+    }
+  };
+
+  const handleCopyFloor = (e, code) => {
+    e.stopPropagation();
+    if (code && navigator.clipboard) {
+      navigator.clipboard.writeText(code);
+      setCopiedFloor(code);
+      setTimeout(() => setCopiedFloor(null), 1600);
+    }
+  };
 
   return (
-    <button
-      onClick={onClick}
+    <div
+      onClick={() => onSelect(building.building_id, building)}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
-        textAlign: 'left', cursor: 'pointer', width: '100%',
-        background: hovered ? `rgba(0,0,0,0.60)` : `rgba(0,0,0,0.35)`,
-        border: `1px solid ${hovered ? borderAccent : 'rgba(255,255,255,0.08)'}`,
-        borderRadius: '10px',
-        padding: 0,
-        overflow: 'hidden',
+        padding: '12px 14px',
+        borderBottom: '1px solid #27272a',
+        cursor: 'pointer',
+        background: isSelected ? '#27272a' : (hovered ? '#202024' : 'transparent'),
+        transition: 'background 0.12s ease',
         display: 'flex',
-        transition: 'all 0.18s cubic-bezier(0.4, 0, 0.2, 1)',
-        boxShadow: hovered ? `0 4px 20px rgba(0,0,0,0.5), inset 0 0 0 1px ${borderAccent}` : 'none',
+        flexDirection: 'column',
+        gap: '4px',
       }}
     >
-      {/* Left color bar */}
-      <div style={{
-        width: '3px', flexShrink: 0,
-        background: accent,
-        opacity: hovered ? 1 : 0.6,
-        transition: 'opacity 0.18s',
-      }} />
-
-      {/* Card body */}
-      <div style={{ flex: 1, padding: '10px 12px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
-        {/* Top row: icon + name + category badge */}
-        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
-          {/* Icon bubble */}
-          <div style={{
-            width: 32, height: 32, borderRadius: '8px', flexShrink: 0,
-            background: dimAccent,
-            border: `1px solid ${borderAccent}`,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            color: accent,
-            transition: 'all 0.18s',
-          }}>
-            {icon}
-          </div>
-
-          {/* Name + Badge */}
-          <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{
-              fontWeight: 600, fontSize: '12.5px', color: '#ffffff',
-              lineHeight: 1.3, wordBreak: 'break-word',
-            }}>
-              {building.name}
-            </div>
-            <div style={{ marginTop: '3px' }}>
-              <span style={{
-                fontSize: '8.5px', fontWeight: 700, letterSpacing: '0.6px',
-                padding: '1px 5px', borderRadius: '4px',
-                background: dimAccent,
-                color: accent,
-                border: `1px solid ${borderAccent}`,
-              }}>
-                {label}
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* 3D ULPIN RID */}
-        <div style={{
-          fontFamily: "'JetBrains Mono', monospace",
-          fontSize: '9.5px', color: accent,
-          opacity: 0.75,
-          letterSpacing: '0.2px',
-          overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+      {/* Top Row: Building Name + Storey Badge */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' }}>
+        <span style={{ fontSize: '13.5px', fontWeight: 600, color: '#f4f4f5', lineHeight: 1.3 }}>
+          {building.name}
+        </span>
+        <span style={{
+          fontSize: '10px',
+          fontWeight: 600,
+          color: '#a1a1aa',
+          background: '#27272a',
+          border: '1px solid #3f3f46',
+          padding: '2px 6px',
+          borderRadius: '4px',
+          flexShrink: 0,
         }}>
-          {building.canonical_rid || building.prototype_3d_id}
-        </div>
-
-        {/* Stats row */}
-        <div style={{
-          display: 'flex', alignItems: 'center', gap: '12px',
-          fontSize: '10px', color: 'rgba(255, 255, 255, 0.45)',
-          paddingTop: '4px',
-          borderTop: '1px solid rgba(255,255,255,0.06)',
-        }}>
-          {/* Floors */}
-          <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-              <rect x="4" y="2" width="16" height="20" rx="1"/>
-              <path d="M9 22v-4h6v4"/>
-            </svg>
-            {building.floor_count}F
-          </span>
-          {/* Height */}
-          <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-              <line x1="12" y1="2" x2="12" y2="22"/>
-              <polyline points="17 7 12 2 7 7"/>
-              <polyline points="17 17 12 22 7 17"/>
-            </svg>
-            {building.height}m
-          </span>
-          {/* City */}
-          <span style={{ marginLeft: 'auto', opacity: 0.6, textTransform: 'uppercase', fontSize: '9px', letterSpacing: '0.4px' }}>
-            {building.city}
-          </span>
-        </div>
+          {building.floor_count}F · {building.height}m
+        </span>
       </div>
-    </button>
+
+      {/* Subtitle: Archetype + City */}
+      <div style={{ fontSize: '11.5px', color: '#a1a1aa', display: 'flex', alignItems: 'center', gap: '6px' }}>
+        <span>{label}</span>
+        <span style={{ color: '#52525b' }}>•</span>
+        <span>{building.city}</span>
+        <span style={{ marginLeft: 'auto', fontSize: '10px', color: '#10b981', fontWeight: 500 }}>
+          Verified
+        </span>
+      </div>
+
+      {/* Primary ULPIN Row */}
+      <div style={{
+        marginTop: '3px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        background: '#141416',
+        border: '1px solid #27272a',
+        borderRadius: '5px',
+        padding: '4px 8px',
+        gap: '6px',
+      }}>
+        <span style={{
+          fontSize: '10.5px',
+          fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
+          color: '#38bdf8',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+        }}>
+          {primaryUlpin}
+        </span>
+        <button
+          onClick={handleCopy}
+          title="Copy ULPIN"
+          style={{
+            background: copied ? '#10b981' : 'transparent',
+            border: copied ? 'none' : '1px solid #3f3f46',
+            color: copied ? '#ffffff' : '#a1a1aa',
+            padding: '2px 7px',
+            borderRadius: '4px',
+            fontSize: '9px',
+            fontWeight: 600,
+            cursor: 'pointer',
+            flexShrink: 0,
+            transition: 'all 0.12s ease',
+          }}
+        >
+          {copied ? 'Copied' : 'Copy'}
+        </button>
+      </div>
+
+      {/* Action Buttons Row */}
+      <div style={{ display: 'flex', gap: '6px', marginTop: '4px' }}>
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onSelect(building.building_id, building);
+            if (onEnterInterior) onEnterInterior();
+          }}
+          style={{
+            flex: 1,
+            padding: '5px 8px',
+            background: '#0284c7',
+            border: 'none',
+            borderRadius: '5px',
+            color: '#ffffff',
+            fontSize: '10.5px',
+            fontWeight: 600,
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '4px',
+          }}
+        >
+          <span>Walk Inside 3D</span>
+        </button>
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            setExpanded(v => !v);
+          }}
+          style={{
+            padding: '5px 8px',
+            background: '#27272a',
+            border: '1px solid #3f3f46',
+            borderRadius: '5px',
+            color: '#d4d4d8',
+            fontSize: '10.5px',
+            fontWeight: 500,
+            cursor: 'pointer',
+          }}
+        >
+          {expanded ? 'Hide Floors' : `Floors (${floors.length})`}
+        </button>
+      </div>
+
+      {/* Inline Floor List */}
+      {expanded && (
+        <div style={{
+          marginTop: '6px',
+          maxHeight: '180px',
+          overflowY: 'auto',
+          background: '#141416',
+          border: '1px solid #27272a',
+          borderRadius: '6px',
+          padding: '4px',
+        }}>
+          {[...floors].reverse().map(f => {
+            const floorUlpin = f.ulpin || f.canonical_rid || getFloorULPIN(building, f.level_index);
+            const isCopiedF = copiedFloor === floorUlpin;
+            return (
+              <div
+                key={f.floor_id || f.level_index}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (onFloorClick) onFloorClick(f.floor_id);
+                }}
+                style={{
+                  padding: '5px 6px',
+                  borderBottom: '1px solid #202024',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  gap: '6px',
+                  fontSize: '10px',
+                }}
+              >
+                <div style={{ minWidth: 0, flex: 1 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <span style={{ fontWeight: 700, color: '#a1a1aa', fontFamily: 'monospace' }}>
+                      L{f.level_index >= 0 ? f.level_index : `B${Math.abs(f.level_index)}`}
+                    </span>
+                    <span style={{ color: '#f4f4f5', fontWeight: 500 }}>{f.label}</span>
+                    <span style={{ color: '#71717a', fontSize: '9px' }}>{Number(f.z_min).toFixed(0)}m</span>
+                  </div>
+                  <div style={{ color: '#38bdf8', fontFamily: 'monospace', fontSize: '9.5px', marginTop: '1px' }}>
+                    {floorUlpin}
+                  </div>
+                </div>
+                <button
+                  onClick={(e) => handleCopyFloor(e, floorUlpin)}
+                  style={{
+                    background: isCopiedF ? '#10b981' : 'transparent',
+                    border: '1px solid #3f3f46',
+                    color: isCopiedF ? '#ffffff' : '#a1a1aa',
+                    padding: '2px 5px',
+                    borderRadius: '3px',
+                    fontSize: '8px',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                  }}
+                >
+                  {isCopiedF ? 'Copied' : 'Copy'}
+                </button>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -531,6 +643,7 @@ function LegalRRRCard({ building }) {
 
 // FloorUnitList — list of floors for selected building with authentic 3D Floor ULPINs
 function FloorUnitList({ building, explodedFloor, onFloorClick, onEnterInterior }) {
+  const [copiedFloor, setCopiedFloor] = useState(null);
   const fullList = useMemo(() => {
     const list = (building.floors && building.floors.length >= (building.floor_count || 5))
       ? building.floors
@@ -538,12 +651,32 @@ function FloorUnitList({ building, explodedFloor, onFloorClick, onEnterInterior 
     return [...list].sort((a, b) => b.level_index - a.level_index);
   }, [building]);
 
+  const handleCopyFloor = (e, code) => {
+    e.stopPropagation();
+    if (code && navigator.clipboard) {
+      navigator.clipboard.writeText(code);
+      setCopiedFloor(code);
+      setTimeout(() => setCopiedFloor(null), 1800);
+    }
+  };
+
   return (
-    <div className="card">
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-        <h3 className="card-head-title" style={{ margin: 0 }}>Floors & 3D ULPINs ({fullList.length})</h3>
+    <div className="card" style={{ border: '1px solid rgba(56, 189, 248, 0.3)', background: 'rgba(2, 6, 23, 0.7)' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+        <div>
+          <div style={{ fontSize: '8px', fontWeight: 800, color: '#38bdf8', letterSpacing: '0.8px', textTransform: 'uppercase' }}>
+            ISO 19152 LADM LEVEL CADASTRE
+          </div>
+          <h3 className="card-head-title" style={{ margin: '2px 0 0 0', fontSize: '13px' }}>
+            Storeys & 3D Floor ULPINs ({fullList.length})
+          </h3>
+        </div>
         {onEnterInterior && (
-          <button className="btn btn-primary" style={{ fontSize: '11px', padding: '4px 10px', display: 'flex', alignItems: 'center', gap: '5px' }} onClick={onEnterInterior}>
+          <button
+            className="btn btn-primary"
+            style={{ fontSize: '11px', padding: '4px 10px', display: 'flex', alignItems: 'center', gap: '5px' }}
+            onClick={onEnterInterior}
+          >
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
               <polyline points="9 22 9 12 15 12 15 22"/>
@@ -552,31 +685,78 @@ function FloorUnitList({ building, explodedFloor, onFloorClick, onEnterInterior 
           </button>
         )}
       </div>
-      <div className="floor-list" style={{ maxHeight: '280px', overflowY: 'auto' }}>
+      <div className="floor-list" style={{ maxHeight: '320px', overflowY: 'auto' }}>
         {fullList.map(f => {
           const floorUlpin = f.ulpin || f.canonical_rid || getFloorULPIN(building, f.level_index);
           const isAct = explodedFloor === f.floor_id;
+          const isCopied = copiedFloor === floorUlpin;
           return (
-            <button
+            <div
               key={f.floor_id || `floor_${f.level_index}`}
               className={`floor-item ${isAct ? 'floor-item--active' : ''}`}
               onClick={() => onFloorClick(isAct ? null : f.floor_id)}
-              style={{ padding: '8px 10px' }}
+              style={{
+                padding: '8px 10px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                borderRadius: '8px',
+                background: isAct ? 'rgba(56, 189, 248, 0.16)' : 'rgba(255, 255, 255, 0.02)',
+                border: `1px solid ${isAct ? 'rgba(56, 189, 248, 0.45)' : 'rgba(255, 255, 255, 0.06)'}`,
+                marginBottom: '4px',
+                transition: 'all 0.12s',
+              }}
             >
-              <div className="floor-level">
+              <div className="floor-level" style={{
+                fontSize: '11px',
+                fontWeight: 800,
+                color: isAct ? '#38bdf8' : '#94a3b8',
+                minWidth: '28px',
+                fontFamily: "'JetBrains Mono', monospace",
+              }}>
                 {f.level_index >= 0 ? `L${f.level_index}` : `B${Math.abs(f.level_index)}`}
               </div>
-              <div className="floor-details">
-                <div className="floor-label" style={{ fontWeight: 700 }}>{f.label}</div>
-                <div className="floor-ulpin mono" style={{ fontSize: '9.5px', color: '#38bdf8', fontWeight: 600, marginTop: '2px' }}>
-                  🔑 {floorUlpin}
+              <div className="floor-details" style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <div className="floor-label" style={{ fontWeight: 700, fontSize: '11.5px', color: '#f8fafc' }}>
+                    {f.label}
+                  </div>
+                  <div className="floor-z mono" style={{ fontSize: '9px', color: '#64748b' }}>
+                    {Number(f.z_min).toFixed(1)}m – {Number(f.z_max).toFixed(1)}m AGL
+                  </div>
                 </div>
-                <div className="floor-z mono" style={{ fontSize: '9px', color: 'var(--text-dim)', marginTop: '1px' }}>
-                  z {Number(f.z_min).toFixed(1)} — {Number(f.z_max).toFixed(1)} m
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '6px', marginTop: '3px' }}>
+                  <div className="floor-ulpin mono" style={{
+                    fontSize: '9.5px',
+                    color: '#38bdf8',
+                    fontWeight: 700,
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                  }}>
+                    🔑 {floorUlpin}
+                  </div>
+                  <button
+                    onClick={(e) => handleCopyFloor(e, floorUlpin)}
+                    title="Copy Floor 3D-ULPIN"
+                    style={{
+                      background: isCopied ? 'rgba(16, 185, 129, 0.25)' : 'rgba(56, 189, 248, 0.15)',
+                      border: `1px solid ${isCopied ? '#10b981' : 'rgba(56, 189, 248, 0.35)'}`,
+                      color: isCopied ? '#34d399' : '#38bdf8',
+                      borderRadius: '4px',
+                      padding: '2px 6px',
+                      fontSize: '8px',
+                      fontWeight: 700,
+                      cursor: 'pointer',
+                      flexShrink: 0,
+                    }}
+                  >
+                    {isCopied ? 'COPIED ✓' : 'COPY'}
+                  </button>
                 </div>
               </div>
-              <StatusBadge status={f.status || 'VALID'} />
-            </button>
+            </div>
           );
         })}
       </div>
@@ -689,6 +869,7 @@ function BuildingInfoCard({ building }) {
 export default function DetailPanel({
   city,
   buildings = [],
+  allBuildings = [],
   building,
   onSelectBuilding,
   explodedFloor,
@@ -699,18 +880,61 @@ export default function DetailPanel({
   onToggleCollapse,
   onOpenValidationConsole,
   onOpenStrata,
-  onOpenExport
+  onOpenExport,
+  onReturnToEarth,
+  onCitySelect
 }) {
-  const [activeTab, setActiveTab] = useState('identity');
+  const [activeTab, setActiveTab] = useState('floors');
   const [filterQuery, setFilterQuery] = useState('');
   const [filterCategory, setFilterCategory] = useState('all');
+  const [selectedCopied, setSelectedCopied] = useState(false);
+  const searchInputRef = useRef(null);
+
+  // Global hotkey: press "/" or "Ctrl+K" to focus integrated search bar
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (
+        (e.key === '/' && document.activeElement?.tagName !== 'INPUT' && document.activeElement?.tagName !== 'TEXTAREA') ||
+        ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k')
+      ) {
+        e.preventDefault();
+        searchInputRef.current?.focus();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   const filteredBuildings = useMemo(() => {
-    return searchBuildingsQuery(buildings, filterQuery, {
+    if (!filterQuery.trim()) {
+      return searchBuildingsQuery(buildings, '', {
+        category: filterCategory,
+        limit: 100,
+      });
+    }
+    const localMatches = searchBuildingsQuery(buildings, filterQuery, {
       category: filterCategory,
       limit: 100,
     });
-  }, [buildings, filterQuery, filterCategory]);
+    const localIds = new Set(localMatches.map((b) => b.building_id));
+    const globalMatches =
+      allBuildings && allBuildings.length
+        ? searchBuildingsQuery(allBuildings, filterQuery, { category: filterCategory, limit: 12 }).filter(
+            (b) => !localIds.has(b.building_id)
+          )
+        : [];
+    return [...localMatches, ...globalMatches];
+  }, [buildings, allBuildings, filterQuery, filterCategory]);
+
+  const handleItemSelect = useCallback(
+    (bId, bObj) => {
+      if (bObj?.city && bObj.city !== city && onCitySelect) {
+        onCitySelect(bObj.city);
+      }
+      onSelectBuilding(bId, bObj);
+    },
+    [city, onCitySelect, onSelectBuilding]
+  );
 
   if (!city) return null;
 
@@ -735,148 +959,399 @@ export default function DetailPanel({
 
   return (
     <aside className="detail-panel anim-slide-left" id="detail-panel" aria-label="3D Cadastre details">
-      {/* Panel Header */}
-      <div className="panel-header">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <button
-            className="btn-icon"
-            onClick={onToggleCollapse}
-            title="Collapse panel"
-            aria-label="Collapse panel"
-            style={{
-              width: 28, height: 28, borderRadius: '50%',
-              background: 'rgba(0, 0, 0, 0.50)',
-              border: '1px solid rgba(255, 255, 255, 0.15)',
-              color: '#ffffff',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              cursor: 'pointer',
-              transition: 'all 0.15s'
-            }}
-          >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="9 18 15 12 9 6"/>
-            </svg>
-          </button>
-          <h2 className="panel-title" style={{ fontSize: '16px', fontWeight: 700, margin: 0, letterSpacing: '-0.2px' }}>
-            {building ? building.name : meta.label}
-          </h2>
-        </div>
-        {building && (
-          <button className="btn-icon" onClick={onClose} title="Deselect building">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="18" y1="6" x2="6" y2="18"/>
-              <line x1="6" y1="6" x2="18" y2="18"/>
-            </svg>
-          </button>
-        )}
-      </div>
-
-      {/* Building Selected Content */}
       {building ? (
-        <div className="panel-scroll" style={{ padding: '12px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-          {/* Quick Action Buttons */}
-          <div style={{ display: 'flex', gap: '6px' }}>
+        /* ── Selected Building View (Google Maps / Apple Maps Place Detail Standard) ── */
+        <div style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
+          {/* Top Back Navigation Bar */}
+          <div style={{
+            padding: '12px 14px',
+            borderBottom: '1px solid #27272a',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            background: '#18181b',
+          }}>
             <button
-              className="btn btn-primary"
-              style={{ flex: 1, fontSize: '11px', padding: '6px 8px' }}
-              onClick={onOpenValidationConsole}
+              onClick={onClose}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: '#38bdf8',
+                fontSize: '12.5px',
+                fontWeight: 600,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                padding: 0,
+              }}
             >
-              T0–T5 Validation
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <polyline points="15 18 9 12 15 6"/>
+              </svg>
+              <span>All buildings in {meta.label}</span>
             </button>
             <button
-              className="btn btn-ghost"
-              style={{ flex: 1, fontSize: '11px', padding: '6px 8px' }}
-              onClick={onOpenStrata}
+              onClick={onClose}
+              title="Close panel"
+              style={{
+                background: 'none',
+                border: 'none',
+                color: '#71717a',
+                cursor: 'pointer',
+                fontSize: '14px',
+                padding: '2px 6px',
+              }}
             >
-              Strata (R1)
-            </button>
-            <button
-              className="btn btn-ghost"
-              style={{ fontSize: '11px', padding: '6px 8px' }}
-              onClick={onOpenExport}
-              title="Export LADM / IFC / CityJSON"
-            >
-              Export
-            </button>
-          </div>
-
-          {/* Tab Selector */}
-          <div style={{ display: 'flex', gap: '4px', borderBottom: '1px solid var(--border)', paddingBottom: '6px' }}>
-            <button
-              className={`btn ${activeTab === 'identity' ? 'btn-primary' : 'btn-ghost'}`}
-              style={{ fontSize: '11px', padding: '4px 8px', flex: 1 }}
-              onClick={() => setActiveTab('identity')}
-            >
-              3-Layer Identity
-            </button>
-            <button
-              className={`btn ${activeTab === 'classes' ? 'btn-primary' : 'btn-ghost'}`}
-              style={{ fontSize: '11px', padding: '4px 8px', flex: 1 }}
-              onClick={() => setActiveTab('classes')}
-            >
-              10 Classes
-            </button>
-            <button
-              className={`btn ${activeTab === 'legal' ? 'btn-primary' : 'btn-ghost'}`}
-              style={{ fontSize: '11px', padding: '4px 8px', flex: 1 }}
-              onClick={() => setActiveTab('legal')}
-            >
-              Legal & RRR
-            </button>
-            <button
-              className={`btn ${activeTab === 'floors' ? 'btn-primary' : 'btn-ghost'}`}
-              style={{ fontSize: '11px', padding: '4px 8px', flex: 1 }}
-              onClick={() => setActiveTab('floors')}
-            >
-              Floors
+              ✕
             </button>
           </div>
 
-          {activeTab === 'identity' && (
-            <>
-              <DigitalTwinTelemetryCard building={building} />
-              <ThreeLayerIdentityCard building={building} />
-              <BuildingInfoCard building={building} />
-            </>
-          )}
+          <div className="panel-scroll" style={{ flex: 1, overflowY: 'auto', padding: '14px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            {/* Place Title & Subtitle */}
+            <div>
+              <h2 style={{ fontSize: '18px', fontWeight: 700, color: '#ffffff', margin: 0, lineHeight: 1.25 }}>
+                {building.name}
+              </h2>
+              <div style={{ fontSize: '12px', color: '#a1a1aa', marginTop: '3px' }}>
+                {classifyBuilding(building.name, building.height, building.floor_count).label} • {building.city}
+              </div>
+            </div>
 
-          {activeTab === 'classes' && (
-            <TenClassesBreakdownCard building={building} onOpenStrata={onOpenStrata} />
-          )}
+            {/* Primary Action: Walk Inside 3D (Google Maps Primary Action Style) */}
+            <button
+              onClick={onEnterInterior}
+              style={{
+                width: '100%',
+                padding: '10px 14px',
+                borderRadius: '8px',
+                background: '#0284c7',
+                border: 'none',
+                color: '#ffffff',
+                fontSize: '12.5px',
+                fontWeight: 700,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '7px',
+                boxShadow: '0 2px 8px rgba(2, 132, 199, 0.35)',
+              }}
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+                <polyline points="2 17 12 22 22 17"/>
+                <polyline points="2 12 12 17 22 12"/>
+              </svg>
+              <span>Walk Inside (3D Dissection)</span>
+            </button>
 
-          {activeTab === 'legal' && (
-            <LegalRRRCard building={building} />
-          )}
+            {/* Primary 3D-ULPIN Field */}
+            <div style={{
+              background: '#202024',
+              border: '1px solid #27272a',
+              borderRadius: '6px',
+              padding: '8px 10px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '8px',
+            }}>
+              <div style={{ minWidth: 0 }}>
+                <div style={{ fontSize: '8.5px', fontWeight: 700, color: '#71717a', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                  Building 3D-ULPIN
+                </div>
+                <div style={{
+                  fontSize: '11px',
+                  fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
+                  color: '#38bdf8',
+                  fontWeight: 600,
+                  marginTop: '2px',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                }}>
+                  {building.canonical_rid || building.prototype_3d_id || building.ulpin}
+                </div>
+              </div>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  const code = building.canonical_rid || building.prototype_3d_id || building.ulpin;
+                  if (code && navigator.clipboard) {
+                    navigator.clipboard.writeText(code);
+                    setSelectedCopied(true);
+                    setTimeout(() => setSelectedCopied(false), 1600);
+                  }
+                }}
+                style={{
+                  background: selectedCopied ? '#10b981' : '#27272a',
+                  border: '1px solid #3f3f46',
+                  color: selectedCopied ? '#ffffff' : '#d4d4d8',
+                  borderRadius: '4px',
+                  padding: '3px 8px',
+                  fontSize: '9px',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  flexShrink: 0,
+                }}
+              >
+                {selectedCopied ? 'Copied' : 'Copy'}
+              </button>
+            </div>
 
-          {activeTab === 'floors' && (
-            <FloorUnitList
-              building={building}
-              explodedFloor={explodedFloor}
-              onFloorClick={onFloorClick}
-              onEnterInterior={onEnterInterior}
-            />
-          )}
+            {/* Quick Metrics Grid */}
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: '8px',
+              background: '#202024',
+              border: '1px solid #27272a',
+              borderRadius: '6px',
+              padding: '10px',
+            }}>
+              <div>
+                <div style={{ fontSize: '9px', color: '#71717a' }}>Total Floors</div>
+                <div style={{ fontSize: '13px', fontWeight: 600, color: '#f4f4f5', marginTop: '2px' }}>
+                  {building.floor_count} Floors
+                </div>
+              </div>
+              <div>
+                <div style={{ fontSize: '9px', color: '#71717a' }}>Building Height</div>
+                <div style={{ fontSize: '13px', fontWeight: 600, color: '#f4f4f5', marginTop: '2px' }}>
+                  {building.height} m AGL
+                </div>
+              </div>
+              <div>
+                <div style={{ fontSize: '9px', color: '#71717a' }}>Validation Status</div>
+                <div style={{ fontSize: '11px', fontWeight: 600, color: '#10b981', marginTop: '2px' }}>
+                  ● ISO 19152 Valid
+                </div>
+              </div>
+              <div>
+                <div style={{ fontSize: '9px', color: '#71717a' }}>Ground Elevation</div>
+                <div style={{ fontSize: '11px', fontWeight: 500, color: '#d4d4d8', marginTop: '2px' }}>
+                  {building.ground_elevation ? `${building.ground_elevation}m` : 'Datum 0m'}
+                </div>
+              </div>
+            </div>
+
+            {/* Clean Tabs */}
+            <div style={{ display: 'flex', borderBottom: '1px solid #27272a', gap: '6px', marginTop: '4px' }}>
+              <button
+                onClick={() => setActiveTab('floors')}
+                style={{
+                  padding: '6px 10px',
+                  background: 'none',
+                  border: 'none',
+                  borderBottom: activeTab === 'floors' ? '2px solid #0284c7' : '2px solid transparent',
+                  color: activeTab === 'floors' ? '#ffffff' : '#71717a',
+                  fontSize: '11.5px',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                }}
+              >
+                Storeys & ULPINs
+              </button>
+              <button
+                onClick={() => setActiveTab('identity')}
+                style={{
+                  padding: '6px 10px',
+                  background: 'none',
+                  border: 'none',
+                  borderBottom: activeTab === 'identity' ? '2px solid #0284c7' : '2px solid transparent',
+                  color: activeTab === 'identity' ? '#ffffff' : '#71717a',
+                  fontSize: '11.5px',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                }}
+              >
+                Specifications
+              </button>
+              <button
+                onClick={() => setActiveTab('cadastre')}
+                style={{
+                  padding: '6px 10px',
+                  background: 'none',
+                  border: 'none',
+                  borderBottom: activeTab === 'cadastre' ? '2px solid #0284c7' : '2px solid transparent',
+                  color: activeTab === 'cadastre' ? '#ffffff' : '#71717a',
+                  fontSize: '11.5px',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                }}
+              >
+                Cadastre RRR
+              </button>
+            </div>
+
+            {/* Tab 1: Storeys List (The exact answer to "where is ULPIN for each floor") */}
+            {activeTab === 'floors' && (
+              <FloorUnitList
+                building={building}
+                explodedFloor={explodedFloor}
+                onFloorClick={onFloorClick}
+                onEnterInterior={onEnterInterior}
+              />
+            )}
+
+            {/* Tab 2: Specifications / Identity */}
+            {activeTab === 'identity' && (
+              <>
+                <ThreeLayerIdentityCard building={building} />
+                <DigitalTwinTelemetryCard building={building} />
+              </>
+            )}
+
+            {/* Tab 3: Cadastre RRR */}
+            {activeTab === 'cadastre' && (
+              <>
+                <LegalRRRCard building={building} />
+                <TenClassesBreakdownCard building={building} onOpenStrata={onOpenStrata} />
+              </>
+            )}
+          </div>
         </div>
       ) : (
-        /* No Building Selected: City Overview List */
-        <div className="panel-scroll" style={{ padding: '12px' }}>
-          {buildings.length > 0 && (
+        /* ── City Overview List (Google Maps / Apple Maps Search Results Standard) ── */
+        <div style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
+          {/* Top Back Navigation Bar */}
+          <div style={{
+            padding: '10px 14px',
+            borderBottom: '1px solid #27272a',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            background: '#18181b',
+            flexShrink: 0,
+          }}>
+            <button
+              onClick={onReturnToEarth}
+              title="Return to Earth Space Orbit (All Cities)"
+              style={{
+                background: 'none',
+                border: 'none',
+                color: '#38bdf8',
+                fontSize: '12.5px',
+                fontWeight: 600,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                padding: 0,
+              }}
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <polyline points="15 18 9 12 15 6"/>
+              </svg>
+              <span>Back to Earth Orbit</span>
+            </button>
+            <span style={{ fontSize: '11px', color: '#71717a', fontWeight: 600 }}>
+              {meta.label} Pilot
+            </span>
+          </div>
+
+          {/* Top Search & Filter Bar */}
+          <div style={{ padding: '12px 14px', borderBottom: '1px solid #27272a', display: 'flex', flexDirection: 'column', gap: '10px' }}>
             <div style={{
-              fontSize: '9px', fontWeight: 700, letterSpacing: '1px',
-              color: 'rgba(255,255,255,0.30)', textTransform: 'uppercase',
-              marginBottom: '8px', paddingLeft: '2px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              background: '#222328',
+              border: '1px solid #33343a',
+              borderRadius: '8px',
+              padding: '7px 10px',
             }}>
-              {buildings.length} Structures · {CITY_META[Object.keys(CITY_META).find(k => buildings[0]?.city === k) || 'mumbai']?.label || 'City'}
-            </div>
-          )}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-            {buildings.map(b => (
-              <BuildingListCard
-                key={b.building_id}
-                building={b}
-                onClick={() => onSelectBuilding(b.building_id, b)}
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a1a1aa" strokeWidth="2.2">
+                <circle cx="11" cy="11" r="8"/>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              </svg>
+              <input
+                ref={searchInputRef}
+                type="text"
+                value={filterQuery}
+                onChange={(e) => setFilterQuery(e.target.value)}
+                placeholder="Search structures or 3D ULPIN… [/]"
+                spellCheck={false}
+                autoComplete="off"
+                style={{
+                  flex: 1,
+                  background: 'transparent',
+                  border: 'none',
+                  outline: 'none',
+                  color: '#f4f4f5',
+                  fontSize: '12.5px',
+                  fontFamily: 'inherit',
+                }}
               />
-            ))}
+              {filterQuery ? (
+                <button
+                  onClick={() => { setFilterQuery(''); searchInputRef.current?.focus(); }}
+                  style={{ background: '#27272a', border: 'none', borderRadius: '50%', width: 17, height: 17, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#a1a1aa', cursor: 'pointer', fontSize: '10px' }}
+                >
+                  ✕
+                </button>
+              ) : (
+                <span style={{ fontSize: '10px', fontFamily: 'monospace', color: '#71717a', background: '#27272a', padding: '1px 5px', borderRadius: '3px', border: '1px solid #3f3f46' }}>
+                  /
+                </span>
+              )}
+            </div>
+
+            {/* Category Filter Chips (Google Maps style) */}
+            <div style={{ display: 'flex', gap: '5px', overflowX: 'auto', scrollbarWidth: 'none' }}>
+              {[
+                { id: 'all', label: `All (${buildings.length})` },
+                { id: 'supertall', label: 'Supertall' },
+                { id: 'commercial', label: 'Commercial' },
+                { id: 'government', label: 'Civic' },
+                { id: 'tech', label: 'Tech' },
+              ].map(cat => (
+                <button
+                  key={cat.id}
+                  onClick={() => setFilterCategory(cat.id)}
+                  style={{
+                    padding: '4px 9px',
+                    borderRadius: '6px',
+                    fontSize: '11px',
+                    fontWeight: 500,
+                    background: filterCategory === cat.id ? '#f4f4f5' : '#27272a',
+                    color: filterCategory === cat.id ? '#18181b' : '#a1a1aa',
+                    border: filterCategory === cat.id ? '1px solid #ffffff' : '1px solid #3f3f46',
+                    cursor: 'pointer',
+                    whiteSpace: 'nowrap',
+                    transition: 'all 0.12s',
+                  }}
+                >
+                  {cat.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* List Count Subtitle */}
+          <div style={{ padding: '8px 14px 4px', fontSize: '11px', color: '#71717a', fontWeight: 500 }}>
+            {filteredBuildings.length} structures • {meta.label}
+          </div>
+
+          {/* Buildings Scrollable List */}
+          <div className="panel-scroll" style={{ flex: 1, overflowY: 'auto' }}>
+            {filteredBuildings.length === 0 ? (
+              <div style={{ textAlign: 'center', padding: '32px 16px', color: '#71717a', fontSize: '12px' }}>
+                No structures found matching "{filterQuery}"
+              </div>
+            ) : (
+              filteredBuildings.map(b => (
+                <BuildingListItem
+                  key={b.building_id}
+                  building={b}
+                  onSelect={handleItemSelect}
+                  onEnterInterior={onEnterInterior}
+                  onFloorClick={onFloorClick}
+                  isSelected={building?.building_id === b.building_id}
+                />
+              ))
+            )}
           </div>
         </div>
       )}

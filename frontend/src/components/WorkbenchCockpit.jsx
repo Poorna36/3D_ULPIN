@@ -121,20 +121,175 @@ export default function WorkbenchCockpit({
             }} />
           </div>
 
+          {/* Back Button to Earth Orbit (when a city is active) */}
+          {city && (
+            <button
+              onClick={onResetOrbit}
+              title="Return to Global Earth Space Orbit"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6,
+                background: '#202024',
+                border: '1px solid #3f3f46',
+                color: '#f4f4f5',
+                fontSize: 11.5,
+                fontWeight: 600,
+                padding: '4px 10px',
+                borderRadius: 6,
+                cursor: 'pointer',
+                transition: 'all 0.12s ease',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = '#27272a';
+                e.currentTarget.style.borderColor = '#38bdf8';
+                e.currentTarget.style.color = '#38bdf8';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = '#202024';
+                e.currentTarget.style.borderColor = '#3f3f46';
+                e.currentTarget.style.color = '#f4f4f5';
+              }}
+            >
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <polyline points="15 18 9 12 15 6" />
+              </svg>
+              <span>Earth Orbit</span>
+            </button>
+          )}
+
           {/* Pilot Selection Tabs (Earth Pilot Cities) */}
           <CitySelector city={city} onChange={onCityChange} />
         </div>
 
-        {/* Right: Global 3D ULPIN Query & Search System */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <BuildingSearchQuery
-            buildings={allBuildings}
-            currentCity={city}
-            onSelectBuilding={onSelectBuilding}
-            placeholder="Search structure or 3D ULPIN… [/]"
-          />
-        </div>
+        {/* Right Header: When on Earth Orbit, show global search. When inside city, show clean tool actions */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          {!city ? (
+            <BuildingSearchQuery
+              buildings={allBuildings}
+              currentCity={city}
+              onSelectBuilding={onSelectBuilding}
+              placeholder="Search structure or 3D ULPIN… [/]"
+            />
+          ) : (
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <button
+                onClick={onOpenDisputes}
+                title="Cadastre Conflict & Overlap Workflows"
+                style={{
+                  background: '#202024',
+                  border: '1px solid #33343a',
+                  color: '#d4d4d8',
+                  padding: '5px 9px',
+                  borderRadius: 6,
+                  fontSize: 11.5,
+                  fontWeight: 500,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 5,
+                  transition: 'all 0.12s ease',
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#38bdf8'; e.currentTarget.style.color = '#ffffff'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#33343a'; e.currentTarget.style.color = '#d4d4d8'; }}
+              >
+                <span>Disputes</span>
+              </button>
 
+              <button
+                onClick={onOpenStrata}
+                title="3D Strata Parcel Breakdown"
+                style={{
+                  background: '#202024',
+                  border: '1px solid #33343a',
+                  color: '#d4d4d8',
+                  padding: '5px 9px',
+                  borderRadius: 6,
+                  fontSize: 11.5,
+                  fontWeight: 500,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 5,
+                  transition: 'all 0.12s ease',
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#38bdf8'; e.currentTarget.style.color = '#ffffff'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#33343a'; e.currentTarget.style.color = '#d4d4d8'; }}
+              >
+                <span>Strata</span>
+              </button>
+
+              <button
+                onClick={onOpenSandbox}
+                title="OpenAPI Cadastre Endpoint Sandbox"
+                style={{
+                  background: '#202024',
+                  border: '1px solid #33343a',
+                  color: '#d4d4d8',
+                  padding: '5px 9px',
+                  borderRadius: 6,
+                  fontSize: 11.5,
+                  fontWeight: 500,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 5,
+                  transition: 'all 0.12s ease',
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#38bdf8'; e.currentTarget.style.color = '#ffffff'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#33343a'; e.currentTarget.style.color = '#d4d4d8'; }}
+              >
+                <span>OpenAPI</span>
+              </button>
+
+              <button
+                onClick={onOpenExport}
+                title="Export 3D Cadastre (CityGML / IFC / GeoJSON)"
+                style={{
+                  background: '#202024',
+                  border: '1px solid #33343a',
+                  color: '#d4d4d8',
+                  padding: '5px 9px',
+                  borderRadius: 6,
+                  fontSize: 11.5,
+                  fontWeight: 500,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 5,
+                  transition: 'all 0.12s ease',
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#38bdf8'; e.currentTarget.style.color = '#ffffff'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#33343a'; e.currentTarget.style.color = '#d4d4d8'; }}
+              >
+                <span>Export</span>
+              </button>
+
+              <button
+                onClick={onOpenPhotogrammetry}
+                title="Open UAV Survey & Photogrammetry Engine"
+                style={{
+                  background: '#0284c7',
+                  border: 'none',
+                  color: '#ffffff',
+                  padding: '5px 10px',
+                  borderRadius: 6,
+                  fontSize: 11.5,
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 5,
+                  transition: 'background 0.12s ease',
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.background = '#0369a1'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.background = '#0284c7'; }}
+              >
+                <span>UAV Drone</span>
+              </button>
+            </div>
+          )}
+        </div>
       </header>
 
 

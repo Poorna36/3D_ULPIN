@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useMemo } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { floorMeta, getFloorRooms, typeColor } from '../utils/floorLayouts.js';
+import { getFloorULPIN } from '../utils/ulpinGenerator.js';
 
 export default function Building3DView({
   building,
@@ -482,6 +483,7 @@ export default function Building3DView({
         meta: floorMeta(uData.f?.label, uData.fi, totalFloors),
         elev: (floorH * Math.max(0, uData.fi)).toFixed(0),
         room: uData.type === 'room' ? uData.room : null,
+        ulpin: uData.f?.ulpin || uData.f?.canonical_rid || getFloorULPIN(building, uData.fi),
       });
       container.style.cursor = 'pointer';
     } else {
@@ -824,7 +826,21 @@ export default function Building3DView({
               {hoveredFloor.elev}m AGL
             </span>
           </div>
-          <div style={{ fontSize: 10, color: '#cbd5e1', marginTop: 3 }}>
+          <div style={{
+            marginTop: 4,
+            padding: '3px 6px',
+            background: 'rgba(56, 189, 248, 0.15)',
+            border: '1px solid rgba(56, 189, 248, 0.40)',
+            borderRadius: 4,
+            fontSize: 10,
+            fontFamily: "'JetBrains Mono', monospace",
+            fontWeight: 700,
+            color: '#38bdf8',
+            whiteSpace: 'nowrap',
+          }}>
+            🔑 {hoveredFloor.ulpin || getFloorULPIN(building, hoveredFloor.fi)}
+          </div>
+          <div style={{ fontSize: 10, color: '#cbd5e1', marginTop: 4 }}>
             {hoveredFloor.meta.category}
           </div>
           {hoveredFloor.room && (
@@ -970,19 +986,27 @@ export default function Building3DView({
             background: currentMeta.color,
             boxShadow: `0 0 10px ${currentMeta.color}`,
           }} />
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', minWidth: 230 }}>
             <span style={{
-              fontSize: 11,
+              fontSize: 11.5,
               fontWeight: 800,
               color: '#f8fafc',
               fontFamily: "'JetBrains Mono', monospace",
             }}>
               L{clampedIdx} · {currentFloorObj.label}
             </span>
-            <span style={{ fontSize: 9.5, color: '#38bdf8', fontFamily: "'JetBrains Mono', monospace", fontWeight: 700 }}>
-              🔑 {currentFloorObj.ulpin || currentFloorObj.canonical_rid || '3D-ULPIN'}
+            <span style={{
+              fontSize: 10,
+              color: '#38bdf8',
+              fontFamily: "'JetBrains Mono', monospace",
+              fontWeight: 700,
+              letterSpacing: '0.2px',
+              marginTop: 2,
+              whiteSpace: 'nowrap',
+            }}>
+              🔑 {currentFloorObj.ulpin || currentFloorObj.canonical_rid || getFloorULPIN(building, clampedIdx)}
             </span>
-            <span style={{ fontSize: 9, color: '#94a3b8' }}>
+            <span style={{ fontSize: 9, color: '#94a3b8', marginTop: 1 }}>
               {(floorH * Math.max(0, clampedIdx)).toFixed(0)}m AGL · {currentMeta.category}
             </span>
           </div>

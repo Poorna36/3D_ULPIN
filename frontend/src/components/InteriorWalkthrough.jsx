@@ -530,6 +530,46 @@ export default function InteriorWalkthrough({ building, currentFloorIdx, onFloor
       {/* Full-screen floor-level perspective viewport (renders when active, behind HUD) */}
       {FloorPerspectiveViewport}
 
+      {/* Prominent Back Button to Return to City Map */}
+      {isActive && (
+        <button
+          onClick={onExit}
+          title="Return to City 3D Map (Esc)"
+          style={{
+            position: 'fixed',
+            top: 64,
+            left: 20,
+            zIndex: 160,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 8,
+            padding: '7px 14px',
+            background: '#18181b',
+            border: '1px solid #27272a',
+            borderRadius: 8,
+            color: '#f4f4f5',
+            fontSize: 12,
+            fontWeight: 600,
+            cursor: 'pointer',
+            boxShadow: '0 4px 20px rgba(0,0,0,0.6)',
+            transition: 'all 0.12s ease',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.borderColor = '#38bdf8';
+            e.currentTarget.style.color = '#38bdf8';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.borderColor = '#27272a';
+            e.currentTarget.style.color = '#f4f4f5';
+          }}
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
+          <span>Back to City Map</span>
+        </button>
+      )}
+
       {/* Enter / Exit button */}
       {!isActive ? (
         <button
@@ -661,6 +701,46 @@ export default function InteriorWalkthrough({ building, currentFloorIdx, onFloor
                     ? Math.max(0, currentFloor.z_max - (building.ground_elevation || 0))
                     : floorH * (clampedIdx + 1)
                   ).toFixed(1)}m AGL
+              </div>
+              <div style={{
+                marginTop: 6,
+                padding: '5px 9px',
+                background: 'rgba(56, 189, 248, 0.12)',
+                border: '1px solid rgba(56, 189, 248, 0.35)',
+                borderRadius: 6,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: 6,
+              }}>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <span style={{ fontSize: 7.5, textTransform: 'uppercase', letterSpacing: '0.8px', color: '#94a3b8', fontWeight: 700 }}>
+                    3D Floor ULPIN (Class L)
+                  </span>
+                  <span style={{ fontSize: 10, color: '#38bdf8', fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, letterSpacing: '0.2px' }}>
+                    🔑 {currentFloor?.ulpin || currentFloor?.canonical_rid || getFloorULPIN(building, clampedIdx)}
+                  </span>
+                </div>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    const code = currentFloor?.ulpin || currentFloor?.canonical_rid || getFloorULPIN(building, clampedIdx);
+                    navigator.clipboard?.writeText(code);
+                  }}
+                  title="Copy Floor 3D-ULPIN"
+                  style={{
+                    background: 'rgba(56,189,248,0.20)',
+                    border: '1px solid rgba(56,189,248,0.40)',
+                    borderRadius: 4,
+                    padding: '3px 6px',
+                    color: '#38bdf8',
+                    fontSize: 8.5,
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                  }}
+                >
+                  COPY
+                </button>
               </div>
             </div>
           </div>
