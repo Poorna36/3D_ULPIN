@@ -167,18 +167,18 @@ export default function LandingPage({ onEnter, isExiting = false }) {
             </div>
           </div>
 
-          {/* Right: Model 3D Earth Globe - properly framed and sized */}
+          {/* Right: Model 3D Earth Globe - Grand, heroic presence */}
           <div style={{
             flex: 1,
             position: 'relative',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             overflow: 'hidden',
-            padding: '24px 32px',
+            padding: '12px 20px',
           }}>
             <div style={{
               width: '100%',
-              maxWidth: 640,
-              maxHeight: 640,
+              maxWidth: 800,
+              maxHeight: 800,
               aspectRatio: '1 / 1',
               display: 'flex',
               alignItems: 'center',

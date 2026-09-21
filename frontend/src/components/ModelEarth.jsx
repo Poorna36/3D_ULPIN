@@ -11,10 +11,10 @@ export default function ModelEarth() {
     const width = container.clientWidth || 540;
     const height = container.clientHeight || 540;
 
-    // 1. Scene & Camera (Calibrated for bold, impactful scale without clipping)
+    // 1. Scene & Camera (Grand, impactful scale filling the hero viewpoint)
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
-    camera.position.set(0, 0, 5.9);
+    camera.position.set(0, 0, 5.1);
 
     // 2. Renderer
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
