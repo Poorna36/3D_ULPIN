@@ -103,7 +103,12 @@ export default function ConflictWorkflowModal({ onClose, onTriggerScenario }) {
             </div>
             <h2 style={{ margin: '6px 0 0 0', fontSize: '18px' }}>Real-World 3D Cadastral Conflict Simulation</h2>
           </div>
-          <button className="btn-icon" onClick={onClose}>✕</button>
+          <button className="btn-icon" onClick={onClose} title="Close">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
         </div>
 
         {/* Scenario Selection Grid */}
@@ -116,8 +121,8 @@ export default function ConflictWorkflowModal({ onClose, onTriggerScenario }) {
                 textAlign: 'left',
                 padding: '10px',
                 cursor: 'pointer',
-                border: selectedId === s.id ? '1px solid var(--accent)' : '1px solid var(--border)',
-                background: selectedId === s.id ? 'rgba(56, 189, 248, 0.08)' : 'rgba(255,255,255,0.02)'
+                border: selectedId === s.id ? '1px solid #38bdf8' : '1px solid rgba(255,255,255,0.08)',
+                background: selectedId === s.id ? 'rgba(56, 189, 248, 0.08)' : '#090a0f'
               }}
               onClick={() => setSelectedId(s.id)}
             >
@@ -133,7 +138,7 @@ export default function ConflictWorkflowModal({ onClose, onTriggerScenario }) {
         </div>
 
         {/* Active Scenario Details */}
-        <div className="card" style={{ background: 'rgba(15, 23, 42, 0.65)', border: '1px solid var(--border)' }}>
+        <div className="card" style={{ background: '#07080d', border: '1px solid rgba(255,255,255,0.08)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '10px' }}>
             <div>
               <h3 style={{ margin: 0, fontSize: '16px', color: '#f8fafc' }}>{current.name}</h3>
@@ -144,7 +149,7 @@ export default function ConflictWorkflowModal({ onClose, onTriggerScenario }) {
             </span>
           </div>
 
-          <div style={{ margin: '12px 0', padding: '10px', background: 'rgba(0,0,0,0.25)', borderRadius: '6px', fontSize: '12px', lineHeight: 1.5 }}>
+          <div style={{ margin: '12px 0', padding: '10px', background: 'rgba(0,0,0,0.4)', borderRadius: '6px', fontSize: '12px', lineHeight: 1.5 }}>
             {current.summary}
           </div>
 
@@ -167,7 +172,7 @@ export default function ConflictWorkflowModal({ onClose, onTriggerScenario }) {
             <div style={{ fontWeight: 600, fontSize: '11px', color: 'var(--text-secondary)', textTransform: 'uppercase', marginBottom: '6px' }}>
               Execution Pipeline & Query Resolution:
             </div>
-            <div className="mono" style={{ background: 'rgba(0,0,0,0.4)', padding: '10px', borderRadius: '6px', fontSize: '11px', lineHeight: 1.6, color: '#e2e8f0' }}>
+            <div className="mono" style={{ background: 'rgba(0,0,0,0.5)', padding: '10px', borderRadius: '6px', fontSize: '11px', lineHeight: 1.6, color: '#e2e8f0' }}>
               {current.pipelineSteps.map((step, idx) => (
                 <div key={idx} style={{ color: step.includes('FAIL') ? '#ef4444' : step.includes('WARN') ? '#f59e0b' : '#38bdf8' }}>
                   {step}
@@ -183,8 +188,12 @@ export default function ConflictWorkflowModal({ onClose, onTriggerScenario }) {
           </span>
           <div style={{ display: 'flex', gap: '8px' }}>
             <button className="btn" onClick={onClose}>Cancel</button>
-            <button className="btn btn-primary" onClick={handleLaunch}>
-              ✈ Fly & Resolve Dispute in 3D
+            <button className="btn btn-primary" onClick={handleLaunch} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>
+              </svg>
+              <span>Fly & Resolve Dispute in 3D</span>
             </button>
           </div>
         </div>

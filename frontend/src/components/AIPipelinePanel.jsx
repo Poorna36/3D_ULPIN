@@ -8,7 +8,16 @@ const AI_PIPELINE_STEPS = [
     sub: 'ResNet-34 U-Net + KPConv LiDAR Point Cloud',
     desc: 'Fuses 4-channel tensor (RGB + nDSM) to segment building envelopes and extract footprints.',
     metric: 'IoU: 0.92 | Boundary F1: 0.89 | Height MAE: 0.22m',
-    icon: '🏗'
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="4" y="2" width="16" height="20" rx="2" ry="2"/>
+        <line x1="9" y1="22" x2="9" y2="18"/>
+        <line x1="15" y1="22" x2="15" y2="18"/>
+        <line x1="18" y1="6" x2="18" y2="6.01"/>
+        <line x1="6" y1="6" x2="6" y2="6.01"/>
+        <line x1="12" y1="6" x2="12" y2="6.01"/>
+      </svg>
+    )
   },
   {
     id: 'h2_vectoriser',
@@ -17,7 +26,11 @@ const AI_PIPELINE_STEPS = [
     sub: 'U-Net Wall Segmentation + OCR Room Classifier',
     desc: 'Vectorises scanned RERA/AutoDCR floor plans into structured topological room polygons.',
     metric: 'Polygon Precision: 98.4% | OCR Label Recall: 96.1%',
-    icon: '📐'
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#34d399" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M2 12h20M12 2v20M20 6l-4-4-8 8 4 4 8-8z"/>
+      </svg>
+    )
   },
   {
     id: 'h2_viterbi',
@@ -26,7 +39,13 @@ const AI_PIPELINE_STEPS = [
     sub: 'Viterbi Dynamic Programming Peak Alignment',
     desc: 'Aligns facade point cloud density peaks to infer inter-floor slab heights and vertical order.',
     metric: 'Viterbi Optimal Path Cost: 0.041 | Delta_z: ±0.03m',
-    icon: '📊'
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <line x1="18" y1="20" x2="18" y2="10"/>
+        <line x1="12" y1="20" x2="12" y2="4"/>
+        <line x1="6" y1="20" x2="6" y2="14"/>
+      </svg>
+    )
   },
   {
     id: 'h3_delineation',
@@ -35,7 +54,13 @@ const AI_PIPELINE_STEPS = [
     sub: 'Room Adjacency GNN + ILP Volume Optimizer',
     desc: 'Solves integer linear programming constraints to delineate closed, watertight 3D ownership solids.',
     metric: 'Volume Conservation Invariant: ≤ 0.01% slack',
-    icon: '📦'
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+        <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+        <line x1="12" y1="22.08" x2="12" y2="12"/>
+      </svg>
+    )
   },
   {
     id: 'h4_anomaly',
@@ -44,7 +69,12 @@ const AI_PIPELINE_STEPS = [
     sub: 'Isolation Forest + 2-Hop Graph Scorer',
     desc: 'Flags boundary violations, computes anomaly risk scores, and triages findings for T5 Examiner Console.',
     metric: 'Anomaly Detection AUC: 0.96 | Top-1 Triage Accuracy: 100%',
-    icon: '🛡'
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        <polyline points="9 12 11 14 15 10"/>
+      </svg>
+    )
   }
 ];
 
@@ -105,15 +135,23 @@ export default function AIPipelinePanel({ onStatusChange, onClose }) {
         </div>
         <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
           {!done
-            ? <button className="btn btn-primary" onClick={runPipeline} disabled={running} id="run-pipeline-btn" style={{ fontSize: '11px', padding: '6px 12px' }}>
-                {running ? 'Processing…' : '▶ Execute AI Stack'}
+            ? <button className="btn btn-primary" onClick={runPipeline} disabled={running} id="run-pipeline-btn" style={{ fontSize: '11px', padding: '6px 14px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                  <polygon points="5 3 19 12 5 21 5 3"/>
+                </svg>
+                <span>{running ? 'Processing…' : 'Execute AI Stack'}</span>
               </button>
             : <button className="btn" onClick={reset} id="reset-pipeline-btn" style={{ fontSize: '11px', padding: '6px 12px' }}>
                 Reset Stack
               </button>
           }
           {onClose && (
-            <button className="btn-icon" onClick={onClose} style={{ marginLeft: '4px' }}>✕</button>
+            <button className="btn-icon" onClick={onClose} style={{ marginLeft: '4px' }} title="Close">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+            </button>
           )}
         </div>
       </div>
@@ -143,7 +181,7 @@ export default function AIPipelinePanel({ onStatusChange, onClose }) {
             }}
           >
             <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
-              <span style={{ fontSize: '20px', lineHeight: 1 }}>{s.icon}</span>
+              <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 24, height: 24 }}>{s.icon}</span>
               <div style={{ flex: 1 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
@@ -151,7 +189,7 @@ export default function AIPipelinePanel({ onStatusChange, onClose }) {
                     <span style={{ fontWeight: 600, fontSize: '13px' }}>{s.label}</span>
                   </div>
                   <span className={`badge badge-${s.status === 'done' ? 'valid' : s.status === 'running' ? 'review' : 'draft'}`} style={{ fontSize: '10px' }}>
-                    {s.status === 'idle' ? 'STANDBY' : s.status === 'running' ? `${s.progress.toFixed(0)}%` : '✓ COMPLETED'}
+                    {s.status === 'idle' ? 'STANDBY' : s.status === 'running' ? `${s.progress.toFixed(0)}%` : 'COMPLETED'}
                   </span>
                 </div>
 

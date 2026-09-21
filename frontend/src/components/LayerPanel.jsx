@@ -2,14 +2,14 @@
 import { useMemo } from 'react';
 
 const LAYER_DEFS = [
-  { id: 'google3d',   label: 'Google Photorealistic 3D', icon: '🌐', desc: 'Photogrammetric contextual mesh' },
-  { id: 'tileset3d',  label: '3D Buildings (OSM / LoD2)', icon: '🏙', desc: 'Building outlines & LoD2 geometry' },
+  { id: 'google3d',   label: 'Google Photorealistic 3D', icon: '◒', desc: 'Photogrammetric contextual mesh' },
+  { id: 'tileset3d',  label: '3D Buildings (OSM / LoD2)', icon: '◈', desc: 'Building outlines & LoD2 geometry' },
   { id: 'parcels',    label: 'NAKSHA Cadastral Parcels (Class S)', icon: '◻', desc: 'DoLR 2D cadastre & 5% tolerance anchor' },
   { id: 'buildings',  label: 'LiDAR Envelopes (Class B)', icon: '⬡', desc: 'Airborne LiDAR (E1) extruded envelope' },
-  { id: 'interior',   label: 'BIM Interior Layout (Class U & C)', icon: '🔬', desc: 'As-built BIM units, corridors & stairwells' },
+  { id: 'interior',   label: 'BIM Interior Layout (Class U & C)', icon: '◫', desc: 'As-built BIM units, corridors & stairwells' },
   { id: 'volumes',    label: 'Vertical Storey Slabs (Class L)', icon: '⬢', desc: 'Floor plates inferred via Viterbi DP' },
   { id: 'underground',label: 'Subterranean & GPR Utilities (Class T & I)', icon: '⊗', desc: 'Deep metro rail & storm water corridors' },
-  { id: 'shadows',    label: 'Sun & Shadow Analysis',    icon: '☀', desc: 'Solar path & volumetric shadowing' },
+  { id: 'shadows',    label: 'Sun & Shadow Analysis',    icon: '○', desc: 'Solar path & volumetric shadowing' },
 ];
 
 export default function LayerPanel({ layers, onToggle, buildings, currentCity, onCityChange, onResetOrbit }) {
@@ -36,8 +36,13 @@ export default function LayerPanel({ layers, onToggle, buildings, currentCity, o
             className="btn-orbit-reset"
             onClick={onResetOrbit}
             title="Reset view to full Earth space orbit"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}
           >
-            🌍 Space View
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M12 2a14.5 14.5 0 0 0 0 20M12 2a14.5 14.5 0 0 1 0 20M2 12h20"/>
+            </svg>
+            <span>Orbit View</span>
           </button>
         )}
       </div>
@@ -48,7 +53,7 @@ export default function LayerPanel({ layers, onToggle, buildings, currentCity, o
           title="Zoom to Bengaluru Pilot (India)"
         >
           <div className="pilot-card-top">
-            <span className="pilot-flag">🇮🇳</span>
+            <span className="pilot-code">BLR</span>
             <span className="pilot-name">Bengaluru</span>
           </div>
           <div className="pilot-desc">Primary Pilot • Urban High-Rise Cadastre</div>
@@ -60,7 +65,7 @@ export default function LayerPanel({ layers, onToggle, buildings, currentCity, o
           title="Zoom to Mumbai Pilot (India)"
         >
           <div className="pilot-card-top">
-            <span className="pilot-flag">🇮🇳</span>
+            <span className="pilot-code">BOM</span>
             <span className="pilot-name">Mumbai</span>
           </div>
           <div className="pilot-desc">Indian Validation • Vertical Density & Podiums</div>
@@ -72,7 +77,7 @@ export default function LayerPanel({ layers, onToggle, buildings, currentCity, o
           title="Zoom to Rotterdam Pilot (Netherlands)"
         >
           <div className="pilot-card-top">
-            <span className="pilot-flag">🇳🇱</span>
+            <span className="pilot-code">RTM</span>
             <span className="pilot-name">Rotterdam (NL)</span>
           </div>
           <div className="pilot-desc">BAG 3D & AHN4 LiDAR Benchmark</div>
@@ -84,7 +89,7 @@ export default function LayerPanel({ layers, onToggle, buildings, currentCity, o
           title="Zoom to Singapore Pilot (Singapore)"
         >
           <div className="pilot-card-top">
-            <span className="pilot-flag">🇸🇬</span>
+            <span className="pilot-code">SIN</span>
             <span className="pilot-name">Singapore</span>
           </div>
           <div className="pilot-desc">International Benchmark • Strata & Caverns</div>
@@ -293,9 +298,19 @@ export default function LayerPanel({ layers, onToggle, buildings, currentCity, o
           box-shadow: 0 0 12px rgba(0,212,255,0.25);
         }
         .pilot-card-top {
-          display: flex; align-items: center; gap: 6px;
+          display: flex; align-items: center; gap: 7px;
         }
-        .pilot-flag { font-size: 14px; }
+        .pilot-code {
+          font-family: var(--font-mono, monospace);
+          font-size: 9px; font-weight: 700; letter-spacing: 0.5px;
+          padding: 1px 5px; border-radius: 4px;
+          background: rgba(255, 255, 255, 0.08);
+          color: rgba(255, 255, 255, 0.75);
+        }
+        .pilot-card--active .pilot-code {
+          background: rgba(56, 189, 248, 0.2);
+          color: #38bdf8;
+        }
         .pilot-name { font-size: 13px; font-weight: 600; color: var(--text-primary); }
         .pilot-card--active .pilot-name { color: var(--cyan); }
         .pilot-desc { font-size: 10px; color: var(--text-dim); margin-top: 2px; }

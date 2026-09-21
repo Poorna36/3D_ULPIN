@@ -3,17 +3,17 @@ import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 // ── Floor type metadata ─────────────────────────────────────────────────────
 function floorMeta(label = '', idx = 0, total = 1) {
   const l = label.toLowerCase();
-  if (l.includes('ground') || idx === 0) return { icon: '🚪', type: 'Ground Floor',   color: '#10b981' };
-  if (l.includes('roof')  || idx === total - 1) return { icon: '🏗️', type: 'Rooftop',  color: '#f59e0b' };
-  if (l.includes('park')  || l.includes('car'))  return { icon: '🅿️', type: 'Parking',  color: '#64748b' };
-  if (l.includes('mech')  || l.includes('plant')) return { icon: '⚙️', type: 'Mechanical', color: '#94a3b8' };
-  if (l.includes('lobby') || l.includes('recep')) return { icon: '🛎️', type: 'Lobby',    color: '#06b6d4' };
-  if (l.includes('sky')   || l.includes('observ')) return { icon: '🔭', type: 'Sky Level', color: '#a855f7' };
-  if (l.includes('pool')  || l.includes('club'))  return { icon: '🏊', type: 'Amenity',  color: '#0ea5e9' };
-  if (l.includes('base')  || l.includes('sub') || idx < 0) return { icon: '⬇️', type: 'Basement', color: '#475569' };
-  if (idx < total * 0.25) return { icon: '🏬', type: 'Commercial', color: '#0284c7' };
-  if (idx < total * 0.55) return { icon: '🏢', type: 'Office',     color: '#6366f1' };
-  return { icon: '🏠', type: 'Residential', color: '#a855f7' };
+  if (l.includes('ground') || idx === 0) return { icon: '◫', type: 'Ground Floor',   color: '#10b981' };
+  if (l.includes('roof')  || idx === total - 1) return { icon: '▲', type: 'Rooftop',  color: '#f59e0b' };
+  if (l.includes('park')  || l.includes('car'))  return { icon: 'P', type: 'Parking',  color: '#64748b' };
+  if (l.includes('mech')  || l.includes('plant')) return { icon: '◈', type: 'Mechanical', color: '#94a3b8' };
+  if (l.includes('lobby') || l.includes('recep')) return { icon: '◫', type: 'Lobby',      color: '#06b6d4' };
+  if (l.includes('sky')   || l.includes('observ')) return { icon: '▲', type: 'Sky Level',  color: '#a855f7' };
+  if (l.includes('pool')  || l.includes('club'))  return { icon: '◈', type: 'Amenity',  color: '#0ea5e9' };
+  if (l.includes('base')  || l.includes('sub') || idx < 0) return { icon: '▼', type: 'Basement', color: '#475569' };
+  if (idx < total * 0.25) return { icon: '◆', type: 'Commercial', color: '#0284c7' };
+  if (idx < total * 0.55) return { icon: '■', type: 'Office',     color: '#6366f1' };
+  return { icon: '●', type: 'Residential', color: '#a855f7' };
 }
 
 // ── Build a COMPLETE floor list from a building object ────────────────────────
@@ -243,10 +243,588 @@ export default function InteriorWalkthrough({ building, currentFloorIdx, onFloor
     return landmarks.filter((l, i, arr) => arr.findIndex(x => x.idx === l.idx) === i).slice(0, 5);
   })();
 
+
+  // ── viewMode state: 'floor' = single floor perspective, 'section' = all-floors stacked ─
+  const [viewMode, setViewMode] = useState('floor');
+
+  // ── Architectural Floor Plate Generator ──────────────────────────────────────
+  // Produces a realistic floor plan (core + corridors + units) based on building archetype
+  const floorRooms = useMemo(() => {
+    if (!currentFloor || !building) return [];
+    const n = building.name.toLowerCase();
+    const fi = clampedIdx;
+    const lbl = (currentFloor.label || '').toLowerCase();
+
+    // ── Determine archetype ──────────────────────────────────────────────────
+    const isResidential = (
+      /lodha|palais|imperial|antilia|prestige|sobha|karle|falcon|meenakshi|sky forest|avighna|minerva|royale|one park|three sixty|tower|residences/.test(n)
+      && !/tech park|it park|office|bank|headquarters|metro|station/.test(n)
+    ) || meta?.type === 'Residential';
+
+    const isHotel = /ritz|marriott|hyatt|intercontinental|hilton|palace|suites|resort/.test(n) || meta?.type === 'Hospitality';
+    const isParking = lbl.includes('park') || lbl.includes('car') || meta?.type === 'Parking';
+    const isBasement = fi < 0 || lbl.includes('base') || lbl.includes('sub') || meta?.type === 'Basement';
+    const isMech = lbl.includes('mech') || lbl.includes('plant') || lbl.includes('utility') || meta?.type === 'Mechanical';
+    const isGround = fi === 0 || lbl.includes('ground') || lbl.includes('lobby') || meta?.type === 'Ground Floor';
+    const isRoof = fi === totalFloors - 1 || lbl.includes('roof') || lbl.includes('sky') || meta?.type === 'Rooftop' || meta?.type === 'Sky Level';
+    const isAmenity = lbl.includes('pool') || lbl.includes('club') || lbl.includes('gym') || meta?.type === 'Amenity';
+
+    // Apartment designation for this floor (e.g. floor 15 → "15A", "15B"…)
+    const F = currentFloor.level_index ?? fi;
+    const aptSuffix = (s) => `${F}${s}`;
+
+    // ── Residential High-Rise Floor Plate (Core + Corridors + Apartments) ───
+    if (isResidential && !isGround && !isRoof && !isAmenity && !isMech) {
+      return [
+        // Central Lift Core
+        { x: 15, z: 10,  w: 8, d: 8,  label: 'Lift Core',           area: 64,  color: '#64748b', type: 'core'  },
+        // Staircases
+        { x: 13, z: 10,  w: 2, d: 4,  label: 'Staircase A',         area: 8,   color: '#475569', type: 'stair' },
+        { x: 23, z: 10,  w: 2, d: 4,  label: 'Staircase B',         area: 8,   color: '#475569', type: 'stair' },
+        // North corridor (links to north wing apartments)
+        { x: 1,  z: 10,  w: 12, d: 2.5, label: 'Corridor (North)',  area: 30,  color: '#334155', type: 'corridor' },
+        // South corridor
+        { x: 25, z: 10,  w: 12, d: 2.5, label: 'Corridor (South)', area: 30,  color: '#334155', type: 'corridor' },
+        // North-East Apartment (3BHK)
+        { x: 1,  z: 0.5, w: 13, d: 9,  label: `Apt ${aptSuffix('A')} — 3BHK (NE Wing)`, area: 117, color: '#a78bfa', type: 'apt' },
+        // North-West Apartment (2BHK)
+        { x: 16, z: 0.5, w: 10, d: 9,  label: `Apt ${aptSuffix('B')} — 2BHK (NW Wing)`, area: 90,  color: '#818cf8', type: 'apt' },
+        // South-East Apartment (2BHK)
+        { x: 1,  z: 13,  w: 10, d: 9,  label: `Apt ${aptSuffix('C')} — 2BHK (SE Wing)`, area: 90,  color: '#c084fc', type: 'apt' },
+        // South-West Apartment (1BHK)
+        { x: 14, z: 13,  w: 9,  d: 9,  label: `Apt ${aptSuffix('D')} — 1BHK (SW Wing)`, area: 81,  color: '#a855f7', type: 'apt' },
+        // Corner apartment
+        { x: 25, z: 13,  w: 12, d: 9,  label: `Apt ${aptSuffix('E')} — 3BHK (Corner)`, area: 108, color: '#7c3aed', type: 'apt' },
+        // Service & utility
+        { x: 25, z: 0.5, w: 12, d: 9,  label: `Apt ${aptSuffix('F')} — Penthouse Suite`, area: 108, color: '#6366f1', type: 'apt' },
+        { x: 13, z: 14.5,w: 2, d: 7.5, label: 'Service Shaft',      area: 15,  color: '#1e293b', type: 'service' },
+        { x: 23, z: 14.5,w: 2, d: 7.5, label: 'Utility Room',       area: 15,  color: '#1e293b', type: 'service' },
+      ];
+    }
+
+    // ── Hotel Floor Plate (Corridor + Numbered Rooms) ────────────────────────
+    if (isHotel && !isGround && !isRoof) {
+      const rooms = [];
+      // Central corridor
+      rooms.push({ x: 1, z: 10, w: 36, d: 3, label: 'Main Corridor', area: 108, color: '#334155', type: 'corridor' });
+      // Rooms on north side (left from corridor)
+      ['101','102','103','104','105'].forEach((rnum, i) => {
+        rooms.push({ x: 2 + i * 7, z: 1, w: 6, d: 8, label: `Room ${F}${rnum.slice(1)}`, area: 48, color: '#a78bfa', type: 'room' });
+      });
+      // Rooms on south side
+      ['106','107','108','109','110'].forEach((rnum, i) => {
+        rooms.push({ x: 2 + i * 7, z: 14, w: 6, d: 8, label: `Room ${F}${rnum.slice(1)}`, area: 48, color: '#818cf8', type: 'room' });
+      });
+      // Service at end
+      rooms.push({ x: 33, z: 1,  w: 4, d: 8,  label: 'Housekeeping', area: 32, color: '#475569', type: 'service' });
+      rooms.push({ x: 33, z: 14, w: 4, d: 8,  label: 'Linen Store',   area: 32, color: '#334155', type: 'service' });
+      rooms.push({ x: 33, z: 10, w: 4, d: 3,  label: 'Lift Lobby',    area: 12, color: '#64748b', type: 'core'    });
+      return rooms;
+    }
+
+    // ── Ground / Entry Lobby ─────────────────────────────────────────────────
+    if (isGround) {
+      return [
+        { x: 1,  z: 1,  w: 22, d: 11, label: 'Grand Lobby',           area: 242, color: '#38bdf8', type: 'lobby'   },
+        { x: 25, z: 1,  w: 10, d: 6,  label: 'Reception Counter',      area: 60,  color: '#06b6d4', type: 'service' },
+        { x: 25, z: 8,  w: 5,  d: 4,  label: 'Security Desk',          area: 20,  color: '#64748b', type: 'service' },
+        { x: 31, z: 8,  w: 4,  d: 4,  label: 'Visitor Lounge',         area: 16,  color: '#a78bfa', type: 'lounge'  },
+        { x: 1,  z: 13, w: 10, d: 8,  label: 'Lift Lobby (Residential)',area: 80,  color: '#334155', type: 'core'    },
+        { x: 13, z: 13, w: 8,  d: 8,  label: 'Lift Lobby (Commercial)', area: 64,  color: '#1e293b', type: 'core'    },
+        { x: 23, z: 13, w: 6,  d: 4,  label: 'Fire Exit A',            area: 24,  color: '#ef4444', type: 'exit'    },
+        { x: 23, z: 18, w: 6,  d: 3,  label: 'Fire Exit B',            area: 18,  color: '#ef4444', type: 'exit'    },
+        { x: 30, z: 13, w: 6,  d: 4,  label: 'Concierge',              area: 24,  color: '#34d399', type: 'service' },
+        { x: 30, z: 18, w: 6,  d: 3,  label: 'Parcel Room',            area: 18,  color: '#475569', type: 'service' },
+        { x: 25, z: 13, w: 4,  d: 8,  label: 'Staircase A',            area: 32,  color: '#475569', type: 'stair'   },
+      ];
+    }
+
+    // ── Rooftop / Sky Level ──────────────────────────────────────────────────
+    if (isRoof) {
+      return [
+        { x: 2,  z: 1,  w: 18, d: 12, label: 'Sky Observation Deck',   area: 216, color: '#f59e0b', type: 'deck'    },
+        { x: 22, z: 1,  w: 14, d: 8,  label: 'Infinity Pool',          area: 112, color: '#0ea5e9', type: 'pool'    },
+        { x: 2,  z: 15, w: 10, d: 6,  label: 'Sky Bar & Lounge',        area: 60,  color: '#a855f7', type: 'lounge'  },
+        { x: 14, z: 15, w: 12, d: 6,  label: 'Fine Dining Restaurant',  area: 72,  color: '#f472b6', type: 'dining'  },
+        { x: 28, z: 10, w: 8,  d: 11, label: 'Mechanical Roof Plant',   area: 88,  color: '#475569', type: 'mech'    },
+        { x: 22, z: 10, w: 5,  d: 4,  label: 'Lift Machine Room',       area: 20,  color: '#334155', type: 'core'    },
+        { x: 2,  z: 22, w: 8,  d: 4,  label: 'Fire Refuge Area',        area: 32,  color: '#ef4444', type: 'exit'    },
+        { x: 12, z: 22, w: 6,  d: 4,  label: 'Telecom Tower Access',    area: 24,  color: '#64748b', type: 'service' },
+      ];
+    }
+
+    // ── Amenity Level ────────────────────────────────────────────────────────
+    if (isAmenity) {
+      return [
+        { x: 1,  z: 1,  w: 16, d: 10, label: 'Swimming Pool',           area: 160, color: '#0ea5e9', type: 'pool'    },
+        { x: 19, z: 1,  w: 10, d: 10, label: 'Fitness Centre',          area: 100, color: '#34d399', type: 'gym'     },
+        { x: 30, z: 1,  w: 6,  d: 10, label: 'Squash Court',            area: 60,  color: '#10b981', type: 'sport'   },
+        { x: 1,  z: 13, w: 8,  d: 8,  label: 'Sauna & Steam Room',      area: 64,  color: '#f59e0b', type: 'spa'     },
+        { x: 11, z: 13, w: 10, d: 8,  label: 'Clubhouse Lounge',        area: 80,  color: '#a78bfa', type: 'lounge'  },
+        { x: 23, z: 13, w: 8,  d: 8,  label: 'Children\'s Play Area',   area: 64,  color: '#f472b6', type: 'play'    },
+        { x: 33, z: 13, w: 4,  d: 8,  label: 'Changing Rooms',          area: 32,  color: '#475569', type: 'service' },
+        { x: 1,  z: 22, w: 6,  d: 4,  label: 'Pool Equipment Room',     area: 24,  color: '#334155', type: 'mech'    },
+      ];
+    }
+
+    // ── Basement / Parking ───────────────────────────────────────────────────
+    if (isBasement || isParking) {
+      const bays = [];
+      const cols = ['A','B','C','D','E'];
+      cols.forEach((col, ci) => {
+        [1,2,3].forEach((row) => {
+          bays.push({ x: 1 + ci * 7, z: 1 + (row-1) * 7, w: 5.5, d: 5.5,
+            label: `Bay ${col}-${String(row).padStart(2,'0')}`, area: 30, color: '#334155', type: 'parking' });
+        });
+      });
+      bays.push({ x: 36, z: 1,  w: 4, d: 20, label: 'Drive Ramp',       area: 80,  color: '#1e293b', type: 'ramp'    });
+      bays.push({ x: 1,  z: 22, w: 35,d: 3,  label: 'Service Corridor', area: 105, color: '#475569', type: 'corridor'});
+      return bays;
+    }
+
+    // ── Mechanical / Plant Level ─────────────────────────────────────────────
+    if (isMech) {
+      return [
+        { x: 1,  z: 1,  w: 14, d: 10, label: 'HVAC Plant Room',         area: 140, color: '#94a3b8', type: 'mech'    },
+        { x: 17, z: 1,  w: 10, d: 10, label: 'HV Electrical Panel',     area: 100, color: '#f59e0b', type: 'elec'    },
+        { x: 29, z: 1,  w: 8,  d: 10, label: 'Transformer Room',        area: 80,  color: '#f97316', type: 'elec'    },
+        { x: 1,  z: 13, w: 10, d: 8,  label: 'Generator Set A',         area: 80,  color: '#64748b', type: 'mech'    },
+        { x: 13, z: 13, w: 10, d: 8,  label: 'Generator Set B',         area: 80,  color: '#475569', type: 'mech'    },
+        { x: 25, z: 13, w: 8,  d: 8,  label: 'Fire Pump Room',          area: 64,  color: '#ef4444', type: 'fire'    },
+        { x: 35, z: 13, w: 4,  d: 8,  label: 'Water Storage Tank',      area: 32,  color: '#0ea5e9', type: 'water'   },
+        { x: 1,  z: 22, w: 8,  d: 4,  label: 'BMS Control Room',        area: 32,  color: '#38bdf8', type: 'control' },
+      ];
+    }
+
+    // ── Office / Commercial Floor Plate ──────────────────────────────────────
+    return [
+      // Core
+      { x: 15, z: 8,  w: 8, d: 8,  label: 'Lift Core',               area: 64,  color: '#64748b', type: 'core'    },
+      { x: 13, z: 8,  w: 2, d: 4,  label: 'Stairwell A',             area: 8,   color: '#475569', type: 'stair'   },
+      { x: 23, z: 8,  w: 2, d: 4,  label: 'Stairwell B',             area: 8,   color: '#475569', type: 'stair'   },
+      // Corridors
+      { x: 1,  z: 10, w: 12, d: 2.5, label: 'Main Corridor (East)',  area: 30,  color: '#334155', type: 'corridor' },
+      { x: 25, z: 10, w: 12, d: 2.5, label: 'Main Corridor (West)', area: 30,  color: '#334155', type: 'corridor' },
+      // Office spaces
+      { x: 1,  z: 0.5,w: 26, d: 7,  label: 'Open Office — Zone A',   area: 182, color: '#6366f1', type: 'office'  },
+      { x: 29, z: 0.5,w: 8,  d: 7,  label: 'Director\'s Suite',      area: 56,  color: '#818cf8', type: 'office'  },
+      // Meeting rooms
+      { x: 1,  z: 13, w: 8,  d: 6,  label: 'Conf Room A',            area: 48,  color: '#a78bfa', type: 'meeting' },
+      { x: 11, z: 13, w: 8,  d: 6,  label: 'Conf Room B',            area: 48,  color: '#7c3aed', type: 'meeting' },
+      { x: 21, z: 13, w: 6,  d: 6,  label: 'Meeting Pod C',          area: 36,  color: '#6366f1', type: 'meeting' },
+      // Support
+      { x: 29, z: 13, w: 5,  d: 3,  label: 'Pantry',                 area: 15,  color: '#34d399', type: 'service' },
+      { x: 29, z: 17, w: 5,  d: 3,  label: 'Server Room',            area: 15,  color: '#38bdf8', type: 'service' },
+      { x: 1,  z: 20, w: 36, d: 3,  label: 'Open Office — Zone B',   area: 108, color: '#4f46e5', type: 'office'  },
+    ];
+  }, [currentFloor, building, meta, clampedIdx, totalFloors]);
+
   if (!building) return null;
+
+  // ── Viewport: Single Floor Perspective + All-Floors Stacked Section ────────
+  const FloorPerspectiveViewport = isActive ? (() => {
+    const floorLabel = currentFloor?.label || `Floor ${clampedIdx + 1}`;
+    const accentClr  = meta?.color || '#38bdf8';
+    const elev = (currentFloor?.z_min != null
+      ? Math.max(0, currentFloor.z_min - (building.ground_elevation || 0))
+      : floorH * clampedIdx).toFixed(1);
+    const ceilH = currentFloor
+      ? Math.max(0, (currentFloor.z_max || 0) - (currentFloor.z_min || 0)).toFixed(1)
+      : floorH.toFixed(1);
+
+    const PX = 14; // px per metre — scale factor
+
+    // ── Colour for space type ───────────────────────────────────────────────
+    const typeColor = (type) => ({
+      apt: '#a78bfa', room: '#818cf8', corridor: '#334155', core: '#64748b',
+      stair: '#475569', service: '#1e293b', lobby: '#06b6d4', lounge: '#a855f7',
+      exit: '#ef4444', pool: '#0ea5e9', gym: '#34d399', spa: '#f59e0b',
+      parking: '#334155', ramp: '#1e293b', mech: '#94a3b8', elec: '#f59e0b',
+      fire: '#ef4444', water: '#0ea5e9', control: '#38bdf8', deck: '#f59e0b',
+      office: '#6366f1', meeting: '#a78bfa', dining: '#f472b6', play: '#f472b6',
+      sport: '#10b981', default: '#38bdf8',
+    }[type] || '#38bdf8');
+
+    // ── Render a room div with 3D wall extrusion effect ─────────────────────
+    const renderRoom = (room, ri, highlight = false) => {
+      const c = room.color || typeColor(room.type);
+      const isCore = room.type === 'core' || room.type === 'stair' || room.type === 'corridor';
+      return (
+        <div key={ri} style={{
+          position: 'absolute',
+          left: room.x * PX, top: room.z * PX,
+          width: room.w * PX, height: room.d * PX,
+          background: `${c}${isCore ? '20' : '14'}`,
+          border: `${highlight ? '2px' : '1.5px'} solid ${c}${isCore ? '60' : '50'}`,
+          borderRadius: highlight ? 5 : 3,
+          overflow: 'hidden',
+          boxShadow: highlight
+            ? `0 0 12px ${c}40, inset 0 0 8px ${c}15`
+            : `inset 0 0 6px ${c}08`,
+          transition: 'box-shadow 0.2s',
+        }}>
+          {/* Floor texture */}
+          <div style={{
+            position: 'absolute', inset: 0,
+            background: `repeating-linear-gradient(45deg, ${c}05 0, ${c}05 1px, transparent 1px, transparent ${isCore ? 8 : 12}px)`,
+          }} />
+          {/* Wall extrusion shadow on south edge */}
+          <div style={{
+            position: 'absolute', bottom: 0, left: 0, right: 0, height: 4,
+            background: `linear-gradient(0deg, ${c}25, transparent)`,
+          }} />
+          {/* Room label */}
+          <div style={{
+            position: 'absolute', bottom: 3, left: 4, right: 4,
+            fontSize: Math.max(7, Math.min(10, room.w * 1.6)),
+            fontWeight: 700, color: c,
+            letterSpacing: '0.2px', lineHeight: 1.2,
+            textShadow: `0 0 6px ${c}60`,
+            overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+          }}>
+            {room.label}
+          </div>
+          {/* Area badge */}
+          <div style={{
+            position: 'absolute', top: 3, right: 3,
+            fontSize: 6.5, color: `${c}85`, fontWeight: 700,
+            fontFamily: 'monospace', lineHeight: 1,
+          }}>
+            {room.area}m²
+          </div>
+          {/* Type dot */}
+          <div style={{
+            position: 'absolute', top: 3, left: 3,
+            width: 4, height: 4, borderRadius: '50%',
+            background: c, opacity: 0.7,
+          }} />
+        </div>
+      );
+    };
+
+    // ── Single floor perspective ─────────────────────────────────────────────
+    if (viewMode === 'floor') {
+      const FLOOR_W = 38;
+      const FLOOR_D = 26;
+      return (
+        <div style={{
+          position: 'fixed', inset: 0, zIndex: 140,
+          background: 'radial-gradient(ellipse at 50% 30%, #080c1a 0%, #020408 100%)',
+          overflow: 'hidden', display: 'flex', flexDirection: 'column',
+        }}>
+          {/* Atmospheric glow */}
+          <div style={{ position:'absolute', inset:0, pointerEvents:'none',
+            background:`radial-gradient(ellipse 80% 40% at 50% 60%, ${accentClr}06 0%, transparent 70%)` }} />
+
+          {/* Top-left label */}
+          <div style={{
+            position: 'absolute', top: 64, left: 24, zIndex: 2,
+            fontSize: 10, fontWeight: 700, letterSpacing: '1.4px',
+            color: `${accentClr}70`, textTransform: 'uppercase',
+            display: 'flex', alignItems: 'center', gap: 8,
+          }}>
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke={accentClr} strokeWidth="2.5">
+              <rect x="3" y="3" width="18" height="18" rx="1"/>
+              <path d="M3 9h18M9 21V9M15 21V9"/>
+            </svg>
+            Floor Plan — 3D Top Perspective
+          </div>
+
+          {/* 3D perspective scene */}
+          <div style={{
+            flex: 1, display: 'flex',
+            alignItems: 'flex-end', justifyContent: 'center',
+            perspective: '1000px', perspectiveOrigin: '50% 38%',
+            paddingBottom: 56, overflow: 'hidden',
+          }}>
+            <div style={{
+              transformStyle: 'preserve-3d',
+              transform: 'rotateX(55deg) rotateZ(0deg)',
+              position: 'relative',
+              width: FLOOR_W * PX, height: FLOOR_D * PX,
+            }}>
+              {/* Floor slab */}
+              <div style={{
+                position: 'absolute', inset: 0,
+                background: `repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0, rgba(255,255,255,0.025) 1px, transparent 1px, transparent ${PX}px),
+                             repeating-linear-gradient(90deg, rgba(255,255,255,0.025) 0, rgba(255,255,255,0.025) 1px, transparent 1px, transparent ${PX}px)`,
+                border: `1.5px solid ${accentClr}25`, borderRadius: 4,
+              }} />
+
+              {/* 3D extruded walls (south face visible in perspective) */}
+              <div style={{
+                position: 'absolute', inset: 0,
+                border: `3px solid ${accentClr}35`, borderRadius: 4,
+                boxShadow: `0 8px 0 ${accentClr}20, 0 16px 0 ${accentClr}10`,
+                pointerEvents: 'none',
+              }} />
+
+              {/* Structural columns */}
+              {[1,2,3].map(ci => [1,2].map(ri => (
+                <div key={`c${ci}${ri}`} style={{
+                  position: 'absolute',
+                  left: (ci * FLOOR_W * PX / 4) - 5,
+                  top: (ri * FLOOR_D * PX / 3) - 5,
+                  width: 10, height: 10,
+                  background: `rgba(255,255,255,0.10)`,
+                  border: `1px solid ${accentClr}45`,
+                  borderRadius: 2,
+                }} />
+              ))).flat()}
+
+              {/* Room zones */}
+              {floorRooms.map((room, ri) => renderRoom(room, ri))}
+
+              {/* Perimeter */}
+              <div style={{ position:'absolute', inset:0,
+                border:`2px solid ${accentClr}20`, borderRadius:4, pointerEvents:'none' }} />
+
+              {/* North compass */}
+              <div style={{
+                position:'absolute', top:-22, left:'50%', transform:'translateX(-50%)',
+                fontSize:9, fontWeight:800, color:`${accentClr}70`, letterSpacing:'1px',
+              }}>▲ N</div>
+            </div>
+          </div>
+
+          {/* Left & right wall hints */}
+          <div style={{position:'absolute',inset:0,pointerEvents:'none',overflow:'hidden'}}>
+            <div style={{position:'absolute',top:'18%',bottom:0,left:0,width:'9%',
+              background:`linear-gradient(90deg,${accentClr}05,transparent)`,
+              borderRight:`1px solid ${accentClr}12`}} />
+            <div style={{position:'absolute',top:'18%',bottom:0,right:0,width:'9%',
+              background:`linear-gradient(270deg,${accentClr}05,transparent)`,
+              borderLeft:`1px solid ${accentClr}12`}} />
+            <div style={{position:'absolute',top:0,left:0,right:0,height:'20%',
+              background:'linear-gradient(180deg,rgba(0,0,0,0.55),transparent)'}} />
+            <div style={{position:'absolute',top:'36%',left:'4%',right:'4%',height:'1px',
+              background:`linear-gradient(90deg,transparent,${accentClr}25 30%,${accentClr}25 70%,transparent)`}} />
+          </div>
+
+          {/* Bottom status */}
+          <div style={{
+            position:'absolute', bottom:12, left:'50%', transform:'translateX(-50%)',
+            display:'flex', alignItems:'center', gap:14,
+            background:'rgba(0,0,0,0.70)', backdropFilter:'blur(16px)',
+            border:`1px solid ${accentClr}22`, borderRadius:999, padding:'5px 20px',
+            fontSize:10.5, color:'rgba(255,255,255,0.60)',
+            fontFamily:"'JetBrains Mono',monospace", userSelect:'none', whiteSpace:'nowrap',
+          }}>
+            <span style={{color:accentClr,fontWeight:700}}>{floorLabel}</span>
+            <span style={{color:'rgba(255,255,255,0.2)'}}>|</span>
+            <span>{elev}m AGL</span>
+            <span style={{color:'rgba(255,255,255,0.2)'}}>|</span>
+            <span>Ceil {ceilH}m</span>
+            <span style={{color:'rgba(255,255,255,0.2)'}}>|</span>
+            <span style={{color:'#64748b'}}>{clampedIdx+1} / {totalFloors} Floors</span>
+            <span style={{color:'rgba(255,255,255,0.2)'}}>|</span>
+            <span style={{color:'#64748b'}}>{floorRooms.length} Spaces</span>
+          </div>
+        </div>
+      );
+    }
+
+    // ── All Floors Stacked 3D Section View ────────────────────────────────────
+    const SLAB_H = 28;      // px per floor slab height
+    const SLAB_GAP = 20;    // gap between slabs
+    const SLAB_W = 280;
+    const SLAB_D = 80;
+    const MAX_VISIBLE = Math.min(totalFloors, 20);
+    const step = Math.max(1, Math.floor(totalFloors / MAX_VISIBLE));
+    const visFloors = floors
+      .map((f, fi) => ({ f, fi }))
+      .filter(({ fi }) => fi % step === 0 || fi === 0 || fi === totalFloors - 1 || fi === clampedIdx);
+
+    return (
+      <div style={{
+        position:'fixed', inset:0, zIndex:140,
+        background:'radial-gradient(ellipse at 50% 40%, #080c1a 0%, #020408 100%)',
+        overflow:'hidden', display:'flex', flexDirection:'column',
+      }}>
+        {/* Atmosphere */}
+        <div style={{position:'absolute',inset:0,pointerEvents:'none',
+          background:'radial-gradient(ellipse 60% 50% at 50% 50%, rgba(56,189,248,0.04) 0%, transparent 70%)'}} />
+
+        {/* Top label */}
+        <div style={{
+          position:'absolute', top:64, left:24, zIndex:2,
+          fontSize:10, fontWeight:700, letterSpacing:'1.4px',
+          color:'rgba(255,255,255,0.45)', textTransform:'uppercase',
+          display:'flex', alignItems:'center', gap:8,
+        }}>
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" strokeWidth="2.5">
+            <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+            <polyline points="2 17 12 22 22 17"/>
+            <polyline points="2 12 12 17 22 12"/>
+          </svg>
+          All Floors — 3D Section View · {building.name}
+        </div>
+
+        {/* Stacked 3D floors */}
+        <div style={{
+          flex:1, display:'flex', alignItems:'center', justifyContent:'center',
+          perspective:'1200px', perspectiveOrigin:'50% 48%',
+          overflow:'hidden',
+        }}>
+          <div style={{
+            transformStyle:'preserve-3d',
+            transform:'rotateX(42deg) rotateY(-12deg)',
+            position:'relative',
+            width: SLAB_W + 80,
+            height: visFloors.length * (SLAB_H + SLAB_GAP),
+          }}>
+            {[...visFloors].reverse().map(({ f, fi }, vIdx) => {
+              const fm = floorMeta(f.label, fi, totalFloors);
+              const isActive2 = fi === clampedIdx;
+              const pct = totalFloors > 1 ? fi / (totalFloors - 1) : 0;
+              const flrColor = isActive2 ? fm.color : `${fm.color}80`;
+
+              return (
+                <div
+                  key={fi}
+                  onClick={() => { doFloorChange(fi); setViewMode('floor'); }}
+                  title={`${f.label} — click to inspect`}
+                  style={{
+                    position:'absolute',
+                    left: 40, top: vIdx * (SLAB_H + SLAB_GAP),
+                    width: SLAB_W, height: SLAB_H,
+                    background: isActive2
+                      ? `linear-gradient(90deg, ${fm.color}35 0%, ${fm.color}20 100%)`
+                      : `linear-gradient(90deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)`,
+                    border: `1px solid ${isActive2 ? fm.color : 'rgba(255,255,255,0.10)'}`,
+                    borderRadius: 4,
+                    cursor:'pointer',
+                    boxShadow: isActive2
+                      ? `0 0 20px ${fm.color}30, inset 0 1px 0 ${fm.color}50`
+                      : '0 1px 0 rgba(255,255,255,0.05)',
+                    transition:'all 0.18s',
+                    display:'flex', alignItems:'center',
+                    backdropFilter: isActive2 ? 'none' : 'none',
+                  }}
+                >
+                  {/* Slab face — floor number */}
+                  <div style={{
+                    padding:'0 12px', display:'flex', alignItems:'center', gap:10,
+                    flex:1, overflow:'hidden',
+                  }}>
+                    {/* Floor type dot */}
+                    <div style={{
+                      width:7, height:7, borderRadius:'50%', flexShrink:0,
+                      background: flrColor,
+                      boxShadow: isActive2 ? `0 0 6px ${fm.color}` : 'none',
+                    }} />
+                    {/* Level badge */}
+                    <span style={{
+                      fontFamily:'monospace', fontSize:9.5, fontWeight:700,
+                      color: isActive2 ? fm.color : 'rgba(255,255,255,0.40)',
+                      letterSpacing:'0.5px', flexShrink:0,
+                      minWidth:32,
+                    }}>
+                      {fi >= 0 ? `L${fi}` : `B${Math.abs(fi)}`}
+                    </span>
+                    {/* Label */}
+                    <span style={{
+                      fontSize:10, fontWeight: isActive2 ? 700 : 500,
+                      color: isActive2 ? 'rgba(255,255,255,0.90)' : 'rgba(255,255,255,0.40)',
+                      overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap',
+                      flex:1,
+                    }}>
+                      {f.label}
+                    </span>
+                    {/* Elevation */}
+                    <span style={{
+                      fontSize:9, color:'rgba(255,255,255,0.22)',
+                      fontFamily:'monospace', flexShrink:0,
+                    }}>
+                      {(floorH * fi).toFixed(0)}m
+                    </span>
+                    {/* Active indicator */}
+                    {isActive2 && (
+                      <span style={{
+                        fontSize:8, fontWeight:800, padding:'1px 5px',
+                        background:`${fm.color}25`, color:fm.color,
+                        border:`1px solid ${fm.color}60`, borderRadius:4,
+                        letterSpacing:'0.5px', flexShrink:0,
+                      }}>CURRENT</span>
+                    )}
+                  </div>
+
+                  {/* Right: elevation bar fill */}
+                  <div style={{
+                    position:'absolute', right:0, top:0, bottom:0, width:3,
+                    background: `linear-gradient(180deg, ${flrColor}00, ${flrColor}60)`,
+                    borderRadius:'0 4px 4px 0',
+                  }} />
+
+                  {/* Mini floor plan sketch on right */}
+                  <div style={{
+                    width:60, height:SLAB_H-6, marginRight:8, flexShrink:0,
+                    border:`1px solid rgba(255,255,255,0.08)`, borderRadius:2,
+                    overflow:'hidden', position:'relative', opacity: isActive2 ? 0.8 : 0.25,
+                  }}>
+                    <div style={{
+                      position:'absolute', inset:0,
+                      background:`repeating-linear-gradient(0deg, rgba(255,255,255,0.04) 0, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 6px),
+                                  repeating-linear-gradient(90deg, rgba(255,255,255,0.04) 0, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 6px)`,
+                    }} />
+                    {/* Mini core block */}
+                    <div style={{
+                      position:'absolute', left:'35%', top:'25%', width:'18%', height:'50%',
+                      background:`${flrColor}40`, border:`1px solid ${flrColor}60`,
+                    }} />
+                    {/* Mini rooms */}
+                    <div style={{position:'absolute',left:'5%',top:'5%',width:'28%',height:'40%',background:`${flrColor}20`,border:`1px solid ${flrColor}30`}} />
+                    <div style={{position:'absolute',left:'55%',top:'5%',width:'38%',height:'40%',background:`${flrColor}20`,border:`1px solid ${flrColor}30`}} />
+                    <div style={{position:'absolute',left:'5%',top:'55%',width:'88%',height:'35%',background:`${flrColor}15`,border:`1px solid ${flrColor}25`}} />
+                  </div>
+                </div>
+              );
+            })}
+
+            {/* Vertical elevation ruler */}
+            <div style={{
+              position:'absolute', left:0, top:0, bottom:0, width:36,
+              borderRight:'1px solid rgba(255,255,255,0.08)',
+              display:'flex', flexDirection:'column', justifyContent:'space-between',
+              padding:'4px 0', pointerEvents:'none',
+            }}>
+              <span style={{fontSize:8,color:'rgba(255,255,255,0.25)',fontFamily:'monospace',textAlign:'right',paddingRight:5}}>
+                {building.height}m
+              </span>
+              <span style={{fontSize:8,color:'rgba(255,255,255,0.25)',fontFamily:'monospace',textAlign:'right',paddingRight:5}}>
+                0m
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom info */}
+        <div style={{
+          position:'absolute', bottom:12, left:'50%', transform:'translateX(-50%)',
+          display:'flex', alignItems:'center', gap:14,
+          background:'rgba(0,0,0,0.70)', backdropFilter:'blur(16px)',
+          border:'1px solid rgba(255,255,255,0.12)', borderRadius:999, padding:'5px 20px',
+          fontSize:10.5, color:'rgba(255,255,255,0.50)',
+          fontFamily:"'JetBrains Mono',monospace", userSelect:'none',
+        }}>
+          <span style={{color:'#38bdf8',fontWeight:700}}>{building.name}</span>
+          <span style={{color:'rgba(255,255,255,0.2)'}}>|</span>
+          <span>{totalFloors} Floors</span>
+          <span style={{color:'rgba(255,255,255,0.2)'}}>|</span>
+          <span>{building.height}m Height</span>
+          <span style={{color:'rgba(255,255,255,0.2)'}}>|</span>
+          <span style={{color:'rgba(255,255,255,0.35)'}}>Click any floor to inspect</span>
+        </div>
+      </div>
+    );
+  })() : null;
+
 
   return (
     <>
+      {/* Full-screen floor-level perspective viewport (renders when active, behind HUD) */}
+      {FloorPerspectiveViewport}
+
       {/* Enter / Exit button */}
       {!isActive ? (
         <button
@@ -255,7 +833,12 @@ export default function InteriorWalkthrough({ building, currentFloorIdx, onFloor
           onClick={onEnter}
           title="Enter building interior walkthrough"
         >
-          <span className="interior-enter-icon">🚶</span>
+          <span className="interior-enter-icon" style={{ display: 'inline-flex', alignItems: 'center' }}>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+              <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+          </span>
           <span>Walk Inside</span>
           <span className="interior-enter-badge">{totalFloors}F</span>
         </button>
@@ -265,16 +848,67 @@ export default function InteriorWalkthrough({ building, currentFloorIdx, onFloor
           <div className="ihud-header">
             <div className="ihud-building-name">{building.name}</div>
             <div className="ihud-subtitle">
-              Interior Walkthrough · {totalFloors} floors · {absH.toFixed(0)}m
+              Interior · {totalFloors}F · {absH.toFixed(0)}m
             </div>
+
+            {/* ── View Mode Toggle ── */}
+            <div style={{
+              display: 'flex', gap: 4, marginTop: 6,
+              background: 'rgba(0,0,0,0.30)', borderRadius: 8, padding: 3,
+            }}>
+              <button
+                onClick={() => setViewMode('floor')}
+                title="Single floor plan view"
+                style={{
+                  flex: 1, padding: '4px 8px', borderRadius: 6, border: 'none',
+                  background: viewMode === 'floor' ? 'rgba(56,189,248,0.20)' : 'transparent',
+                  color: viewMode === 'floor' ? '#38bdf8' : '#64748b',
+                  fontSize: 10, fontWeight: 700, fontFamily: 'inherit',
+                  cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5,
+                  outline: viewMode === 'floor' ? '1px solid rgba(56,189,248,0.40)' : 'none',
+                  transition: 'all 0.15s',
+                }}
+              >
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <rect x="3" y="3" width="18" height="18" rx="1"/>
+                  <path d="M3 9h18M9 21V9M15 21V9"/>
+                </svg>
+                Floor Plan
+              </button>
+              <button
+                onClick={() => setViewMode('section')}
+                title="All floors stacked section view"
+                style={{
+                  flex: 1, padding: '4px 8px', borderRadius: 6, border: 'none',
+                  background: viewMode === 'section' ? 'rgba(56,189,248,0.20)' : 'transparent',
+                  color: viewMode === 'section' ? '#38bdf8' : '#64748b',
+                  fontSize: 10, fontWeight: 700, fontFamily: 'inherit',
+                  cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5,
+                  outline: viewMode === 'section' ? '1px solid rgba(56,189,248,0.40)' : 'none',
+                  transition: 'all 0.15s',
+                }}
+              >
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+                  <polyline points="2 17 12 22 22 17"/>
+                  <polyline points="2 12 12 17 22 12"/>
+                </svg>
+                All Floors
+              </button>
+            </div>
+
             {building.bim_enabled && (
-              <div className="ihud-bim-badge">
+              <div className="ihud-bim-badge" style={{ marginTop: 4 }}>
                 <span className="ihud-bim-dot" />
                 <span>CORENET X · IFC4 BIM</span>
               </div>
             )}
-            <button className="ihud-exit-btn" onClick={onExit} title="Exit interior mode (Esc)">
-              ✕ Exit
+            <button className="ihud-exit-btn" onClick={onExit} title="Exit interior mode (Esc)" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+              <span>Exit</span>
             </button>
           </div>
 
@@ -284,14 +918,26 @@ export default function InteriorWalkthrough({ building, currentFloorIdx, onFloor
               <button
                 className={`ihud-tab ${activeTab === 'nav' ? 'active' : ''}`}
                 onClick={() => setActiveTab('nav')}
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}
               >
-                🏢 Floors & Elev
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="4" y="2" width="16" height="20" rx="2" ry="2"/>
+                  <line x1="9" y1="22" x2="9" y2="18"/>
+                  <line x1="15" y1="22" x2="15" y2="18"/>
+                </svg>
+                <span>Floors & Elev</span>
               </button>
               <button
                 className={`ihud-tab ${activeTab === 'bim' ? 'active' : ''}`}
                 onClick={() => setActiveTab('bim')}
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}
               >
-                📐 BIM Strata ({strataUnits.length})
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+                  <polyline points="2 17 12 22 22 17"/>
+                  <polyline points="2 12 12 17 22 12"/>
+                </svg>
+                <span>BIM Strata ({strataUnits.length})</span>
               </button>
             </div>
           )}
@@ -321,7 +967,15 @@ export default function InteriorWalkthrough({ building, currentFloorIdx, onFloor
               <div className="ihud-jump-section">
                 <div className="ihud-jump-row">
                   <div className="ihud-jump-input-wrap">
-                    <span className="ihud-jump-icon">⌨</span>
+                    <span className="ihud-jump-icon" style={{ display: 'inline-flex', alignItems: 'center' }}>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <rect x="2" y="4" width="20" height="16" rx="2" ry="2"/>
+                        <line x1="6" y1="8" x2="6" y2="8"/>
+                        <line x1="10" y1="8" x2="10" y2="8"/>
+                        <line x1="14" y1="8" x2="14" y2="8"/>
+                        <line x1="18" y1="8" x2="18" y2="8"/>
+                      </svg>
+                    </span>
                     <input
                       ref={jumpRef}
                       id="floor-jump-input"
@@ -530,7 +1184,11 @@ export default function InteriorWalkthrough({ building, currentFloorIdx, onFloor
                       )}
 
                       <div className="ihud-bim-compliance">
-                        <span className="ihud-bim-check">✓</span>
+                        <span className="ihud-bim-check" style={{ display: 'inline-flex', alignItems: 'center' }}>
+                          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                            <polyline points="20 6 9 17 4 12"/>
+                          </svg>
+                        </span>
                         <span>ISO 19152 LADM LegalSpaceBuildingUnit Validated</span>
                       </div>
                     </div>
@@ -595,18 +1253,21 @@ export default function InteriorWalkthrough({ building, currentFloorIdx, onFloor
 
         .interior-hud {
           position: fixed;
-          right: calc(var(--panel-w) + 14px);
-          bottom: 70px;
-          z-index: 160;
+          top: 64px;
+          right: 20px;
+          z-index: 165;
           width: 315px;
+          max-height: calc(100vh - 84px);
+          overflow-y: auto;
+          scrollbar-width: none;
           border-radius: 16px;
           border: 1px solid rgba(6, 182, 212, 0.35);
-          background: rgba(2, 8, 23, 0.94);
-          backdrop-filter: blur(24px);
+          background: rgba(2, 8, 18, 0.92);
+          backdrop-filter: blur(28px) saturate(1.5);
           box-shadow:
             0 0 0 1px rgba(6,182,212,0.08),
-            0 8px 32px rgba(0,0,0,0.6),
-            0 0 40px rgba(6,182,212,0.12);
+            0 8px 32px rgba(0,0,0,0.7),
+            0 0 40px rgba(6,182,212,0.10);
           overflow: hidden;
           animation: hudSlideIn 0.4s cubic-bezier(0.16,1,0.3,1) forwards;
         }

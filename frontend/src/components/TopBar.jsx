@@ -1,7 +1,7 @@
 import CitySelector from './CitySelector.jsx';
 import SearchBar from './SearchBar.jsx';
 
-export default function TopBar({ city, activeRealm = 'globe', onCityChange, onBuildingSelect, aiStatus }) {
+export default function TopBar({ city, onCityChange, onBuildingSelect, aiStatus }) {
   return (
     <header className="topbar glass" id="main-topbar">
       {/* Logo / Brand */}
@@ -27,7 +27,7 @@ export default function TopBar({ city, activeRealm = 'globe', onCityChange, onBu
       </div>
 
       {/* City Selector */}
-      <CitySelector city={city} activeRealm={activeRealm} onChange={onCityChange} />
+      <CitySelector city={city} onChange={onCityChange} />
 
       {/* Search */}
       <SearchBar city={city} onSelect={onBuildingSelect} />

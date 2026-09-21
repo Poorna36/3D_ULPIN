@@ -130,7 +130,12 @@ export default function CadastreExportModal({ building, onClose }) {
             </div>
             <h2 style={{ margin: '6px 0 0 0', fontSize: '18px' }}>Lossless Cadastral Interoperability Roundtrip Export</h2>
           </div>
-          <button className="btn-icon" onClick={onClose}>✕</button>
+          <button className="btn-icon" onClick={onClose} title="Close">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
         </div>
 
         <div style={{ display: 'flex', gap: '8px', borderBottom: '1px solid var(--border)', paddingBottom: '8px', marginTop: '12px' }}>
@@ -150,11 +155,18 @@ export default function CadastreExportModal({ building, onClose }) {
             100% of cadastral RIDs and undivided shares (UDS) preserved identically across open standards.
           </span>
           <div style={{ display: 'flex', gap: '6px' }}>
-            <button className="btn" onClick={handleCopy} style={{ fontSize: '11px' }}>
-              {copied ? '✓ Copied' : '📋 Copy JSON'}
+            <button className="btn" onClick={handleCopy} style={{ fontSize: '11px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+              </svg>
+              <span>{copied ? 'Copied' : 'Copy JSON'}</span>
             </button>
-            <button className="btn btn-primary" onClick={handleDownload} style={{ fontSize: '11px' }}>
-              💾 Download File
+            <button className="btn btn-primary" onClick={handleDownload} style={{ fontSize: '11px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+              </svg>
+              <span>Download File</span>
             </button>
           </div>
         </div>

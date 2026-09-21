@@ -120,7 +120,12 @@ export default function VerticalStrataExplorer({ building, onClose, onHighlightC
               "What is Below / Above This Parcel?" — Vertical Strata Elevation Profile
             </h2>
           </div>
-          <button className="btn-icon" onClick={onClose}>✕</button>
+          <button className="btn-icon" onClick={onClose} title="Close">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
         </div>
 
         <div style={{ margin: '12px 0', fontSize: '12px', color: 'var(--text-secondary)' }}>

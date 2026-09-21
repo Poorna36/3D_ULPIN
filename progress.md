@@ -1796,3 +1796,192 @@ Complete verification of building positions across all cities (Bengaluru, Mumbai
 ### Status
 Complete.
 
+---
+
+## Entry 0058 — 2026-09-21 06:48 IST
+
+### Type
+CLEANUP / SIMULATION & GAMIFICATION REMOVAL
+
+### Intent
+Per user instruction, remove all Night City and SimCity simulation tabs, viewers, routes, mock registrations, and references to restore an authoritative, cadastre-focused SIH presentation covering the 4 real-world pilot cities (Bengaluru, Mumbai, Singapore, Rotterdam).
+
+### Result
+1. **Removed UI Tabs & Selectors**:
+   - Cleaned `CitySelector.jsx` to only display the 4 official real-world pilot cities: Bengaluru, Rotterdam (Netherlands), Mumbai, and Singapore.
+   - Removed the `🎮 SimCity (Twin Lab)` and `🌆 Night City` tabs and their styling.
+2. **Removed Simulation Viewers & Components**:
+   - Removed `NightCityViewer.jsx` and `SimCityViewer.jsx` along with mock data sets (`simcity_buildings.js` and `simulation_buildings.js`).
+   - Removed `activeRealm` routing, simulation banners, and off-globe conditional rendering in `App.jsx`, `WorkbenchCockpit.jsx`, and `TopBar.jsx`.
+3. **Removed from Landing Page**:
+   - Cleaned `LandingPage.jsx` to feature only the 4 authentic pilot cities without the SimCity sandbox card.
+4. **Verification**:
+   - `npm run build`: Production build succeeded in 1.57s with 0 errors.
+   - `python -m unittest discover tests`: All 9 backend tests passed.
+   - Live dev server hot-reloaded cleanly.
+
+### Fix Note
+- Resolved lingering `ReferenceError: simulationParcels is not defined` in `frontend/src/mock/api.js:205` and `ReferenceError: activeRealm is not defined` in `frontend/src/App.jsx` and `frontend/src/components/TopBar.jsx`.
+- Cleaned up all lingering props, verified clean production bundle build (`npm run build` in 607ms) and hot-reload.
+
+### Status
+Complete.
+
+---
+
+## Entry 0059 — 2026-09-21 07:02 IST
+
+### Type
+UI STYLING / COCKPIT SWITCHES TO BLACK
+
+### Intent
+Per user screenshot and request ("change all of the switches to black cloour"), restyle the top-right cockpit switches (Disputes, Strata (R1), REST API, Export) and toggle switches to sleek obsidian/black surfaces with subtle borders and crisp typography.
+
+### Result
+1. **Cockpit Action Switches**:
+   - In `WorkbenchCockpit.jsx`, updated the header switch buttons (**Disputes**, **Strata (R1)**, **REST API**, and **Export**) from tinted red/cyan/purple/green to sleek solid obsidian/black (`#0a0a0c`) with crisp white borders (`rgba(255, 255, 255, 0.14)`), elevated hover interactions (`#141418`), and clean typography.
+2. **Layer Panel Toggle Switches**:
+   - In `index.css`, updated the toggle switch tracks to deep black (`#000000` / `#09090b`), with white thumb indicators and subtle rim lighting.
+3. **Verification**:
+   - Production build compiled in 666ms with 0 errors (`npm run build`).
+   - Dev server hot-reloaded cleanly.
+
+### Status
+Complete.
+
+---
+
+## Entry 0060 — 2026-09-21 07:05 IST
+
+### Type
+UI ENHANCEMENT / PROFESSIONAL SYMBOLS & THEME HARMONIZATION
+
+### Intent
+Per user request ("make the whole page theme similar to frontend and remove emojis from there and use some professional symbols inplace of that"), replace casual emojis across the UI (pilot tabs, cockpit buttons, layer toggles, status pills) with professional SVG icons/geometric symbols and unify the entire frontend styling to an elegant dark obsidian palette.
+
+### Result
+1. **Total Emoji Elimination across Frontend**:
+   - Zero emojis remain across all components (`AIPipelinePanel.jsx`, `CadastreExportModal.jsx`, `CesiumViewer.jsx`, `CitySelector.jsx`, `ConflictWorkflowModal.jsx`, `DetailPanel.jsx`, `InteriorWalkthrough.jsx`, `LandingPage.jsx`, `LayerPanel.jsx`, `OpenAPISandboxModal.jsx`, `ValidationConsole.jsx`, `VerticalStrataExplorer.jsx`, `WorkbenchCockpit.jsx`).
+   - Verified via comprehensive regex audit script: `Total emojis found: 0`.
+2. **Professional Architectural & Cadastral Symbols**:
+   - Replaced all emojis with sleek inline SVG icons and standard architectural/cadastral symbols:
+     - Header switches: disputes scale, strata floors, REST API lightning, lossless export download.
+     - Pilot cities: official ICAO/airport 3-letter badges (`BLR`, `BOM`, `SIN`, `RTM`).
+     - AI Pipeline: blueprint building extraction, vectoriser pen tool, spectrum sensor alignment, volumetric 3D cube, topological verification shield.
+     - Layer panel: `◒` mesh, `◈` LoD2, `◻` cadastre, `⬡` LiDAR, `◫` BIM, `⬢` slabs, `⊗` subterranean, `○` solar.
+     - Modals & HUDs: clean outline SVGs for close, copy, download, flight reticles, examiner actions, and walkthrough doors.
+3. **Obsidian Dark Theme Harmonization**:
+   - Unified modal containers, backdrops, and cards to match the frontend landing page / Voyage obsidian palette (`#080a0f`, borders `rgba(255, 255, 255, 0.12)`, deep elevation box shadows).
+   - Zoom/orientation cockpit controls styled in sleek obsidian glass.
+4. **Verification**:
+   - `npm run build`: Production build succeeded in 1.05s with 0 errors.
+   - `python -m unittest discover tests`: All 9 backend test suites passed (Ran 9 tests in 0.178s: OK).
+   - Live dev servers hot-reloaded cleanly without runtime errors.
+   - Strictly adhering to user constraint: **No changes pushed to GitHub**.
+
+### Status
+Complete.
+
+---
+
+## Entry 0061 — 2026-09-21 07:23 IST
+
+### Type
+UI REFINEMENT / TRANSPARENT BLACK GLASS DETAIL PANEL
+
+### Intent
+Per user screenshot and instruction ("make this transparent and black"), restyle the right-side 3D Cadastre Detail Panel and its constituent building cards to a sleek, translucent black glass (`rgba(0, 0, 0, 0.60)` / `rgba(0, 0, 0, 0.45)`, `backdrop-filter: blur(24px)`), replace the collapse/expand play button with sleek vector chevrons, and dynamically offset the floating Cadastre Engine status badge and bottom zoom controls when the panel is open to avoid UI overlap.
+
+### Result
+1. **Transparent & Black Panel Styling**:
+   - In `index.css`, styled `.detail-panel` with translucent obsidian glass (`rgba(0, 0, 0, 0.60)`, `backdrop-filter: blur(24px) saturate(1.8)`, `border: 1px solid rgba(255, 255, 255, 0.12)`, `border-radius: 16px`, `box-shadow: 0 16px 48px rgba(0, 0, 0, 0.85)`).
+   - Styled `.detail-panel .card` to transparent black glass (`rgba(0, 0, 0, 0.45)`, `backdrop-filter: blur(16px)`, `border: 1px solid rgba(255, 255, 255, 0.08)`), with responsive hover glow (`rgba(0, 0, 0, 0.75)`, border `#38bdf8`).
+2. **Collapse/Expand Vector Chevrons**:
+   - In `DetailPanel.jsx`, replaced the solid `▶` / `◀` buttons with sleek transparent black circular pill buttons containing minimalist SVG vector chevrons (`›` and `‹`).
+3. **Collision & Overlap Prevention**:
+   - In `App.jsx` and `WorkbenchCockpit.jsx`, wired `sidebarOpen` prop so that the floating Cadastre Engine status badge (`Cadastre Engine: Ready LIVE`) and bottom-right zoom controls (`+ – ⟳`) dynamically transition to `right: 408px` when the sidebar is open, preventing them from overlapping the cards in the panel.
+4. **Verification**:
+   - `npm run build`: Production build succeeded in 1.07s with 0 errors.
+   - Dev server hot-reloaded cleanly.
+   - No code pushed to GitHub.
+
+### Status
+Complete.
+
+---
+
+## Entry 0062 — 2026-09-21 07:27 IST
+
+### Type
+UI REFINEMENT / SIMPLIFY DETAIL PANEL HEADER & REMOVE VALID/REAL BADGES
+
+### Intent
+Per user screenshot and request ("remove this valid and real thing also remove all that on the top only write mumbai on top"), simplify the Detail Panel header to cleanly show only the city name (e.g. "Mumbai") without badges or subtitles, and remove the `VALID` status pill and `REAL` provenance label from each building card.
+
+### Result
+1. **Simplified Header**:
+   - In `DetailPanel.jsx`, removed the `VERTICAL PILOT` badge and `India` country tag.
+   - Simplified the header title to display solely the city name (`meta.label`, e.g. "Mumbai") or the selected building name with clean typography (`16px`, weight 700).
+   - Removed the helper subtitle sentence ("Select a parcel or building to inspect its 3D ULPIN identity...") to leave an ultra-clean, minimal header.
+2. **Removed VALID and REAL Badges**:
+   - On each building card in the overview list, removed `<StatusBadge status="VALID" />` and the `REAL` tag.
+   - Cards now cleanly display only the building name, 3D ULPIN / RID, and floor count / height.
+3. **Verification**:
+   - `npm run build`: Production build succeeded in 1.00s with 0 errors.
+   - Dev server hot-reloaded cleanly.
+   - Strictly adhering to user constraint: **No changes pushed to GitHub**.
+
+### Status
+Complete.
+
+---
+
+## Entry 0063 — 2026-09-21 07:49 IST
+
+### Type
+UI REFINEMENT / BLACK OBSIDIAN PILOT SELECTOR BAR
+
+### Intent
+Per user screenshot and instruction ("make all of this black too"), restyle the top-left pilot selector bar (PILOTS tag, airport city tabs, active pill, and logo dot) to deep obsidian black and monochrome styling, removing the dark blue/navy tint and cyan accents.
+
+### Result
+1. **Black Pilot Selector Bar**:
+   - In `CitySelector.jsx`, styled `.city-selector-bar` with pure solid black (`#000000`, `border: 1px solid rgba(255, 255, 255, 0.15)`, `box-shadow: 0 4px 16px rgba(0, 0, 0, 0.8)`).
+   - Styled `.realm-tag` with subtle silver text (`rgba(255, 255, 255, 0.50)`).
+   - Styled active city tab (`.city-tab--active`) with deep obsidian black (`#0e0e11`, border `rgba(255, 255, 255, 0.25)`, white text).
+   - Styled active city code badge (`.city-code-tag`) with monochrome white on translucent background (`rgba(255, 255, 255, 0.18)`).
+   - Updated the pulse dot (`.city-active-dot`) to crisp white with silver glow (`#ffffff`).
+2. **Monochrome Logo Accent**:
+   - In `WorkbenchCockpit.jsx`, updated the 3D ULPIN logo dot from bright cyan to a pearl/obsidian radial gradient (`#ffffff` to `#27272a` to `#09090b`) with a subtle white halo.
+3. **Verification**:
+   - `npm run build`: Production build succeeded in 1.00s with 0 errors.
+   - Dev server hot-reloaded cleanly.
+   - Strictly adhering to user constraint: **No changes pushed to GitHub**.
+
+### Status
+Complete.
+
+---
+
+## Entry 0064 — 2026-09-21 07:54 IST
+
+### Type
+UI REFINEMENT / COMPLETE OBSIDIAN BLACK COCKPIT STYLING
+
+### Intent
+Complete the conversion of all topbar and cockpit elements shown in the user screenshot to pure obsidian black and crisp monochrome styling.
+
+### Result
+1. **Monochrome Obsidian Topbar Elements**:
+   - In `WorkbenchCockpit.jsx`, updated the 3D ULPIN logo dot to a pure black circle with razor-thin silver border (`#000000`, `border: 1.5px solid rgba(255, 255, 255, 0.70)`).
+   - In `CitySelector.jsx`, confirmed all pilot tabs, PILOTS badge, active tab, and status indicator use solid obsidian black (`#000000` / `#0e0e11`) with zero blue or cyan tints.
+   - Restyled bottom actions (`SELECT PILOT CITY ▾`, `Layers`, `RETURN TO GLOBE`) to obsidian glass (`#09090b` / `#0a0a0c`, `border: 1px solid rgba(255, 255, 255, 0.22)`) with monochrome hover states.
+2. **Verification**:
+   - `npm run build`: Production build succeeded in 930ms with 0 errors.
+   - Dev server running cleanly on port 5173.
+   - Strictly adhering to user constraint: **No changes pushed to GitHub**.
+
+### Status
+Complete.
+
+

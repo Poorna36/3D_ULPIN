@@ -52,10 +52,10 @@ const CITY_POSITIONS = {
 
 // ── Interactive Pilot City Pins on Earth Space Orbit View ────────────────────
 const PILOT_PINS = [
-  { id: 'bengaluru',   name: 'Bengaluru',      country: 'India',       flag: '🇮🇳', lon: 77.5946,  lat: 12.9716, color: '#00d4ff' },
-  { id: 'mumbai',      name: 'Mumbai',         country: 'India',       flag: '🇮🇳', lon: 72.8270,  lat: 18.9990, color: '#10d97e' },
-  { id: 'netherlands', name: 'Rotterdam (NL)', country: 'Netherlands', flag: '🇳🇱', lon: 4.4871,   lat: 51.9038, color: '#f59e0b' },
-  { id: 'singapore',   name: 'Singapore',      country: 'Singapore',   flag: '🇸🇬', lon: 103.8540, lat: 1.2800,  color: '#a855f7' },
+  { id: 'bengaluru',   name: 'Bengaluru',      country: 'India',       code: 'BLR', lon: 77.5946,  lat: 12.9716, color: '#00d4ff' },
+  { id: 'mumbai',      name: 'Mumbai',         country: 'India',       code: 'BOM', lon: 72.8270,  lat: 18.9990, color: '#10d97e' },
+  { id: 'netherlands', name: 'Rotterdam (NL)', country: 'Netherlands', code: 'RTM', lon: 4.4871,   lat: 51.9038, color: '#f59e0b' },
+  { id: 'singapore',   name: 'Singapore',      country: 'Singapore',   code: 'SIN', lon: 103.8540, lat: 1.2800,  color: '#a855f7' },
 ];
 
 // ── Preemptive Preloader: Pilot Cities (Bengaluru, Mumbai, Rotterdam, Singapore) ──
@@ -1694,7 +1694,7 @@ export default function CesiumViewer({
           show: !isCurrentCity,
         },
         label: {
-          text: `${pin.flag} ${pin.name}`,
+          text: `${pin.code} · ${pin.name}`,
           font: '600 11px Inter, system-ui, sans-serif',
           fillColor: Color.WHITE,
           outlineColor: Color.fromCssColorString('#020617'),
@@ -1917,9 +1917,9 @@ export default function CesiumViewer({
         const shouldShowLabel = (isSelected || isKeyBuilding) && !interiorMode;
         if (shouldShowLabel && layers.buildings) {
           const labelHeight = isUnderground ? 6 : absH + 10;
-          const statusBadge = b.validation_status === 'VALID' ? '✓' : '⚠';
+          const statusBadge = b.validation_status === 'VALID' ? '●' : '▲';
           const labelText = isSelected
-            ? `${b.name}\n${isUnderground ? `Subsurface · -${absH.toFixed(0)}m` : `↑ ${absH.toFixed(0)}m · ${b.floor_count}F · ${statusBadge} ${b.validation_status}`}`
+            ? `${b.name}\n${isUnderground ? `Subsurface · -${absH.toFixed(0)}m` : `↑ ${absH.toFixed(0)}m · ${b.floor_count}F · [${statusBadge} ${b.validation_status}]`}`
             : `${b.name} (${absH.toFixed(0)}m)`;
 
           viewer.entities.add({

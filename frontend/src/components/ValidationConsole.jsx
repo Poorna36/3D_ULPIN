@@ -66,11 +66,16 @@ export default function ValidationConsole({ building, onClose, onSelectExplain }
             </div>
             <h2 style={{ margin: '6px 0 0 0', fontSize: '18px' }}>Multi-Tier Cadastral Validation Console (T0–T5)</h2>
           </div>
-          <button className="btn-icon" onClick={onClose}>✕</button>
+          <button className="btn-icon" onClick={onClose} title="Close">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
         </div>
 
         {/* Evidence Sufficiency Banner — Zero Silent PASS Upgrades doctrine */}
-        <div className="card" style={{ margin: '14px 0', borderLeft: '3px solid #f59e0b', background: 'rgba(245, 158, 11, 0.06)' }}>
+        <div className="card" style={{ margin: '14px 0', borderLeft: '3px solid #f59e0b', background: '#090a0f' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '8px' }}>
             <div>
               <div style={{ fontWeight: 600, fontSize: '12px', color: '#f59e0b', textTransform: 'uppercase' }}>
@@ -82,13 +87,18 @@ export default function ValidationConsole({ building, onClose, onSelectExplain }
             </div>
             <div style={{ display: 'flex', gap: '6px' }}>
               {evidence.available?.map(e => (
-                <span key={e} className="badge badge-valid" style={{ fontSize: '10px' }}>✓ {e}</span>
+                <span key={e} className="badge badge-valid" style={{ fontSize: '10px' }}>{e}</span>
               ))}
             </div>
           </div>
           {evidence.unverifiable_checks?.length > 0 && (
-            <div style={{ marginTop: '8px', padding: '6px 10px', background: 'rgba(0,0,0,0.2)', borderRadius: '4px', fontSize: '11px', color: '#fcd34d' }}>
-              ⚠️ <strong>Unverifiable Checks:</strong> {evidence.unverifiable_checks.join(', ')}
+            <div style={{ marginTop: '8px', padding: '6px 10px', background: 'rgba(0,0,0,0.5)', borderRadius: '4px', fontSize: '11px', color: '#fcd34d', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                <line x1="12" y1="9" x2="12" y2="13"/>
+                <line x1="12" y1="17" x2="12.01" y2="17"/>
+              </svg>
+              <span><strong>Unverifiable Checks:</strong> {evidence.unverifiable_checks.join(', ')}</span>
             </div>
           )}
         </div>
@@ -126,8 +136,13 @@ export default function ValidationConsole({ building, onClose, onSelectExplain }
 
                 {curTier.findings?.length === 0 ? (
                   <div style={{ padding: '24px', textAlign: 'center', color: 'var(--text-secondary)', background: 'rgba(255,255,255,0.02)', borderRadius: '8px' }}>
-                    <div style={{ fontSize: '24px', marginBottom: '6px' }}>✓</div>
-                    <div style={{ fontSize: '13px', fontWeight: 500 }}>All mathematical predicates satisfied in this tier</div>
+                    <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '8px' }}>
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                        <polyline points="22 4 12 14.01 9 11.01"/>
+                      </svg>
+                    </div>
+                    <div style={{ fontSize: '13px', fontWeight: 500, color: '#f3f4f6' }}>All mathematical predicates satisfied in this tier</div>
                     <div style={{ fontSize: '11px', marginTop: '4px' }}>ISO 19107 solid 2-manifold closed surface & volume conservation invariants verified.</div>
                   </div>
                 ) : (
@@ -162,8 +177,12 @@ export default function ValidationConsole({ building, onClose, onSelectExplain }
                           </div>
                           {getStatusBadge(f.severity)}
                         </div>
-                        <div style={{ marginTop: '8px', fontSize: '11px', color: 'var(--accent)', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                          <span>🔍 View Explain Object & Examiner Actions →</span>
+                        <div style={{ marginTop: '8px', fontSize: '11px', color: 'var(--accent)', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <circle cx="11" cy="11" r="8"/>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                          </svg>
+                          <span>View Explain Object & Examiner Actions →</span>
                         </div>
                       </div>
                     ))}
@@ -175,13 +194,18 @@ export default function ValidationConsole({ building, onClose, onSelectExplain }
 
           {/* Selected Explain Object Inspector */}
           {selectedFinding && (
-            <div className="card anim-fade-in" style={{ marginTop: '16px', background: 'rgba(15, 23, 42, 0.75)', border: '1px solid var(--accent)' }}>
+            <div className="card anim-fade-in" style={{ marginTop: '16px', background: '#090a0f', border: '1px solid var(--accent)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <div>
                   <span className="badge badge-primary">EXPLAIN OBJECT (Section 7.5)</span>
                   <h4 style={{ margin: '6px 0 0 0', fontSize: '14px' }}>{selectedFinding.finding_type} ({selectedFinding.finding_id})</h4>
                 </div>
-                <button className="btn-icon" style={{ padding: '2px 6px' }} onClick={() => setSelectedFinding(null)}>✕</button>
+                <button className="btn-icon" style={{ padding: '2px 6px' }} onClick={() => setSelectedFinding(null)} title="Close Inspector">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                  </svg>
+                </button>
               </div>
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginTop: '12px', fontSize: '12px' }}>
@@ -211,14 +235,25 @@ export default function ValidationConsole({ building, onClose, onSelectExplain }
                 </div>
 
                 <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                  <button className="btn btn-ghost" style={{ fontSize: '11px', color: '#10b981' }} onClick={() => handleAction('ACCEPT')}>
-                    ✓ Accept Finding
+                  <button className="btn btn-ghost" style={{ fontSize: '11px', color: '#10b981', display: 'flex', alignItems: 'center', gap: '5px' }} onClick={() => handleAction('ACCEPT')}>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                    <span>Accept Finding</span>
                   </button>
-                  <button className="btn btn-ghost" style={{ fontSize: '11px', color: '#ef4444' }} onClick={() => handleAction('REJECT')}>
-                    ✕ Reject Finding
+                  <button className="btn btn-ghost" style={{ fontSize: '11px', color: '#ef4444', display: 'flex', alignItems: 'center', gap: '5px' }} onClick={() => handleAction('REJECT')}>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="18" y1="6" x2="6" y2="18"/>
+                      <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                    <span>Reject Finding</span>
                   </button>
-                  <button className="btn btn-primary" style={{ fontSize: '11px' }} onClick={() => handleAction('OVERRIDE')}>
-                    ⚖ Statutory Override
+                  <button className="btn btn-primary" style={{ fontSize: '11px', display: 'flex', alignItems: 'center', gap: '5px' }} onClick={() => handleAction('OVERRIDE')}>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M12 3v18M6 8l6-5 6 5M6 8v4a6 6 0 0 0 12 0V8"/>
+                      <path d="M4 14h4M16 14h4"/>
+                    </svg>
+                    <span>Statutory Override</span>
                   </button>
                 </div>
 

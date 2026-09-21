@@ -19,8 +19,6 @@ import bengaluruBuildings    from './bengaluru_buildings.js';
 import mumbaiBuildings       from './mumbai_buildings.js';
 import netherlandsBuildings  from './netherlands_buildings.js';
 import singaporeBuildings    from './singapore_buildings.js';
-import { simulationBuildings, simulationParcels } from './simulation_buildings.js';
-import { simCityBuildings, simCityParcels } from './simcity_buildings.js';
 import { computeCheckSymbol, formatRID, verifyCheckSymbol, generateNaturalKey, encodeMorton3D, evaluateICT } from '../utils/grammar.js';
 
 const BACKEND_BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000';
@@ -30,8 +28,6 @@ const FALLBACK_BUILDINGS = {
   mumbai:      mumbaiBuildings,
   netherlands: netherlandsBuildings,
   singapore:   singaporeBuildings,
-  simulation:  simulationBuildings,
-  simcity:     simCityBuildings,
 };
 
 const FALLBACK_PARCELS = {
@@ -205,8 +201,7 @@ const FALLBACK_PARCELS = {
       status: 'VALID',
       data_provenance: 'REAL-FOREIGN'
     }
-  ],
-  simulation: simulationParcels
+  ]
 };
 
 const delay = (ms = 150) => new Promise(r => setTimeout(r, ms));
@@ -706,10 +701,6 @@ export const CITY_CAMERAS = {
     lon: 103.8198, lat: 1.3521, height: 4000,
     label: 'Singapore', country: 'Singapore', timezone: 'Asia/Singapore',
   },
-  simulation: {
-    lon: 72.7810, lat: 18.8810, height: 1800,
-    label: 'Night City (Twin)', country: 'Simulation Lab', timezone: 'Asia/Kolkata',
-  },
 };
 
 export function getAllPilotData() {
@@ -718,8 +709,6 @@ export function getAllPilotData() {
     ...mumbaiBuildings,
     ...netherlandsBuildings,
     ...singaporeBuildings,
-    ...simulationBuildings,
-    ...simCityBuildings,
   ];
   const allParcels = [
     ...(FALLBACK_PARCELS.bengaluru || []),

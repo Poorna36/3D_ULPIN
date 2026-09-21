@@ -12,8 +12,6 @@ import ConflictWorkflowModal from './components/ConflictWorkflowModal.jsx';
 import VerticalStrataExplorer from './components/VerticalStrataExplorer.jsx';
 import OpenAPISandboxModal from './components/OpenAPISandboxModal.jsx';
 import CadastreExportModal from './components/CadastreExportModal.jsx';
-import NightCityViewer     from './components/NightCityViewer.jsx';
-import SimCityViewer       from './components/SimCityViewer.jsx';
 import { getBuildings, getParcels, getAllPilotData } from './mock/api.js';
 
 const DEFAULT_LAYERS = {
@@ -30,41 +28,30 @@ const DEFAULT_LAYERS = {
 // City intro info shown on city change
 const CITY_INFO = {
   bengaluru: {
-    label: 'Bengaluru', country: 'India 🇮🇳',
+    label: 'Bengaluru', country: 'India',
     desc: 'Primary engineering pilot — mixed-use high-rise urban context',
     color: '#00d4ff',
   },
   mumbai: {
-    label: 'Mumbai', country: 'India 🇮🇳',
+    label: 'Mumbai', country: 'India',
     desc: 'Indian validation — vertical density & complex parcel relationships',
     color: '#10d97e',
   },
   netherlands: {
-    label: 'Rotterdam', country: 'Netherlands 🇳🇱',
+    label: 'Rotterdam', country: 'Netherlands',
     desc: 'Geospatial benchmark — BAG/AHN4 LiDAR, mixed-use cityscape',
     color: '#f59e0b',
   },
   singapore: {
-    label: 'Singapore', country: 'Singapore 🇸🇬',
+    label: 'Singapore', country: 'Singapore',
     desc: 'International strata benchmark — 3D space parcels, volumetric titles',
     color: '#a855f7',
-  },
-  simcity: {
-    label: 'Riverview Metropolis', country: 'SimCity Sandbox 🎮',
-    desc: 'Municipal Urban Planning & Zoning Twin — Complete R-C-I Cadastre, Utilities & Telemetry',
-    color: '#2563eb',
-  },
-  simulation: {
-    label: 'Night City Sandbox', country: 'Digital Twin Lab 🌆',
-    desc: '100% Authoritative Digital Twin — Complete LOD4 BIM, Sky-Bridges & Multi-Layer Strata',
-    color: '#ec4899',
   },
 };
 
 export default function App() {
   const { allBuildings, allParcels }      = useMemo(() => getAllPilotData(), []);
   const [city, setCity]                   = useState(null); // Starts on full Earth space orbit view
-  const [activeRealm, setActiveRealm]     = useState('globe'); // 'globe' | 'night_city'
   const [flyTimestamp, setFlyTimestamp]   = useState(0);
   const [buildings, setBuildings]         = useState([]);
   const [parcels, setParcels]             = useState([]);
@@ -75,7 +62,6 @@ export default function App() {
   const [aiStatus, setAIStatus]           = useState('idle');
   const [showAI, setShowAI]               = useState(false);
   const [cityBanner, setCityBanner]       = useState(null);
-  const [simBannerDismissed, setSimBannerDismissed] = useState(false);
   const [showLanding, setShowLanding]     = useState(true);
   const [landingExiting, setLandingExiting] = useState(false);
   // Interior walkthrough state
@@ -107,24 +93,14 @@ export default function App() {
     cameraControlsRef.current = controls;
   }, []);
 
-  // Dedicated city selector callback ensuring camera flight and realm transitions
-  const handleCitySelect = useCallback((nextCity, realm) => {
-    if (nextCity === 'simcity' || realm === 'simcity') {
-      setActiveRealm('simcity');
-      setCity('simcity');
-    } else if (nextCity === 'simulation' || realm === 'night_city') {
-      setActiveRealm('night_city');
-      setCity('simulation');
-    } else {
-      setActiveRealm('globe');
-      setCity(nextCity);
-    }
+  // Dedicated city selector callback ensuring camera flight
+  const handleCitySelect = useCallback((nextCity) => {
+    setCity(nextCity);
     setSidebarCollapsed(false);
     setFlyTimestamp(Date.now());
   }, []);
 
   const handleReturnToEarth = useCallback(() => {
-    setActiveRealm('globe');
     setCity(null);
     setSelected(null);
     setFlyTimestamp(Date.now());
@@ -148,13 +124,12 @@ export default function App() {
     }, 2200);
   }, [city, allBuildings, handleCitySelect]);
 
-  const handleEnterApp = useCallback((targetCity, targetRealm = 'globe') => {
+  const handleEnterApp = useCallback((targetCity) => {
     if (targetCity && typeof targetCity === 'string') {
-      handleCitySelect(targetCity, targetRealm);
+      handleCitySelect(targetCity);
     } else {
       // Do NOT fly to any city unless explicitly selected — stay in Earth space orbit
       setCity(null);
-      setActiveRealm('globe');
     }
     // Animate landing page out first, then unmount after transition completes
     setLandingExiting(true);
@@ -253,7 +228,7 @@ export default function App() {
       {!showLanding && (
         <WorkbenchCockpit
           city={city}
-          activeRealm={activeRealm}
+          sidebarOpen={Boolean(city && !sidebarCollapsed)}
           onCityChange={handleCitySelect}
           onResetOrbit={handleReturnToEarth}
           onZoomIn={() => cameraControlsRef.current?.zoomIn()}
@@ -274,7 +249,7 @@ export default function App() {
         />
       )}
 
-      {!showLanding && layerPanelOpen && activeRealm === 'globe' && (
+      {!showLanding && layerPanelOpen && (
         <LayerPanel
           layers={layers}
           onToggle={handleToggleLayer}
@@ -285,10 +260,10 @@ export default function App() {
         />
       )}
 
-      {/* 3A. Full-Bleed 3D Cesium Engine (Earth Globe Realm) */}
-      <div style={{ display: activeRealm === 'globe' ? 'block' : 'none', width: '100%', height: '100%' }}>
+      {/* 3. Full-Bleed 3D Cesium Engine (Earth Globe) */}
+      <div style={{ width: '100%', height: '100%' }}>
         <CesiumViewer
-          city={activeRealm === 'globe' ? city : null}
+          city={city}
           flyTimestamp={flyTimestamp}
           buildings={buildings}
           parcels={parcels}
@@ -305,23 +280,6 @@ export default function App() {
           onCameraControlsReady={handleCameraControlsReady}
         />
       </div>
-
-      {/* 3B. Standalone Off-Globe Digital Twins */}
-      {activeRealm === 'simcity' && (
-        <SimCityViewer
-          selectedBuilding={selectedBuilding}
-          onSelectBuilding={handleBuildingClick}
-          onReturnToEarth={handleReturnToEarth}
-        />
-      )}
-
-      {activeRealm === 'night_city' && (
-        <NightCityViewer
-          selectedBuilding={selectedBuilding}
-          onSelectBuilding={handleBuildingClick}
-          onReturnToEarth={handleReturnToEarth}
-        />
-      )}
 
       {/* 4. City Cadastre Sidebar (Available only inside pilot cities) */}
       {!showLanding && city && (
@@ -407,36 +365,6 @@ export default function App() {
         </div>
       )}
 
-      {/* 100% Digital Twin Vision Sandbox Banner for Judges */}
-      {activeRealm === 'night_city' && !simBannerDismissed && !showLanding && (
-        <div className="simulation-vision-banner" role="alert">
-          <div className="sim-banner-top">
-            <div className="sim-badge-row">
-              <span className="sim-lab-badge">🌆 100% LOD4 DIGITAL TWIN URBAN LAB</span>
-              <span className="sim-vision-tag">VISION DEMONSTRATOR</span>
-            </div>
-            <button
-              className="sim-close-btn"
-              onClick={() => setSimBannerDismissed(true)}
-              title="Dismiss banner"
-              aria-label="Dismiss banner"
-            >
-              ✕
-            </button>
-          </div>
-          <div className="sim-banner-body">
-            <strong>Why this simulation sandbox?</strong> In real-world Indian cities, private interior layouts and subterranean assets are legally protected or unmapped. This sandbox shows what <strong>3D ULPIN</strong> accomplishes when complete authoritative IFC 4.3 BIM, indoor spatial units, and multi-tier utility telemetry are supplied from day one.
-          </div>
-          <div className="sim-banner-pills">
-            <span className="sim-pill">🏢 100% Native IFC 4.3 BIM</span>
-            <span className="sim-pill">🌉 Sky-Bridge Strata (F42)</span>
-            <span className="sim-pill">🚇 Subsurface Hyperloop & Vaults (B1–B4)</span>
-            <span className="sim-pill">🛸 Airspace Drone Flight Envelopes</span>
-            <span className="sim-pill">⚡ Live Smart Contract & IoT Feeds</span>
-          </div>
-        </div>
-      )}
-
       {/* Floating AI panel toggle */}
       <button
         id="ai-panel-toggle-btn"
@@ -444,7 +372,10 @@ export default function App() {
         onClick={() => setShowAI(v => !v)}
         title="Toggle AI/ML Pipeline panel"
       >
-        <span>⚙</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ verticalAlign: '-1px' }}>
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
         <span>AI Pipeline</span>
       </button>
 
@@ -565,92 +496,6 @@ export default function App() {
           line-height: 1.4;
         }
 
-        /* 100% Digital Twin Simulation Vision Banner */
-        .simulation-vision-banner {
-          position: fixed;
-          top: calc(var(--topbar-h) + 16px);
-          left: 50%;
-          transform: translateX(-50%);
-          z-index: 85;
-          width: min(860px, 92vw);
-          background: rgba(18, 10, 30, 0.90);
-          border: 1px solid rgba(236, 72, 153, 0.45);
-          box-shadow: 0 8px 32px rgba(236, 72, 153, 0.22), 0 0 16px rgba(236, 72, 153, 0.15);
-          border-radius: 12px;
-          padding: 14px 18px;
-          backdrop-filter: blur(20px) saturate(1.8);
-          color: #ffffff;
-          animation: anim-banner-drop 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        @keyframes anim-banner-drop {
-          from { opacity: 0; transform: translate(-50%, -12px); }
-          to { opacity: 1; transform: translate(-50%, 0); }
-        }
-        .sim-banner-top {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          margin-bottom: 6px;
-        }
-        .sim-badge-row {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-        }
-        .sim-lab-badge {
-          font-family: 'Syne', sans-serif;
-          font-weight: 800;
-          font-size: 13px;
-          color: #f472b6;
-          letter-spacing: 0.5px;
-        }
-        .sim-vision-tag {
-          font-size: 9px;
-          font-weight: 700;
-          padding: 2px 7px;
-          border-radius: 999px;
-          background: rgba(236, 72, 153, 0.18);
-          border: 1px solid rgba(236, 72, 153, 0.5);
-          color: #f472b6;
-          letter-spacing: 0.6px;
-        }
-        .sim-close-btn {
-          background: transparent;
-          border: none;
-          color: rgba(255, 255, 255, 0.6);
-          cursor: pointer;
-          font-size: 14px;
-          padding: 4px 6px;
-          border-radius: 6px;
-          transition: all 0.15s;
-        }
-        .sim-close-btn:hover {
-          color: #ffffff;
-          background: rgba(255, 255, 255, 0.1);
-        }
-        .sim-banner-body {
-          font-size: 12px;
-          line-height: 1.5;
-          color: rgba(255, 255, 255, 0.82);
-          margin-bottom: 10px;
-        }
-        .sim-banner-body strong {
-          color: #ffffff;
-        }
-        .sim-banner-pills {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 6px;
-        }
-        .sim-pill {
-          font-size: 10px;
-          font-weight: 600;
-          padding: 3px 9px;
-          border-radius: 6px;
-          background: rgba(255, 255, 255, 0.06);
-          border: 1px solid rgba(255, 255, 255, 0.14);
-          color: rgba(255, 255, 255, 0.88);
-        }
       `}</style>
     </>
   );

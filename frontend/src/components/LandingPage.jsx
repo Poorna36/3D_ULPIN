@@ -404,30 +404,14 @@ export default function LandingPage({ onEnter, isExiting = false }) {
                     { label: 'Type', val: 'Mixed-Use Vertical City' },
                   ],
                 },
-                {
-                  id: 'simcity',
-                  name: 'Riverview (SimCity 3D Twin)',
-                  badge: 'MUNICIPAL ZONING & CADASTRE LAB',
-                  badgeColor: '#2563eb',
-                  desc: 'Interactive 3D SimCity urban simulation sandbox. Features complete R-C-I cadastral zoning, City Hall, suburban neighborhoods, commercial high-rises, power/water grids, animated traffic, and municipal tax yield analytics.',
-                  stats: [
-                    { label: 'Population', val: '154,820' },
-                    { label: 'Zoning Units', val: '10 R-C-I' },
-                    { label: 'Approval', val: '94% Trust' },
-                    { label: 'Type', val: 'SimCity Sandbox' },
-                  ],
-                  realm: 'simcity',
-                },
               ].map(city => {
-                const isSim = city.id === 'simcity' || city.id === 'simulation';
                 return (
                   <div key={city.id} style={{
-                    background: isSim ? 'rgba(15, 23, 42, 0.85)' : '#090a0f',
-                    border: isSim ? '1px solid rgba(59, 130, 246, 0.4)' : '1px solid rgba(255,255,255,0.08)',
+                    background: '#090a0f',
+                    border: '1px solid rgba(255,255,255,0.08)',
                     borderRadius: 14,
                     padding: 24,
                     display: 'flex', flexDirection: 'column', gap: 14,
-                    boxShadow: isSim ? '0 0 24px rgba(37, 99, 235, 0.2)' : 'none',
                   }}>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                       <div style={{ fontSize: 20, fontWeight: 800, fontFamily: "'Syne', sans-serif" }}>{city.name}</div>
@@ -451,12 +435,12 @@ export default function LandingPage({ onEnter, isExiting = false }) {
                     </div>
 
                     <button
-                      onClick={() => onEnter(city.id, city.realm || 'globe')}
+                      onClick={() => onEnter(city.id, 'globe')}
                       style={{
                         marginTop: 4, padding: '10px 16px', borderRadius: 8,
-                        background: isSim ? 'rgba(37, 99, 235, 0.25)' : 'rgba(37,99,235,0.15)',
-                        border: isSim ? '1px solid #3b82f6' : '1px solid #2563eb',
-                        color: isSim ? '#60a5fa' : '#60a5fa',
+                        background: 'rgba(37,99,235,0.15)',
+                        border: '1px solid #2563eb',
+                        color: '#60a5fa',
                         fontSize: 12, fontWeight: 700, cursor: 'pointer',
                         fontFamily: 'inherit', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
                         transition: 'all 0.15s',
@@ -466,11 +450,11 @@ export default function LandingPage({ onEnter, isExiting = false }) {
                         e.currentTarget.style.color = '#fff';
                       }}
                       onMouseLeave={e => {
-                        e.currentTarget.style.background = isSim ? 'rgba(37, 99, 235, 0.25)' : 'rgba(37,99,235,0.15)';
+                        e.currentTarget.style.background = 'rgba(37,99,235,0.15)';
                         e.currentTarget.style.color = '#60a5fa';
                       }}
                     >
-                      {isSim ? '🎮 Enter SimCity Sandbox (Urban Twin)' : `Launch ${city.name.split(',')[0]} in 3D Viewer`} <span style={{ fontSize: 14 }}>›</span>
+                      Launch {city.name.split(',')[0]} in 3D Viewer <span style={{ fontSize: 14 }}>›</span>
                     </button>
                   </div>
                 );
@@ -737,13 +721,17 @@ export default function LandingPage({ onEnter, isExiting = false }) {
               </div>
               <button
                 onClick={() => setShowDossier(false)}
+                title="Close Dossier"
                 style={{
                   background: 'none', border: '1px solid rgba(255,255,255,0.2)',
                   color: '#fff', borderRadius: 999, width: 28, height: 28,
                   cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
                 }}
               >
-                ✕
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"/>
+                  <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
               </button>
             </div>
 
