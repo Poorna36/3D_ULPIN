@@ -150,9 +150,9 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="3D ULPIN Cadastral REST API",
+    title="Tesseract — 3D Cadastral REST API",
     version="1.0.0",
-    description="Unified 3D Land Parcel Identification System REST API conforming to docs/contracts.md",
+    description="Tesseract: Unified 3D Cadastre & Spatial Identity System REST API conforming to docs/contracts.md",
     lifespan=lifespan
 )
 

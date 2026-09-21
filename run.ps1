@@ -1,6 +1,6 @@
-# 3D ULPIN Startup Script for PowerShell
+# Tesseract Startup Script for PowerShell
 Write-Host "===================================================" -ForegroundColor Cyan
-Write-Host " Starting 3D ULPIN System (Backend + Frontend)" -ForegroundColor Green
+Write-Host " Starting Tesseract System (Backend + Frontend)" -ForegroundColor Green
 Write-Host "===================================================" -ForegroundColor Cyan
 
 Write-Host "`n[1/2] Starting FastAPI Backend on http://127.0.0.1:8000 ..." -ForegroundColor Yellow

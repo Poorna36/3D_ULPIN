@@ -38,7 +38,7 @@ export default function LandingPage({ onEnter, isExiting = false }) {
             fontFamily: "'Syne', 'Space Grotesk', sans-serif",
           }}
         >
-          3D ULPIN
+          TESSERACT
           <span style={{
             display: 'inline-block',
             width: 14, height: 14,
@@ -160,7 +160,7 @@ export default function LandingPage({ onEnter, isExiting = false }) {
                 marginBottom: 28, maxWidth: 460,
                 fontWeight: 400,
               }}>
-                India's first 3D ULPIN system creates unique vertical spatial identities
+                Tesseract creates unique vertical 3D cadastral spatial identities
                 for every floor, unit, and subterranean layer. Bengaluru, Mumbai, Singapore
                 and Rotterdam — mapped in full cadastral 3D.
               </p>
@@ -716,7 +716,7 @@ export default function LandingPage({ onEnter, isExiting = false }) {
               <div>
                 <div style={{ fontSize: 11, fontWeight: 700, color: '#38bdf8', letterSpacing: '1px' }}>TECHNICAL DOSSIER</div>
                 <div style={{ fontFamily: "'Syne', sans-serif", fontSize: 22, fontWeight: 800, marginTop: 2 }}>
-                  3D ULPIN Project Specifications
+                  Tesseract Project Specifications
                 </div>
               </div>
               <button

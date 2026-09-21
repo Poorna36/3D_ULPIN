@@ -21,8 +21,8 @@ export default function TopBar({ city, onCityChange, onBuildingSelect, aiStatus 
           </svg>
         </div>
         <div>
-          <div className="topbar-title">3D ULPIN</div>
-          <div className="topbar-subtitle">Vertical Property Mapping • SIH 2026</div>
+          <div className="topbar-title">Tesseract</div>
+          <div className="topbar-subtitle">Vertical Cadastre Mapping • SIH 2026</div>
         </div>
       </div>
 

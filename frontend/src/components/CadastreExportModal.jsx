@@ -73,7 +73,7 @@ export default function CadastreExportModal({ building, onClose }) {
     "version": "1.1",
     "metadata": {
       "referenceSystem": "https://www.opengis.net/def/crs/EPSG/0/4979",
-      "datasetTitle": `3D ULPIN Cadastral Export — ${building.name}`,
+      "datasetTitle": `Tesseract 3D Cadastral Export — ${building.name}`,
       "geographicalExtent": [building.lon - 0.001, building.lat - 0.001, building.ground_elevation, building.lon + 0.001, building.lat + 0.001, building.roof_elevation]
     },
     "CityObjects": {

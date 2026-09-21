@@ -110,7 +110,7 @@ export default function WorkbenchCockpit({
               color: '#ffffff', cursor: 'pointer',
             }}
           >
-            3D ULPIN
+            Tesseract
             <span style={{
               display: 'inline-block',
               width: 8, height: 8,
