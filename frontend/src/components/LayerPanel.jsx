@@ -1,18 +1,26 @@
-// LayerPanel — left sidebar with animated toggles and DYNAMIC stats
+// LayerPanel — floating left drawer with animated toggles, dynamic stats, and standards stack
 import { useMemo } from 'react';
 
 const LAYER_DEFS = [
-  { id: 'google3d',   label: 'Google Photorealistic 3D', icon: '🌐', desc: 'Google 3D Photogrammetry Tileset' },
-  { id: 'tileset3d',  label: '3D Real Buildings (OSM)', icon: '🏙', desc: 'Detailed architectural 3D structures' },
-  { id: 'shadows',    label: 'Sun & Shadows',          icon: '☀', desc: 'Solar shadows & atmospheric lighting' },
-  { id: 'parcels',    label: 'Parcel Boundaries',      icon: '◻', desc: '2D cadastral plots' },
-  { id: 'buildings',  label: 'ULPIN Property Sheath',  icon: '⬡', desc: 'Cadastral glass volumes' },
-  { id: 'interior',   label: 'Interior X-Ray',         icon: '🔬', desc: 'Corridors & floor slabs (selected)' },
-  { id: 'volumes',    label: 'Floor Strata Volumes',   icon: '⬢', desc: 'Floor & unit property levels' },
-  { id: 'underground',label: 'Underground Infrastructure', icon: '⊗', desc: 'Subsurface metro & utilities' },
+  { id: 'google3d',   label: 'Google Photorealistic 3D', icon: '◒', tag: 'MESH',   desc: 'Global photogrammetric 3D tile mesh', color: '#38bdf8' },
+  { id: 'tileset3d',  label: '3D Buildings (LoD2 Geometry)', icon: '◈', tag: 'LOD2',   desc: 'OpenStreetMap & municipal LoD2 geometry', color: '#f59e0b' },
+  { id: 'parcels',    label: 'NAKSHA Cadastral Parcels (Class S)', icon: '◻', tag: 'DoLR',   desc: '2D cadastre plots & statutory tolerance anchors', color: '#10b981' },
+  { id: 'buildings',  label: 'LiDAR Envelopes (Class B)', icon: '⬡', tag: 'LiDAR',  desc: 'Airborne LiDAR (E1) extruded envelopes & ULPIN tags', color: '#00e5ff' },
+  { id: 'volumes',    label: 'Vertical Storey Slabs (Class L)', icon: '⬢', tag: 'STRATA', desc: 'Volumetric storey plates & strata division bands', color: '#818cf8' },
+  { id: 'interior',   label: 'BIM Interior Layout (Class U & C)', icon: '◫', tag: 'openBIM',desc: 'As-built BIM units, corridors & stairwells', color: '#c084fc' },
+  { id: 'underground',label: 'Subterranean & Utilities (Class T & I)', icon: '⊗', tag: 'GPR',   desc: 'Deep metro tunnels & underground utility networks', color: '#f43f5e' },
+  { id: 'shadows',    label: 'Sun & Shadow Analysis',    icon: '○', tag: 'SOLAR', desc: 'Real-time solar path & volumetric shadowing', color: '#facc15' },
 ];
 
-export default function LayerPanel({ layers, onToggle, buildings, currentCity, onCityChange, onResetOrbit }) {
+export default function LayerPanel({
+  layers = {},
+  onToggle,
+  buildings = [],
+  currentCity,
+  onCityChange,
+  onResetOrbit,
+  onClose,
+}) {
   const stats = useMemo(() => {
     if (!buildings?.length) return { total: 0, valid: 0, review: 0, invalid: 0, underground: 0 };
     return {
@@ -24,270 +32,638 @@ export default function LayerPanel({ layers, onToggle, buildings, currentCity, o
     };
   }, [buildings]);
 
-  const hasSynthetic = buildings?.some(b => b.data_label === 'SYNTHETIC');
+  const activeCount = useMemo(() => {
+    return LAYER_DEFS.filter(l => layers[l.id] ?? true).length;
+  }, [layers]);
+
+  const handleToggleAll = (enable) => {
+    LAYER_DEFS.forEach(l => {
+      const current = layers[l.id] ?? true;
+      if (current !== enable && onToggle) {
+        onToggle(l.id);
+      }
+    });
+  };
 
   return (
-    <aside className="layer-panel glass anim-slide-left" id="layer-panel" aria-label="Layer controls">
-      {/* Pilot Cities section on the side */}
-      <div className="panel-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h3>Pilot Cities</h3>
+    <aside className="layer-panel anim-slide-left" id="layer-panel" aria-label="Cadastral Layer Controls">
+      {/* ── Header ──────────────────────────────────────────────────────── */}
+      <div className="lp-header">
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div className="lp-header-icon">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <polygon points="12 2 2 7 12 12 22 7 12 2" />
+              <polyline points="2 17 12 22 22 17" />
+              <polyline points="2 12 12 17 22 12" />
+            </svg>
+          </div>
+          <div>
+            <h3 className="lp-title">Cadastral Layers</h3>
+            <div className="lp-subtitle">{activeCount} of {LAYER_DEFS.length} active feeds</div>
+          </div>
+        </div>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+          {onClose && (
+            <button
+              onClick={onClose}
+              className="lp-close-btn"
+              title="Close Layers Panel"
+              aria-label="Close Layers Panel"
+            >
+              ✕
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* ── Quick Layer Action Bar ──────────────────────────────────────── */}
+      <div className="lp-quick-actions">
+        <button
+          className="lp-btn-action"
+          onClick={() => handleToggleAll(true)}
+          title="Enable all layers"
+        >
+          Enable All
+        </button>
+        <button
+          className="lp-btn-action"
+          onClick={() => handleToggleAll(false)}
+          title="Disable all layers"
+        >
+          Clear All
+        </button>
         {onResetOrbit && (
           <button
-            className="btn-orbit-reset"
+            className="lp-btn-action"
             onClick={onResetOrbit}
-            title="Reset view to full Earth space orbit"
+            title="Reset to Global Earth space orbit"
+            style={{ marginLeft: 'auto', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
           >
-            🌍 Space View
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M12 2a14.5 14.5 0 0 0 0 20M12 2a14.5 14.5 0 0 1 0 20M2 12h20" />
+            </svg>
+            <span>Orbit</span>
           </button>
         )}
       </div>
-      <div className="city-pilot-grid">
-        <button
-          className={`pilot-card ${currentCity === 'bengaluru' ? 'pilot-card--active' : ''}`}
-          onClick={() => onCityChange('bengaluru')}
-          title="Zoom to Bengaluru Pilot (India)"
-        >
-          <div className="pilot-card-top">
-            <span className="pilot-flag">🇮🇳</span>
-            <span className="pilot-name">Bengaluru</span>
-          </div>
-          <div className="pilot-desc">Primary Pilot • Urban High-Rise Cadastre</div>
-        </button>
 
-        <button
-          className={`pilot-card ${currentCity === 'mumbai' ? 'pilot-card--active' : ''}`}
-          onClick={() => onCityChange('mumbai')}
-          title="Zoom to Mumbai Pilot (India)"
-        >
-          <div className="pilot-card-top">
-            <span className="pilot-flag">🇮🇳</span>
-            <span className="pilot-name">Mumbai</span>
-          </div>
-          <div className="pilot-desc">Indian Validation • Vertical Density & Podiums</div>
-        </button>
+      <div className="lp-scroll-area">
+        {/* ── Layer Toggles List ────────────────────────────────────────── */}
+        <div className="lp-section-header">
+          <span>SPATIAL DATASETS</span>
+          <span className="lp-count-badge">{activeCount}/{LAYER_DEFS.length}</span>
+        </div>
 
-        <button
-          className={`pilot-card ${currentCity === 'netherlands' ? 'pilot-card--active' : ''}`}
-          onClick={() => onCityChange('netherlands')}
-          title="Zoom to Rotterdam Pilot (Netherlands)"
-        >
-          <div className="pilot-card-top">
-            <span className="pilot-flag">🇳🇱</span>
-            <span className="pilot-name">Rotterdam (NL)</span>
-          </div>
-          <div className="pilot-desc">BAG 3D & AHN4 LiDAR Benchmark</div>
-        </button>
+        <div className="lp-layer-list">
+          {LAYER_DEFS.map(l => {
+            const isChecked = layers[l.id] ?? (l.id !== 'shadows');
+            return (
+              <label
+                key={l.id}
+                className={`lp-toggle-row ${isChecked ? 'lp-toggle-row--active' : ''}`}
+                htmlFor={`layer-toggle-${l.id}`}
+              >
+                <div className="lp-layer-info">
+                  <span className="lp-layer-icon" style={{ color: l.color }}>{l.icon}</span>
+                  <div style={{ minWidth: 0, flex: 1 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <span className="lp-layer-label">{l.label}</span>
+                      <span className="lp-tag" style={{ color: l.color, borderColor: `${l.color}40`, background: `${l.color}15` }}>
+                        {l.tag}
+                      </span>
+                    </div>
+                    <div className="lp-layer-desc">{l.desc}</div>
+                  </div>
+                </div>
 
-        <button
-          className={`pilot-card ${currentCity === 'singapore' ? 'pilot-card--active' : ''}`}
-          onClick={() => onCityChange('singapore')}
-          title="Zoom to Singapore Pilot (Singapore)"
-        >
-          <div className="pilot-card-top">
-            <span className="pilot-flag">🇸🇬</span>
-            <span className="pilot-name">Singapore</span>
-          </div>
-          <div className="pilot-desc">International Benchmark • Strata & Caverns</div>
-        </button>
-      </div>
+                <div className="lp-switch-wrapper">
+                  <input
+                    id={`layer-toggle-${l.id}`}
+                    type="checkbox"
+                    className="lp-switch-input"
+                    checked={isChecked}
+                    onChange={() => onToggle && onToggle(l.id)}
+                  />
+                  <div className={`lp-switch-slider ${isChecked ? 'lp-switch-slider--on' : ''}`}>
+                    <div className="lp-switch-thumb" />
+                  </div>
+                </div>
+              </label>
+            );
+          })}
+        </div>
 
-      <div className="divider" style={{ margin: '12px 0 10px 0' }} />
+        {/* ── Pilot Cities Quick Jump ─────────────────────────────────── */}
+        <div className="lp-divider" />
+        <div className="lp-section-header">
+          <span>PILOT CITIES</span>
+          {currentCity && <span className="lp-active-city-tag">{currentCity.toUpperCase()}</span>}
+        </div>
 
-      <div className="panel-header">
-        <h3>Layers</h3>
-      </div>
-      <div className="divider" style={{ margin: '0 0 8px 0' }} />
+        <div className="lp-city-grid">
+          {[
+            { id: 'bengaluru', name: 'Bengaluru', code: 'BLR', desc: 'Urban High-Rise Cadastre', color: '#00d4ff' },
+            { id: 'mumbai',    name: 'Mumbai',    code: 'BOM', desc: 'Vertical Density & Podiums', color: '#10d97e' },
+            { id: 'netherlands', name: 'Rotterdam (NL)', code: 'RTM', desc: 'BAG 3D & AHN4 LiDAR', color: '#f59e0b' },
+            { id: 'singapore', name: 'Singapore', code: 'SIN', desc: 'Strata Benchmarks & Caverns', color: '#a855f7' },
+          ].map(city => (
+            <button
+              key={city.id}
+              className={`lp-pilot-card ${currentCity === city.id ? 'lp-pilot-card--active' : ''}`}
+              onClick={() => onCityChange && onCityChange(city.id)}
+              title={`Fly to ${city.name}`}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+                <span className="lp-pilot-code" style={{ color: city.color }}>{city.code}</span>
+                <span className="lp-pilot-name">{city.name}</span>
+              </div>
+              <div className="lp-pilot-desc">{city.desc}</div>
+            </button>
+          ))}
+        </div>
 
-      <div className="layer-list">
-        {LAYER_DEFS.map(l => (
-          <label key={l.id} className="toggle-wrap" htmlFor={`layer-toggle-${l.id}`}>
-            <div className="layer-info">
-              <span className="layer-icon">{l.icon}</span>
-              <div>
-                <div className="layer-label">{l.label}</div>
-                <div className="layer-desc">{l.desc}</div>
+        {/* ── Cadastral Statistics ────────────────────────────────────── */}
+        {stats.total > 0 && (
+          <>
+            <div className="lp-divider" />
+            <div className="lp-section-header">
+              <span>ACTIVE CITY REGISTRY</span>
+              <span className="lp-count-badge">{stats.total} PARCELS</span>
+            </div>
+
+            <div className="lp-stat-grid">
+              <div className="lp-stat-card">
+                <div className="lp-stat-val" style={{ color: '#38bdf8' }}>{stats.total}</div>
+                <div className="lp-stat-lbl">Structures</div>
+              </div>
+              <div className="lp-stat-card">
+                <div className="lp-stat-val" style={{ color: '#34d399' }}>{stats.valid}</div>
+                <div className="lp-stat-lbl">VALID</div>
+              </div>
+              <div className="lp-stat-card">
+                <div className="lp-stat-val" style={{ color: '#fbbf24' }}>{stats.review}</div>
+                <div className="lp-stat-lbl">REVIEW</div>
+              </div>
+              <div className="lp-stat-card">
+                <div className="lp-stat-val" style={{ color: '#c084fc' }}>{stats.underground}</div>
+                <div className="lp-stat-lbl">Underground</div>
               </div>
             </div>
-            <span className="toggle">
-              <input
-                id={`layer-toggle-${l.id}`}
-                type="checkbox"
-                checked={layers[l.id] ?? true}
-                onChange={() => onToggle(l.id)}
-              />
-              <span className="toggle-track" />
-              <span className="toggle-thumb" />
-            </span>
-          </label>
-        ))}
+
+            {/* Validation bar */}
+            <div style={{ marginTop: '10px' }}>
+              <div className="lp-val-bar">
+                <div className="lp-val-fill" style={{ width: `${(stats.valid / stats.total) * 100}%`, background: '#34d399' }} />
+                <div className="lp-val-fill" style={{ width: `${(stats.review / stats.total) * 100}%`, background: '#fbbf24' }} />
+                <div className="lp-val-fill" style={{ width: `${(stats.invalid / stats.total) * 100}%`, background: '#ef4444' }} />
+              </div>
+              <div className="lp-val-legend">
+                <span><span className="lp-dot" style={{ background: '#34d399' }} />Valid</span>
+                <span><span className="lp-dot" style={{ background: '#fbbf24' }} />Review</span>
+                {stats.invalid > 0 && <span><span className="lp-dot" style={{ background: '#ef4444' }} />Invalid</span>}
+              </div>
+            </div>
+          </>
+        )}
+
+        {/* ── Standards & Evidence Stack ──────────────────────────────── */}
+        <div className="lp-divider" />
+        <div className="lp-section-header">
+          <span>STANDARDS & EVIDENCE</span>
+        </div>
+        <div className="lp-evidence-list">
+          <div className="lp-evidence-row">
+            <span>NAKSHA 5% Precedent</span>
+            <span className="lp-evidence-mono" style={{ color: '#34d399' }}>2σ_c = 0.34m</span>
+          </div>
+          <div className="lp-evidence-row">
+            <span>Airborne LiDAR (E1)</span>
+            <span className="lp-evidence-mono" style={{ color: '#38bdf8' }}>KPConv / U-Net</span>
+          </div>
+          <div className="lp-evidence-row">
+            <span>BIM / As-Built (E4)</span>
+            <span className="lp-evidence-mono" style={{ color: '#a78bfa' }}>IFC 4.3 Space</span>
+          </div>
+          <div className="lp-evidence-row">
+            <span>SoI CORS Covariance</span>
+            <span className="lp-evidence-mono" style={{ color: '#f59e0b' }}>σ_xy: 2.4cm</span>
+          </div>
+          <div className="lp-evidence-row">
+            <span>Subsurface GPR (E5)</span>
+            <span className="lp-evidence-mono" style={{ color: '#f43f5e' }}>Tunnels & Drains</span>
+          </div>
+        </div>
       </div>
-
-      <div className="divider" />
-      <div className="panel-header"><h3>Statistics</h3></div>
-      <div className="stat-grid">
-        <div className="stat-item">
-          <div className="stat-value cyan">{stats.total}</div>
-          <div className="stat-label">Buildings</div>
-        </div>
-        <div className="stat-item">
-          <div className="stat-value green">{stats.valid}</div>
-          <div className="stat-label">VALID</div>
-        </div>
-        <div className="stat-item">
-          <div className="stat-value amber">{stats.review}</div>
-          <div className="stat-label">REVIEW</div>
-        </div>
-        <div className="stat-item">
-          <div className="stat-value violet">{stats.underground}</div>
-          <div className="stat-label">Underground</div>
-        </div>
-      </div>
-
-      {/* Validation summary bar */}
-      {stats.total > 0 && (
-        <div style={{ padding: '8px 0 4px' }}>
-          <div className="section-label" style={{ marginBottom: '6px' }}>Validation</div>
-          <div className="val-bar-wrap">
-            <div
-              className="val-bar-fill val-valid"
-              style={{ width: `${(stats.valid / stats.total) * 100}%` }}
-              title={`Valid: ${stats.valid}`}
-            />
-            <div
-              className="val-bar-fill val-review"
-              style={{ width: `${(stats.review / stats.total) * 100}%` }}
-              title={`Review: ${stats.review}`}
-            />
-            <div
-              className="val-bar-fill val-invalid"
-              style={{ width: `${(stats.invalid / stats.total) * 100}%` }}
-              title={`Invalid: ${stats.invalid}`}
-            />
-          </div>
-          <div className="val-legend">
-            <span><span className="legend-dot" style={{ background: 'var(--green)' }} />Valid</span>
-            <span><span className="legend-dot" style={{ background: 'var(--amber)' }} />Review</span>
-            {stats.invalid > 0 && <span><span className="legend-dot" style={{ background: 'var(--red)' }} />Invalid</span>}
-          </div>
-        </div>
-      )}
-
-      {hasSynthetic && (
-        <>
-          <div className="divider" />
-          <div className="panel-footer-note">
-            <span className="badge badge-synthetic" style={{ fontSize: '10px' }}>SYNTHETIC</span>
-            <span style={{ fontSize: '11px', color: 'var(--text-dim)', marginLeft: '6px' }}>
-              Underground volumes are demo fixtures
-            </span>
-          </div>
-        </>
-      )}
 
       <style>{`
         .layer-panel {
           position: fixed;
-          top: var(--topbar-h); left: 0; bottom: 0;
-          width: var(--panel-w);
-          display: flex; flex-direction: column;
-          padding: var(--gap-md);
-          overflow-y: auto;
-          border-radius: 0; border-left: none; border-top: none; border-bottom: none;
-          border-right: 1px solid var(--border);
-          z-index: 50;
-        }
-        .panel-header { margin-bottom: 4px; }
-        .layer-list { display: flex; flex-direction: column; gap: 2px; }
-        .layer-info { display: flex; align-items: center; gap: 10px; }
-        .layer-icon { font-size: 16px; color: var(--cyan); width: 20px; text-align: center; }
-        .layer-label { font-size: 13px; font-weight: 500; color: var(--text-primary); }
-        .layer-desc  { font-size: 11px; color: var(--text-dim); margin-top: 1px; }
-        .stat-grid {
-          display: grid; grid-template-columns: 1fr 1fr;
-          gap: var(--gap-sm);
-          margin-top: var(--gap-sm);
-        }
-        .stat-item {
-          background: rgba(255,255,255,0.03);
-          border: 1px solid var(--border);
-          border-radius: var(--r-md);
-          padding: 10px;
-          text-align: center;
-          transition: border-color var(--t-fast);
-        }
-        .stat-item:hover { border-color: var(--border-strong); }
-        .stat-value { font-size: 22px; font-weight: 700; font-family: var(--font-mono); }
-        .stat-label { font-size: 10px; color: var(--text-dim); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
-        .cyan   { color: var(--cyan); }
-        .green  { color: var(--green); }
-        .amber  { color: var(--amber); }
-        .violet { color: var(--violet); }
-        .panel-footer-note { display: flex; align-items: center; flex-wrap: wrap; }
-
-        /* Validation bar */
-        .val-bar-wrap {
-          display: flex; height: 6px;
-          border-radius: var(--r-pill);
+          top: 60px;
+          left: 16px;
+          bottom: 68px;
+          width: 340px;
+          max-width: calc(100vw - 32px);
+          display: flex;
+          flex-direction: column;
+          background: #18181b !important;
+          border: 1px solid #27272a !important;
+          border-radius: 12px !important;
+          z-index: 95;
+          box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6), 0 1px 2px rgba(0, 0, 0, 0.2);
+          user-select: none;
           overflow: hidden;
-          background: rgba(255,255,255,0.05);
+          font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
-        .val-bar-fill { transition: width 0.6s cubic-bezier(0.4,0,0.2,1); }
-        .val-valid  { background: var(--green); }
-        .val-review { background: var(--amber); }
-        .val-invalid{ background: var(--red); }
-        .val-legend {
-          display: flex; gap: 10px; margin-top: 5px;
-          font-size: 10px; color: var(--text-dim);
+
+        .lp-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 12px 14px;
+          border-bottom: 1px solid #27272a;
+          background: #141416;
         }
-        .legend-dot {
-          display: inline-block; width: 6px; height: 6px;
-          border-radius: 50%; margin-right: 3px;
+
+        .lp-header-icon {
+          width: 28px;
+          height: 28px;
+          border-radius: 6px;
+          background: rgba(56, 189, 248, 0.1);
+          border: 1px solid rgba(56, 189, 248, 0.25);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .lp-title {
+          font-size: 13.5px;
+          font-weight: 700;
+          color: #f4f4f5;
+          margin: 0;
+          line-height: 1.2;
+        }
+
+        .lp-subtitle {
+          font-size: 11px;
+          color: #71717a;
+          margin-top: 1px;
+        }
+
+        .lp-close-btn {
+          width: 26px;
+          height: 26px;
+          border-radius: 6px;
+          background: #27272a;
+          border: 1px solid #3f3f46;
+          color: #a1a1aa;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 12px;
+          transition: all 0.15s ease;
+        }
+
+        .lp-close-btn:hover {
+          background: #3f3f46;
+          color: #ffffff;
+          border-color: #52525b;
+        }
+
+        .lp-quick-actions {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          padding: 8px 14px;
+          border-bottom: 1px solid #27272a;
+          background: #18181b;
+        }
+
+        .lp-btn-action {
+          background: #27272a;
+          border: 1px solid #3f3f46;
+          border-radius: 6px;
+          color: #d4d4d8;
+          font-size: 11px;
+          font-weight: 600;
+          padding: 4px 9px;
+          cursor: pointer;
+          transition: all 0.12s;
+        }
+
+        .lp-btn-action:hover {
+          background: #38bdf8;
+          color: #09090b;
+          border-color: #38bdf8;
+        }
+
+        .lp-scroll-area {
+          flex: 1;
+          overflow-y: auto;
+          padding: 10px 14px;
+          scrollbar-width: thin;
+          scrollbar-color: #3f3f46 transparent;
+        }
+
+        .lp-scroll-area::-webkit-scrollbar {
+          width: 5px;
+        }
+        .lp-scroll-area::-webkit-scrollbar-thumb {
+          background: #3f3f46;
+          border-radius: 3px;
+        }
+
+        .lp-section-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          font-size: 10.5px;
+          font-weight: 700;
+          letter-spacing: 0.6px;
+          color: #71717a;
+          margin-bottom: 8px;
+          text-transform: uppercase;
+        }
+
+        .lp-count-badge {
+          background: #27272a;
+          color: #a1a1aa;
+          padding: 1px 6px;
+          border-radius: 4px;
+          font-size: 9.5px;
+          font-family: monospace;
+        }
+
+        .lp-active-city-tag {
+          background: rgba(56, 189, 248, 0.15);
+          color: #38bdf8;
+          border: 1px solid rgba(56, 189, 248, 0.3);
+          padding: 1px 6px;
+          border-radius: 4px;
+          font-size: 9.5px;
+          font-weight: 700;
+        }
+
+        .lp-layer-list {
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+        }
+
+        .lp-toggle-row {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 8px 10px;
+          border-radius: 8px;
+          background: #1f1f23;
+          border: 1px solid #27272a;
+          cursor: pointer;
+          transition: all 0.15s ease;
+        }
+
+        .lp-toggle-row:hover {
+          background: #27272a;
+          border-color: #3f3f46;
+        }
+
+        .lp-toggle-row--active {
+          border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .lp-layer-info {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          min-width: 0;
+          flex: 1;
+        }
+
+        .lp-layer-icon {
+          font-size: 15px;
+          width: 18px;
+          text-align: center;
+          flex-shrink: 0;
+        }
+
+        .lp-layer-label {
+          font-size: 12px;
+          font-weight: 600;
+          color: #f4f4f5;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .lp-tag {
+          font-size: 8.5px;
+          font-weight: 700;
+          padding: 0.5px 4px;
+          border-radius: 3px;
+          border: 1px solid transparent;
+          text-transform: uppercase;
+          letter-spacing: 0.4px;
+        }
+
+        .lp-layer-desc {
+          font-size: 10px;
+          color: #71717a;
+          margin-top: 1px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        /* ── Switch Slider ─────────────────────────────────────────── */
+        .lp-switch-wrapper {
+          position: relative;
+          width: 36px;
+          height: 20px;
+          flex-shrink: 0;
+          margin-left: 8px;
+        }
+
+        .lp-switch-input {
+          position: absolute;
+          opacity: 0;
+          width: 0;
+          height: 0;
+        }
+
+        .lp-switch-slider {
+          position: absolute;
+          inset: 0;
+          background: #27272a;
+          border: 1px solid #3f3f46;
+          border-radius: 999px;
+          transition: all 0.18s ease;
+        }
+
+        .lp-switch-thumb {
+          position: absolute;
+          top: 2px;
+          left: 2px;
+          width: 14px;
+          height: 14px;
+          background: #71717a;
+          border-radius: 50%;
+          transition: transform 0.18s ease, background 0.18s ease;
+        }
+
+        .lp-switch-slider--on {
+          background: #0284c7;
+          border-color: #38bdf8;
+          box-shadow: 0 0 8px rgba(56, 189, 248, 0.4);
+        }
+
+        .lp-switch-slider--on .lp-switch-thumb {
+          transform: translateX(16px);
+          background: #ffffff;
+        }
+
+        .lp-divider {
+          height: 1px;
+          background: #27272a;
+          margin: 12px 0 10px 0;
+        }
+
+        /* ── City Grid ─────────────────────────────────────────────── */
+        .lp-city-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 6px;
+        }
+
+        .lp-pilot-card {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          text-align: left;
+          background: #1f1f23;
+          border: 1px solid #27272a;
+          border-radius: 8px;
+          padding: 7px 9px;
+          cursor: pointer;
+          transition: all 0.15s ease;
+        }
+
+        .lp-pilot-card:hover {
+          background: #27272a;
+          border-color: #38bdf8;
+        }
+
+        .lp-pilot-card--active {
+          background: rgba(56, 189, 248, 0.12);
+          border-color: #38bdf8;
+          box-shadow: 0 0 10px rgba(56, 189, 248, 0.2);
+        }
+
+        .lp-pilot-code {
+          font-family: monospace;
+          font-size: 9.5px;
+          font-weight: 700;
+        }
+
+        .lp-pilot-name {
+          font-size: 11.5px;
+          font-weight: 600;
+          color: #f4f4f5;
+        }
+
+        .lp-pilot-desc {
+          font-size: 9.5px;
+          color: #71717a;
+          margin-top: 2px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          width: 100%;
+        }
+
+        /* ── Stats ─────────────────────────────────────────────────── */
+        .lp-stat-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 6px;
+        }
+
+        .lp-stat-card {
+          background: #1f1f23;
+          border: 1px solid #27272a;
+          border-radius: 6px;
+          padding: 6px 4px;
+          text-align: center;
+        }
+
+        .lp-stat-val {
+          font-size: 16px;
+          font-weight: 700;
+          font-family: monospace;
+          line-height: 1.1;
+        }
+
+        .lp-stat-lbl {
+          font-size: 8.5px;
+          color: #71717a;
+          text-transform: uppercase;
+          margin-top: 2px;
+          letter-spacing: 0.4px;
+        }
+
+        .lp-val-bar {
+          display: flex;
+          height: 4px;
+          border-radius: 999px;
+          overflow: hidden;
+          background: #27272a;
+        }
+
+        .lp-val-fill {
+          transition: width 0.3s ease;
+        }
+
+        .lp-val-legend {
+          display: flex;
+          gap: 12px;
+          margin-top: 5px;
+          font-size: 10px;
+          color: #71717a;
+        }
+
+        .lp-dot {
+          display: inline-block;
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          margin-right: 4px;
           vertical-align: middle;
         }
-        .city-pilot-grid {
-          display: flex; flex-direction: column; gap: 6px;
-          margin-top: 6px;
-        }
-        .pilot-card {
-          display: flex; flex-direction: column; align-items: flex-start;
-          width: 100%; text-align: left;
-          background: rgba(255,255,255,0.03);
-          border: 1px solid var(--border);
-          border-radius: var(--r-md);
-          padding: 8px 10px;
-          cursor: pointer;
-          transition: all var(--t-fast);
-        }
-        .pilot-card:hover {
-          background: rgba(0,212,255,0.08);
-          border-color: var(--cyan);
-        }
-        .pilot-card--active {
-          background: rgba(0,212,255,0.12);
-          border-color: var(--cyan);
-          box-shadow: 0 0 12px rgba(0,212,255,0.25);
-        }
-        .pilot-card-top {
-          display: flex; align-items: center; gap: 6px;
-        }
-        .pilot-flag { font-size: 14px; }
-        .pilot-name { font-size: 13px; font-weight: 600; color: var(--text-primary); }
-        .pilot-card--active .pilot-name { color: var(--cyan); }
-        .pilot-desc { font-size: 10px; color: var(--text-dim); margin-top: 2px; }
 
-        .btn-orbit-reset {
-          background: rgba(255,255,255,0.05);
-          border: 1px solid var(--border);
-          border-radius: var(--r-pill);
-          color: var(--text-secondary);
-          font-size: 11px; font-weight: 500;
-          padding: 3px 8px; cursor: pointer;
-          transition: all var(--t-fast);
+        /* ── Evidence ──────────────────────────────────────────────── */
+        .lp-evidence-list {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
         }
-        .btn-orbit-reset:hover {
-          background: rgba(0,212,255,0.12);
-          border-color: var(--cyan);
-          color: var(--cyan);
+
+        .lp-evidence-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 4px 7px;
+          background: #1f1f23;
+          border: 1px solid #27272a;
+          border-radius: 4px;
+          font-size: 10.5px;
+          color: #a1a1aa;
+        }
+
+        .lp-evidence-mono {
+          font-family: monospace;
+          font-size: 10px;
+          font-weight: 600;
         }
       `}</style>
     </aside>

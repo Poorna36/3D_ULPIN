@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D ULPIN Examiner Console</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Three.js & OrbitControls -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+
+  <!-- 3D Canvas Viewport -->
+  <div id="viewport-container"></div>
+
+  <!-- Top Navigation Header -->
+  <header class="navbar">
+    <div class="brand-section">
+      <span class="logo-badge">3D ULPIN</span>
+      <h1 class="brand-title">Cadastral Digital Twin & Examiner Console</h1>
+    </div>
+
+    <div class="nav-actions">
+      <!-- Preset Switcher -->
+      <button id="btn-preset-mz1" class="btn btn-primary">MZ-1 Worli Tower</button>
+      <button id="btn-preset-bz1" class="btn">BZ-1 MG Road Tower</button>
+      <button id="btn-sync-api" class="btn" title="Fetch live cadastral data from /cover">Sync API (/cover)</button>
+
+      <!-- View Modes -->
+      <button data-view="PLAN" class="btn btn-primary">Sanctioned Plan</button>
+      <button data-view="AS_BUILT" class="btn">As-Built</button>
+      <button data-view="DIFFERENCE" class="btn">Difference</button>
+      <button data-view="SECTION_CUT" class="btn">Section Cut</button>
+
+      <!-- Examiner Sign-off -->
+      <button id="btn-sign-off" class="btn btn-primary">Examiner Sign-Off</button>
+    </div>
+  </header>
+
+  <!-- Left HUD: Layers & Classes -->
+  <aside class="hud-panel panel-left">
+    <div class="panel-title">
+      <span>Cadastral Layers</span>
+      <span style="font-size: 10px; color: var(--text-muted);">10 Classes</span>
+    </div>
+
+    <div class="layer-list">
+      <label class="layer-item">
+        <div><span class="color-dot" style="background: #e8a048;"></span>Class U (Private Units)</div>
+        <input type="checkbox" class="layer-checkbox" data-cls="U" checked>
+      </label>
+      <label class="layer-item">
+        <div><span class="color-dot" style="background: #6db56d;"></span>Class C (Common Corridors)</div>
+        <input type="checkbox" class="layer-checkbox" data-cls="C" checked>
+      </label>
+      <label class="layer-item">
+        <div><span class="color-dot" style="background: #8a8a8a;"></span>Class P (Parking Vaults)</div>
+        <input type="checkbox" class="layer-checkbox" data-cls="P" checked>
+      </label>
+      <label class="layer-item">
+        <div><span class="color-dot" style="background: #00f2ff;"></span>Class A (Airspace Lots)</div>
+        <input type="checkbox" class="layer-checkbox" data-cls="A" checked>
+      </label>
+      <label class="layer-item">
+        <div><span class="color-dot" style="background: #9d4edd;"></span>Class T (Metro Tunnels)</div>
+        <input type="checkbox" class="layer-checkbox" data-cls="T" checked>
+      </label>
+      <label class="layer-item">
+        <div><span class="color-dot" style="background: #4a8bd4;"></span>Class E (Elevated Metro)</div>
+        <input type="checkbox" class="layer-checkbox" data-cls="E" checked>
+      </label>
+      <label class="layer-item">
+        <div><span class="color-dot" style="background: #ffb703;"></span>Class I (Utility Corridors)</div>
+        <input type="checkbox" class="layer-checkbox" data-cls="I" checked>
+      </label>
+      <label class="layer-item">
+        <div><span class="color-dot" style="background: #38bdf8;"></span>Class B (Building Envelope)</div>
+        <input type="checkbox" class="layer-checkbox" data-cls="B" checked>
+      </label>
+      <label class="layer-item">
+        <div><span class="color-dot" style="background: #334155;"></span>Class S (Surface Parcel)</div>
+        <input type="checkbox" class="layer-checkbox" data-cls="S" checked>
+      </label>
+    </div>
+  </aside>
+
+  <!-- Right HUD: Cadastral Inspector -->
+  <aside id="inspector-panel" class="hud-panel panel-right">
+    <div class="panel-title">
+      <span>Object Inspector</span>
+      <span id="insp-class" class="badge badge-u">Class U</span>
+    </div>
+
+    <div class="inspector-field">
+      <div class="field-label">Cadastral RID</div>
+      <div id="insp-rid" class="field-value">MH2700010001AA-B0001-U0101-2</div>
+    </div>
+
+    <div class="inspector-field">
+      <div class="field-label">Legal Name</div>
+      <div id="insp-name" class="field-value">Apartment Unit 101 (3-BHK)</div>
+    </div>
+
+    <div class="inspector-field">
+      <div class="field-label">Data Provenance</div>
+      <div id="insp-prov" class="field-value">SYNTHETIC</div>
+    </div>
+
+    <div class="inspector-field">
+      <div class="field-label">Elevation Range</div>
+      <div id="insp-z" class="field-value">[0.0m, 3.2m]</div>
+    </div>
+
+    <div class="inspector-field">
+      <div class="field-label">Validation Status</div>
+      <div class="field-value" style="display: flex; align-items: center; margin-top: 4px;">
+        <span id="insp-status-dot" class="status-dot status-pass"></span>
+        <span id="insp-status">PASS (T0-T4 Compliant)</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Bottom Panel: Headline Queries -->
+  <div class="panel-bottom">
+    <button id="btn-query-parcel" class="btn btn-primary" style="padding: 10px 20px; font-size: 14px;">
+      Below / Above This Parcel (R1 Headline Query)
+    </button>
+  </div>
+
+  <!-- Modal for Stacked Parcel Query -->
+  <div id="stack-modal" class="modal-backdrop">
+    <div class="modal-card">
+      <h2 style="font-size: 16px; font-weight: 600; color: #fff; margin-bottom: 12px;">
+        3D Cadastral Column Inspection
+      </h2>
+      <div id="stack-results"></div>
+      <div style="margin-top: 16px; text-align: right;">
+        <button id="btn-close-modal" class="btn btn-primary">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+
+  <script src="viewer.js"></script>
+  <script src="ui.js"></script>
+</body>
+</html>

@@ -23,8 +23,25 @@ scratch/
 .system_generated/
 *.local
 
+# Databases
+*.db
+*.sqlite
+*.sqlite3
+
+# Environment files (strict: exclude any env file, normal or example)
+.env*
+*.env*
+
 # IDE
 .vscode/
 .idea/
 .DS_Store
 Thumbs.db
+
+# Specialist branch reference folder
+specialist_branch/
+
+# Local venv and cache
+.venv/
+.cache/
+.tmp/

@@ -1,0 +1,12 @@
+{
+  "agency": "Municipal Corporation of Greater Mumbai (MCGM)",
+  "portal": "OneMCGM GIS Portal / Development Plan 2034",
+  "status": "PUBLIC_ACCESSIBLE_WITH_AUTHENTICATION",
+  "access_policy": "Public viewing layer accessible; cadastral shapefile behind municipal RTI / data request protocol",
+  "resolution_m": 0.5,
+  "datum": "WGS84 / Everest 1830 local grid",
+  "mitigation_applied": "Overture Maps building footprints used as PROXY for surface parcels (Class S); DP 2034 reservation zones used for setback & FSI constraints",
+  "data_provenance": "REAL",
+  "license": "Government Open Data License (India) / MCGM Terms of Use",
+  "timestamp": "2026-09-20T10:00:00Z"
+}

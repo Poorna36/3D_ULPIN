@@ -1,0 +1,1095 @@
+{
+  "name": "BZ1_MGRoad_Hero_Tower",
+  "zone": "BZ-1",
+  "ground_elevation": 920.5,
+  "height": 49.5,
+  "floor_count": 15,
+  "typology": "STANDARD_HIGHRISE",
+  "jurisdiction": "IN_KA",
+  "total_volume": 310696.272,
+  "volume_count": 107,
+  "classes_exercised": [
+    "A",
+    "B",
+    "C",
+    "E",
+    "I",
+    "L",
+    "P",
+    "S",
+    "T",
+    "U"
+  ],
+  "volumes": [
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Parcel_Column",
+      "cls": "S",
+      "z_min": 880.5,
+      "z_max": 1010.0,
+      "volume": 206682.0,
+      "parent_label": null,
+      "data_provenance": "SYNTHETIC",
+      "description": "Surface Cadastral Parcel Column with air and subsurface rights"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Envelope",
+      "cls": "B",
+      "z_min": 920.5,
+      "z_max": 970.0,
+      "volume": 28314.0,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Parcel_Column",
+      "data_provenance": "SYNTHETIC",
+      "description": "Master Building Envelope Solid"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_00",
+      "cls": "L",
+      "z_min": 920.5,
+      "z_max": 923.8,
+      "volume": 1887.6,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Envelope",
+      "data_provenance": "SYNTHETIC",
+      "description": "Level Slab Band 00"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_00_GrandLobby_Reception",
+      "cls": "C",
+      "z_min": 920.5,
+      "z_max": 923.8,
+      "volume": 660.66,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_00",
+      "data_provenance": "SYNTHETIC",
+      "description": "Grand Double-Height Entrance Lobby, Security Desk & Elevator Core"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_00_Unit_Retail_Bank_West_01",
+      "cls": "U",
+      "z_min": 920.5,
+      "z_max": 923.8,
+      "volume": 306.735,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_00",
+      "data_provenance": "SYNTHETIC",
+      "description": "Street-Facing Anchor Commercial Banking Space (South West)"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_00_Unit_Retail_Store_West_02",
+      "cls": "U",
+      "z_min": 920.5,
+      "z_max": 923.8,
+      "volume": 306.735,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_00",
+      "data_provenance": "SYNTHETIC",
+      "description": "Street-Facing Commercial Pharmacy & Retail Store (North West)"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_00_Unit_Retail_Cafe_East_03",
+      "cls": "U",
+      "z_min": 920.5,
+      "z_max": 923.8,
+      "volume": 306.735,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_00",
+      "data_provenance": "SYNTHETIC",
+      "description": "Street-Facing Cafeteria & Coffee Lounge (South East)"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_00_Unit_Retail_Showroom_East_04",
+      "cls": "U",
+      "z_min": 920.5,
+      "z_max": 923.8,
+      "volume": 306.735,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_00",
+      "data_provenance": "SYNTHETIC",
+      "description": "Street-Facing Commercial Showroom Space (North East)"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_01",
+      "cls": "L",
+      "z_min": 923.8,
+      "z_max": 927.1,
+      "volume": 1887.6,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Envelope",
+      "data_provenance": "SYNTHETIC",
+      "description": "Level Slab Band 01"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_01_CommonCorridor",
+      "cls": "C",
+      "z_min": 923.8,
+      "z_max": 927.1,
+      "volume": 174.24,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_01",
+      "data_provenance": "SYNTHETIC",
+      "description": "Central Resident Circulation Hallway & Stair Core"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_01_Unit_2BHK_West_01",
+      "cls": "U",
+      "z_min": 923.8,
+      "z_max": 927.1,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_01",
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Apartment (South Wing)"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_01_Unit_2BHK_West_02",
+      "cls": "U",
+      "z_min": 923.8,
+      "z_max": 927.1,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_01",
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Apartment (North Wing)"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_01_Unit_ExecSuite_South_03",
+      "cls": "U",
+      "z_min": 923.8,
+      "z_max": 927.1,
+      "volume": 299.838,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_01",
+      "data_provenance": "SYNTHETIC",
+      "description": "Executive Corner Suite with Panoramic Corner Glazing"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_01_Unit_Studio_Center_04",
+      "cls": "U",
+      "z_min": 923.8,
+      "z_max": 927.1,
+      "volume": 257.004,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_01",
+      "data_provenance": "SYNTHETIC",
+      "description": "Central Compact Urban Studio Unit"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_01_Unit_ExecSuite_North_05",
+      "cls": "U",
+      "z_min": 923.8,
+      "z_max": 927.1,
+      "volume": 299.838,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_01",
+      "data_provenance": "SYNTHETIC",
+      "description": "Executive Corner Suite with North Garden View"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_02",
+      "cls": "L",
+      "z_min": 927.1,
+      "z_max": 930.4,
+      "volume": 1887.6,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Envelope",
+      "data_provenance": "SYNTHETIC",
+      "description": "Level Slab Band 02"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_02_CommonCorridor",
+      "cls": "C",
+      "z_min": 927.1,
+      "z_max": 930.4,
+      "volume": 174.24,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_02",
+      "data_provenance": "SYNTHETIC",
+      "description": "Central Resident Circulation Hallway & Stair Core"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_02_Unit_3BHK_Master_01",
+      "cls": "U",
+      "z_min": 927.1,
+      "z_max": 930.4,
+      "volume": 514.008,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_02",
+      "data_provenance": "SYNTHETIC",
+      "description": "Spacious 3BHK Family Master Apartment with dual balcony"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_02_Unit_1BHK_Studio_02",
+      "cls": "U",
+      "z_min": 927.1,
+      "z_max": 930.4,
+      "volume": 342.672,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_02",
+      "data_provenance": "SYNTHETIC",
+      "description": "Compact 1BHK Executive Studio Suite"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_02_Unit_2BHK_East_South_03",
+      "cls": "U",
+      "z_min": 927.1,
+      "z_max": 930.4,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_02",
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Urban Apartment (South Wing)"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_02_Unit_2BHK_East_North_04",
+      "cls": "U",
+      "z_min": 927.1,
+      "z_max": 930.4,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_02",
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Urban Apartment (North Wing)"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_03",
+      "cls": "L",
+      "z_min": 930.4,
+      "z_max": 933.7,
+      "volume": 1887.6,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Envelope",
+      "data_provenance": "SYNTHETIC",
+      "description": "Level Slab Band 03"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_03_CommonCorridor",
+      "cls": "C",
+      "z_min": 930.4,
+      "z_max": 933.7,
+      "volume": 174.24,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_03",
+      "data_provenance": "SYNTHETIC",
+      "description": "Central Resident Circulation Hallway & Stair Core"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_03_Unit_2BHK_West_01",
+      "cls": "U",
+      "z_min": 930.4,
+      "z_max": 933.7,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_03",
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Apartment (South Wing)"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_03_Unit_2BHK_West_02",
+      "cls": "U",
+      "z_min": 930.4,
+      "z_max": 933.7,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_03",
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Apartment (North Wing)"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_03_Unit_ExecSuite_South_03",
+      "cls": "U",
+      "z_min": 930.4,
+      "z_max": 933.7,
+      "volume": 299.838,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_03",
+      "data_provenance": "SYNTHETIC",
+      "description": "Executive Corner Suite with Panoramic Corner Glazing"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_03_Unit_Studio_Center_04",
+      "cls": "U",
+      "z_min": 930.4,
+      "z_max": 933.7,
+      "volume": 257.004,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_03",
+      "data_provenance": "SYNTHETIC",
+      "description": "Central Compact Urban Studio Unit"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_03_Unit_ExecSuite_North_05",
+      "cls": "U",
+      "z_min": 930.4,
+      "z_max": 933.7,
+      "volume": 299.838,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_03",
+      "data_provenance": "SYNTHETIC",
+      "description": "Executive Corner Suite with North Garden View"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_04",
+      "cls": "L",
+      "z_min": 933.7,
+      "z_max": 937.0,
+      "volume": 1887.6,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Envelope",
+      "data_provenance": "SYNTHETIC",
+      "description": "Level Slab Band 04"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_04_CommonCorridor",
+      "cls": "C",
+      "z_min": 933.7,
+      "z_max": 937.0,
+      "volume": 174.24,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_04",
+      "data_provenance": "SYNTHETIC",
+      "description": "Central Resident Circulation Hallway & Stair Core"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_04_Unit_3BHK_Master_01",
+      "cls": "U",
+      "z_min": 933.7,
+      "z_max": 937.0,
+      "volume": 514.008,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_04",
+      "data_provenance": "SYNTHETIC",
+      "description": "Spacious 3BHK Family Master Apartment with dual balcony"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_04_Unit_1BHK_Studio_02",
+      "cls": "U",
+      "z_min": 933.7,
+      "z_max": 937.0,
+      "volume": 342.672,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_04",
+      "data_provenance": "SYNTHETIC",
+      "description": "Compact 1BHK Executive Studio Suite"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_04_Unit_2BHK_East_South_03",
+      "cls": "U",
+      "z_min": 933.7,
+      "z_max": 937.0,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_04",
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Urban Apartment (South Wing)"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_04_Unit_2BHK_East_North_04",
+      "cls": "U",
+      "z_min": 933.7,
+      "z_max": 937.0,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_04",
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Urban Apartment (North Wing)"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_05",
+      "cls": "L",
+      "z_min": 937.0,
+      "z_max": 940.3,
+      "volume": 1887.6,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Envelope",
+      "data_provenance": "SYNTHETIC",
+      "description": "Level Slab Band 05"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_05_CommonCorridor",
+      "cls": "C",
+      "z_min": 937.0,
+      "z_max": 940.3,
+      "volume": 174.24,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_05",
+      "data_provenance": "SYNTHETIC",
+      "description": "Central Resident Circulation Hallway & Stair Core"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_05_Unit_2BHK_West_01",
+      "cls": "U",
+      "z_min": 937.0,
+      "z_max": 940.3,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_05",
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Apartment (South Wing)"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_05_Unit_2BHK_West_02",
+      "cls": "U",
+      "z_min": 937.0,
+      "z_max": 940.3,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_05",
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Apartment (North Wing)"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_05_Unit_ExecSuite_South_03",
+      "cls": "U",
+      "z_min": 937.0,
+      "z_max": 940.3,
+      "volume": 299.838,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_05",
+      "data_provenance": "SYNTHETIC",
+      "description": "Executive Corner Suite with Panoramic Corner Glazing"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_05_Unit_Studio_Center_04",
+      "cls": "U",
+      "z_min": 937.0,
+      "z_max": 940.3,
+      "volume": 257.004,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_05",
+      "data_provenance": "SYNTHETIC",
+      "description": "Central Compact Urban Studio Unit"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_05_Unit_ExecSuite_North_05",
+      "cls": "U",
+      "z_min": 937.0,
+      "z_max": 940.3,
+      "volume": 299.838,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_05",
+      "data_provenance": "SYNTHETIC",
+      "description": "Executive Corner Suite with North Garden View"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_06",
+      "cls": "L",
+      "z_min": 940.3,
+      "z_max": 943.6,
+      "volume": 1887.6,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Envelope",
+      "data_provenance": "SYNTHETIC",
+      "description": "Level Slab Band 06"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_06_CommonCorridor",
+      "cls": "C",
+      "z_min": 940.3,
+      "z_max": 943.6,
+      "volume": 174.24,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_06",
+      "data_provenance": "SYNTHETIC",
+      "description": "Central Resident Circulation Hallway & Stair Core"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_06_Unit_3BHK_Master_01",
+      "cls": "U",
+      "z_min": 940.3,
+      "z_max": 943.6,
+      "volume": 514.008,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_06",
+      "data_provenance": "SYNTHETIC",
+      "description": "Spacious 3BHK Family Master Apartment with dual balcony"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_06_Unit_1BHK_Studio_02",
+      "cls": "U",
+      "z_min": 940.3,
+      "z_max": 943.6,
+      "volume": 342.672,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_06",
+      "data_provenance": "SYNTHETIC",
+      "description": "Compact 1BHK Executive Studio Suite"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_06_Unit_2BHK_East_South_03",
+      "cls": "U",
+      "z_min": 940.3,
+      "z_max": 943.6,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_06",
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Urban Apartment (South Wing)"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_06_Unit_2BHK_East_North_04",
+      "cls": "U",
+      "z_min": 940.3,
+      "z_max": 943.6,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_06",
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Urban Apartment (North Wing)"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_07",
+      "cls": "L",
+      "z_min": 943.6,
+      "z_max": 946.9,
+      "volume": 1887.6,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Envelope",
+      "data_provenance": "SYNTHETIC",
+      "description": "Level Slab Band 07"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_07_CommonCorridor",
+      "cls": "C",
+      "z_min": 943.6,
+      "z_max": 946.9,
+      "volume": 174.24,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_07",
+      "data_provenance": "SYNTHETIC",
+      "description": "Central Resident Circulation Hallway & Stair Core"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_07_Unit_2BHK_West_01",
+      "cls": "U",
+      "z_min": 943.6,
+      "z_max": 946.9,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_07",
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Apartment (South Wing)"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_07_Unit_2BHK_West_02",
+      "cls": "U",
+      "z_min": 943.6,
+      "z_max": 946.9,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_07",
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Apartment (North Wing)"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_07_Unit_ExecSuite_South_03",
+      "cls": "U",
+      "z_min": 943.6,
+      "z_max": 946.9,
+      "volume": 299.838,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_07",
+      "data_provenance": "SYNTHETIC",
+      "description": "Executive Corner Suite with Panoramic Corner Glazing"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_07_Unit_Studio_Center_04",
+      "cls": "U",
+      "z_min": 943.6,
+      "z_max": 946.9,
+      "volume": 257.004,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_07",
+      "data_provenance": "SYNTHETIC",
+      "description": "Central Compact Urban Studio Unit"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_07_Unit_ExecSuite_North_05",
+      "cls": "U",
+      "z_min": 943.6,
+      "z_max": 946.9,
+      "volume": 299.838,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_07",
+      "data_provenance": "SYNTHETIC",
+      "description": "Executive Corner Suite with North Garden View"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_08",
+      "cls": "L",
+      "z_min": 946.9,
+      "z_max": 950.2,
+      "volume": 1887.6,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Envelope",
+      "data_provenance": "SYNTHETIC",
+      "description": "Level Slab Band 08"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_08_CommonCorridor",
+      "cls": "C",
+      "z_min": 946.9,
+      "z_max": 950.2,
+      "volume": 174.24,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_08",
+      "data_provenance": "SYNTHETIC",
+      "description": "Central Resident Circulation Hallway & Stair Core"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_08_Unit_3BHK_Master_01",
+      "cls": "U",
+      "z_min": 946.9,
+      "z_max": 950.2,
+      "volume": 514.008,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_08",
+      "data_provenance": "SYNTHETIC",
+      "description": "Spacious 3BHK Family Master Apartment with dual balcony"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_08_Unit_1BHK_Studio_02",
+      "cls": "U",
+      "z_min": 946.9,
+      "z_max": 950.2,
+      "volume": 342.672,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_08",
+      "data_provenance": "SYNTHETIC",
+      "description": "Compact 1BHK Executive Studio Suite"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_08_Unit_2BHK_East_South_03",
+      "cls": "U",
+      "z_min": 946.9,
+      "z_max": 950.2,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_08",
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Urban Apartment (South Wing)"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_08_Unit_2BHK_East_North_04",
+      "cls": "U",
+      "z_min": 946.9,
+      "z_max": 950.2,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_08",
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Urban Apartment (North Wing)"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_09",
+      "cls": "L",
+      "z_min": 950.2,
+      "z_max": 953.5,
+      "volume": 1887.6,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Envelope",
+      "data_provenance": "SYNTHETIC",
+      "description": "Level Slab Band 09"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_09_CommonCorridor",
+      "cls": "C",
+      "z_min": 950.2,
+      "z_max": 953.5,
+      "volume": 174.24,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_09",
+      "data_provenance": "SYNTHETIC",
+      "description": "Central Resident Circulation Hallway & Stair Core"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_09_Unit_2BHK_West_01",
+      "cls": "U",
+      "z_min": 950.2,
+      "z_max": 953.5,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_09",
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Apartment (South Wing)"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_09_Unit_2BHK_West_02",
+      "cls": "U",
+      "z_min": 950.2,
+      "z_max": 953.5,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_09",
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Apartment (North Wing)"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_09_Unit_ExecSuite_South_03",
+      "cls": "U",
+      "z_min": 950.2,
+      "z_max": 953.5,
+      "volume": 299.838,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_09",
+      "data_provenance": "SYNTHETIC",
+      "description": "Executive Corner Suite with Panoramic Corner Glazing"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_09_Unit_Studio_Center_04",
+      "cls": "U",
+      "z_min": 950.2,
+      "z_max": 953.5,
+      "volume": 257.004,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_09",
+      "data_provenance": "SYNTHETIC",
+      "description": "Central Compact Urban Studio Unit"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_09_Unit_ExecSuite_North_05",
+      "cls": "U",
+      "z_min": 950.2,
+      "z_max": 953.5,
+      "volume": 299.838,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_09",
+      "data_provenance": "SYNTHETIC",
+      "description": "Executive Corner Suite with North Garden View"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_10",
+      "cls": "L",
+      "z_min": 953.5,
+      "z_max": 956.8,
+      "volume": 1887.6,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Envelope",
+      "data_provenance": "SYNTHETIC",
+      "description": "Level Slab Band 10"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_10_CommonCorridor",
+      "cls": "C",
+      "z_min": 953.5,
+      "z_max": 956.8,
+      "volume": 174.24,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_10",
+      "data_provenance": "SYNTHETIC",
+      "description": "Central Resident Circulation Hallway & Stair Core"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_10_Unit_3BHK_Master_01",
+      "cls": "U",
+      "z_min": 953.5,
+      "z_max": 956.8,
+      "volume": 514.008,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_10",
+      "data_provenance": "SYNTHETIC",
+      "description": "Spacious 3BHK Family Master Apartment with dual balcony"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_10_Unit_1BHK_Studio_02",
+      "cls": "U",
+      "z_min": 953.5,
+      "z_max": 956.8,
+      "volume": 342.672,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_10",
+      "data_provenance": "SYNTHETIC",
+      "description": "Compact 1BHK Executive Studio Suite"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_10_Unit_2BHK_East_South_03",
+      "cls": "U",
+      "z_min": 953.5,
+      "z_max": 956.8,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_10",
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Urban Apartment (South Wing)"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_10_Unit_2BHK_East_North_04",
+      "cls": "U",
+      "z_min": 953.5,
+      "z_max": 956.8,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_10",
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Urban Apartment (North Wing)"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_11",
+      "cls": "L",
+      "z_min": 956.8,
+      "z_max": 960.1,
+      "volume": 1887.6,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Envelope",
+      "data_provenance": "SYNTHETIC",
+      "description": "Level Slab Band 11"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_11_CommonCorridor",
+      "cls": "C",
+      "z_min": 956.8,
+      "z_max": 960.1,
+      "volume": 174.24,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_11",
+      "data_provenance": "SYNTHETIC",
+      "description": "Central Resident Circulation Hallway & Stair Core"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_11_Unit_2BHK_West_01",
+      "cls": "U",
+      "z_min": 956.8,
+      "z_max": 960.1,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_11",
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Apartment (South Wing)"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_11_Unit_2BHK_West_02",
+      "cls": "U",
+      "z_min": 956.8,
+      "z_max": 960.1,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_11",
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Apartment (North Wing)"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_11_Unit_ExecSuite_South_03",
+      "cls": "U",
+      "z_min": 956.8,
+      "z_max": 960.1,
+      "volume": 299.838,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_11",
+      "data_provenance": "SYNTHETIC",
+      "description": "Executive Corner Suite with Panoramic Corner Glazing"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_11_Unit_Studio_Center_04",
+      "cls": "U",
+      "z_min": 956.8,
+      "z_max": 960.1,
+      "volume": 257.004,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_11",
+      "data_provenance": "SYNTHETIC",
+      "description": "Central Compact Urban Studio Unit"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_11_Unit_ExecSuite_North_05",
+      "cls": "U",
+      "z_min": 956.8,
+      "z_max": 960.1,
+      "volume": 299.838,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_11",
+      "data_provenance": "SYNTHETIC",
+      "description": "Executive Corner Suite with North Garden View"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_12",
+      "cls": "L",
+      "z_min": 960.1,
+      "z_max": 963.4,
+      "volume": 1887.6,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Envelope",
+      "data_provenance": "SYNTHETIC",
+      "description": "Level Slab Band 12"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_12_CommonCorridor",
+      "cls": "C",
+      "z_min": 960.1,
+      "z_max": 963.4,
+      "volume": 174.24,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_12",
+      "data_provenance": "SYNTHETIC",
+      "description": "Central Resident Circulation Hallway & Stair Core"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_12_Unit_3BHK_Master_01",
+      "cls": "U",
+      "z_min": 960.1,
+      "z_max": 963.4,
+      "volume": 514.008,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_12",
+      "data_provenance": "SYNTHETIC",
+      "description": "Spacious 3BHK Family Master Apartment with dual balcony"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_12_Unit_1BHK_Studio_02",
+      "cls": "U",
+      "z_min": 960.1,
+      "z_max": 963.4,
+      "volume": 342.672,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_12",
+      "data_provenance": "SYNTHETIC",
+      "description": "Compact 1BHK Executive Studio Suite"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_12_Unit_2BHK_East_South_03",
+      "cls": "U",
+      "z_min": 960.1,
+      "z_max": 963.4,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_12",
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Urban Apartment (South Wing)"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_12_Unit_2BHK_East_North_04",
+      "cls": "U",
+      "z_min": 960.1,
+      "z_max": 963.4,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_12",
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Urban Apartment (North Wing)"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_13",
+      "cls": "L",
+      "z_min": 963.4,
+      "z_max": 966.7,
+      "volume": 1887.6,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Envelope",
+      "data_provenance": "SYNTHETIC",
+      "description": "Level Slab Band 13"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_13_CommonCorridor",
+      "cls": "C",
+      "z_min": 963.4,
+      "z_max": 966.7,
+      "volume": 174.24,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_13",
+      "data_provenance": "SYNTHETIC",
+      "description": "Central Resident Circulation Hallway & Stair Core"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_13_Unit_2BHK_West_01",
+      "cls": "U",
+      "z_min": 963.4,
+      "z_max": 966.7,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_13",
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Apartment (South Wing)"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_13_Unit_2BHK_West_02",
+      "cls": "U",
+      "z_min": 963.4,
+      "z_max": 966.7,
+      "volume": 428.34,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_13",
+      "data_provenance": "SYNTHETIC",
+      "description": "Standard 2BHK Apartment (North Wing)"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_13_Unit_ExecSuite_South_03",
+      "cls": "U",
+      "z_min": 963.4,
+      "z_max": 966.7,
+      "volume": 299.838,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_13",
+      "data_provenance": "SYNTHETIC",
+      "description": "Executive Corner Suite with Panoramic Corner Glazing"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_13_Unit_Studio_Center_04",
+      "cls": "U",
+      "z_min": 963.4,
+      "z_max": 966.7,
+      "volume": 257.004,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_13",
+      "data_provenance": "SYNTHETIC",
+      "description": "Central Compact Urban Studio Unit"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_13_Unit_ExecSuite_North_05",
+      "cls": "U",
+      "z_min": 963.4,
+      "z_max": 966.7,
+      "volume": 299.838,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_13",
+      "data_provenance": "SYNTHETIC",
+      "description": "Executive Corner Suite with North Garden View"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_14",
+      "cls": "L",
+      "z_min": 966.7,
+      "z_max": 970.0,
+      "volume": 1887.6,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Envelope",
+      "data_provenance": "SYNTHETIC",
+      "description": "Level Slab Band 14"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_14_Penthouse_Elevator_Foyer",
+      "cls": "C",
+      "z_min": 966.7,
+      "z_max": 970.0,
+      "volume": 174.24,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_14",
+      "data_provenance": "SYNTHETIC",
+      "description": "Private Penthouse Elevator Foyer & Sky Vestibule"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_14_Unit_Royal_Penthouse_West",
+      "cls": "U",
+      "z_min": 966.7,
+      "z_max": 970.0,
+      "volume": 556.842,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_14",
+      "data_provenance": "SYNTHETIC",
+      "description": "Duplex Royal Sky Penthouse Suite with High Ceilings"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_14_SkyTerrace_Garden_West",
+      "cls": "C",
+      "z_min": 966.7,
+      "z_max": 970.0,
+      "volume": 299.838,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_14",
+      "data_provenance": "SYNTHETIC",
+      "description": "Landscaped Open Sky Terrace Garden with Pergola"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_14_Unit_Imperial_Penthouse_East",
+      "cls": "U",
+      "z_min": 966.7,
+      "z_max": 970.0,
+      "volume": 556.842,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_14",
+      "data_provenance": "SYNTHETIC",
+      "description": "Imperial Sky Penthouse Residence with Panoramic Views"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Level_14_SkyTerrace_ObservationDeck_East",
+      "cls": "C",
+      "z_min": 966.7,
+      "z_max": 970.0,
+      "volume": 299.838,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Level_14",
+      "data_provenance": "SYNTHETIC",
+      "description": "Rooftop Observation Deck & Residents' Sunset Lounge"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Basement_B1",
+      "cls": "T",
+      "z_min": 917.0,
+      "z_max": 920.5,
+      "volume": 2730.0,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Parcel_Column",
+      "data_provenance": "SYNTHETIC",
+      "description": "Subterranean Basement Vault Level B1"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Basement_B1_Parking_Slot_01",
+      "cls": "P",
+      "z_min": 917.35,
+      "z_max": 920.15,
+      "volume": 40.768,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Basement_B1",
+      "data_provenance": "SYNTHETIC",
+      "description": "Designated Parking Bay B1-P01"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Basement_B1_Parking_Slot_02",
+      "cls": "P",
+      "z_min": 917.35,
+      "z_max": 920.15,
+      "volume": 40.768,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Basement_B1",
+      "data_provenance": "SYNTHETIC",
+      "description": "Designated Parking Bay B1-P02"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Basement_B1_Parking_Slot_03",
+      "cls": "P",
+      "z_min": 917.35,
+      "z_max": 920.15,
+      "volume": 40.768,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Basement_B1",
+      "data_provenance": "SYNTHETIC",
+      "description": "Designated Parking Bay B1-P03"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Basement_B1_Parking_Slot_04",
+      "cls": "P",
+      "z_min": 917.35,
+      "z_max": 920.15,
+      "volume": 40.768,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Basement_B1",
+      "data_provenance": "SYNTHETIC",
+      "description": "Designated Parking Bay B1-P04"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Airspace_Lot",
+      "cls": "A",
+      "z_min": 970.0,
+      "z_max": 995.0,
+      "volume": 14300.0,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Parcel_Column",
+      "data_provenance": "SYNTHETIC",
+      "description": "Transferable Development Rights / Airspace Lot"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Elevated_Metro_Viaduct",
+      "cls": "E",
+      "z_min": 933.0,
+      "z_max": 936.0,
+      "volume": 1728.0,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Parcel_Column",
+      "data_provenance": "SYNTHETIC",
+      "description": "Elevated Metro Viaduct Transit Right-of-Way"
+    },
+    {
+      "label": "BZ1_MGRoad_Hero_Tower_Subsurface_Utility_Corridor",
+      "cls": "I",
+      "z_min": 917.1,
+      "z_max": 918.9,
+      "volume": 151.2,
+      "parent_label": "BZ1_MGRoad_Hero_Tower_Parcel_Column",
+      "data_provenance": "SYNTHETIC",
+      "description": "Subsurface Municipal Utility Infrastructure Duct"
+    }
+  ]
+}

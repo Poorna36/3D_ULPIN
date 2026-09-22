@@ -1,0 +1,9 @@
+{
+  "benchmark": "Singapore SLA 3D Airspace & Strata Parcels",
+  "country": "Singapore",
+  "data_provenance": "REAL-FOREIGN",
+  "source_url": "https://www.sla.gov.sg/3d-cadastre",
+  "format": "CityGML / LandXML 3D Parcel Geometries",
+  "license": "Singapore Open Data License v1.0",
+  "role": "Stress-test identifier allocation on genuine 3D strata lots"
+}

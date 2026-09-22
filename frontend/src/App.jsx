@@ -5,8 +5,15 @@ import LayerPanel          from './components/LayerPanel.jsx';
 import CesiumViewer        from './components/CesiumViewer.jsx';
 import DetailPanel         from './components/DetailPanel.jsx';
 import AIPipelinePanel     from './components/AIPipelinePanel.jsx';
+import PhotogrammetryPanel from './photogrammetry/PhotogrammetryPanel.jsx';
 import InteriorWalkthrough, { buildFullFloorList } from './components/InteriorWalkthrough.jsx';
 import LandingPage         from './components/LandingPage.jsx';
+import ValidationConsole   from './components/ValidationConsole.jsx';
+import ConflictWorkflowModal from './components/ConflictWorkflowModal.jsx';
+import VerticalStrataExplorer from './components/VerticalStrataExplorer.jsx';
+import OpenAPISandboxModal from './components/OpenAPISandboxModal.jsx';
+import CadastreExportModal from './components/CadastreExportModal.jsx';
+import PhotogrammetryPage  from './components/PhotogrammetryPage.jsx';
 import { getBuildings, getParcels, getAllPilotData } from './mock/api.js';
 
 const DEFAULT_LAYERS = {
@@ -23,23 +30,23 @@ const DEFAULT_LAYERS = {
 // City intro info shown on city change
 const CITY_INFO = {
   bengaluru: {
-    label: 'Bengaluru', country: 'India 🇮🇳',
+    label: 'Bengaluru', country: 'India',
     desc: 'Primary engineering pilot — mixed-use high-rise urban context',
     color: '#00d4ff',
   },
   mumbai: {
-    label: 'Mumbai', country: 'India 🇮🇳',
+    label: 'Mumbai', country: 'India',
     desc: 'Indian validation — vertical density & complex parcel relationships',
     color: '#10d97e',
   },
   netherlands: {
-    label: 'Rotterdam', country: 'Netherlands 🇳🇱',
+    label: 'Rotterdam', country: 'Netherlands',
     desc: 'Geospatial benchmark — BAG/AHN4 LiDAR, mixed-use cityscape',
     color: '#f59e0b',
   },
   singapore: {
-    label: 'Singapore', country: 'Singapore 🇸🇬',
-    desc: 'International 3D benchmark — strata property & subterranean volumes',
+    label: 'Singapore', country: 'Singapore',
+    desc: 'International strata benchmark — 3D space parcels, volumetric titles',
     color: '#a855f7',
   },
 };
@@ -56,14 +63,23 @@ export default function App() {
   const [explodedFloor, setExplodedFloor] = useState(null);
   const [aiStatus, setAIStatus]           = useState('idle');
   const [showAI, setShowAI]               = useState(false);
+  const [showPhotogrammetryPage, setShowPhotogrammetryPage] = useState(false);
   const [cityBanner, setCityBanner]       = useState(null);
   const [showLanding, setShowLanding]     = useState(true);
+  const [landingExiting, setLandingExiting] = useState(false);
   // Interior walkthrough state
   const [interiorActive, setInteriorActive] = useState(false);
   const [currentFloorIdx, setCurrentFloorIdx] = useState(0);
   const [layerPanelOpen, setLayerPanelOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [activeMode, setActiveMode] = useState('globe');
+  // 3D ULPIN Registry & Dispute Modals
+  const [showValidation, setShowValidation] = useState(false);
+  const [showConflicts, setShowConflicts]   = useState(false);
+  const [showStrata, setShowStrata]         = useState(false);
+  const [showSandbox, setShowSandbox]       = useState(false);
+  const [showExport, setShowExport]         = useState(false);
+  const [showAtlas, setShowAtlas]           = useState(false);
   const cameraControlsRef = useRef(null);
   const flyToFloorFnRef = useRef(null);
   const bannerTimer = useRef(null);
@@ -73,7 +89,7 @@ export default function App() {
     if (!city || sidebarCollapsed) {
       document.documentElement.style.setProperty('--panel-w', '0px');
     } else {
-      document.documentElement.style.setProperty('--panel-w', '340px');
+      document.documentElement.style.setProperty('--panel-w', '380px');
     }
   }, [city, sidebarCollapsed]);
 
@@ -81,12 +97,36 @@ export default function App() {
     cameraControlsRef.current = controls;
   }, []);
 
-  // Dedicated city selector callback ensuring camera flight even on re-selection
+  // Dedicated city selector callback ensuring camera flight
   const handleCitySelect = useCallback((nextCity) => {
     setCity(nextCity);
     setSidebarCollapsed(false);
     setFlyTimestamp(Date.now());
   }, []);
+
+  const handleReturnToEarth = useCallback(() => {
+    setCity(null);
+    setSelected(null);
+    setFlyTimestamp(Date.now());
+  }, []);
+
+  // Real-world conflict scenario launcher
+  const handleTriggerConflict = useCallback((scenario) => {
+    if (scenario.city && scenario.city !== city) {
+      handleCitySelect(scenario.city, 'globe');
+    }
+    const targetBld = allBuildings.find(b => b.building_id === scenario.building_id) || null;
+    if (targetBld) {
+      setSelected(targetBld);
+    }
+    if (scenario.coords) {
+      cameraControlsRef.current?.flyToCoords(scenario.coords);
+    }
+    setShowConflicts(false);
+    setTimeout(() => {
+      setShowValidation(true);
+    }, 2200);
+  }, [city, allBuildings, handleCitySelect]);
 
   const handleEnterApp = useCallback((targetCity) => {
     if (targetCity && typeof targetCity === 'string') {
@@ -95,12 +135,32 @@ export default function App() {
       // Do NOT fly to any city unless explicitly selected — stay in Earth space orbit
       setCity(null);
     }
-    setShowLanding(false);
+    // Animate landing page out first, then unmount after transition completes
+    setLandingExiting(true);
+    setTimeout(() => {
+      setShowLanding(false);
+      setLandingExiting(false);
+    }, 520);
   }, [handleCitySelect]);
+
+  // Seamless jump from Photogrammetry reconstruction to live 3D Cesium globe
+  const handleFlyToBuilding = useCallback((bld) => {
+    if (!bld) return;
+    const targetCity = bld.city || 'bengaluru';
+    if (city !== targetCity) {
+      setCity(targetCity);
+      setFlyTimestamp(Date.now());
+    }
+    setBuildings(prev => [bld, ...prev.filter(b => b.building_id !== bld.building_id)]);
+    setSelected(bld);
+    setShowLanding(false);
+    setShowPhotogrammetryPage(false);
+    setSidebarCollapsed(false);
+  }, [city]);
 
   // Load buildings & parcels when city changes — instant preloaded resolution prevents flight lag
   useEffect(() => {
-    setSelected(null);
+    setSelected(prev => (prev?.city === city ? prev : null));
     setExplodedFloor(null);
     if (!city) {
       setBuildings([]);
@@ -129,15 +189,17 @@ export default function App() {
     return () => clearTimeout(bannerTimer.current);
   }, [city, allBuildings, allParcels]);
 
-  const handleBuildingClick = useCallback((buildingId, buildingObj) => {
+  const handleBuildingClick = useCallback((buildingId, buildingObj, floorIdx = 0) => {
     if (!buildingId) { setSelected(null); setExplodedFloor(null); setInteriorActive(false); return; }
-    // buildingObj is provided for OSM virtual buildings not in the buildings state array
-    const b = buildingObj ?? buildings.find(b => b.building_id === buildingId);
-    setSelected(b ?? null);
+    // buildingObj is provided for dynamic virtual buildings not in the buildings state array
+    const b = buildingObj ?? buildings.find(b => b.building_id === buildingId) ?? allBuildings.find(b => b.building_id === buildingId);
+    if (!b) return;
+    setSelected(b);
     setExplodedFloor(null);
+    // Interior mode is NOT auto-entered on building click.
+    // User must explicitly press the "Walk Inside 3D" button to enter interior.
     setInteriorActive(false);
-    setCurrentFloorIdx(0);
-  }, [buildings]);
+  }, [buildings, allBuildings]);
 
   const handleToggleLayer = useCallback((id) => {
     setLayers(prev => ({ ...prev, [id]: !prev[id] }));
@@ -148,6 +210,8 @@ export default function App() {
       handleCitySelect(b.city);
     }
     setSelected(b);
+    // Interior mode is NOT auto-entered on search selection.
+    // User must explicitly press the "Walk Inside 3D" button.
     setInteriorActive(false);
     setCurrentFloorIdx(0);
   }, [city, handleCitySelect]);
@@ -181,14 +245,20 @@ export default function App() {
   return (
     <>
       {/* 1. Landing Page (Rendered directly over the live Cesium Globe) */}
-      {showLanding && <LandingPage onEnter={handleEnterApp} />}
+      {(showLanding || landingExiting) && (
+        <LandingPage
+          onEnter={handleEnterApp}
+          isExiting={landingExiting}
+        />
+      )}
 
       {/* 2. Inner App Cockpit (Shown once user enters the 3D Cadastre) */}
       {!showLanding && (
         <WorkbenchCockpit
           city={city}
+          sidebarOpen={Boolean(city && !sidebarCollapsed)}
           onCityChange={handleCitySelect}
-          onResetOrbit={() => handleCitySelect(null)}
+          onResetOrbit={handleReturnToEarth}
           onZoomIn={() => cameraControlsRef.current?.zoomIn()}
           onZoomOut={() => cameraControlsRef.current?.zoomOut()}
           onResetCamera={() => cameraControlsRef.current?.resetCamera()}
@@ -198,7 +268,15 @@ export default function App() {
           layers={layers}
           activeMode={activeMode}
           onModeChange={setActiveMode}
-          onReturnToLanding={() => { handleCitySelect(null); setShowLanding(true); }}
+          onReturnToLanding={() => { handleReturnToEarth(); setShowLanding(true); }}
+          onOpenDisputes={() => setShowConflicts(true)}
+          onOpenStrata={() => setShowStrata(true)}
+          onOpenSandbox={() => setShowSandbox(true)}
+          onOpenExport={() => setShowExport(true)}
+          onOpenAtlas={() => setShowAtlas(true)}
+          onOpenPhotogrammetry={() => setShowPhotogrammetryPage(true)}
+          allBuildings={allBuildings}
+          onSelectBuilding={handleBuildingSelectFromSearch}
         />
       )}
 
@@ -210,29 +288,33 @@ export default function App() {
           currentCity={city}
           onCityChange={handleCitySelect}
           onResetOrbit={() => handleCitySelect(null)}
+          onClose={() => setLayerPanelOpen(false)}
         />
       )}
 
-      {/* 3. Full-Bleed 3D Cesium Engine (Always active in background, powering landing page and cadastre) */}
-      <CesiumViewer
-        city={city}
-        flyTimestamp={flyTimestamp}
-        buildings={buildings}
-        parcels={parcels}
-        allBuildings={allBuildings}
-        allParcels={allParcels}
-        layers={layers}
-        selectedBuilding={selectedBuilding}
-        onBuildingClick={handleBuildingClick}
-        onCitySelect={handleCitySelect}
-        explodedFloor={explodedFloor}
-        onFlyToFloorReady={handleFlyToFloorReady}
-        interiorMode={interiorActive}
-        onCameraControlsReady={handleCameraControlsReady}
-      />
+      {/* 3. Full-Bleed 3D Cesium Engine (Earth Globe) */}
+      <div style={{ width: '100%', height: '100%' }}>
+        <CesiumViewer
+          city={city}
+          flyTimestamp={flyTimestamp}
+          buildings={buildings}
+          parcels={parcels}
+          allBuildings={allBuildings}
+          allParcels={allParcels}
+          layers={layers}
+          selectedBuilding={selectedBuilding}
+          onBuildingClick={handleBuildingClick}
+          onCitySelect={handleCitySelect}
+          explodedFloor={explodedFloor}
+          onFlyToFloorReady={handleFlyToFloorReady}
+          interiorMode={interiorActive}
+          currentFloorIdx={currentFloorIdx}
+          onCameraControlsReady={handleCameraControlsReady}
+        />
+      </div>
 
       {/* 4. City Cadastre Sidebar (Available only inside pilot cities) */}
-      {!showLanding && (
+      {!showLanding && city && (
         <DetailPanel
           city={city}
           buildings={buildings}
@@ -244,6 +326,48 @@ export default function App() {
           onEnterInterior={handleEnterInterior}
           isCollapsed={sidebarCollapsed}
           onToggleCollapse={() => setSidebarCollapsed(prev => !prev)}
+          onOpenValidationConsole={() => setShowValidation(true)}
+          onOpenStrata={() => setShowStrata(true)}
+          onOpenExport={() => setShowExport(true)}
+          onReturnToEarth={handleReturnToEarth}
+          onCitySelect={handleCitySelect}
+          allBuildings={allBuildings}
+        />
+      )}
+
+      {/* 5. 3D ULPIN Registry & Dispute Workflows Modals */}
+      {showValidation && (selectedBuilding || (buildings && buildings[0]) || (allBuildings && allBuildings[0])) && (
+        <ValidationConsole
+          building={selectedBuilding || buildings[0] || allBuildings[0]}
+          onClose={() => setShowValidation(false)}
+        />
+      )}
+
+      {showConflicts && (
+        <ConflictWorkflowModal
+          onClose={() => setShowConflicts(false)}
+          onTriggerScenario={handleTriggerConflict}
+        />
+      )}
+
+      {showStrata && (selectedBuilding || (buildings && buildings[0]) || (allBuildings && allBuildings[0])) && (
+        <VerticalStrataExplorer
+          building={selectedBuilding || buildings[0] || allBuildings[0]}
+          onClose={() => setShowStrata(false)}
+        />
+      )}
+
+      {showSandbox && (
+        <OpenAPISandboxModal
+          building={selectedBuilding || (buildings && buildings[0]) || (allBuildings && allBuildings[0])}
+          onClose={() => setShowSandbox(false)}
+        />
+      )}
+
+      {showExport && (selectedBuilding || (buildings && buildings[0]) || (allBuildings && allBuildings[0])) && (
+        <CadastreExportModal
+          building={selectedBuilding || buildings[0] || allBuildings[0]}
+          onClose={() => setShowExport(false)}
         />
       )}
 
@@ -276,19 +400,29 @@ export default function App() {
         </div>
       )}
 
-      {/* Floating AI panel toggle */}
-      <button
-        id="ai-panel-toggle-btn"
-        className="btn ai-fab"
-        onClick={() => setShowAI(v => !v)}
-        title="Toggle AI/ML Pipeline panel"
-      >
-        <span>⚙</span>
-        <span>AI Pipeline</span>
-      </button>
+      {/* Floating Action Buttons removed per user request */}
 
       {showAI && (
-        <AIPipelinePanel onStatusChange={setAIStatus} />
+        <AIPipelinePanel
+          onStatusChange={setAIStatus}
+          onClose={() => setShowAI(false)}
+        />
+      )}
+
+      {showPhotogrammetryPage && (
+        <PhotogrammetryPage
+          onBack={() => setShowPhotogrammetryPage(false)}
+          onBuildingGenerated={(bld) => {
+            const targetCity = bld.city || 'bengaluru';
+            if (city !== targetCity) {
+              setCity(targetCity);
+              setFlyTimestamp(Date.now());
+            }
+            setSelected(bld);
+            setBuildings(prev => [bld, ...prev.filter(b => b.building_id !== bld.building_id)]);
+          }}
+          onFlyToBuilding={handleFlyToBuilding}
+        />
       )}
 
       <style>{`
@@ -307,6 +441,23 @@ export default function App() {
         .ai-fab:hover {
           background: rgba(124,58,237,0.25);
           box-shadow: 0 0 28px rgba(124,58,237,0.5);
+        }
+
+        .photogrammetry-fab {
+          background: rgba(56, 189, 248, 0.15);
+          border-color: #38bdf8;
+          color: #38bdf8;
+          padding: 8px 20px;
+          font-size: 13px; font-weight: 500;
+          border-radius: var(--r-pill);
+          box-shadow: 0 0 16px rgba(56, 189, 248, 0.3);
+          transition: all var(--t-normal);
+          cursor: pointer;
+          display: flex; align-items: center; gap: 8px;
+        }
+        .photogrammetry-fab:hover {
+          background: rgba(56, 189, 248, 0.28);
+          box-shadow: 0 0 28px rgba(56, 189, 248, 0.5);
         }
 
         /* City loading indicator */
@@ -403,6 +554,7 @@ export default function App() {
           font-size: 11px; color: var(--text-secondary);
           line-height: 1.4;
         }
+
       `}</style>
     </>
   );

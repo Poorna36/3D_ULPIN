@@ -1,0 +1,21 @@
+{
+  "zone_id": "BZ-2",
+  "building_name": "Whitefield Silicon Pinnacle",
+  "rera_project_id": "PRM/KA/RERA/1251/446/PR/180516/001789",
+  "rera_portal": "K-RERA",
+  "project_type": "IT SEZ Corporate Park & Residential Suites",
+  "address": "EPIP Industrial Area, Whitefield, Bengaluru 560066",
+  "lat": 12.9810,
+  "lon": 77.7280,
+  "ground_elevation_m": 880.0,
+  "floor_count": 18,
+  "unit_count": 72,
+  "units_per_floor": 4,
+  "basement_count": 2,
+  "has_metro_tunnel": false,
+  "metro_line": "BMRCL Purple Line Phase 2 Extension",
+  "has_elevated_metro": true,
+  "carpet_area_total_sqm": 8200.0,
+  "data_provenance": "REAL",
+  "source_notes": "Disclosed K-RERA filings & KIADB Whitefield spatial cadastral plan"
+}
