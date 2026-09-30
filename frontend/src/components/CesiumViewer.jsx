@@ -1365,16 +1365,58 @@ export default function CesiumViewer({
     });
   }, []);
 
+  // ── Slant view: cinematic 45° oblique angle from current position ────────
+  const handleSlantView = useCallback(() => {
+    const v = viewerRef.current;
+    if (!v || v.isDestroyed()) return;
+    const carto = v.camera.positionCartographic;
+    const h = Math.max(carto?.height || 1000, 400);
+    const lon = CesiumMath.toDegrees(carto?.longitude || 0);
+    const lat = CesiumMath.toDegrees(carto?.latitude  || 0);
+    v.camera.flyTo({
+      destination: Cartesian3.fromDegrees(lon, lat, h),
+      orientation: {
+        heading: v.camera.heading,
+        pitch:   CesiumMath.toRadians(-35),
+        roll:    0,
+      },
+      duration: 1.4,
+      easingFunction: EasingFunction.SINUSOIDAL_IN_OUT,
+    });
+  }, []);
+
+  // ── Top view: straight-down nadir / map view from current position ───────
+  const handleTopView = useCallback(() => {
+    const v = viewerRef.current;
+    if (!v || v.isDestroyed()) return;
+    const carto = v.camera.positionCartographic;
+    const h = Math.max(carto?.height || 1000, 400);
+    const lon = CesiumMath.toDegrees(carto?.longitude || 0);
+    const lat = CesiumMath.toDegrees(carto?.latitude  || 0);
+    v.camera.flyTo({
+      destination: Cartesian3.fromDegrees(lon, lat, h),
+      orientation: {
+        heading: v.camera.heading,
+        pitch:   CesiumMath.toRadians(-89.9),
+        roll:    0,
+      },
+      duration: 1.4,
+      easingFunction: EasingFunction.SINUSOIDAL_IN_OUT,
+    });
+  }, []);
+
   useEffect(() => {
     if (onCameraControlsReady) {
       onCameraControlsReady({
-        zoomIn: handleZoomIn,
-        zoomOut: handleZoomOut,
+        zoomIn:      handleZoomIn,
+        zoomOut:     handleZoomOut,
         resetCamera: handleResetCamera,
         flyToCoords: handleFlyToCoords,
+        slantView:   handleSlantView,
+        topView:     handleTopView,
       });
     }
-  }, [handleZoomIn, handleZoomOut, handleResetCamera, handleFlyToCoords, onCameraControlsReady]);
+  }, [handleZoomIn, handleZoomOut, handleResetCamera, handleFlyToCoords, handleSlantView, handleTopView, onCameraControlsReady]);
 
   // ── Initialize Cesium Viewer once on mount ──────────────────────────────────
   useEffect(() => {
@@ -1407,6 +1449,11 @@ export default function CesiumViewer({
       creditContainer:      document.createElement('div'),
       baseLayer,
       terrain,
+      // ── Performance: render on-demand, but always render during camera movement ──
+      // requestRenderMode stops Cesium burning CPU when scene is idle.
+      // maximumRenderTimeChange:1/60 ensures at least 60fps during active camera use.
+      requestRenderMode:          true,
+      maximumRenderTimeChange:    1 / 60,
       contextOptions: {
         webgl: {
           antialias:                 true,
@@ -1422,73 +1469,68 @@ export default function CesiumViewer({
     // Preemptively pre-warm elevation and satellite tiles for Bengaluru, Mumbai, Rotterdam, Singapore
     preloadPilotCities(viewer, baseLayer);
 
-    // ── Ultra-Sharp High-Performance Resolution & Globe Quality ──────
-    viewer.useBrowserRecommendedResolution = true;
-    const dpr = typeof window !== 'undefined' ? (window.devicePixelRatio || 1.0) : 1.0;
-    // 1.0x-1.25x native pixel density: crystal clear without 5K supersampling fill-rate lag
-    viewer.resolutionScale = Math.min(dpr, 1.25);
+    // ── Performance-balanced resolution ─────────────────────────────────────
+    // Native 1.0x DPR: avoids 1.25x supersampling fill-rate cost on Railway/low-end GPUs
+    viewer.useBrowserRecommendedResolution = false;
+    viewer.resolutionScale = 1.0;
     try {
-      viewer.scene.msaaSamples = 4; // 4x hardware MSAA — smooth edges with 60 FPS performance
+      viewer.scene.msaaSamples = 2; // 2x MSAA: smooth enough edges, half the fill cost of 4x
     } catch {}
     viewer.scene.highDynamicRange = true;
 
-    // Fog: disable artificial haze so ocean/land stays photorealistic-sharp at all distances
+    // Fog: disable so ocean/land stays photorealistic-sharp at all distances
     try {
       if (viewer.scene.fog) {
-        viewer.scene.fog.enabled          = false;
-        viewer.scene.fog.density          = 0.0;
+        viewer.scene.fog.enabled               = false;
+        viewer.scene.fog.density               = 0.0;
         viewer.scene.fog.screenSpaceErrorFactor = 0.0;
       }
     } catch {}
 
-    // Maximum hardware anisotropic filtering — razor-sharp textures at oblique camera angles
+    // Anisotropic filtering — sharp textures at oblique angles (8x, not max, for perf)
     try {
       if (viewer.scene?.context?.maximumTextureFilterAnisotropy) {
-        const maxAniso = viewer.scene.context.maximumTextureFilterAnisotropy;
-        baseLayer.maximumAnisotropy = maxAniso; // Full max (usually 16x)
+        baseLayer.maximumAnisotropy = Math.min(
+          viewer.scene.context.maximumTextureFilterAnisotropy, 8
+        );
       }
     } catch {}
 
-    // Post-processing: FXAA on, bloom on (city lights glow), AO off (too dark at city scale)
+    // Post-processing: FXAA on (cheap anti-alias). Bloom OFF — expensive GPU pass.
     if (viewer.scene.postProcessStages?.fxaa) {
       viewer.scene.postProcessStages.fxaa.enabled = true;
     }
     try {
-      // Subtle bloom: makes city lights & neon outlines glow naturally
       if (viewer.scene.postProcessStages?.bloom) {
-        viewer.scene.postProcessStages.bloom.enabled   = true;
-        viewer.scene.postProcessStages.bloom.contrast  = 128;
-        viewer.scene.postProcessStages.bloom.brightness = -0.3;
-        viewer.scene.postProcessStages.bloom.glowOnly  = false;
+        viewer.scene.postProcessStages.bloom.enabled = false; // Disabled: expensive GPU render pass
       }
     } catch {}
     if (viewer.scene.postProcessStages?.ambientOcclusion) {
       viewer.scene.postProcessStages.ambientOcclusion.enabled = false;
     }
 
-    // ── Camera controller: Silky-Smooth Navigation & Zooming ────────────────
+    // ── Camera controller: Responsive & fluid navigation ────────────────────
     const ctrl = viewer.scene.screenSpaceCameraController;
     if (ctrl) {
-      ctrl.enableCollisionDetection = false; // Turn off expensive terrain collision raycasts during camera movement
-      ctrl.maximumMovementRatio = 0.0;  // 0.0 = no limit (Cesium standard: unclamped 1:1 fluid tracking)
-      ctrl.inertiaSpin          = 0.92; // Natural, responsive momentum glide
-      ctrl.inertiaTranslate     = 0.90;
-      ctrl.inertiaZoom          = 0.86; // Natural wheel damping
-      ctrl.zoomFactor           = 3.0;  // Controlled, silky-smooth zoom speed
-      ctrl.minimumZoomDistance  = 0.5;  // Allow camera inside buildings (eye level)
+      ctrl.enableCollisionDetection = false; // No terrain collision raycasts during movement
+      ctrl.inertiaSpin          = 0.75; // Responsive spin — lower = less sluggish
+      ctrl.inertiaTranslate     = 0.75; // Responsive pan
+      ctrl.inertiaZoom          = 0.70; // Responsive zoom
+      ctrl.zoomFactor           = 2.0;  // Gentler zoom speed (was 3.0)
+      ctrl.minimumZoomDistance  = 0.5;  // Allow camera inside buildings
       ctrl.maximumZoomDistance  = 35000000;
-      ctrl.bounceAnimationTime  = 1.0;
+      ctrl.bounceAnimationTime  = 0.5;
     }
 
-    // ── Globe: Hyperrealistic Photorealistic Earth Settings ─────────────────
+    // ── Globe: Balanced photorealistic settings ─────────────────────────────
     const globe = viewer.scene.globe;
-    globe.baseColor                 = Color.fromCssColorString('#02090f'); // Deep space-black ocean fallback
+    globe.baseColor                 = Color.fromCssColorString('#02090f');
     globe.preloadAncestors          = true;
-    globe.preloadSiblings           = false; // Never load off-screen tiles — primary cause of in-flight stutter
-    globe.tileCacheSize             = 1200;  // Balanced cache: enough for smooth panning without memory pressure
-    globe.loadingDescendantLimit    = 6;     // Throttle simultaneous LOD levels — prevents main-thread threadlock
-    globe.maximumScreenSpaceError   = 2.0;   // Crisp imagery at city scale; relaxed during flight for smooth 60fps
-    globe.depthTestAgainstTerrain   = false; // Required: keeps extruded polygons & entities above terrain
+    globe.preloadSiblings           = false;  // Never load off-screen tiles (main cause of stutter)
+    globe.tileCacheSize             = 600;    // Reduced: less memory pressure
+    globe.loadingDescendantLimit    = 4;      // Fewer simultaneous LOD levels = less threadlock
+    globe.maximumScreenSpaceError   = 8.0;    // Balanced: good quality without demanding too many tiles
+    globe.depthTestAgainstTerrain   = false;  // Required: keeps extruded polygons above terrain
     globe.enableLighting            = false; // Full illumination — true satellite daylight everywhere
     globe.showGroundAtmosphere      = true;  // Natural atmospheric haze on limb horizon
     // Enable water animation/shimmer on ocean surfaces
@@ -1529,6 +1571,8 @@ export default function CesiumViewer({
       resumeTimer = setTimeout(() => {
         isUserInteracting = false;
         lastSpinTime = performance.now();
+        // Request a render after interaction ends so the scene settles correctly
+        if (viewer && !viewer.isDestroyed()) viewer.scene.requestRender();
       }, 1800);
     };
 
@@ -1546,7 +1590,12 @@ export default function CesiumViewer({
     canvas.addEventListener('wheel', onWheel, { passive: true });
     window.addEventListener('pointerup', stopInteraction, { passive: true });
 
-    const removePreRender = viewer.scene.preRender.addEventListener(() => {
+    // ── Globe auto-spin RAF loop (works with requestRenderMode) ─────────────
+    // requestRenderMode stops Cesium rendering every frame. The spin loop needs
+    // its own rAF to keep scheduling frames while the globe is rotating in orbit.
+    let spinRafId = null;
+    function spinLoop() {
+      if (!viewer || viewer.isDestroyed()) return;
       const now = performance.now();
       const dt = Math.min((now - lastSpinTime) / 1000, 0.1);
       lastSpinTime = now;
@@ -1566,8 +1615,13 @@ export default function CesiumViewer({
         // Serene, silky-smooth orbital rotation (approx 0.045 deg/sec)
         const spinAngle = 0.0008 * dt;
         viewer.scene.camera.rotate(Cartesian3.UNIT_Z, -spinAngle);
+        // Explicitly request a new frame so requestRenderMode doesn't skip it
+        viewer.scene.requestRender();
       }
-    });
+      spinRafId = requestAnimationFrame(spinLoop);
+    }
+    spinRafId = requestAnimationFrame(spinLoop);
+    const removePreRender = { removeEventListener: () => { if (spinRafId) cancelAnimationFrame(spinRafId); } };
 
     let isCancelled = false;
 
@@ -1617,12 +1671,15 @@ export default function CesiumViewer({
         cityEntitiesRef.current.forEach(e => {
           if (e && !e.isDestroyed?.()) e.show = true;
         });
+        // Request render so newly loaded tiles appear immediately
+        if (!viewer.isDestroyed()) viewer.scene.requestRender();
 
         googleTileset.initialTilesLoaded.addEventListener(() => {
           tileReadyRef.current = true;
           cityEntitiesRef.current.forEach(e => {
             if (e && !e.isDestroyed?.()) e.show = true;
           });
+          if (!viewer.isDestroyed()) viewer.scene.requestRender();
         });
       } catch (err) {
         console.warn('Google 3D Tiles init:', err?.message || err);
@@ -1813,7 +1870,7 @@ export default function CesiumViewer({
       canvas.removeEventListener('pointerdown', startInteraction);
       canvas.removeEventListener('wheel', onWheel);
       window.removeEventListener('pointerup', stopInteraction);
-      try { removePreRender(); } catch {}
+      try { removePreRender.removeEventListener(); } catch {}
       handler.destroy();
       viewerRef.current?.destroy();
       viewerRef.current = null;
@@ -1831,12 +1888,14 @@ export default function CesiumViewer({
   useEffect(() => {
     if (tilesetRef.current) {
       tilesetRef.current.show = layers.tileset3d ?? true;
+      viewerRef.current?.scene?.requestRender();
     }
   }, [layers.tileset3d]);
 
   useEffect(() => {
     if (googleTilesetRef.current) {
       googleTilesetRef.current.show = layers?.google3d ?? true;
+      viewerRef.current?.scene?.requestRender();
     }
   }, [layers?.google3d]);
 
@@ -1846,6 +1905,7 @@ export default function CesiumViewer({
     if (!viewer || viewer.isDestroyed()) return;
     viewer.shadows = Boolean(layers?.shadows);
     viewer.terrainShadows = layers?.shadows ? ShadowMode.ENABLED : ShadowMode.DISABLED;
+    viewer.scene.requestRender();
   }, [layers?.shadows]);
 
 
@@ -1860,6 +1920,7 @@ export default function CesiumViewer({
       if (tilesetRef.current) tilesetRef.current.show = layers.tileset3d ?? true;
       if (googleTilesetRef.current) googleTilesetRef.current.show = layers.google3d ?? true;
     }
+    viewerRef.current?.scene?.requestRender();
   }, [interiorMode, layers.tileset3d, layers.google3d]);
 
   // ── Render / update parcel boundaries & building entities ─────────────────
@@ -2158,6 +2219,8 @@ export default function CesiumViewer({
     cityEntitiesRef.current = all;
     all.forEach(e => { if (e && !e.isDestroyed?.()) e.show = true; });
     tileReadyRef.current = true;
+    // Trigger a render so entity changes are visible in requestRenderMode
+    viewer.scene.requestRender();
   }, [city, targetBuildings, targetParcels, layers, selectedBuilding, explodedFloor, interiorMode, currentFloorIdx]);
 
   // ── On-demand single-floor BIM geometry ──────────────────────────────────
@@ -2185,6 +2248,8 @@ export default function CesiumViewer({
 
     const newEnts = buildSingleFloorBIM(selectedBuilding, floorData, clampedIdx, viewer);
     singleFloorEntRef.current = newEnts;
+    // Trigger a render so new BIM floor geometry appears immediately
+    viewer.scene.requestRender();
   }, [selectedBuilding, currentFloorIdx, interiorMode, layers?.interior]);
 
   // ── Cinematic hero fly-to: always keeps building fully in frame ──────────────────

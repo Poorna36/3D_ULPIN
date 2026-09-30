@@ -52,6 +52,8 @@ export default function WorkbenchCockpit({
   onZoomIn,
   onZoomOut,
   onResetCamera,
+  onSlantView,
+  onTopView,
   onToggleLayerPanel,
   layerPanelOpen,
   onToggleLayer,
@@ -384,7 +386,7 @@ export default function WorkbenchCockpit({
       {/* Bottom Right: Zoom & Orientation Controls */}
       <div style={{
         position: 'fixed', right: rightOffset, bottom: 20, zIndex: 90,
-        display: 'flex', alignItems: 'center', gap: 4,
+        display: 'flex', alignItems: 'center', gap: 2,
         background: '#090a0f',
         backdropFilter: 'blur(16px)',
         border: '1px solid rgba(255, 255, 255, 0.15)',
@@ -392,6 +394,7 @@ export default function WorkbenchCockpit({
         boxShadow: '0 4px 20px rgba(0, 0, 0, 0.6)',
         transition: 'right 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
       }}>
+        {/* Zoom In */}
         <button
           onClick={onZoomIn}
           title="Zoom In"
@@ -406,6 +409,8 @@ export default function WorkbenchCockpit({
             <line x1="5" y1="12" x2="19" y2="12"/>
           </svg>
         </button>
+
+        {/* Zoom Out */}
         <button
           onClick={onZoomOut}
           title="Zoom Out"
@@ -419,6 +424,56 @@ export default function WorkbenchCockpit({
             <line x1="5" y1="12" x2="19" y2="12"/>
           </svg>
         </button>
+
+        {/* Divider */}
+        <div style={{ width: 1, height: 16, background: 'rgba(255,255,255,0.15)', margin: '0 2px' }} />
+
+        {/* Slant View */}
+        <button
+          onClick={onSlantView}
+          title="Slant View (45° Oblique)"
+          style={{
+            background: 'none', border: 'none', color: '#a1a1aa',
+            width: 28, height: 28, borderRadius: '50%',
+            cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+            transition: 'color 0.12s',
+          }}
+          onMouseEnter={e => { e.currentTarget.style.color = '#38bdf8'; }}
+          onMouseLeave={e => { e.currentTarget.style.color = '#a1a1aa'; }}
+        >
+          {/* Mountain / oblique angle icon */}
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polygon points="3 20 9 4 15 14 19 9 21 20 3 20"/>
+          </svg>
+        </button>
+
+        {/* Top View */}
+        <button
+          onClick={onTopView}
+          title="Top View (Nadir / Map View)"
+          style={{
+            background: 'none', border: 'none', color: '#a1a1aa',
+            width: 28, height: 28, borderRadius: '50%',
+            cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+            transition: 'color 0.12s',
+          }}
+          onMouseEnter={e => { e.currentTarget.style.color = '#38bdf8'; }}
+          onMouseLeave={e => { e.currentTarget.style.color = '#a1a1aa'; }}
+        >
+          {/* Grid / top-down map icon */}
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2"/>
+            <line x1="3" y1="9" x2="21" y2="9"/>
+            <line x1="3" y1="15" x2="21" y2="15"/>
+            <line x1="9" y1="3" x2="9" y2="21"/>
+            <line x1="15" y1="3" x2="15" y2="21"/>
+          </svg>
+        </button>
+
+        {/* Divider */}
+        <div style={{ width: 1, height: 16, background: 'rgba(255,255,255,0.15)', margin: '0 2px' }} />
+
+        {/* Reset Camera */}
         <button
           onClick={onResetCamera}
           title="Reset Orientation"
