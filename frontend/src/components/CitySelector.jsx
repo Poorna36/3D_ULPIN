@@ -95,9 +95,7 @@ export default function CitySelector({ city, onChange }) {
         }
         .city-active-dot {
           width: 5px; height: 5px; border-radius: 50%;
-          background: #ffffff;
-          box-shadow: 0 0 6px rgba(255, 255, 255, 0.85);
-          animation: pulse-dot 2s ease infinite;
+          background: #38bdf8;
         }
       `}</style>
     </div>

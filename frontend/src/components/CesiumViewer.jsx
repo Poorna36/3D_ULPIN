@@ -1,21 +1,21 @@
 import { useEffect, useRef, useCallback, useMemo } from 'react';
-import { buildFullFloorList } from './InteriorWalkthrough.jsx';
+import { buildFullFloorList } from '../utils/floorLayouts.js';
 import { ensureBuildingULPIN, getFloorULPIN } from '../utils/ulpinGenerator.js';
 import {
   Viewer, Ion, Cartesian3, Cartographic, Color, HeightReference,
   VerticalOrigin, HorizontalOrigin, LabelStyle, Cartesian2,
   ScreenSpaceEventHandler, ScreenSpaceEventType,
   createOsmBuildingsAsync, createGooglePhotorealistic3DTileset,
-  Cesium3DTileset, IonResource,
+  Cesium3DTileset,
   ClassificationType,
   Math as CesiumMath, NearFarScalar,
   PolygonHierarchy, ConstantProperty, ColorMaterialProperty,
   ShadowMode, EasingFunction, ImageryLayer,
   Terrain, IonWorldImageryStyle,
-  UrlTemplateImageryProvider, EllipsoidTerrainProvider,
-  BoundingSphere, HeadingPitchRange, JulianDate,
+  BoundingSphere, HeadingPitchRange,
   sampleTerrainMostDetailed, RequestScheduler,
-  GoogleMaps, WebMercatorTilingScheme,
+  GoogleMaps,
+  DistanceDisplayCondition,
 } from 'cesium';
 import 'cesium/Build/Cesium/Widgets/widgets.css';
 
@@ -45,6 +45,46 @@ try {
   RequestScheduler.requestsByServer['services.arcgisonline.com:443']    = 8;
   RequestScheduler.requestsByServer['ibasemaps-api.arcgis.com:443']     = 8;
 } catch {}
+
+// ── Quality preset table ──────────────────────────────────────────────────────
+// Select via ?quality=balanced in the URL. Default is `high` (original quality).
+// `balanced` enables all Round-2 perf trade-offs. Opt-in only.
+//
+// Fields:
+//   maxDpr        – caps resolutionScale (Infinity = native)
+//   globeSseCity  – globe SSE when zoomed to a city (lower = more tiles)
+//   globeSseOrbit – globe SSE in orbit view
+//   googleSse     – Google 3D tileset maximumScreenSpaceError
+//   msaa          – scene.msaaSamples (1 = FXAA only, 2 = FXAA+MSAA)
+//   hdr           – scene.highDynamicRange
+//   osmDefault    – whether OSM Buildings are shown by default
+//   slabDist      – max camera distance (m) for storey-slab entities; Infinity = always
+//   labelDist     – max camera distance (m) for non-selected building labels; Infinity = always
+//   spinMinMs     – minimum ms between orbit spin frames (0 = uncapped)
+//   antialias     – WebGL contextOptions.antialias
+//   prewarm       – run camera pre-warm after viewer mounts
+const QUALITY = {
+  high: {
+    maxDpr: Infinity, globeSseCity: 2, globeSseOrbit: 8, googleSse: 12,
+    msaa: 2, hdr: true,  osmDefault: true,  slabDist: Infinity, labelDist: Infinity,
+    spinMinMs: 0, antialias: true, prewarm: true,
+  },
+  balanced: {
+    maxDpr: 1.5, globeSseCity: 4, globeSseOrbit: 8, googleSse: 16,
+    msaa: 1, hdr: false, osmDefault: false, slabDist: 4000,    labelDist: 9000,
+    spinMinMs: 33, antialias: false, prewarm: false,
+  },
+};
+
+// Read quality preset from URL (?quality=balanced → balanced, else high)
+const _qualityParam = new URLSearchParams(
+  typeof window !== 'undefined' ? window.location.search : ''
+).get('quality');
+const Q = QUALITY[_qualityParam] || QUALITY.high;
+
+// Derive named constants from the active preset (keep call-sites readable)
+const HOVER_PICK_MS   = 120;   // scene.pick() re-renders the scene; limit to ~8 Hz
+const MB = 1024 * 1024;
 
 // ── Cinematic city viewpoints ────────────────────────────────────────────────
 // Low-altitude street & mid-tower perspective (380-480m) giving majestic architectural scale
@@ -83,6 +123,7 @@ const PILOT_PINS = [
 // Pre-warms high-res terrain elevation & satellite imagery tiles for the 4 focal zones,
 // while letting the rest of the planet render with coarse/lightweight SSE (3.5).
 function preloadPilotCities(viewer, baseLayer) {
+  if (!Q.prewarm) return;
   if (!viewer || viewer.isDestroyed()) return;
 
   const pilotPositions = PILOT_PINS.map(p => Cartographic.fromDegrees(p.lon, p.lat));
@@ -121,8 +162,11 @@ function preloadPilotCities(viewer, baseLayer) {
 // (z-index 1), so the user sees nothing. After warming all 4 cities, the camera
 // returns to orbit. Result: when the user enters a city, tiles are already cached.
 // Accepts an optional cityRef to bail out if the user navigates to a city mid-warm.
-function preWarmCityViews(viewer, cityRef) {
+function preWarmCityViews(viewer, cityRef, mountTimeRef) {
+  if (!Q.prewarm) return;
   if (!viewer || viewer.isDestroyed()) return;
+  // Skip if the user selected a city within the first 2 s of mounting
+  if (mountTimeRef && performance.now() - mountTimeRef.current < 2000 && cityRef?.current) return;
 
   const cities = Object.keys(CITY_POSITIONS);
   let idx = 0;
@@ -173,42 +217,6 @@ function preWarmCityViews(viewer, cityRef) {
   // Start warming after a brief delay to let Google 3D tiles finish initializing
   setTimeout(warmNext, 800);
 }
-
-// Pre-generate building textures for pilot city buildings during idle time
-function warmBuildingTextureCache(buildingsList) {
-  if (!buildingsList || !buildingsList.length) return;
-  const doWarm = () => {
-    buildingsList.forEach(b => {
-      try {
-        generateFacadeTexture(b, false, b.is_underground);
-      } catch {}
-    });
-  };
-  if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
-    window.requestIdleCallback(doWarm);
-  } else {
-    setTimeout(doWarm, 100);
-  }
-}
-
-// ── Solid cadastral envelope fill colors (dark building-material base + status tint) ──
-const STATUS_COLORS = {
-  VALID:        Color.fromCssColorString('#0d2b1a').withAlpha(0.82), // dark forest green solid
-  REVIEW:       Color.fromCssColorString('#2b1e05').withAlpha(0.80), // dark amber solid
-  INVALID:      Color.fromCssColorString('#2b0808').withAlpha(0.82), // dark red solid
-  DERIVED_HIGH: Color.fromCssColorString('#052030').withAlpha(0.82), // dark cyan-steel solid
-};
-// ── Neon glow outlines that highlight ULPIN cadastral parcels ─────────
-const STATUS_OUTLINE_COLORS = {
-  VALID:        Color.fromCssColorString('#34d399').withAlpha(1.0),  // bright emerald neon
-  REVIEW:       Color.fromCssColorString('#fbbf24').withAlpha(1.0),  // bright amber neon
-  INVALID:      Color.fromCssColorString('#f87171').withAlpha(1.0),  // bright red neon
-  DERIVED_HIGH: Color.fromCssColorString('#38bdf8').withAlpha(1.0),  // bright sky-blue neon
-};
-const SELECTED_COLOR    = Color.fromCssColorString('#042840').withAlpha(0.88); // deep selected blue
-const SELECTED_OUTLINE  = Color.fromCssColorString('#00e5ff').withAlpha(1.0);  // bright electric cyan
-const UNDERGROUND_COLOR = Color.fromCssColorString('#1a0a35').withAlpha(0.85); // dark purple solid
-const SELECTED_UG_COLOR = Color.fromCssColorString('#2a1050').withAlpha(0.90); // deeper purple selected
 
 // ── Deterministic hash from string ───────────────────────────────────────────
 function strHash(s) {
@@ -271,609 +279,6 @@ function buildingFootprint(b) {
     const ry = dx * sin + dy * cos;
     return Cartesian3.fromDegrees(lon + rx, lat + ry, 0);
   });
-}
-
-// ── Synthetic floors generator if building has no floor list ──────────────────
-function buildSyntheticFloors(b) {
-  const count  = b.floor_count || Math.max(1, Math.round(Math.abs(b.height) / 3.4));
-  const floorH = Math.abs(b.height) / count;
-  return Array.from({ length: count }, (_, i) => ({
-    floor_id: `${b.building_id}_F${i + 1}`,
-    label: i === 0 ? 'Ground' : i === count - 1 ? `Roof (F${i + 1})` : `Floor ${i + 1}`,
-    z_min: (b.ground_elevation || 0) + i * floorH,
-    z_max: (b.ground_elevation || 0) + (i + 1) * floorH,
-  }));
-}
-
-// ── Realistic Architectural Skyscraper Facade Canvas Texture Generator ───────
-const FACADE_TEXTURE_CACHE = {};
-
-function getSkyscraperTexture(b, isSelected) {
-  const isUg = !!b.is_underground;
-  const status = b.validation_status || 'VALID';
-  const cacheKey = `${b.building_id || 'bld'}_${isSelected ? 'sel' : 'norm'}_${isUg ? 'ug' : 'above'}`;
-  if (FACADE_TEXTURE_CACHE[cacheKey]) return FACADE_TEXTURE_CACHE[cacheKey];
-
-  const canvas = document.createElement('canvas');
-  canvas.width = 512;
-  canvas.height = 1024;
-  const ctx = canvas.getContext('2d');
-
-  if (isUg) {
-    // Subterranean infrastructure: concrete tunnel & steel lining
-    ctx.fillStyle = isSelected ? 'rgba(88, 28, 135, 0.75)' : 'rgba(30, 27, 75, 0.70)';
-    ctx.fillRect(0, 0, 512, 1024);
-    ctx.strokeStyle = isSelected ? '#c084fc' : '#a855f7';
-    ctx.lineWidth = 3;
-    for (let y = 0; y < 1024; y += 48) {
-      ctx.strokeRect(6, y, 500, 36);
-    }
-  } else {
-    // Modern architectural glass skyscraper curtain wall
-    const bgGrad = ctx.createLinearGradient(0, 0, 512, 1024);
-    if (isSelected) {
-      bgGrad.addColorStop(0, 'rgba(14, 55, 95, 0.52)');
-      bgGrad.addColorStop(0.5, 'rgba(8, 40, 72, 0.48)');
-      bgGrad.addColorStop(1, 'rgba(3, 25, 50, 0.62)');
-    } else {
-      bgGrad.addColorStop(0, 'rgba(16, 38, 64, 0.45)');
-      bgGrad.addColorStop(0.5, 'rgba(12, 30, 52, 0.42)');
-      bgGrad.addColorStop(1, 'rgba(8, 20, 38, 0.55)');
-    }
-    ctx.fillStyle = bgGrad;
-    ctx.fillRect(0, 0, 512, 1024);
-
-    const floorsCount = Math.min(Math.max(b.floor_count || 12, 8), 40);
-    const floorH = 1024 / floorsCount;
-    const colsCount = 16;
-    const colW = 512 / colsCount;
-
-    for (let fi = 0; fi < floorsCount; fi++) {
-      const y = fi * floorH;
-      const isLobby = fi >= floorsCount - 2; // Bottom 2 levels = Grand Entrance Lobby
-      const isRoof  = fi === 0;
-
-      // Horizontal floor spandrel beam (structural slab separation)
-      ctx.fillStyle = isSelected ? 'rgba(56, 189, 248, 0.65)' : 'rgba(30, 41, 59, 0.85)';
-      ctx.fillRect(0, y, 512, Math.max(3, floorH * 0.14));
-
-      if (isLobby) {
-        // Grand Entrance Atrium & Double Glass Doors
-        ctx.fillStyle = 'rgba(254, 240, 138, 0.38)'; // Warm lobby interior glow
-        ctx.fillRect(4, y + floorH * 0.14, 504, floorH * 0.84);
-
-        if (fi === floorsCount - 1) {
-          // Double Entrance Doors in Center
-          ctx.fillStyle = 'rgba(245, 158, 11, 0.85)'; // Golden entrance lighting
-          ctx.fillRect(176, y + floorH * 0.18, 160, floorH * 0.80);
-          ctx.strokeStyle = '#ffffff';
-          ctx.lineWidth = 2.5;
-          ctx.strokeRect(176, y + floorH * 0.18, 160, floorH * 0.80);
-
-          // Center door split line & push bars
-          ctx.beginPath();
-          ctx.moveTo(256, y + floorH * 0.18);
-          ctx.lineTo(256, y + floorH);
-          ctx.strokeStyle = '#f8fafc';
-          ctx.lineWidth = 2.0;
-          ctx.stroke();
-
-          // Door handles
-          ctx.fillStyle = '#ffffff';
-          ctx.fillRect(250, y + floorH * 0.50, 4, 12);
-          ctx.fillRect(258, y + floorH * 0.50, 4, 12);
-
-          // Entrance Canopy Marquee overhead
-          ctx.fillStyle = isSelected ? '#00e5ff' : '#0284c7';
-          ctx.fillRect(150, y + 2, 212, 6);
-        }
-      } else if (!isRoof) {
-        // High-rise window grid with realistic reflection and illuminated office/residential units
-        for (let ci = 0; ci < colsCount; ci++) {
-          const x = ci * colW;
-          const seed = (fi * 19 + ci * 29) % 100;
-          let winColor;
-          if (isSelected) {
-            winColor = seed > 60
-              ? 'rgba(56, 189, 248, 0.45)' // Cyan sky reflection
-              : seed > 28
-                ? 'rgba(254, 240, 138, 0.50)' // Warm illuminated office
-                : 'rgba(14, 116, 144, 0.28)'; // Deep tinted glass
-          } else {
-            winColor = seed > 55
-              ? 'rgba(125, 211, 252, 0.38)' // Daylight sky tint
-              : seed > 22
-                ? 'rgba(253, 230, 138, 0.32)' // Warm office light
-                : 'rgba(15, 23, 42, 0.30)';   // Reflective glass
-          }
-
-          ctx.fillStyle = winColor;
-          ctx.fillRect(x + 2, y + floorH * 0.14 + 1, colW - 4, floorH * 0.84 - 2);
-
-          // Aluminum vertical mullion divider
-          ctx.fillStyle = isSelected ? 'rgba(56, 189, 248, 0.50)' : 'rgba(71, 85, 105, 0.60)';
-          ctx.fillRect(x, y, 2, floorH);
-        }
-      } else {
-        // Penthouse / Roof crown
-        ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
-        ctx.fillRect(0, y, 512, floorH);
-        ctx.strokeStyle = isSelected ? '#38bdf8' : '#64748b';
-        ctx.lineWidth = 3;
-        ctx.strokeRect(4, y + 4, 504, floorH - 8);
-      }
-    }
-
-    // Outer architectural frame
-    ctx.strokeStyle = isSelected ? '#38bdf8' : (status === 'VALID' ? '#34d399' : '#fbbf24');
-    ctx.lineWidth = isSelected ? 3.5 : 2.0;
-    ctx.strokeRect(1, 1, 510, 1022);
-  }
-
-  const dataUrl = canvas.toDataURL('image/png');
-  FACADE_TEXTURE_CACHE[cacheKey] = dataUrl;
-  return dataUrl;
-}
-
-// ── Realistic Multi-Floor Interior Architecture & Corridors ───────────────────
-function buildInteriorGeometry(b, viewer) {
-  const entities = [];
-  const floors   = (b.floors && b.floors.length > 0) ? b.floors : buildSyntheticFloors(b);
-  const floorH   = 3.4;
-  const { lon, lat } = b;
-  const latRad   = (lat * Math.PI) / 180;
-  const lonScale = 1 / Math.max(0.2, Math.cos(latRad));
-  const baseScale = 0.00010 + (Math.min(b.floor_count || 10, 45) / 45) * 0.00007;
-  const bW = baseScale * lonScale;
-  const bD = baseScale;
-  const absH = Math.abs(b.height);
-
-  // 1. Central Elevator & Stairwell Structural Core
-  const coreW = bW * 0.22;
-  const coreD = bD * 0.22;
-  const corePts = [
-    Cartesian3.fromDegrees(lon - coreW, lat - coreD, 0),
-    Cartesian3.fromDegrees(lon + coreW, lat - coreD, 0),
-    Cartesian3.fromDegrees(lon + coreW, lat + coreD, 0),
-    Cartesian3.fromDegrees(lon - coreW, lat + coreD, 0),
-  ];
-  entities.push(viewer.entities.add({
-    name: `${b.name} · Structural Elevator Core`,
-    polygon: {
-      hierarchy: new ConstantProperty(new PolygonHierarchy(corePts)),
-      height: 0,
-      extrudedHeight: absH,
-      heightReference: HeightReference.RELATIVE_TO_GROUND,
-      extrudedHeightReference: HeightReference.RELATIVE_TO_GROUND,
-      material: new ColorMaterialProperty(Color.fromCssColorString('#1e293b').withAlpha(0.85)),
-      outline: true,
-      outlineColor: Color.fromCssColorString('#06b6d4').withAlpha(0.95),
-      outlineWidth: 2.0,
-      shadows: ShadowMode.DISABLED,
-    },
-    properties: { building_id: b.building_id },
-  }));
-
-  // 2. Ground Entrance Portal & Exterior Canopy Marquee
-  const canopyW = bW * 0.40;
-  const canopyD = bD * 0.25;
-  const canopyPts = [
-    Cartesian3.fromDegrees(lon - canopyW, lat - bD - canopyD, 0),
-    Cartesian3.fromDegrees(lon + canopyW, lat - bD - canopyD, 0),
-    Cartesian3.fromDegrees(lon + canopyW, lat - bD, 0),
-    Cartesian3.fromDegrees(lon - canopyW, lat - bD, 0),
-  ];
-  entities.push(viewer.entities.add({
-    name: `${b.name} · Entrance Canopy`,
-    polygon: {
-      hierarchy: new ConstantProperty(new PolygonHierarchy(canopyPts)),
-      height: 3.5,
-      extrudedHeight: 3.8,
-      heightReference: HeightReference.RELATIVE_TO_GROUND,
-      extrudedHeightReference: HeightReference.RELATIVE_TO_GROUND,
-      material: new ColorMaterialProperty(Color.fromCssColorString('#0284c7').withAlpha(0.90)),
-      outline: true,
-      outlineColor: Color.fromCssColorString('#38bdf8').withAlpha(1.0),
-      outlineWidth: 2.0,
-      shadows: ShadowMode.DISABLED,
-    },
-    properties: { building_id: b.building_id },
-  }));
-
-  // Ground Lobby Double Doors
-  const doorW = bW * 0.20;
-  const doorPts = [
-    Cartesian3.fromDegrees(lon - doorW, lat - bD, 0),
-    Cartesian3.fromDegrees(lon + doorW, lat - bD, 0),
-    Cartesian3.fromDegrees(lon + doorW, lat - bD + 0.00001, 0),
-    Cartesian3.fromDegrees(lon - doorW, lat - bD + 0.00001, 0),
-  ];
-  entities.push(viewer.entities.add({
-    name: `${b.name} · Ground Lobby Entrance Doors`,
-    polygon: {
-      hierarchy: new ConstantProperty(new PolygonHierarchy(doorPts)),
-      height: 0,
-      extrudedHeight: 3.2,
-      heightReference: HeightReference.RELATIVE_TO_GROUND,
-      extrudedHeightReference: HeightReference.RELATIVE_TO_GROUND,
-      material: new ColorMaterialProperty(Color.fromCssColorString('#f59e0b').withAlpha(0.75)),
-      outline: true,
-      outlineColor: Color.fromCssColorString('#fef08a').withAlpha(1.0),
-      outlineWidth: 2.5,
-      shadows: ShadowMode.DISABLED,
-    },
-    properties: { building_id: b.building_id },
-  }));
-
-  // 3. Per-floor slabs, illuminated circulation corridors, and strata suites
-  floors.forEach((f, fi) => {
-    const zBase = isFinite(f.z_min) ? Math.max(0, f.z_min - (b.ground_elevation || 0)) : fi * floorH;
-    const progress = fi / Math.max(floors.length - 1, 1);
-    const hue = 0.50 + progress * 0.16;
-    const roomFill = Color.fromHsl(hue, 0.85, 0.50).withAlpha(0.22);
-    const slabFill = Color.fromCssColorString('#f8fafc').withAlpha(0.85);
-
-    // Solid concrete floor slab (0.35m thick)
-    const slabPts = [
-      Cartesian3.fromDegrees(lon - bW, lat - bD, 0),
-      Cartesian3.fromDegrees(lon + bW, lat - bD, 0),
-      Cartesian3.fromDegrees(lon + bW, lat + bD, 0),
-      Cartesian3.fromDegrees(lon - bW, lat + bD, 0),
-    ];
-    entities.push(viewer.entities.add({
-      name: `${b.name} · Slab F${fi + 1}`,
-      polygon: {
-        hierarchy: new ConstantProperty(new PolygonHierarchy(slabPts)),
-        height: zBase,
-        extrudedHeight: zBase + 0.35,
-        heightReference: HeightReference.RELATIVE_TO_GROUND,
-        extrudedHeightReference: HeightReference.RELATIVE_TO_GROUND,
-        material: new ColorMaterialProperty(slabFill),
-        outline: true,
-        outlineColor: Color.fromCssColorString('#0284c7').withAlpha(0.75),
-        outlineWidth: 1.2,
-        shadows: ShadowMode.DISABLED,
-      },
-      properties: { building_id: b.building_id, floor_id: f.floor_id },
-    }));
-
-    // Central illuminated circulation corridor spine
-    const corrW = bW * 0.16;
-    const corrPts = [
-      Cartesian3.fromDegrees(lon - corrW, lat - bD * 0.92, 0),
-      Cartesian3.fromDegrees(lon + corrW, lat - bD * 0.92, 0),
-      Cartesian3.fromDegrees(lon + corrW, lat + bD * 0.92, 0),
-      Cartesian3.fromDegrees(lon - corrW, lat + bD * 0.92, 0),
-    ];
-    entities.push(viewer.entities.add({
-      name: `${b.name} · Central Corridor F${fi + 1}`,
-      polygon: {
-        hierarchy: new ConstantProperty(new PolygonHierarchy(corrPts)),
-        height: zBase + 0.35,
-        extrudedHeight: zBase + floorH - 0.20,
-        heightReference: HeightReference.RELATIVE_TO_GROUND,
-        extrudedHeightReference: HeightReference.RELATIVE_TO_GROUND,
-        material: new ColorMaterialProperty(Color.fromCssColorString('#fef08a').withAlpha(0.55)),
-        outline: true,
-        outlineColor: Color.fromCssColorString('#f59e0b').withAlpha(0.95),
-        outlineWidth: 2.0,
-        shadows: ShadowMode.DISABLED,
-      },
-      properties: { building_id: b.building_id },
-    }));
-
-    // Cross connecting corridor
-    const cCorrPts = [
-      Cartesian3.fromDegrees(lon - bW * 0.92, lat - corrW * 0.85, 0),
-      Cartesian3.fromDegrees(lon + bW * 0.92, lat - corrW * 0.85, 0),
-      Cartesian3.fromDegrees(lon + bW * 0.92, lat + corrW * 0.85, 0),
-      Cartesian3.fromDegrees(lon - bW * 0.92, lat + corrW * 0.85, 0),
-    ];
-    entities.push(viewer.entities.add({
-      name: `${b.name} · Cross Corridor F${fi + 1}`,
-      polygon: {
-        hierarchy: new ConstantProperty(new PolygonHierarchy(cCorrPts)),
-        height: zBase + 0.35,
-        extrudedHeight: zBase + floorH - 0.20,
-        heightReference: HeightReference.RELATIVE_TO_GROUND,
-        extrudedHeightReference: HeightReference.RELATIVE_TO_GROUND,
-        material: new ColorMaterialProperty(Color.fromCssColorString('#fed7aa').withAlpha(0.45)),
-        outline: true,
-        outlineColor: Color.fromCssColorString('#fb923c').withAlpha(0.90),
-        outlineWidth: 1.5,
-        shadows: ShadowMode.DISABLED,
-      },
-      properties: { building_id: b.building_id },
-    }));
-
-    // ── Singapore BIM Architectural Subdivisions (CORENET X / SLA 3D Strata Cadastre) ──
-    const isSgBim = b.city === 'singapore' || !!b.bim_enabled;
-
-    if (isSgBim) {
-      // 1. Structural Concrete Columns (IfcColumn) — 4 perimeter load-bearing columns
-      [-0.65, 0.65].forEach(cx => {
-        [-0.65, 0.65].forEach(cy => {
-          const colSize = bW * 0.08;
-          const colPts = [
-            Cartesian3.fromDegrees(lon + cx * bW - colSize, lat + cy * bD - colSize, 0),
-            Cartesian3.fromDegrees(lon + cx * bW + colSize, lat + cy * bD - colSize, 0),
-            Cartesian3.fromDegrees(lon + cx * bW + colSize, lat + cy * bD + colSize, 0),
-            Cartesian3.fromDegrees(lon + cx * bW - colSize, lat + cy * bD + colSize, 0),
-          ];
-          entities.push(viewer.entities.add({
-            name: `${b.name} · Column (IfcColumn) F${fi + 1}`,
-            polygon: {
-              hierarchy: new ConstantProperty(new PolygonHierarchy(colPts)),
-              height: zBase + 0.35,
-              extrudedHeight: zBase + floorH - 0.20,
-              heightReference: HeightReference.RELATIVE_TO_GROUND,
-              extrudedHeightReference: HeightReference.RELATIVE_TO_GROUND,
-              material: new ColorMaterialProperty(Color.fromCssColorString('#334155').withAlpha(0.95)),
-              outline: true,
-              outlineColor: Color.fromCssColorString('#64748b').withAlpha(0.80),
-              outlineWidth: 1.0,
-              shadows: ShadowMode.DISABLED,
-            },
-            properties: { building_id: b.building_id },
-          }));
-        });
-      });
-
-      // 2. BIM Strata Units (IfcSpace) — 4 Quadrants per floor
-      const quadrants = [
-        { name: 'NW Suite · Wealth Advisory', dx: -0.55, dy:  0.48, color: '#0284c7', lot: `MK01-U${String(fi + 1).padStart(2, '0')}01A` },
-        { name: 'NE Suite · Trading Floor',   dx:  0.55, dy:  0.48, color: '#10b981', lot: `MK01-U${String(fi + 1).padStart(2, '0')}02B` },
-        { name: 'SW Suite · Executive Office',dx: -0.55, dy: -0.48, color: '#8b5cf6', lot: `MK01-U${String(fi + 1).padStart(2, '0')}03C` },
-        { name: 'SE Suite · Client Concourse',dx:  0.55, dy: -0.48, color: '#f59e0b', lot: `MK01-U${String(fi + 1).padStart(2, '0')}04D` },
-      ];
-
-      quadrants.forEach((q) => {
-        const qX = lon + q.dx * bW;
-        const qY = lat + q.dy * bD;
-        const qW = bW * 0.35;
-        const qD = bD * 0.38;
-        const qPts = [
-          Cartesian3.fromDegrees(qX - qW, qY - qD, 0),
-          Cartesian3.fromDegrees(qX + qW, qY - qD, 0),
-          Cartesian3.fromDegrees(qX + qW, qY + qD, 0),
-          Cartesian3.fromDegrees(qX - qW, qY + qD, 0),
-        ];
-        entities.push(viewer.entities.add({
-          name: `${b.name} · ${q.name} (${q.lot})`,
-          polygon: {
-            hierarchy: new ConstantProperty(new PolygonHierarchy(qPts)),
-            height: zBase + 0.35,
-            extrudedHeight: zBase + floorH - 0.20,
-            heightReference: HeightReference.RELATIVE_TO_GROUND,
-            extrudedHeightReference: HeightReference.RELATIVE_TO_GROUND,
-            material: new ColorMaterialProperty(Color.fromCssColorString(q.color).withAlpha(0.26)),
-            outline: true,
-            outlineColor: Color.fromCssColorString(q.color).withAlpha(0.90),
-            outlineWidth: 1.5,
-            shadows: ShadowMode.DISABLED,
-          },
-          properties: { building_id: b.building_id, unit_id: q.lot, ifc_type: 'IfcSpace' },
-        }));
-
-        // Interior drywall partition (IfcWallStandardCase)
-        const wallPts = [
-          Cartesian3.fromDegrees(qX - qW * 0.95, qY, 0),
-          Cartesian3.fromDegrees(qX + qW * 0.40, qY, 0), // leaves doorway opening
-          Cartesian3.fromDegrees(qX + qW * 0.40, qY + 0.00001, 0),
-          Cartesian3.fromDegrees(qX - qW * 0.95, qY + 0.00001, 0),
-        ];
-        entities.push(viewer.entities.add({
-          name: `${b.name} · Internal Partition (IfcWall) ${q.lot}`,
-          polygon: {
-            hierarchy: new ConstantProperty(new PolygonHierarchy(wallPts)),
-            height: zBase + 0.35,
-            extrudedHeight: zBase + floorH - 0.20,
-            heightReference: HeightReference.RELATIVE_TO_GROUND,
-            extrudedHeightReference: HeightReference.RELATIVE_TO_GROUND,
-            material: new ColorMaterialProperty(Color.fromCssColorString('#cbd5e1').withAlpha(0.75)),
-            outline: true,
-            outlineColor: Color.fromCssColorString('#94a3b8').withAlpha(0.90),
-            outlineWidth: 1.0,
-            shadows: ShadowMode.DISABLED,
-          },
-          properties: { building_id: b.building_id },
-        }));
-      });
-
-      // Subterranean MRT concourse connection if basement
-      if (f.level_index < 0 || fi === 0) {
-        const mrtPts = [
-          Cartesian3.fromDegrees(lon - bW * 1.8, lat - bD * 0.4, 0),
-          Cartesian3.fromDegrees(lon - bW,        lat - bD * 0.4, 0),
-          Cartesian3.fromDegrees(lon - bW,        lat + bD * 0.4, 0),
-          Cartesian3.fromDegrees(lon - bW * 1.8, lat + bD * 0.4, 0),
-        ];
-        entities.push(viewer.entities.add({
-          name: `${b.name} · Downtown MRT Subterranean Pedestrian Link`,
-          polygon: {
-            hierarchy: new ConstantProperty(new PolygonHierarchy(mrtPts)),
-            height: zBase + 0.2,
-            extrudedHeight: zBase + floorH - 0.1,
-            heightReference: HeightReference.RELATIVE_TO_GROUND,
-            extrudedHeightReference: HeightReference.RELATIVE_TO_GROUND,
-            material: new ColorMaterialProperty(Color.fromCssColorString('#7c3aed').withAlpha(0.35)),
-            outline: true,
-            outlineColor: Color.fromCssColorString('#c084fc').withAlpha(0.95),
-            outlineWidth: 2.0,
-            shadows: ShadowMode.DISABLED,
-          },
-          properties: { building_id: b.building_id, easement: 'SLA Subterranean Transit Easement' },
-        }));
-      }
-
-    } else {
-      // Standard Strata partitioned office / apartment suites (General cities)
-      [-1, 1].forEach((side, si) => {
-        const rX = lon + side * (bW * 0.55);
-        const roomPts = [
-          Cartesian3.fromDegrees(rX - bW * 0.33, lat - bD * 0.90, 0),
-          Cartesian3.fromDegrees(rX + bW * 0.33, lat - bD * 0.90, 0),
-          Cartesian3.fromDegrees(rX + bW * 0.33, lat + bD * 0.90, 0),
-          Cartesian3.fromDegrees(rX - bW * 0.33, lat + bD * 0.90, 0),
-        ];
-        entities.push(viewer.entities.add({
-          name: `${b.name} · Strata Suite ${si === 0 ? 'West' : 'East'} F${fi + 1}`,
-          polygon: {
-            hierarchy: new ConstantProperty(new PolygonHierarchy(roomPts)),
-            height: zBase + 0.35,
-            extrudedHeight: zBase + floorH - 0.20,
-            heightReference: HeightReference.RELATIVE_TO_GROUND,
-            extrudedHeightReference: HeightReference.RELATIVE_TO_GROUND,
-            material: new ColorMaterialProperty(roomFill),
-            outline: true,
-            outlineColor: Color.fromCssColorString('#0284c7').withAlpha(0.70),
-            outlineWidth: 1.0,
-            shadows: ShadowMode.DISABLED,
-          },
-          properties: { building_id: b.building_id },
-        }));
-      });
-    }
-
-    // Floor label badge
-    if (fi === 0 || fi === floors.length - 1 || fi % 4 === 0) {
-      entities.push(viewer.entities.add({
-        position: Cartesian3.fromDegrees(lon + bW * 1.05, lat - bD * 0.95, zBase + floorH * 0.5),
-        label: {
-          text: f.label || `F${fi + 1}`,
-          font: '600 11px Inter, -apple-system, sans-serif',
-          fillColor: Color.fromCssColorString('#38bdf8'),
-          outlineColor: Color.fromCssColorString('#020617'),
-          outlineWidth: 3.0,
-          style: LabelStyle.FILL_AND_OUTLINE,
-          verticalOrigin: VerticalOrigin.CENTER,
-          horizontalOrigin: HorizontalOrigin.LEFT,
-          heightReference: HeightReference.RELATIVE_TO_GROUND,
-          disableDepthTestDistance: Number.POSITIVE_INFINITY,
-          showBackground: true,
-          backgroundColor: Color.fromCssColorString('#030712').withAlpha(0.85),
-          backgroundPadding: new Cartesian2(6, 3),
-          translucencyByDistance: new NearFarScalar(50, 1.0, 1500, 0.0),
-        },
-        properties: { building_id: b.building_id },
-      }));
-    }
-  });
-
-  // 4. Rooftop Helipad / Mechanical Penthouse
-  if (absH >= 25) {
-    const padW = bW * 0.45;
-    const padD = bD * 0.45;
-    const padPts = [
-      Cartesian3.fromDegrees(lon - padW, lat - padD, 0),
-      Cartesian3.fromDegrees(lon + padW, lat - padD, 0),
-      Cartesian3.fromDegrees(lon + padW, lat + padD, 0),
-      Cartesian3.fromDegrees(lon - padW, lat + padD, 0),
-    ];
-    entities.push(viewer.entities.add({
-      name: `${b.name} · Rooftop Helipad & Penthouse`,
-      polygon: {
-        hierarchy: new ConstantProperty(new PolygonHierarchy(padPts)),
-        height: absH,
-        extrudedHeight: absH + 2.5,
-        heightReference: HeightReference.RELATIVE_TO_GROUND,
-        extrudedHeightReference: HeightReference.RELATIVE_TO_GROUND,
-        material: new ColorMaterialProperty(Color.fromCssColorString('#0f172a').withAlpha(0.90)),
-        outline: true,
-        outlineColor: Color.fromCssColorString('#fbbf24').withAlpha(1.0),
-        outlineWidth: 2.0,
-        shadows: ShadowMode.DISABLED,
-      },
-      properties: { building_id: b.building_id },
-    }));
-  }
-
-  return entities;
-}
-
-// ── Ambient Visible Floor Slabs & Corridors for All Unselected Towers ─────────
-function buildAmbientFloorsAndCorridors(b, viewer) {
-  const ents = [];
-  const floors = (b.floors && b.floors.length > 0) ? b.floors : buildSyntheticFloors(b);
-  const floorH = 3.4;
-  const { lon, lat } = b;
-  const latRad = (lat * Math.PI) / 180;
-  const lonScale = 1 / Math.max(0.2, Math.cos(latRad));
-  const baseScale = 0.00010 + (Math.min(b.floor_count || 10, 45) / 45) * 0.00007;
-  const bW = baseScale * lonScale;
-  const bD = baseScale;
-  const absH = Math.abs(b.height);
-
-  // Structural Core
-  const coreW = bW * 0.20;
-  const coreD = bD * 0.20;
-  ents.push(viewer.entities.add({
-    name: `${b.name} · Core`,
-    polygon: {
-      hierarchy: new ConstantProperty(new PolygonHierarchy([
-        Cartesian3.fromDegrees(lon - coreW, lat - coreD, 0),
-        Cartesian3.fromDegrees(lon + coreW, lat - coreD, 0),
-        Cartesian3.fromDegrees(lon + coreW, lat + coreD, 0),
-        Cartesian3.fromDegrees(lon - coreW, lat + coreD, 0),
-      ])),
-      height: 0,
-      extrudedHeight: absH,
-      heightReference: HeightReference.RELATIVE_TO_GROUND,
-      extrudedHeightReference: HeightReference.RELATIVE_TO_GROUND,
-      material: new ColorMaterialProperty(Color.fromCssColorString('#1e293b').withAlpha(0.70)),
-      outline: false,
-      shadows: ShadowMode.DISABLED,
-    },
-    properties: { building_id: b.building_id },
-  }));
-
-  // Render floor slabs and central glowing hallways
-  const step = floors.length > 25 ? 2 : 1;
-  for (let fi = 0; fi < floors.length; fi += step) {
-    const f = floors[fi];
-    const zBase = isFinite(f.z_min) ? Math.max(0, f.z_min - (b.ground_elevation || 0)) : fi * floorH;
-    ents.push(viewer.entities.add({
-      name: `${b.name} · Slab F${fi + 1}`,
-      polygon: {
-        hierarchy: new ConstantProperty(new PolygonHierarchy([
-          Cartesian3.fromDegrees(lon - bW, lat - bD, 0),
-          Cartesian3.fromDegrees(lon + bW, lat - bD, 0),
-          Cartesian3.fromDegrees(lon + bW, lat + bD, 0),
-          Cartesian3.fromDegrees(lon - bW, lat + bD, 0),
-        ])),
-        height: zBase,
-        extrudedHeight: zBase + 0.30,
-        heightReference: HeightReference.RELATIVE_TO_GROUND,
-        extrudedHeightReference: HeightReference.RELATIVE_TO_GROUND,
-        material: new ColorMaterialProperty(Color.fromCssColorString('#f8fafc').withAlpha(0.65)),
-        outline: false,
-        shadows: ShadowMode.DISABLED,
-      },
-      properties: { building_id: b.building_id },
-    }));
-
-    const corrW = bW * 0.14;
-    ents.push(viewer.entities.add({
-      name: `${b.name} · Hallway F${fi + 1}`,
-      polygon: {
-        hierarchy: new ConstantProperty(new PolygonHierarchy([
-          Cartesian3.fromDegrees(lon - corrW, lat - bD * 0.88, 0),
-          Cartesian3.fromDegrees(lon + corrW, lat - bD * 0.88, 0),
-          Cartesian3.fromDegrees(lon + corrW, lat + bD * 0.88, 0),
-          Cartesian3.fromDegrees(lon - corrW, lat + bD * 0.88, 0),
-        ])),
-        height: zBase + 0.30,
-        extrudedHeight: zBase + floorH - 0.25,
-        heightReference: HeightReference.RELATIVE_TO_GROUND,
-        extrudedHeightReference: HeightReference.RELATIVE_TO_GROUND,
-        material: new ColorMaterialProperty(Color.fromCssColorString('#fef08a').withAlpha(0.35)),
-        outline: false,
-        shadows: ShadowMode.DISABLED,
-      },
-      properties: { building_id: b.building_id },
-    }));
-  }
-  return ents;
 }
 
 // ── Per-floor BIM geometry (one floor at a time) ────────────────────────────
@@ -1124,13 +529,207 @@ function buildSingleFloorBIM(b, f, fi, viewer) {
   return ents;
 }
 
+// ── Build all entities for ONE building (returns them so they can be removed/rebuilt
+//    individually instead of wiping the whole scene on every click) ──────────────
+function addBuildingEntities(viewer, b, { isSelected, currentFloorIdx, layers }) {
+  const ents = [];
+  const add = (opts) => { const e = viewer.entities.add(opts); ents.push(e); return e; };
+          const isUnderground = !!b.is_underground;
+
+        if (!layers.buildings   && !isUnderground) return ents;
+        if (!layers.underground && isUnderground)  return ents;
+
+        const absH = Math.abs(b.height);
+        const footprint = buildingFootprint(b);
+
+        // Architectural body material — original clean stone beige matching the city's 3D models
+        const architecturalColor = Color.fromCssColorString('#ded8c4');
+        const outlineColor = isSelected
+          ? Color.fromCssColorString('#00e5ff')
+          : Color.fromCssColorString('#10b981');
+
+        if (isUnderground) {
+          // Subsurface lot: render subterranean envelope
+          add({
+            name: b.name,
+            polygon: {
+              hierarchy:               new ConstantProperty(new PolygonHierarchy(footprint)),
+              extrudedHeight:          0,
+              height:                  -absH,
+              heightReference:         HeightReference.RELATIVE_TO_GROUND,
+              extrudedHeightReference: HeightReference.RELATIVE_TO_GROUND,
+              material:                new ColorMaterialProperty(Color.fromCssColorString('#7c3aed').withAlpha(0.25)),
+              outline:                 true,
+              outlineColor:            Color.fromCssColorString('#c084fc'),
+              outlineWidth:            2.0,
+              shadows:                 ShadowMode.DISABLED,
+              closeTop:                true,
+              closeBottom:             true,
+            },
+            position: Cartesian3.fromDegrees(b.lon, b.lat, -absH / 2),
+            properties: { building_id: b.building_id },
+          });
+        } else if (isSelected) {
+          // Surface ULPIN building: When SELECTED, expand into interactive multi-storey architectural form showing individual floors!
+          const floorCount = Math.min(Math.max(b.floor_count || Math.round(absH / 3.6), 2), 40);
+          const floorH = absH / floorCount;
+
+          for (let fi = 0; fi < floorCount; fi++) {
+            const zMin = fi * floorH;
+            const zMax = (fi + 1) * floorH;
+            const isFloorActive = currentFloorIdx === fi;
+            const floorUlpin = getFloorULPIN(b, fi);
+            const floorLabel = fi === 0 ? 'Ground Floor' : `Floor ${fi + 1}`;
+
+            add({
+              name: `${b.name} · ${floorLabel} · ${floorUlpin}`,
+              polygon: {
+                hierarchy:               new ConstantProperty(new PolygonHierarchy(footprint)),
+                height:                  zMin,
+                extrudedHeight:          zMax,
+                heightReference:         HeightReference.RELATIVE_TO_GROUND,
+                extrudedHeightReference: HeightReference.RELATIVE_TO_GROUND,
+                material:                new ColorMaterialProperty(
+                  isFloorActive
+                    ? Color.fromCssColorString('#38bdf8').withAlpha(0.95)
+                    : fi % 2 === 0
+                      ? Color.fromCssColorString('#0284c7').withAlpha(0.75)
+                      : Color.fromCssColorString('#0369a1').withAlpha(0.75)
+                ),
+                outline:                 true,
+                outlineColor:            isFloorActive
+                  ? Color.fromCssColorString('#00e5ff')
+                  : Color.fromCssColorString('#38bdf8'),
+                outlineWidth:            isFloorActive ? 3.0 : 1.5,
+                shadows:                 ShadowMode.DISABLED,
+                closeTop:                true,
+                closeBottom:             true,
+              },
+              position: Cartesian3.fromDegrees(b.lon, b.lat, (zMin + zMax) / 2),
+              properties: {
+                building_id: b.building_id,
+                floor_index: fi,
+                floor_ulpin: floorUlpin,
+                floor_label: floorLabel,
+              },
+            });
+          }
+        } else {
+          // Unselected Surface Building: Single high-performance extruded architectural envelope!
+          // Drastically cuts entity count from 1000+ to ~25, eliminating CPU/GPU bottlenecks and 60 FPS stutter!
+          add({
+            name: b.name,
+            polygon: {
+              hierarchy:               new ConstantProperty(new PolygonHierarchy(footprint)),
+              height:                  0,
+              extrudedHeight:          absH,
+              heightReference:         HeightReference.RELATIVE_TO_GROUND,
+              extrudedHeightReference: HeightReference.RELATIVE_TO_GROUND,
+              material:                new ColorMaterialProperty(architecturalColor),
+              outline:                 true,
+              outlineColor:            outlineColor,
+              outlineWidth:            2.0,
+              shadows:                 ShadowMode.DISABLED,
+              closeTop:                true,
+              closeBottom:             true,
+            },
+            position: Cartesian3.fromDegrees(b.lon, b.lat, absH / 2),
+            properties: {
+              building_id: b.building_id,
+              floor_index: 0,
+            },
+          });
+        }
+
+        // ── Class L Vertical Storey Slabs (layers.volumes) ──────────────────
+        if (layers?.volumes && !isUnderground && !isSelected) {
+          const totalFloors = b.floor_count || Math.max(2, Math.round(absH / 3.4));
+          const maxBands = Math.min(totalFloors, absH > 150 ? 14 : 8);
+          const slabStep = Math.max(1, Math.ceil(totalFloors / maxBands));
+          for (let fi = slabStep; fi < totalFloors; fi += slabStep) {
+            const zBase = (fi / totalFloors) * absH;
+            add({
+              polygon: {
+                hierarchy:               new ConstantProperty(new PolygonHierarchy(footprint)),
+                height:                  zBase,
+                extrudedHeight:          zBase + 0.50,
+                heightReference:         HeightReference.RELATIVE_TO_GROUND,
+                extrudedHeightReference: HeightReference.RELATIVE_TO_GROUND,
+                material:                new ColorMaterialProperty(Color.fromCssColorString('#38bdf8').withAlpha(0.55)),
+                outline:                 true,
+                outlineColor:            Color.fromCssColorString('#00e5ff').withAlpha(0.85),
+                // `high`: no distance limit (slabs visible at any zoom).
+                // `balanced`: hide beyond Q.slabDist for perf.
+                ...(isFinite(Q.slabDist) ? { distanceDisplayCondition: new DistanceDisplayCondition(0, Q.slabDist) } : {}),
+                shadows:                 ShadowMode.DISABLED,
+                closeTop:                true,
+                closeBottom:             true,
+              },
+              position: Cartesian3.fromDegrees(b.lon, b.lat, zBase + 0.25),
+              properties: { building_id: b.building_id, volume_slab: fi },
+            });
+          }
+        }
+
+        // ── Cadastral Identifier Label: Name + 3D ULPIN / RID ──────────
+        if (layers.buildings) {
+          const ulpinCode = b.canonical_rid || b.ulpin || b.prototype_3d_id || 'ULPIN-CADASTRE';
+          const statusBadge = b.validation_status === 'VALID' ? '●' : '▲';
+          const labelText = isSelected
+            ? `${b.name}\n${ulpinCode}\n${isUnderground ? `Subsurface · -${absH.toFixed(0)}m` : `↑ ${absH.toFixed(0)}m · ${b.floor_count}F · [${statusBadge} ${b.validation_status}]`}`
+            : `${b.name}\n${ulpinCode}`;
+
+          const labelHeight = isUnderground ? 6 : absH + 8;
+          add({
+            position: Cartesian3.fromDegrees(b.lon, b.lat, labelHeight),
+            label: {
+              text:          labelText,
+              font:          isSelected ? '600 12px Inter, sans-serif' : '500 10.5px Inter, sans-serif',
+              fillColor:     isSelected
+                ? Color.fromCssColorString('#38bdf8')
+                : Color.fromCssColorString('#f8fafc'),
+              outlineColor:  Color.fromCssColorString('#020617'),
+              outlineWidth:  2.5,
+              style:         LabelStyle.FILL_AND_OUTLINE,
+              verticalOrigin:   VerticalOrigin.BOTTOM,
+              horizontalOrigin: HorizontalOrigin.CENTER,
+              pixelOffset:      new Cartesian2(0, -8),
+              heightReference:  HeightReference.RELATIVE_TO_GROUND,
+              disableDepthTestDistance: Number.POSITIVE_INFINITY,
+              showBackground:  true,
+              backgroundColor: Color.fromCssColorString('#0f172a').withAlpha(0.92),
+              backgroundPadding: new Cartesian2(8, 4),
+              translucencyByDistance: new NearFarScalar(150, 1.0, 9500, 0.0),
+              // `high`: labels always visible. `balanced`: hide beyond Q.labelDist for perf.
+              ...(isSelected ? {} : (isFinite(Q.labelDist) ? { distanceDisplayCondition: new DistanceDisplayCondition(0, Q.labelDist) } : {})),
+            },
+            properties: { building_id: b.building_id },
+          });
+        }
+
+  return ents;
+}
+
 export default function CesiumViewer({
-  city, flyTimestamp, buildings, parcels = [], allBuildings, allParcels = [], layers, selectedBuilding, onBuildingClick, onCitySelect, explodedFloor,
+  city, flyTimestamp, buildings, parcels = [], allBuildings, allParcels = [], layers, selectedBuilding, onBuildingClick, onCitySelect, _explodedFloor,
   onFlyToFloorReady, interiorMode, currentFloorIdx = 0, onCameraControlsReady,
 }) {
   const containerRef         = useRef(null);
   const viewerRef            = useRef(null);
   const entityMapRef         = useRef({});
+  const googleOkRef          = useRef(null); // null = loading, true = ok, false = failed
+  const mountTimeRef         = useRef(0); // set to performance.now() on mount for prewarm guard
+  // Latest props mirrored into refs so effects can read them without re-running
+  const layersRef            = useRef(layers);
+  const selectedIdRef        = useRef(selectedBuilding?.building_id ?? null);
+  const currentFloorIdxRef   = useRef(currentFloorIdx);
+  const buildingGroupsRef    = useRef(new Map()); // building_id -> { ents, isSelected, floorIdx }
+  // Declared before the effects that read these refs, so it runs first each commit
+  useEffect(() => {
+    layersRef.current          = layers;
+    selectedIdRef.current      = selectedBuilding?.building_id ?? null;
+    currentFloorIdxRef.current = currentFloorIdx;
+  });
   const pendingCityRef       = useRef(city);
   const dynamicBuildings = useMemo(
     () => (buildings || []).filter(b => !(allBuildings || []).some(ab => ab.building_id === b.building_id)),
@@ -1163,7 +762,6 @@ export default function CesiumViewer({
   const cityRef              = useRef(city);
 
   useEffect(() => { buildingsRef.current      = targetBuildings; }, [targetBuildings]);
-  useEffect(() => { warmBuildingTextureCache(targetBuildings);   }, [targetBuildings]);
   useEffect(() => { onBuildingClickRef.current = onBuildingClick; }, [onBuildingClick]);
   useEffect(() => { onCitySelectRef.current    = onCitySelect;    }, [onCitySelect]);
   useEffect(() => { cityRef.current            = city;            }, [city]);
@@ -1182,15 +780,17 @@ export default function CesiumViewer({
     viewer.camera.cancelFlight();
     isFlyingRef.current = true;
 
-    // Keep crisp globe LOD during flight (never degrade to blurry 16.0 SSE)
+    // Moderate globe LOD (SSE 2.0 is Cesium's default and loads ~4x more tiles
+    // than SSE 4; it was being forced on permanently after the first flight).
+    const globeSSE = targetCity ? Q.globeSseCity : Q.globeSseOrbit;
     if (viewer.scene?.globe) {
-      viewer.scene.globe.maximumScreenSpaceError = 2.0;
+      viewer.scene.globe.maximumScreenSpaceError = globeSSE;
     }
 
     const onFlightEnd = () => {
       isFlyingRef.current = false;
       if (viewer && !viewer.isDestroyed() && viewer.scene?.globe) {
-        viewer.scene.globe.maximumScreenSpaceError = 2.0;
+        viewer.scene.globe.maximumScreenSpaceError = globeSSE;
       }
     };
 
@@ -1431,7 +1031,7 @@ export default function CesiumViewer({
     // 3D elevation terrain with realistic water masking & normals
     const terrain = Terrain.fromWorldTerrain({
       requestWaterMask: true,
-      requestVertexNormals: true,
+      requestVertexNormals: false, // only needed for globe lighting, which is disabled
     });
 
     const viewer = new Viewer(containerRef.current, {
@@ -1456,27 +1056,80 @@ export default function CesiumViewer({
       maximumRenderTimeChange:    1 / 60,
       contextOptions: {
         webgl: {
-          antialias:                 true,
+          antialias:                 Q.antialias, // high: true (original); balanced: false (FXAA-only)
           powerPreference:           'high-performance',
-          preserveDrawingBuffer:     true,
+          preserveDrawingBuffer:     false, // true forces a buffer copy every frame
         },
       },
     });
 
     viewerRef.current = viewer;
     window.__CESIUM_VIEWER__ = viewer;
+    mountTimeRef.current = performance.now(); // mark viewer mount time for prewarm guard
 
     // Preemptively pre-warm elevation and satellite tiles for Bengaluru, Mumbai, Rotterdam, Singapore
     preloadPilotCities(viewer, baseLayer);
 
-    // ── Performance-balanced resolution ─────────────────────────────────────
-    // Native 1.0x DPR: avoids 1.25x supersampling fill-rate cost on Railway/low-end GPUs
+    // ── Resolution scaling (preset-driven) ────────────────────────────────────
+    // useBrowserRecommendedResolution=false lets us set resolutionScale explicitly.
+    // `high` preset: Infinity → no cap → native DPR → resolutionScale = 1.0.
+    // `balanced` preset: cap at 1.5 → fewer pixels on HiDPI screens.
     viewer.useBrowserRecommendedResolution = false;
-    viewer.resolutionScale = 1.0;
-    try {
-      viewer.scene.msaaSamples = 2; // 2x MSAA: smooth enough edges, half the fill cost of 4x
-    } catch {}
-    viewer.scene.highDynamicRange = true;
+    {
+      const dpr = window.devicePixelRatio || 1;
+      viewer.resolutionScale = Q.maxDpr === Infinity ? 1.0 : Math.min(dpr, Q.maxDpr) / dpr;
+    }
+    try { viewer.scene.msaaSamples = Q.msaa; } catch {}       // high: 2 (FXAA+MSAA); balanced: 1
+    viewer.scene.highDynamicRange = Q.hdr;                    // high: true; balanced: false
+    // Add ?perf to the URL to show the FPS counter
+    if (new URLSearchParams(window.location.search).has('perf')) {
+      viewer.scene.debugShowFramesPerSecond = true;
+
+      // Dev-only perf measurement helper
+      window.__perfReport = () => {
+        return new Promise((resolve) => {
+          console.log('[perfReport] Sampling scene.postRender for 5 seconds...');
+          const frameDeltas = [];
+          let lastTime = performance.now();
+          const removeListener = viewer.scene.postRender.addEventListener(() => {
+            const now = performance.now();
+            const delta = now - lastTime;
+            lastTime = now;
+            if (delta > 0 && delta < 5000) {
+              frameDeltas.push(delta);
+            }
+          });
+
+          setTimeout(() => {
+            removeListener();
+            frameDeltas.sort((a, b) => a - b);
+            const count = frameDeltas.length;
+            const totalMs = frameDeltas.reduce((a, b) => a + b, 0);
+            const avgFps = count > 0 && totalMs > 0 ? (count / (totalMs / 1000)) : 0;
+            const p50 = count > 0 ? frameDeltas[Math.floor(count * 0.50)] : 0;
+            const p95 = count > 0 ? frameDeltas[Math.floor(count * 0.95)] : 0;
+            const entCount = viewer.entities?.values?.length ?? 0;
+            const primCount = viewer.scene?.primitives?.length ?? 0;
+
+            console.log(
+              `[perfReport] 5s summary:\n` +
+              `  Average FPS: ${avgFps.toFixed(1)}\n` +
+              `  Frame Time p50: ${p50.toFixed(2)} ms\n` +
+              `  Frame Time p95: ${p95.toFixed(2)} ms\n` +
+              `  Entities: ${entCount}\n` +
+              `  Primitives: ${primCount}`
+            );
+            resolve({
+              avgFps: Number(avgFps.toFixed(1)),
+              p50: Number(p50.toFixed(2)),
+              p95: Number(p95.toFixed(2)),
+              entities: entCount,
+              primitives: primCount,
+            });
+          }, 5000);
+        });
+      };
+    }
 
     // Fog: disable so ocean/land stays photorealistic-sharp at all distances
     try {
@@ -1597,6 +1250,12 @@ export default function CesiumViewer({
     function spinLoop() {
       if (!viewer || viewer.isDestroyed()) return;
       const now = performance.now();
+      // Slow orbit rotation does not need 60 fps; ~30 fps halves the GPU work.
+      // `balanced` preset caps to 33ms; `high` preset uses spinMinMs=0 (uncapped).
+      if (Q.spinMinMs > 0 && now - lastSpinTime < Q.spinMinMs) {
+        spinRafId = requestAnimationFrame(spinLoop);
+        return;
+      }
       const dt = Math.min((now - lastSpinTime) / 1000, 0.1);
       lastSpinTime = now;
 
@@ -1633,7 +1292,7 @@ export default function CesiumViewer({
     async function initGoogle3DTiles() {
       try {
         const tilesetOptions = {
-          maximumScreenSpaceError:        12,   // Sub-meter crisp photogrammetry without draw-call freeze
+          maximumScreenSpaceError:        Q.googleSse, // high: 12; balanced: 16
           skipLevelOfDetail:              true, // Skip intermediate LODs directly to finest detail
           baseScreenSpaceError:           1024,
           skipScreenSpaceErrorFactor:     16,
@@ -1648,7 +1307,9 @@ export default function CesiumViewer({
           dynamicScreenSpaceError:        true,  // Smoothly relax SSE during rapid camera motion
           dynamicScreenSpaceErrorDensity: 0.002,
           dynamicScreenSpaceErrorFactor:  4.0,
-          maximumMemoryUsage:             1024,  // 1 GB optimal memory footprint
+          // maximumMemoryUsage was removed in Cesium 1.110 (silently ignored). Use cacheBytes.
+          cacheBytes:                     384 * MB,
+          maximumCacheOverflowBytes:      192 * MB,
         };
 
         let googleTileset;
@@ -1656,7 +1317,7 @@ export default function CesiumViewer({
           googleTileset = await createGooglePhotorealistic3DTileset({
             onlyUsingWithGoogleGeocoder: true,
           }, tilesetOptions);
-        } catch (initialErr) {
+        } catch {
           // Direct fallback to Cesium Ion Asset 2275207
           googleTileset = await Cesium3DTileset.fromIonAssetId(2275207, tilesetOptions);
         }
@@ -1666,6 +1327,7 @@ export default function CesiumViewer({
         googleTilesetRef.current = googleTileset;
         // Hyperrealistic Google 3D Tiles visible GLOBALLY across all views!
         googleTileset.show = layers.google3d ?? true;
+        googleOkRef.current = true;
         tileReadyRef.current = true;
 
         cityEntitiesRef.current.forEach(e => {
@@ -1683,6 +1345,9 @@ export default function CesiumViewer({
         });
       } catch (err) {
         console.warn('Google 3D Tiles init:', err?.message || err);
+        // Google tiles unavailable -> fall back to OSM Buildings
+        googleOkRef.current = false;
+        if (tilesetRef.current) tilesetRef.current.show = true;
         tileReadyRef.current = true;
         cityEntitiesRef.current.forEach(e => {
           if (e && !e.isDestroyed?.()) e.show = true;
@@ -1690,13 +1355,12 @@ export default function CesiumViewer({
       }
     }
     initGoogle3DTiles().then(() => {
-      // Once Google 3D tiles are initialized, silently cycle camera through all
-      // 4 pilot cities behind the landing page to pre-cache city-level mesh tiles.
-      // The landing page overlay (z-index 90) hides the camera jumps completely.
-      preWarmCityViews(viewer, cityRef);
+      // Once Google 3D tiles are initialized, pre-warm city mesh tiles.
+      // `high` preset only; skip if user already selected a city within 2 s.
+      preWarmCityViews(viewer, cityRef, mountTimeRef);
     }).catch(() => {
       // Even if Google tiles fail, still pre-warm imagery and terrain
-      preWarmCityViews(viewer, cityRef);
+      preWarmCityViews(viewer, cityRef, mountTimeRef);
     });
 
     // ── 3D Architectural Buildings Layer (OSM) ──────────────────────────────
@@ -1710,10 +1374,15 @@ export default function CesiumViewer({
         osmTileset.maximumScreenSpaceError = 16; // Optimal geometric detail without pop-in
         osmTileset.skipLevelOfDetail = true;
         osmTileset.cullRequestsWhileMoving = true;
-        osmTileset.maximumMemoryUsage = 512;
+        osmTileset.cacheBytes = 192 * MB;
+        osmTileset.maximumCacheOverflowBytes = 96 * MB;
         viewer.scene.primitives.add(osmTileset);
         tilesetRef.current = osmTileset;
-        osmTileset.show = layers.tileset3d ?? true;
+        // Google Photorealistic tiles already contain buildings; drawing OSM on
+        // top doubles the geometry. In `high`, OSM is shown by default (original
+        // behaviour). In `balanced`, it is hidden unless the user turns it on,
+        // or Google tiles failed to load.
+        osmTileset.show = (layers.tileset3d ?? Q.osmDefault) || googleOkRef.current === false;
       } catch (err) {
         console.warn('OSM Buildings init:', err?.message);
       }
@@ -1818,10 +1487,17 @@ export default function CesiumViewer({
 
     // ── Ultra-Smooth MOUSE_MOVE: NEVER run scene.pick while dragging! ────────
     let hoverRaf = null;
+    let lastHoverPick = 0;
     handler.setInputAction((movement) => {
       // While dragging the camera/globe, NEVER run scene.pick!
       // This completely eliminates the synchronous WebGL readPixels GPU pipeline stall during movement.
       if (isDragging) return;
+
+      // scene.pick() renders the whole scene into a pick buffer; with Google 3D
+      // tiles that is expensive, so limit hover picking to ~8 Hz.
+      const nowMs = performance.now();
+      if (nowMs - lastHoverPick < HOVER_PICK_MS) return;
+      lastHoverPick = nowMs;
 
       if (hoverRaf) return;
       hoverRaf = requestAnimationFrame(() => {
@@ -1872,6 +1548,7 @@ export default function CesiumViewer({
       window.removeEventListener('pointerup', stopInteraction);
       try { removePreRender.removeEventListener(); } catch {}
       handler.destroy();
+      try { delete window.__perfReport; } catch {}
       viewerRef.current?.destroy();
       viewerRef.current = null;
       tilesetRef.current = null;
@@ -1887,7 +1564,7 @@ export default function CesiumViewer({
   // ── Reactive toggle for 3D tileset layers ──────────────────────────────────
   useEffect(() => {
     if (tilesetRef.current) {
-      tilesetRef.current.show = layers.tileset3d ?? true;
+      tilesetRef.current.show = (layers.tileset3d ?? Q.osmDefault) || googleOkRef.current === false;
       viewerRef.current?.scene?.requestRender();
     }
   }, [layers.tileset3d]);
@@ -1917,11 +1594,23 @@ export default function CesiumViewer({
       if (tilesetRef.current) tilesetRef.current.show = false;
       if (googleTilesetRef.current) googleTilesetRef.current.show = false;
     } else {
-      if (tilesetRef.current) tilesetRef.current.show = layers.tileset3d ?? true;
+      if (tilesetRef.current) tilesetRef.current.show = layers.tileset3d ?? Q.osmDefault;
       if (googleTilesetRef.current) googleTilesetRef.current.show = layers.google3d ?? true;
     }
     viewerRef.current?.scene?.requestRender();
   }, [interiorMode, layers.tileset3d, layers.google3d]);
+
+  // Re-collect the city entity list after any entity change and request a frame
+  const refreshCityEntities = useCallback((viewer) => {
+    const all = [];
+    viewer.entities.values.forEach(e => {
+      if (!e.properties?.bim_floor?.getValue?.()) all.push(e);
+    });
+    cityEntitiesRef.current = all;
+    all.forEach(e => { if (e && !e.isDestroyed?.()) e.show = true; });
+    tileReadyRef.current = true;
+    viewer.scene.requestRender(); // requestRenderMode: make the change visible
+  }, []);
 
   // ── Render / update parcel boundaries & building entities ─────────────────
   useEffect(() => {
@@ -1930,6 +1619,7 @@ export default function CesiumViewer({
 
     viewer.entities.removeAll();
     interiorEntRef.current = [];
+    singleFloorEntRef.current = [];
     entityMapRef.current = {};
 
     // 1. Render interactive 3D pilot pins — ONLY on landing page (no city selected)
@@ -2023,205 +1713,67 @@ export default function CesiumViewer({
               backgroundColor: Color.fromCssColorString('#020617').withAlpha(0.85),
               backgroundPadding: new Cartesian2(6, 3),
               translucencyByDistance: new NearFarScalar(100, 1.0, 4500, 0.0),
+              // `high`: parcel labels always visible. `balanced`: hide beyond Q.labelDist.
+              ...(isFinite(Q.labelDist) ? { distanceDisplayCondition: new DistanceDisplayCondition(0, 4500) } : {}),
             },
             properties: { parcel_id: p.parcel_id, is_parcel: true }
           });
         });
     }
 
-    // 3. Render Buildings & 3D Cadastral Envelopes across all real Earth pilot cities
-    // Buildings render as solid 3D architectural structures in their original form (matching stone beige #ded8c4),
-    // distinguished by high-visibility emerald green outlines and floating datum labels.
+    // 3. Buildings: one tracked entity group per building, so a selection or
+    //    floor change only rebuilds the affected buildings (see next effect).
+    buildingGroupsRef.current = new Map();
     if (targetBuildings?.length) {
       targetBuildings
         .filter(b => (!city || b.city === city) && b.city !== 'simulation' && b.city !== 'simcity')
         .forEach(b => {
-          const isUnderground = !!b.is_underground;
-          const isSelected    = selectedBuilding?.building_id === b.building_id;
-
-        if (!layers.buildings   && !isUnderground) return;
-        if (!layers.underground && isUnderground)  return;
-
-        const absH = Math.abs(b.height);
-        const footprint = buildingFootprint(b);
-
-        // Architectural body material — original clean stone beige matching the city's 3D models
-        const architecturalColor = Color.fromCssColorString('#ded8c4');
-        const outlineColor = isSelected
-          ? Color.fromCssColorString('#00e5ff')
-          : Color.fromCssColorString('#10b981');
-
-        if (isUnderground) {
-          // Subsurface lot: render subterranean envelope
-          viewer.entities.add({
-            name: b.name,
-            polygon: {
-              hierarchy:               new ConstantProperty(new PolygonHierarchy(footprint)),
-              extrudedHeight:          0,
-              height:                  -absH,
-              heightReference:         HeightReference.RELATIVE_TO_GROUND,
-              extrudedHeightReference: HeightReference.RELATIVE_TO_GROUND,
-              material:                new ColorMaterialProperty(Color.fromCssColorString('#7c3aed').withAlpha(0.25)),
-              outline:                 true,
-              outlineColor:            Color.fromCssColorString('#c084fc'),
-              outlineWidth:            2.0,
-              shadows:                 ShadowMode.DISABLED,
-              closeTop:                true,
-              closeBottom:             true,
-            },
-            position: Cartesian3.fromDegrees(b.lon, b.lat, -absH / 2),
-            properties: { building_id: b.building_id },
+          const isSelected = selectedIdRef.current === b.building_id;
+          const floorIdx   = currentFloorIdxRef.current;
+          const ents = addBuildingEntities(viewer, b, {
+            isSelected, currentFloorIdx: floorIdx, layers: layersRef.current,
           });
-        } else if (isSelected) {
-          // Surface ULPIN building: When SELECTED, expand into interactive multi-storey architectural form showing individual floors!
-          const floorCount = Math.min(Math.max(b.floor_count || Math.round(absH / 3.6), 2), 40);
-          const floorH = absH / floorCount;
-
-          for (let fi = 0; fi < floorCount; fi++) {
-            const zMin = fi * floorH;
-            const zMax = (fi + 1) * floorH;
-            const isFloorActive = currentFloorIdx === fi;
-            const floorUlpin = getFloorULPIN(b, fi);
-            const floorLabel = fi === 0 ? 'Ground Floor' : `Floor ${fi + 1}`;
-
-            viewer.entities.add({
-              name: `${b.name} · ${floorLabel} · ${floorUlpin}`,
-              polygon: {
-                hierarchy:               new ConstantProperty(new PolygonHierarchy(footprint)),
-                height:                  zMin,
-                extrudedHeight:          zMax,
-                heightReference:         HeightReference.RELATIVE_TO_GROUND,
-                extrudedHeightReference: HeightReference.RELATIVE_TO_GROUND,
-                material:                new ColorMaterialProperty(
-                  isFloorActive
-                    ? Color.fromCssColorString('#38bdf8').withAlpha(0.95)
-                    : fi % 2 === 0
-                      ? Color.fromCssColorString('#0284c7').withAlpha(0.75)
-                      : Color.fromCssColorString('#0369a1').withAlpha(0.75)
-                ),
-                outline:                 true,
-                outlineColor:            isFloorActive
-                  ? Color.fromCssColorString('#00e5ff')
-                  : Color.fromCssColorString('#38bdf8'),
-                outlineWidth:            isFloorActive ? 3.0 : 1.5,
-                shadows:                 ShadowMode.DISABLED,
-                closeTop:                true,
-                closeBottom:             true,
-              },
-              position: Cartesian3.fromDegrees(b.lon, b.lat, (zMin + zMax) / 2),
-              properties: {
-                building_id: b.building_id,
-                floor_index: fi,
-                floor_ulpin: floorUlpin,
-                floor_label: floorLabel,
-              },
-            });
-          }
-        } else {
-          // Unselected Surface Building: Single high-performance extruded architectural envelope!
-          // Drastically cuts entity count from 1000+ to ~25, eliminating CPU/GPU bottlenecks and 60 FPS stutter!
-          viewer.entities.add({
-            name: b.name,
-            polygon: {
-              hierarchy:               new ConstantProperty(new PolygonHierarchy(footprint)),
-              height:                  0,
-              extrudedHeight:          absH,
-              heightReference:         HeightReference.RELATIVE_TO_GROUND,
-              extrudedHeightReference: HeightReference.RELATIVE_TO_GROUND,
-              material:                new ColorMaterialProperty(architecturalColor),
-              outline:                 true,
-              outlineColor:            outlineColor,
-              outlineWidth:            2.0,
-              shadows:                 ShadowMode.DISABLED,
-              closeTop:                true,
-              closeBottom:             true,
-            },
-            position: Cartesian3.fromDegrees(b.lon, b.lat, absH / 2),
-            properties: {
-              building_id: b.building_id,
-              floor_index: 0,
-            },
-          });
-        }
-
-        // ── Class L Vertical Storey Slabs (layers.volumes) ──────────────────
-        if (layers?.volumes && !isUnderground && !isSelected) {
-          const totalFloors = b.floor_count || Math.max(2, Math.round(absH / 3.4));
-          const maxBands = Math.min(totalFloors, absH > 150 ? 14 : 8);
-          const slabStep = Math.max(1, Math.ceil(totalFloors / maxBands));
-          for (let fi = slabStep; fi < totalFloors; fi += slabStep) {
-            const zBase = (fi / totalFloors) * absH;
-            viewer.entities.add({
-              polygon: {
-                hierarchy:               new ConstantProperty(new PolygonHierarchy(footprint)),
-                height:                  zBase,
-                extrudedHeight:          zBase + 0.50,
-                heightReference:         HeightReference.RELATIVE_TO_GROUND,
-                extrudedHeightReference: HeightReference.RELATIVE_TO_GROUND,
-                material:                new ColorMaterialProperty(Color.fromCssColorString('#38bdf8').withAlpha(0.55)),
-                outline:                 true,
-                outlineColor:            Color.fromCssColorString('#00e5ff').withAlpha(0.85),
-                outlineWidth:            1.5,
-                shadows:                 ShadowMode.DISABLED,
-                closeTop:                true,
-                closeBottom:             true,
-              },
-              position: Cartesian3.fromDegrees(b.lon, b.lat, zBase + 0.25),
-              properties: { building_id: b.building_id, volume_slab: fi },
-            });
-          }
-        }
-
-        // ── Floating Datum Hologram Label: Name + 3D ULPIN Identifier ──────────
-        if (layers.buildings) {
-          const ulpinCode = b.canonical_rid || b.ulpin || b.prototype_3d_id || 'ULPIN-CADASTRE';
-          const statusBadge = b.validation_status === 'VALID' ? '●' : '▲';
-          const labelText = isSelected
-            ? `${b.name}\n🔑 ${ulpinCode}\n${isUnderground ? `Subsurface · -${absH.toFixed(0)}m` : `↑ ${absH.toFixed(0)}m · ${b.floor_count}F · [${statusBadge} ${b.validation_status}]`}`
-            : `${b.name}\n${ulpinCode}`;
-
-          const labelHeight = isUnderground ? 6 : absH + 8;
-          viewer.entities.add({
-            position: Cartesian3.fromDegrees(b.lon, b.lat, labelHeight),
-            label: {
-              text:          labelText,
-              font:          isSelected ? '700 12px Inter, sans-serif' : '600 10.5px Inter, sans-serif',
-              fillColor:     isSelected
-                ? Color.fromCssColorString('#00e5ff')
-                : Color.fromCssColorString('#34d399'),
-              outlineColor:  Color.fromCssColorString('#020617'),
-              outlineWidth:  3.5,
-              style:         LabelStyle.FILL_AND_OUTLINE,
-              verticalOrigin:   VerticalOrigin.BOTTOM,
-              horizontalOrigin: HorizontalOrigin.CENTER,
-              pixelOffset:      new Cartesian2(0, -8),
-              heightReference:  HeightReference.RELATIVE_TO_GROUND,
-              disableDepthTestDistance: Number.POSITIVE_INFINITY,
-              showBackground:  true,
-              backgroundColor: Color.fromCssColorString('#020617').withAlpha(0.88),
-              backgroundPadding: new Cartesian2(8, 4),
-              translucencyByDistance: new NearFarScalar(150, 1.0, 9500, 0.0),
-            },
-            properties: { building_id: b.building_id },
-          });
-        }
-
-        entityMapRef.current[b.building_id] = b.building_id;
-      });
+          buildingGroupsRef.current.set(b.building_id, { ents, isSelected, floorIdx });
+          entityMapRef.current[b.building_id] = b.building_id;
+        });
     }
 
-    // Collect all non-singleFloor entities added in this render cycle
-    const all = [];
-    viewer.entities.values.forEach(e => {
-      const isBimFloor = e.properties?.bim_floor?.getValue?.();
-      if (!isBimFloor) all.push(e);
+    refreshCityEntities(viewer);
+    // Deliberately NOT dependent on selectedBuilding / currentFloorIdx / explodedFloor /
+    // interiorMode / the whole `layers` object: those used to wipe and rebuild every
+    // parcel, building, slab and label on each click, floor step or layer toggle.
+  }, [city, targetBuildings, targetParcels, layers.parcels, layers.buildings, layers.underground, layers.volumes]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // ── Selection / floor-highlight change: rebuild ONLY the affected buildings ──
+  useEffect(() => {
+    const viewer = viewerRef.current;
+    if (!viewer || viewer.isDestroyed()) return;
+    const groups = buildingGroupsRef.current;
+    if (!groups || !groups.size) return;
+
+    const selId = selectedBuilding?.building_id ?? null;
+    const dirty = [];
+    groups.forEach((g, id) => {
+      const wantSelected = id === selId;
+      if (g.isSelected !== wantSelected || (wantSelected && g.floorIdx !== currentFloorIdx)) dirty.push(id);
     });
-    cityEntitiesRef.current = all;
-    all.forEach(e => { if (e && !e.isDestroyed?.()) e.show = true; });
-    tileReadyRef.current = true;
-    // Trigger a render so entity changes are visible in requestRenderMode
-    viewer.scene.requestRender();
-  }, [city, targetBuildings, targetParcels, layers, selectedBuilding, explodedFloor, interiorMode, currentFloorIdx]);
+    if (!dirty.length) return;
+
+    const byId = new Map((targetBuildings || []).map(b => [b.building_id, b]));
+    dirty.forEach(id => {
+      const g = groups.get(id);
+      g.ents.forEach(e => { try { viewer.entities.remove(e); } catch { /* already removed */ } });
+      const b = byId.get(id);
+      if (!b) { groups.delete(id); return; }
+      const isSelected = id === selId;
+      groups.set(id, {
+        ents: addBuildingEntities(viewer, b, { isSelected, currentFloorIdx, layers: layersRef.current }),
+        isSelected,
+        floorIdx: currentFloorIdx,
+      });
+    });
+    refreshCityEntities(viewer);
+  }, [selectedBuilding?.building_id, currentFloorIdx]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── On-demand single-floor BIM geometry ──────────────────────────────────
   // When in interior mode, renders only the current floor's full 3D BIM
@@ -2234,7 +1786,7 @@ export default function CesiumViewer({
 
     // Remove previous single-floor entities
     singleFloorEntRef.current.forEach(e => {
-      try { viewer.entities.remove(e); } catch (_) {}
+      try { viewer.entities.remove(e); } catch {}
     });
     singleFloorEntRef.current = [];
 

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export const CONFLICT_SCENARIOS = [
+const CONFLICT_SCENARIOS = [
   {
     id: 'BLR_DRAIN',
     city: 'bengaluru',

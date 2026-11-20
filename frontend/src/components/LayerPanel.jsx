@@ -515,7 +515,7 @@ export default function LayerPanel({
         .lp-switch-slider--on {
           background: #0284c7;
           border-color: #38bdf8;
-          box-shadow: 0 0 8px rgba(56, 189, 248, 0.4);
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
         }
 
         .lp-switch-slider--on .lp-switch-thumb {
@@ -557,7 +557,7 @@ export default function LayerPanel({
         .lp-pilot-card--active {
           background: rgba(56, 189, 248, 0.12);
           border-color: #38bdf8;
-          box-shadow: 0 0 10px rgba(56, 189, 248, 0.2);
+          box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
         }
 
         .lp-pilot-code {

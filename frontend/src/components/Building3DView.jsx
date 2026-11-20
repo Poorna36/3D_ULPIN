@@ -12,7 +12,7 @@ export default function Building3DView({
   floorH = 3.5,
   doFloorChange,
   setViewMode,
-  accentClr = '#38bdf8',
+  _accentClr = '#38bdf8',
 }) {
   const mountRef = useRef(null);
 
@@ -22,7 +22,6 @@ export default function Building3DView({
   const [autoRotate, setAutoRotate] = useState(false);
   const [hoveredFloor, setHoveredFloor] = useState(null);
   const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
-  const [selectedRoom, setSelectedRoom] = useState(null);
   const [ulpinCopied, setUlpinCopied] = useState(false);
 
   // Building geometry metrics in Three.js units (1 unit = 1 metre)
@@ -51,7 +50,9 @@ export default function Building3DView({
   const facadeMeshesRef = useRef({ cutaway: [], glass: [], wireframe: [] });
   const elevatorCabsRef = useRef([]);
   const dissectionRef = useRef(dissection);
-  dissectionRef.current = dissection;
+  useEffect(() => {
+    dissectionRef.current = dissection;
+  }, [dissection]);
 
   // ── Three.js Scene Setup ───────────────────────────────────────────────────
   useEffect(() => {
@@ -271,7 +272,7 @@ export default function Building3DView({
       const dissPct = dissectionRef.current / 100; // 0 to 1
       const extraGap = dissPct * (BASE_FLOOR_H * 2.2);
 
-      floorGroupsRef.current.forEach(({ group, vIdx, totalV }) => {
+      floorGroupsRef.current.forEach(({ group, vIdx }) => {
         const targetY = vIdx * (BASE_FLOOR_H + extraGap);
         // Smooth lerp for buttery motion
         group.position.y += (targetY - group.position.y) * 0.12;
@@ -380,7 +381,7 @@ export default function Building3DView({
 
       // 2. Interior Rooms Extrusion
       const rooms = getFloorRooms(building, f, fi, totalFloors);
-      rooms.forEach((room, ri) => {
+      rooms.forEach((room) => {
         // Map 2D floor plate (38m x 26m) coordinates to Three.js centered space
         const rX = room.x + room.w / 2 - BLDG_W / 2;
         const rZ = room.z + room.d / 2 - BLDG_D / 2;
@@ -527,9 +528,6 @@ export default function Building3DView({
       const uData = hit.userData;
       if (uData.fi !== undefined) {
         doFloorChange(uData.fi);
-        if (uData.type === 'room') {
-          setSelectedRoom(uData.room);
-        }
       }
     }
   };
@@ -559,7 +557,6 @@ export default function Building3DView({
   };
 
   const currentFloorObj = floors[clampedIdx] || { label: `Floor ${clampedIdx + 1}` };
-  const currentMeta = floorMeta(currentFloorObj.label, clampedIdx, totalFloors);
 
   return (
     <div style={{
@@ -598,17 +595,17 @@ export default function Building3DView({
         alignItems: 'center',
         gap: 16,
       }}>
-        {/* Glowing 3D Cuboid Badge */}
+        {/* 3D Cadastral Unit Badge */}
         <div style={{
           width: 38,
           height: 38,
-          borderRadius: 10,
-          background: 'rgba(6, 182, 212, 0.12)',
-          border: '1px solid rgba(6, 182, 212, 0.40)',
+          borderRadius: 8,
+          background: 'rgba(15, 23, 42, 0.8)',
+          border: '1px solid rgba(56, 189, 248, 0.35)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          boxShadow: '0 0 20px rgba(6, 182, 212, 0.25)',
+          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.4)',
         }}>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" strokeWidth="2">
             <polygon points="12 2 2 7 12 12 22 7 12 2" />
@@ -1165,7 +1162,6 @@ export default function Building3DView({
           Floors
         </span>
         {[...renderedFloors].reverse().map(({ f, fi }) => {
-          const fm = floorMeta(f.label, fi, totalFloors);
           const isAct = fi === clampedIdx;
           return (
             <div

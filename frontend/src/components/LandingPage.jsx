@@ -4,11 +4,11 @@ export default function LandingPage({ onEnter, isExiting = false }) {
   return (
     <div style={{
       position: 'fixed', inset: 0, zIndex: 90,
-      background: '#000000',
-      fontFamily: "'Space Grotesk', 'Inter', system-ui, sans-serif",
+      background: '#090d16',
+      fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
       overflow: 'hidden',
       display: 'flex', flexDirection: 'column',
-      color: '#ffffff',
+      color: '#f8fafc',
       pointerEvents: isExiting ? 'none' : 'auto',
       opacity: isExiting ? 0 : 1,
       transition: isExiting ? 'opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1)' : 'none',
@@ -16,10 +16,10 @@ export default function LandingPage({ onEnter, isExiting = false }) {
       {/* ── Top Navigation ─────────────────────────────────────── */}
       <nav style={{
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: '0 32px', height: 52,
-        borderBottom: '1px solid rgba(255,255,255,0.08)',
-        background: 'rgba(0, 0, 0, 0.75)',
-        backdropFilter: 'blur(16px)',
+        padding: '0 32px', height: 54,
+        borderBottom: '1px solid #1e293b',
+        background: 'rgba(9, 13, 22, 0.92)',
+        backdropFilter: 'blur(12px)',
         flexShrink: 0,
         position: 'relative', zIndex: 10,
       }}>
@@ -27,19 +27,29 @@ export default function LandingPage({ onEnter, isExiting = false }) {
         <div
           style={{
             display: 'flex', alignItems: 'center', gap: 10,
-            fontWeight: 800, fontSize: 17, letterSpacing: '-0.4px',
-            color: '#ffffff',
-            fontFamily: "'Syne', 'Space Grotesk', sans-serif",
+            fontWeight: 700, fontSize: 16, letterSpacing: '-0.2px',
+            color: '#f8fafc',
           }}
         >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+            <polyline points="2 17 12 22 22 17"/>
+            <polyline points="2 12 12 17 22 12"/>
+          </svg>
           TESSERACT
           <span style={{
-            display: 'inline-block',
-            width: 14, height: 14,
-            borderRadius: '50%',
-            background: 'radial-gradient(circle at 35% 35%, #ffffff 0%, #38bdf8 40%, #0369a1 80%, #000 100%)',
-            boxShadow: '0 0 8px rgba(56,189,248,0.6)',
-          }} />
+            fontSize: 10,
+            letterSpacing: '0.6px',
+            textTransform: 'uppercase',
+            fontWeight: 600,
+            padding: '2px 7px',
+            borderRadius: 4,
+            background: '#1e293b',
+            color: '#94a3b8',
+            border: '1px solid #334155'
+          }}>
+            3D Cadastre
+          </span>
         </div>
 
         {/* Right actions */}
@@ -48,19 +58,19 @@ export default function LandingPage({ onEnter, isExiting = false }) {
             id="landing-launch-btn"
             onClick={() => onEnter()}
             style={{
-              padding: '6px 18px', borderRadius: 999,
+              padding: '7px 18px', borderRadius: 6,
               background: '#2563eb',
-              border: '1px solid #2563eb',
+              border: '1px solid #1d4ed8',
               color: '#ffffff',
-              fontFamily: 'inherit', fontWeight: 700, fontSize: 12,
-              cursor: 'pointer', letterSpacing: '0.3px',
-              transition: 'all 0.15s',
-              boxShadow: '0 2px 12px rgba(37,99,235,0.4)',
+              fontFamily: 'inherit', fontWeight: 600, fontSize: 12.5,
+              cursor: 'pointer', letterSpacing: '0.2px',
+              transition: 'background 0.15s ease',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.3)',
             }}
-            onMouseEnter={e => { e.currentTarget.style.background = '#1d4ed8'; e.currentTarget.style.boxShadow = '0 2px 20px rgba(37,99,235,0.6)'; }}
-            onMouseLeave={e => { e.currentTarget.style.background = '#2563eb'; e.currentTarget.style.boxShadow = '0 2px 12px rgba(37,99,235,0.4)'; }}
+            onMouseEnter={e => { e.currentTarget.style.background = '#1d4ed8'; }}
+            onMouseLeave={e => { e.currentTarget.style.background = '#2563eb'; }}
           >
-            LAUNCH
+            Launch Map
           </button>
         </div>
       </nav>
@@ -80,94 +90,100 @@ export default function LandingPage({ onEnter, isExiting = false }) {
             padding: '0 32px 0 54px',
             position: 'relative', zIndex: 2,
           }}>
+            <div style={{
+              display: 'inline-flex', alignItems: 'center', gap: 6,
+              fontSize: 11, fontWeight: 600, letterSpacing: '0.6px',
+              textTransform: 'uppercase', color: '#38bdf8',
+              marginBottom: 12,
+            }}>
+              <span>National Spatial Cadastre Platform</span>
+            </div>
+
             <h1 style={{
-              fontFamily: "'Syne', 'Space Grotesk', sans-serif",
-              fontWeight: 800,
-              fontSize: 'clamp(36px, 4.4vw, 54px)',
-              lineHeight: 1.05, letterSpacing: '-2px',
-              margin: 0, marginBottom: 4,
-              color: '#ffffff',
+              fontWeight: 700,
+              fontSize: 'clamp(32px, 3.8vw, 48px)',
+              lineHeight: 1.12, letterSpacing: '-1.2px',
+              margin: 0, marginBottom: 6,
+              color: '#f8fafc',
             }}>
               Vertical 3D Urban
             </h1>
             <h1 style={{
-              fontFamily: "'Syne', 'Space Grotesk', sans-serif",
-              fontWeight: 800,
-              fontSize: 'clamp(36px, 4.4vw, 54px)',
-              lineHeight: 1.05, letterSpacing: '-2px',
+              fontWeight: 700,
+              fontSize: 'clamp(32px, 3.8vw, 48px)',
+              lineHeight: 1.12, letterSpacing: '-1.2px',
               margin: 0, marginBottom: 20,
-              color: 'rgba(255,255,255,0.38)',
+              color: '#94a3b8',
             }}>
-              Cadastre Mapping.
+              Cadastre Mapping
             </h1>
 
             <p style={{
               fontSize: 14, lineHeight: 1.65,
-              color: 'rgba(255,255,255,0.60)',
-              marginBottom: 28, maxWidth: 460,
+              color: '#94a3b8',
+              marginBottom: 28, maxWidth: 480,
               fontWeight: 400,
             }}>
-              Tesseract creates unique vertical 3D cadastral spatial identities
-              for every floor, unit, and subterranean layer. Bengaluru, Mumbai, Singapore
-              and Rotterdam — mapped in full cadastral 3D.
+              Tesseract delineates authoritative vertical 3D cadastral parcels
+              for multi-storey structures, individual units, and subterranean infrastructure across Bengaluru, Mumbai, Singapore, and Rotterdam.
             </p>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: 18, marginBottom: 40 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 40 }}>
               <button
                 id="landing-hero-launch-btn"
                 onClick={() => onEnter()}
                 style={{
-                  padding: '12px 26px', borderRadius: 999,
-                  background: '#ffffff', border: 'none',
-                  color: '#000000',
-                  fontFamily: 'inherit', fontWeight: 700, fontSize: 13,
-                  cursor: 'pointer', letterSpacing: '-0.2px',
-                  transition: 'all 0.2s',
-                  boxShadow: '0 4px 24px rgba(255,255,255,0.15)',
+                  padding: '11px 24px', borderRadius: 6,
+                  background: '#2563eb', border: '1px solid #1d4ed8',
+                  color: '#ffffff',
+                  fontFamily: 'inherit', fontWeight: 600, fontSize: 13,
+                  cursor: 'pointer', letterSpacing: '0.1px',
+                  transition: 'background 0.15s ease',
+                  boxShadow: '0 2px 8px rgba(37,99,235,0.3)',
                 }}
-                onMouseEnter={e => { e.currentTarget.style.background = '#e5e7eb'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
-                onMouseLeave={e => { e.currentTarget.style.background = '#ffffff'; e.currentTarget.style.transform = 'translateY(0)'; }}
+                onMouseEnter={e => { e.currentTarget.style.background = '#1d4ed8'; }}
+                onMouseLeave={e => { e.currentTarget.style.background = '#2563eb'; }}
               >
-                Launch
+                Launch 3D Cadastre
               </button>
             </div>
 
             {/* Bottom 3-Metric Bar */}
             <div style={{
               display: 'flex', alignItems: 'flex-start', gap: 32,
-              paddingTop: 24, borderTop: '1px solid rgba(255,255,255,0.08)',
+              paddingTop: 24, borderTop: '1px solid #1e293b',
               maxWidth: 480,
             }}>
               <div>
-                <div style={{ fontSize: 24, fontWeight: 800, fontFamily: "'Syne', sans-serif", color: '#ffffff', letterSpacing: '-0.5px' }}>
+                <div style={{ fontSize: 22, fontWeight: 700, color: '#f8fafc', letterSpacing: '-0.3px' }}>
                   &lt; 0.05 m
                 </div>
-                <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.45)', marginTop: 2, fontWeight: 500 }}>
+                <div style={{ fontSize: 11.5, color: '#64748b', marginTop: 2, fontWeight: 500 }}>
                   Spatial Precision
                 </div>
               </div>
-              <div style={{ width: 1, height: 36, background: 'rgba(255,255,255,0.10)' }} />
+              <div style={{ width: 1, height: 36, background: '#1e293b' }} />
               <div>
-                <div style={{ fontSize: 24, fontWeight: 800, fontFamily: "'Syne', sans-serif", color: '#ffffff', letterSpacing: '-0.5px' }}>
+                <div style={{ fontSize: 22, fontWeight: 700, color: '#f8fafc', letterSpacing: '-0.3px' }}>
                   ISO 19152
                 </div>
-                <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.45)', marginTop: 2, fontWeight: 500 }}>
+                <div style={{ fontSize: 11.5, color: '#64748b', marginTop: 2, fontWeight: 500 }}>
                   LADM Standard
                 </div>
               </div>
-              <div style={{ width: 1, height: 36, background: 'rgba(255,255,255,0.10)' }} />
+              <div style={{ width: 1, height: 36, background: '#1e293b' }} />
               <div>
-                <div style={{ fontSize: 24, fontWeight: 800, fontFamily: "'Syne', sans-serif", color: '#ffffff', letterSpacing: '-0.5px' }}>
+                <div style={{ fontSize: 22, fontWeight: 700, color: '#f8fafc', letterSpacing: '-0.3px' }}>
                   100%
                 </div>
-                <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.45)', marginTop: 2, fontWeight: 500 }}>
+                <div style={{ fontSize: 11.5, color: '#64748b', marginTop: 2, fontWeight: 500 }}>
                   Watertight Solids
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Right: Model 3D Earth Globe - Completely unrestricted, zero box clipping */}
+          {/* Right: Model 3D Earth Globe */}
           <div style={{
             flex: 1,
             height: '100%',
@@ -181,23 +197,6 @@ export default function LandingPage({ onEnter, isExiting = false }) {
           </div>
         </div>
       </div>
-
-      {/* ── Background Subtle Cosmic Starfield Overlay ──────────── */}
-      <svg style={{
-        position: 'absolute', inset: 0, width: '100%', height: '100%',
-        pointerEvents: 'none', zIndex: 0, opacity: 0.35,
-      }}>
-        {Array.from({ length: 60 }, (_, i) => (
-          <circle
-            key={i}
-            cx={`${(i * 37 + 13) % 100}%`}
-            cy={`${(i * 53 + 7) % 100}%`}
-            r={(i % 3) + 0.5}
-            fill="white"
-            opacity={(i % 5) * 0.12 + 0.05}
-          />
-        ))}
-      </svg>
     </div>
   );
 }

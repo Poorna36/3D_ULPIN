@@ -1,5 +1,7 @@
 // ── Floor Type Metadata & Architectural Room Layout Generator ─────────────
 
+import { getFloorULPIN } from './ulpinGenerator.js';
+
 export function floorMeta(label = '', idx = 0, total = 1) {
   const l = (label || '').toLowerCase();
   if (l.includes('ground') || idx === 0)         return { icon: '◫', type: 'Ground Floor', color: '#10b981', category: 'Ground & Lobby' };
@@ -178,4 +180,104 @@ export function getFloorRooms(building, floor, floorIndex, totalFloors) {
     { x: 29, z: 17, w: 5,  d: 3,  label: 'Server Room',            area: 15,  color: '#38bdf8', type: 'service' },
     { x: 1,  z: 20, w: 36, d: 3,  label: 'Open Office — Zone B',   area: 108, color: '#4f46e5', type: 'office'  },
   ];
+}
+
+// ── Build a COMPLETE floor list from a building object ────────────────────────
+// When building.floors has only key/representative floors (e.g., 8 out of 117),
+// this synthesizes the full list using floor_count and overlays named data.
+export function buildFullFloorList(building) {
+  if (!building) return [];
+  const totalAboveGround = building.floor_count || 10;
+  const absH    = Math.abs(building.height || 40);
+  const gElev   = building.ground_elevation || 0;
+  const floorH  = absH / Math.max(totalAboveGround, 1);
+
+  // Map from level_index → named floor object
+  const namedByLevel = {};
+  (building.floors || []).forEach(f => { namedByLevel[f.level_index] = f; });
+
+  const result = [];
+
+  // 1. Basements first (negative level_index, e.g. -3, -2, -1)
+  const basementIdxs = Object.keys(namedByLevel)
+    .map(Number)
+    .filter(n => n < 0)
+    .sort((a, b) => a - b); // B3 first, B1 last
+  basementIdxs.forEach((idx, bi) => {
+    const f = namedByLevel[idx];
+    const floorUlpin = f.canonical_rid || f.ulpin || getFloorULPIN(building, -(bi + 1));
+    result.push({ ...f, ulpin: floorUlpin, canonical_rid: floorUlpin });
+  });
+
+  // 2. Above-ground floors 0 → totalAboveGround-1
+  for (let i = 0; i < totalAboveGround; i++) {
+    const floorUlpin = getFloorULPIN(building, i);
+    if (namedByLevel[i]) {
+      // Use named floor data (has real label, z_min, z_max)
+      result.push({
+        ...namedByLevel[i],
+        ulpin: namedByLevel[i].canonical_rid || namedByLevel[i].ulpin || floorUlpin,
+        canonical_rid: namedByLevel[i].canonical_rid || namedByLevel[i].ulpin || floorUlpin,
+      });
+    } else {
+      // Synthesize from geometry
+      const label = i === 0
+        ? 'Ground Floor'
+        : i === totalAboveGround - 1
+        ? `Floor ${i} — Rooftop`
+        : `Floor ${i}`;
+
+      const fIdxPad = String(i).padStart(2, '0');
+      const strataUnits = building.bim_enabled ? [
+        {
+          unit_id: `MK01-U${fIdxPad}01A`,
+          name: `Strata Suite ${fIdxPad}-A (East Wing)`,
+          ifc_space: `IfcSpace:CommercialUnit:${fIdxPad}-A`,
+          gross_area_sqm: 184.5,
+          net_internal_area_sqm: 168.2,
+          share_value: "15/1000",
+          ceiling_height: +(floorH * 0.85).toFixed(1),
+          tenure: "99-year Leasehold",
+          boundary_type: "Physical 200mm RC Core + Curtain Glazing",
+          rooms: [
+            { name: "Primary Commercial Suite", area_sqm: 112.0 },
+            { name: "Executive Meeting Room", area_sqm: 36.2 },
+            { name: "IT Server Alcove", area_sqm: 20.0 }
+          ]
+        },
+        {
+          unit_id: `MK01-U${fIdxPad}02B`,
+          name: `Strata Suite ${fIdxPad}-B (West Wing)`,
+          ifc_space: `IfcSpace:CommercialUnit:${fIdxPad}-B`,
+          gross_area_sqm: 198.0,
+          net_internal_area_sqm: 181.4,
+          share_value: "16/1000",
+          ceiling_height: +(floorH * 0.85).toFixed(1),
+          tenure: "99-year Leasehold",
+          boundary_type: "Physical Drywall + Structural Column Core",
+          rooms: [
+            { name: "Collaborative Open Office", area_sqm: 126.4 },
+            { name: "Conference Room Alpha", area_sqm: 39.0 },
+            { name: "Breakout Lounge", area_sqm: 16.0 }
+          ]
+        }
+      ] : [];
+
+      result.push({
+        floor_id:    `${building.building_id}_GEN_F${i}`,
+        level_index: i,
+        label,
+        ulpin:       floorUlpin,
+        canonical_rid: floorUlpin,
+        z_min: gElev + i * floorH,
+        z_max: gElev + (i + 1) * floorH,
+        unit_count: strataUnits.length,
+        strata_units: strataUnits,
+        confidence: 'INFERRED',
+        status: 'VALID',
+      });
+    }
+  }
+
+  return result;
 }

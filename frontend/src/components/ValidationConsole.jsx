@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export default function ValidationConsole({ building, onClose, onSelectExplain }) {
+export default function ValidationConsole({ building, onClose, _onSelectExplain }) {
   const [activeTier, setActiveTier] = useState('T2');
   const [selectedFinding, setSelectedFinding] = useState(null);
   const [examinerAction, setExaminerAction] = useState(null);

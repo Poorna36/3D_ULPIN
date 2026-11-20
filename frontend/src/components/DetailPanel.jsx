@@ -1,8 +1,7 @@
 import { useState, useMemo, useRef, useEffect, useCallback } from 'react';
-import StatusBadge from './StatusBadge.jsx';
 import { OBJECT_CLASSES } from '../utils/grammar.js';
 import { searchBuildingsQuery, getFloorULPIN } from '../utils/ulpinGenerator.js';
-import { buildFullFloorList } from './InteriorWalkthrough.jsx';
+import { buildFullFloorList } from '../utils/floorLayouts.js';
 
 // ── Building Type Classifier ────────────────────────────────────────────────
 // Derives visual identity from building name using keyword matching.
@@ -475,11 +474,6 @@ function ThreeLayerIdentityCard({ building }) {
     morton_63: nk.locator,
     lod: 'LOD2'
   };
-  const binding = building.binding_record || {
-    version: 1,
-    record_hash: '0x7F2A9C1E5B3D4A80',
-    sign_off: { examiner_id: 'EXAMINER-CAD-401' }
-  };
 
   const copy = () => {
     navigator.clipboard.writeText(rid).catch(() => {});
@@ -764,7 +758,7 @@ function FloorUnitList({ building, explodedFloor, onFloorClick, onEnterInterior 
   );
 }
 
-// DigitalTwinTelemetryCard — 100% LOD4 BIM Twin telemetry & vision proof
+// DigitalTwinTelemetryCard — BIM Structure & Sensor Telemetry
 function DigitalTwinTelemetryCard({ building }) {
   if (building.data_provenance !== '100%_LOD4_DIGITAL_TWIN' && !building.telemetry) return null;
   const t = building.telemetry || {
@@ -778,32 +772,32 @@ function DigitalTwinTelemetryCard({ building }) {
   const occPct = Math.round((t.occupancy_current / (t.occupancy_capacity || 1)) * 100);
 
   return (
-    <div className="card" style={{ border: '1px solid rgba(236, 72, 153, 0.4)', background: 'rgba(236, 72, 153, 0.06)' }}>
+    <div className="card" style={{ border: '1px solid #334155', background: 'rgba(15, 23, 42, 0.65)' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-          <span className="badge" style={{ background: 'rgba(236, 72, 153, 0.25)', color: '#f472b6', border: '1px solid #f472b6', fontSize: '9px', padding: '1px 6px' }}>
-            100% LOD4 BIM TWIN
+          <span className="badge" style={{ background: '#1e293b', color: '#94a3b8', border: '1px solid #334155', fontSize: '9px', padding: '1px 6px' }}>
+            IFC 4.3 BIM DATA
           </span>
           <span className="badge badge-valid" style={{ fontSize: '9px', padding: '1px 5px' }}>AUTHORITATIVE</span>
         </div>
-        <span style={{ fontSize: '10px', color: '#f472b6', fontWeight: 600 }}>LIVE TELEMETRY</span>
+        <span style={{ fontSize: '10px', color: '#38bdf8', fontWeight: 600 }}>STRUCTURE TELEMETRY</span>
       </div>
 
-      <div style={{ fontSize: '11px', color: 'rgba(255,255,255,0.7)', lineHeight: 1.5, marginBottom: '10px' }}>
-        Native IFC 4.3 BIM with micro-spatial cadastre, sky-bridge rights, and subsurface strata.
+      <div style={{ fontSize: '11px', color: '#94a3b8', lineHeight: 1.5, marginBottom: '10px' }}>
+        Native IFC 4.3 BIM with micro-spatial cadastre, boundary coordinates, and subsurface strata.
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', fontSize: '11px' }}>
-        <div style={{ padding: '6px 8px', background: 'rgba(0,0,0,0.35)', borderRadius: '6px' }}>
-          <div style={{ color: 'var(--text-dim)', fontSize: '10px' }}>Occupancy Load</div>
+        <div style={{ padding: '6px 8px', background: '#0f172a', border: '1px solid #1e293b', borderRadius: '6px' }}>
+          <div style={{ color: '#64748b', fontSize: '10px' }}>Occupancy Load</div>
           <div style={{ color: '#fff', fontWeight: 700, marginTop: '2px' }}>
             {t.occupancy_current?.toLocaleString()} / {t.occupancy_capacity?.toLocaleString()}
           </div>
           <div style={{ fontSize: '10px', color: occPct > 85 ? '#f87171' : '#34d399', marginTop: '2px' }}>{occPct}% Capacity</div>
         </div>
 
-        <div style={{ padding: '6px 8px', background: 'rgba(0,0,0,0.35)', borderRadius: '6px' }}>
-          <div style={{ color: 'var(--text-dim)', fontSize: '10px' }}>Power Demand</div>
+        <div style={{ padding: '6px 8px', background: '#0f172a', border: '1px solid #1e293b', borderRadius: '6px' }}>
+          <div style={{ color: '#64748b', fontSize: '10px' }}>Power Demand</div>
           <div style={{ color: '#fff', fontWeight: 700, marginTop: '2px' }}>
             {t.power_demand_kw} kW
           </div>
@@ -829,42 +823,6 @@ function DigitalTwinTelemetryCard({ building }) {
   );
 }
 
-// BuildingInfoCard — main summary card
-function BuildingInfoCard({ building }) {
-  const infoRows = [
-    { label: 'Building ID',  value: <span className="mono" style={{ fontSize: '11px' }}>{building.building_id}</span> },
-    { label: 'Parent ULPIN', value: <span className="mono" style={{ fontSize: '11px', color: '#38bdf8' }}>{building.parent_ulpin || 'IN-KA-BLR-000101'}</span> },
-    { label: 'Height',       value: `${Math.abs(building.height || 0).toFixed(1)} m` },
-    { label: 'Floors',       value: building.floor_count },
-    { label: 'Ground Elev.', value: `${building.ground_elevation || 0} m` },
-    { label: 'Sensors / Evid',value: <span style={{ fontSize: '10px', color: '#38bdf8' }}>LiDAR (E1) + BIM (E4)</span> },
-    { label: 'Tolerance Ref', value: <span style={{ fontSize: '10px', color: '#34d399' }}>NAKSHA 5% Adapt.</span> },
-    { label: 'SoI CORS σ',   value: <span className="mono" style={{ fontSize: '10px', color: '#f59e0b' }}>±0.024m xy / ±0.045m z</span> },
-    { label: 'Provenance',   value: <StatusBadge status={building.data_provenance || 'REAL'} /> },
-  ];
-  return (
-    <div className="card">
-      <div className="card-head">
-        <div>
-          <div className="building-name">{building.name}</div>
-          <div style={{ fontSize: '11px', color: 'var(--text-dim)', marginTop: '2px' }}>{building.city?.toUpperCase()}</div>
-        </div>
-        <StatusBadge status={building.validation_status || 'VALID'} dot />
-      </div>
-      <table className="info-table" style={{ marginTop: '8px' }}>
-        <tbody>
-          {infoRows.map(r => (
-            <tr key={r.label}>
-              <td className="prov-label">{r.label}</td>
-              <td className="prov-value">{r.value}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-}
-
 // DetailPanel — right sidebar, main container
 export default function DetailPanel({
   city,
@@ -878,9 +836,9 @@ export default function DetailPanel({
   onEnterInterior,
   isCollapsed,
   onToggleCollapse,
-  onOpenValidationConsole,
+  _onOpenValidationConsole,
   onOpenStrata,
-  onOpenExport,
+  _onOpenExport,
   onReturnToEarth,
   onCitySelect
 }) {

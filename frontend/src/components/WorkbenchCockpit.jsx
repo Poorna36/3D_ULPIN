@@ -1,49 +1,5 @@
-import { useState, useRef } from 'react';
 import CitySelector from './CitySelector.jsx';
 import BuildingSearchQuery from './BuildingSearchQuery.jsx';
-
-const CITIES = [
-  {
-    id: 'mumbai',
-    name: 'Mumbai (South Cluster)',
-    shortName: 'MUMBAI CADASTRE',
-    coords: '18.99°N, 72.83°E',
-    tag: 'VERTICAL PILOT (117F)',
-    country: 'India',
-    desc: 'High-density coastal strata & supertalls up to 441.5m',
-    color: '#38bdf8',
-  },
-  {
-    id: 'bengaluru',
-    name: 'Bengaluru (Tech Corridor)',
-    shortName: 'BENGALURU CADASTRE',
-    coords: '12.97°N, 77.59°E',
-    tag: 'TECH & METRO STRATA',
-    country: 'India',
-    desc: 'Commercial campuses & subterranean metro alignment',
-    color: '#34d399',
-  },
-  {
-    id: 'singapore',
-    name: 'Singapore (Marina Bay)',
-    shortName: 'SINGAPORE CADASTRE',
-    coords: '1.28°N, 103.85°E',
-    tag: 'SKYBRIDGES & UTILITIES',
-    country: 'Singapore',
-    desc: 'Underground infrastructure & multi-tier land rights',
-    color: '#a78bfa',
-  },
-  {
-    id: 'netherlands',
-    name: 'Rotterdam (Wilhelminapier)',
-    shortName: 'ROTTERDAM CADASTRE',
-    coords: '51.90°N, 4.49°E',
-    tag: 'EU 3D BENCHMARK',
-    country: 'Netherlands',
-    desc: 'De Rotterdam vertical city & port maritime strata',
-    color: '#f59e0b',
-  },
-];
 
 export default function WorkbenchCockpit({
   city,
@@ -56,11 +12,6 @@ export default function WorkbenchCockpit({
   onTopView,
   onToggleLayerPanel,
   layerPanelOpen,
-  onToggleLayer,
-  layers,
-  onUploadCadastre,
-  activeMode,
-  onModeChange,
   onReturnToLanding,
   onOpenDisputes,
   onOpenStrata,
@@ -71,21 +22,8 @@ export default function WorkbenchCockpit({
   allBuildings = [],
   onSelectBuilding,
 }) {
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const fileInputRef = useRef(null);
-
-  const currentCityObj = CITIES.find(c => c.id === city) || CITIES[0];
   const isOrbit = !city;
   const rightOffset = sidebarOpen ? 408 : 24;
-
-  const handleSelectCity = (targetId) => {
-    setDropdownOpen(false);
-    if (targetId === 'orbit') {
-      onResetOrbit();
-    } else {
-      onCityChange(targetId);
-    }
-  };
 
   return (
     <>
@@ -107,20 +45,28 @@ export default function WorkbenchCockpit({
             title="Return to Landing Page & Earth Orbit"
             style={{
               display: 'flex', alignItems: 'center', gap: 8,
-              fontFamily: "'Syne', 'Space Grotesk', sans-serif",
-              fontWeight: 800, fontSize: 16, letterSpacing: '-0.3px',
+              fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+              fontWeight: 700, fontSize: 15, letterSpacing: '-0.2px',
               color: '#ffffff', cursor: 'pointer',
             }}
           >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+              <polyline points="2 17 12 22 22 17"/>
+              <polyline points="2 12 12 17 22 12"/>
+            </svg>
             Tesseract
             <span style={{
-              display: 'inline-block',
-              width: 8, height: 8,
-              borderRadius: '50%',
-              background: '#000000',
-              border: '1.5px solid rgba(255, 255, 255, 0.70)',
-              boxShadow: '0 0 8px rgba(0, 0, 0, 0.9)',
-            }} />
+              fontSize: 10,
+              fontWeight: 600,
+              padding: '1px 6px',
+              borderRadius: 4,
+              background: '#1e293b',
+              color: '#94a3b8',
+              border: '1px solid #334155'
+            }}>
+              3D
+            </span>
           </div>
 
           {/* Back Button to Earth Orbit (when a city is active) */}

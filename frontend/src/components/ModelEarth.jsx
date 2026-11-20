@@ -44,7 +44,7 @@ export default function ModelEarth() {
     earthGroup.rotation.z = (23.4 * Math.PI) / 180;
     scene.add(earthGroup);
 
-    // 4. Geometry & Texture (Bold 2.0 radius)
+    // 4. Geometry & Texture (Bold 2.0 radius, full-quality 96x96 sphere — original)
     const geometry = new THREE.SphereGeometry(2, 96, 96);
     const textureLoader = new THREE.TextureLoader();
     const earthTexture = textureLoader.load(
@@ -128,9 +128,10 @@ export default function ModelEarth() {
     window.addEventListener('touchmove', onTouchMove, { passive: true });
     window.addEventListener('touchend', onTouchEnd);
 
-    // 7. Animation Loop
-    let animId;
+    // 7. Animation Loop with pause when document is hidden
+    let animId = null;
     const animate = () => {
+      if (document.hidden) return;
       animId = requestAnimationFrame(animate);
       if (!isDragging) {
         earthMesh.rotation.y += autoSpeed;
@@ -147,6 +148,20 @@ export default function ModelEarth() {
     };
     animate();
 
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        if (animId) {
+          cancelAnimationFrame(animId);
+          animId = null;
+        }
+      } else {
+        if (!animId) {
+          animate();
+        }
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
     // 8. Resize Observer
     const resizeObserver = new ResizeObserver(() => {
       if (!container) return;
@@ -158,9 +173,10 @@ export default function ModelEarth() {
     });
     resizeObserver.observe(container);
 
-    // 9. Cleanup
+    // 9. Cleanup & Full Disposal
     return () => {
-      cancelAnimationFrame(animId);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      if (animId) cancelAnimationFrame(animId);
       resizeObserver.disconnect();
       domEl.removeEventListener('mousedown', onMouseDown);
       window.removeEventListener('mousemove', onMouseMove);
@@ -169,10 +185,12 @@ export default function ModelEarth() {
       window.removeEventListener('touchmove', onTouchMove);
       window.removeEventListener('touchend', onTouchEnd);
       if (container.contains(domEl)) container.removeChild(domEl);
+
       geometry.dispose();
       material.dispose();
       earthTexture.dispose();
       renderer.dispose();
+      scene.clear();
     };
   }, []);
 

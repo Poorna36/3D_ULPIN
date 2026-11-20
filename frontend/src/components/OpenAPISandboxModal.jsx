@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { allocateULPIN, verifyCandidateGeometry, getLineage, resolveRID } from '../mock/api.js';
+import { allocateULPIN, verifyCandidateGeometry, getLineage } from '../mock/api.js';
 import { OBJECT_CLASSES } from '../utils/grammar.js';
 
 export default function OpenAPISandboxModal({ building, onClose }) {
@@ -10,7 +10,6 @@ export default function OpenAPISandboxModal({ building, onClose }) {
   const [allocBld, setAllocBld] = useState('B0001');
   const [allocCls, setAllocCls] = useState('U');
   const [allocBoundary, setAllocBoundary] = useState('INNER_FACE');
-  const [allocProvenance, setAllocProvenance] = useState('REAL');
   const [allocResult, setAllocResult] = useState(null);
   const [allocLoading, setAllocLoading] = useState(false);
 
@@ -35,7 +34,7 @@ export default function OpenAPISandboxModal({ building, onClose }) {
         building_seq: allocBld,
         cls: allocCls,
         boundary_convention: allocBoundary,
-        data_provenance: allocProvenance
+        data_provenance: 'REAL'
       });
       setAllocResult(res);
     } finally {

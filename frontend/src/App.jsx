@@ -1,14 +1,12 @@
-import { useState, useEffect, useCallback, useRef, useMemo, lazy, Suspense } from 'react';
-import TopBar              from './components/TopBar.jsx';
+import { useState, useEffect, useCallback, useRef, lazy, Suspense } from 'react';
 import WorkbenchCockpit    from './components/WorkbenchCockpit.jsx';
 import LayerPanel          from './components/LayerPanel.jsx';
 // CesiumViewer lazy-loaded: defers the ~12MB Cesium bundle until first render
 // Cuts initial page load time by 70-80% — Landing Page appears instantly.
 const CesiumViewer = lazy(() => import('./components/CesiumViewer.jsx'));
 import DetailPanel         from './components/DetailPanel.jsx';
-import AIPipelinePanel     from './components/AIPipelinePanel.jsx';
-import PhotogrammetryPanel from './photogrammetry/PhotogrammetryPanel.jsx';
-import InteriorWalkthrough, { buildFullFloorList } from './components/InteriorWalkthrough.jsx';
+import InteriorWalkthrough from './components/InteriorWalkthrough.jsx';
+import { buildFullFloorList } from './utils/floorLayouts.js';
 import LandingPage         from './components/LandingPage.jsx';
 import ValidationConsole   from './components/ValidationConsole.jsx';
 import ConflictWorkflowModal from './components/ConflictWorkflowModal.jsx';
@@ -16,11 +14,16 @@ import VerticalStrataExplorer from './components/VerticalStrataExplorer.jsx';
 import OpenAPISandboxModal from './components/OpenAPISandboxModal.jsx';
 import CadastreExportModal from './components/CadastreExportModal.jsx';
 import PhotogrammetryPage  from './components/PhotogrammetryPage.jsx';
-import { getBuildings, getParcels, getAllPilotData } from './mock/api.js';
+import { getBuildings, getParcels, getAllPilotDataAsync, ALL_FALLBACK_PARCELS } from './mock/api.js';
+
+// Read quality preset from URL — mirrors the same logic in CesiumViewer.jsx so
+// DEFAULT_LAYERS.tileset3d is consistent with what CesiumViewer initializes.
+const _appQuality = new URLSearchParams(window.location.search).get('quality');
+const _osmDefault = _appQuality === 'balanced' ? false : true; // high (default) → true
 
 const DEFAULT_LAYERS = {
   google3d:    true,
-  tileset3d:   true,
+  tileset3d:   _osmDefault, // `high`: true (original); `balanced`: false (perf opt-in)
   shadows:     false,
   parcels:     true,
   buildings:   true,
@@ -54,7 +57,16 @@ const CITY_INFO = {
 };
 
 export default function App() {
-  const { allBuildings, allParcels }      = useMemo(() => getAllPilotData(), []);
+  const [allBuildings, setAllBuildings]   = useState([]);
+  const [allParcels, setAllParcels]       = useState(ALL_FALLBACK_PARCELS || []);
+
+  useEffect(() => {
+    getAllPilotDataAsync().then(({ allBuildings: ab, allParcels: ap }) => {
+      setAllBuildings(ab);
+      setAllParcels(ap);
+    }).catch(() => {});
+  }, []);
+
   const [city, setCity]                   = useState(null); // Starts on full Earth space orbit view
   const [flyTimestamp, setFlyTimestamp]   = useState(0);
   const [buildings, setBuildings]         = useState([]);
@@ -63,12 +75,18 @@ export default function App() {
   const [selectedBuilding, setSelected]   = useState(null);
   const [layers, setLayers]               = useState(DEFAULT_LAYERS);
   const [explodedFloor, setExplodedFloor] = useState(null);
-  const [aiStatus, setAIStatus]           = useState('idle');
-  const [showAI, setShowAI]               = useState(false);
   const [showPhotogrammetryPage, setShowPhotogrammetryPage] = useState(false);
   const [cityBanner, setCityBanner]       = useState(null);
   const [showLanding, setShowLanding]     = useState(true);
   const [landingExiting, setLandingExiting] = useState(false);
+
+  // Prefetch CesiumViewer chunk while landing page is visible without creating a WebGL context
+  useEffect(() => {
+    const id = typeof requestIdleCallback !== 'undefined'
+      ? requestIdleCallback(() => import('./components/CesiumViewer.jsx'))
+      : setTimeout(() => import('./components/CesiumViewer.jsx'), 1500);
+    return () => (typeof cancelIdleCallback !== 'undefined' ? cancelIdleCallback(id) : clearTimeout(id));
+  }, []);
   // Interior walkthrough state
   const [interiorActive, setInteriorActive] = useState(false);
   const [currentFloorIdx, setCurrentFloorIdx] = useState(0);
@@ -81,7 +99,6 @@ export default function App() {
   const [showStrata, setShowStrata]         = useState(false);
   const [showSandbox, setShowSandbox]       = useState(false);
   const [showExport, setShowExport]         = useState(false);
-  const [showAtlas, setShowAtlas]           = useState(false);
   const cameraControlsRef = useRef(null);
   const flyToFloorFnRef = useRef(null);
   const bannerTimer = useRef(null);
@@ -160,38 +177,60 @@ export default function App() {
     setSidebarCollapsed(false);
   }, [city]);
 
-  // Load buildings & parcels when city changes — instant preloaded resolution prevents flight lag
-  useEffect(() => {
-    setSelected(prev => (prev?.city === city ? prev : null));
+  // Reset selection & synchronize cached data when switching to a different city during render
+  const [prevCity, setPrevCity] = useState(city);
+  if (city !== prevCity) {
+    setPrevCity(city);
+    if (selected && selected.city !== city) {
+      setSelected(null);
+    }
     setExplodedFloor(null);
     if (!city) {
       setBuildings([]);
       setParcels([]);
       setCityBanner(null);
-      return;
+      setLoading(false);
+    } else {
+      const localB = allBuildings.filter(b => b.city === city);
+      const localP = allParcels.filter(p => p.city === city);
+      setBuildings(localB);
+      setParcels(localP);
+      setLoading(!localB.length);
+      setCityBanner(CITY_INFO[city]);
     }
+  }
 
-    // Immediately supply preloaded dataset for active city (0ms latency, zero flight jank)
-    const localB = allBuildings.filter(b => b.city === city);
-    const localP = allParcels.filter(p => p.city === city);
-    setBuildings(localB);
-    setParcels(localP);
+  // Load buildings & parcels asynchronously when city changes — dynamic loading fallback
+  useEffect(() => {
+    if (!city) return;
 
-    // Show city intro banner
+    // Clear city intro banner after timeout
     clearTimeout(bannerTimer.current);
-    setCityBanner(CITY_INFO[city]);
     bannerTimer.current = setTimeout(() => setCityBanner(null), 3200);
 
-    // Background asynchronous refresh from backend if available
+    // Asynchronously ensure city buildings & parcels are loaded from dynamic chunks or backend
     Promise.all([getBuildings(city), getParcels(city)]).then(([bData, pData]) => {
-      if (bData && bData.length) setBuildings(bData);
-      if (pData && pData.length) setParcels(pData);
-    }).catch(() => {});
+      if (bData && bData.length) {
+        setBuildings(prev => (prev.length === bData.length && prev[0]?.building_id === bData[0]?.building_id ? prev : bData));
+        setAllBuildings(prev => {
+          const hasCity = prev.some(b => b.city === city);
+          if (hasCity && prev.filter(b => b.city === city).length === bData.length) return prev;
+          const withoutCity = prev.filter(b => b.city !== city);
+          return [...withoutCity, ...bData];
+        });
+      }
+      if (pData && pData.length) {
+        setParcels(prev => (prev.length === pData.length && prev[0]?.parcel_id === pData[0]?.parcel_id ? prev : pData));
+      }
+      setLoading(false);
+    }).catch(() => {
+      setLoading(false);
+    });
 
     return () => clearTimeout(bannerTimer.current);
   }, [city, allBuildings, allParcels]);
 
-  const handleBuildingClick = useCallback((buildingId, buildingObj, floorIdx = 0) => {
+  const handleBuildingClick = useCallback((buildingId, buildingObj, _floorIdx = 0) => {
     if (!buildingId) { setSelected(null); setExplodedFloor(null); setInteriorActive(false); return; }
     // buildingObj is provided for dynamic virtual buildings not in the buildings state array
     const b = buildingObj ?? buildings.find(b => b.building_id === buildingId) ?? allBuildings.find(b => b.building_id === buildingId);
@@ -298,25 +337,27 @@ export default function App() {
 
       {/* 3. Full-Bleed 3D Cesium Engine (Earth Globe) */}
       <div style={{ width: '100%', height: '100%' }}>
-        <Suspense fallback={<div style={{ width: '100%', height: '100%', background: '#020912' }} />}>
-          <CesiumViewer
-            city={city}
-            flyTimestamp={flyTimestamp}
-            buildings={buildings}
-            parcels={parcels}
-            allBuildings={allBuildings}
-            allParcels={allParcels}
-            layers={layers}
-            selectedBuilding={selectedBuilding}
-            onBuildingClick={handleBuildingClick}
-            onCitySelect={handleCitySelect}
-            explodedFloor={explodedFloor}
-            onFlyToFloorReady={handleFlyToFloorReady}
-            interiorMode={interiorActive}
-            currentFloorIdx={currentFloorIdx}
-            onCameraControlsReady={handleCameraControlsReady}
-          />
-        </Suspense>
+        {(!showLanding || landingExiting) && (
+          <Suspense fallback={<div style={{ width: '100%', height: '100%', background: '#020912' }} />}>
+            <CesiumViewer
+              city={city}
+              flyTimestamp={flyTimestamp}
+              buildings={buildings}
+              parcels={parcels}
+              allBuildings={allBuildings}
+              allParcels={allParcels}
+              layers={layers}
+              selectedBuilding={selectedBuilding}
+              onBuildingClick={handleBuildingClick}
+              onCitySelect={handleCitySelect}
+              explodedFloor={explodedFloor}
+              onFlyToFloorReady={handleFlyToFloorReady}
+              interiorMode={interiorActive}
+              currentFloorIdx={currentFloorIdx}
+              onCameraControlsReady={handleCameraControlsReady}
+            />
+          </Suspense>
+        )}
       </div>
 
       {/* 4. City Cadastre Sidebar (Available only inside pilot cities) */}
@@ -406,15 +447,6 @@ export default function App() {
         </div>
       )}
 
-      {/* Floating Action Buttons removed per user request */}
-
-      {showAI && (
-        <AIPipelinePanel
-          onStatusChange={setAIStatus}
-          onClose={() => setShowAI(false)}
-        />
-      )}
-
       {showPhotogrammetryPage && (
         <PhotogrammetryPage
           onBack={() => setShowPhotogrammetryPage(false)}
@@ -432,38 +464,22 @@ export default function App() {
       )}
 
       <style>{`
-        .ai-fab {
-          position: fixed;
-          bottom: 24px; left: 50%; transform: translateX(-50%);
-          z-index: 70;
-          background: var(--violet-dim);
-          border-color: var(--violet);
-          color: var(--text-primary);
-          padding: 8px 20px;
-          font-size: 13px; font-weight: 500;
-          box-shadow: var(--violet-glow);
-          transition: all var(--t-normal);
-        }
-        .ai-fab:hover {
-          background: rgba(124,58,237,0.25);
-          box-shadow: 0 0 28px rgba(124,58,237,0.5);
-        }
-
         .photogrammetry-fab {
-          background: rgba(56, 189, 248, 0.15);
-          border-color: #38bdf8;
+          background: rgba(56, 189, 248, 0.12);
+          border-color: rgba(56, 189, 248, 0.4);
           color: #38bdf8;
-          padding: 8px 20px;
+          padding: 8px 18px;
           font-size: 13px; font-weight: 500;
           border-radius: var(--r-pill);
-          box-shadow: 0 0 16px rgba(56, 189, 248, 0.3);
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
           transition: all var(--t-normal);
           cursor: pointer;
           display: flex; align-items: center; gap: 8px;
         }
         .photogrammetry-fab:hover {
-          background: rgba(56, 189, 248, 0.28);
-          box-shadow: 0 0 28px rgba(56, 189, 248, 0.5);
+          background: rgba(56, 189, 248, 0.2);
+          border-color: #38bdf8;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
         }
 
         /* City loading indicator */
@@ -497,13 +513,13 @@ export default function App() {
           position: fixed;
           bottom: 80px; left: 50%; transform: translateX(-50%);
           z-index: 150;
-          background: rgba(5,10,20,0.9);
+          background: rgba(5,10,20,0.92);
           backdrop-filter: blur(20px);
-          border: 1px solid var(--banner-color, var(--cyan));
+          border: 1px solid var(--border-strong);
           border-radius: var(--r-lg);
           padding: 16px 28px;
           text-align: center;
-          box-shadow: 0 0 32px color-mix(in srgb, var(--banner-color, var(--cyan)) 40%, transparent);
+          box-shadow: 0 12px 32px rgba(0, 0, 0, 0.7);
           animation: bannerIn 0.4s cubic-bezier(0.16,1,0.3,1) forwards,
                      bannerOut 0.4s ease forwards 2.8s;
           pointer-events: none;
@@ -530,37 +546,6 @@ export default function App() {
           font-size: 12px; color: var(--text-dim); line-height: 1.5;
           max-width: 280px;
         }
-
-        /* Earth Space Orbit Guide */
-        .space-orbit-guide {
-          position: fixed;
-          bottom: 28px; left: calc(var(--panel-w) + 24px);
-          z-index: 80;
-          display: flex; align-items: center; gap: 14px;
-          padding: 12px 20px;
-          border-radius: var(--r-md);
-          border: 1px solid rgba(0, 212, 255, 0.25);
-          background: rgba(3, 7, 18, 0.85);
-          backdrop-filter: blur(16px);
-          box-shadow: 0 4px 24px rgba(0, 0, 0, 0.6), 0 0 16px rgba(0, 212, 255, 0.15);
-          pointer-events: none;
-          max-width: 440px;
-        }
-        .space-orbit-guide-icon {
-          font-size: 24px;
-          filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.6));
-        }
-        .space-orbit-guide-title {
-          font-size: 13px; font-weight: 600;
-          color: var(--cyan);
-          letter-spacing: 0.2px;
-          margin-bottom: 2px;
-        }
-        .space-orbit-guide-desc {
-          font-size: 11px; color: var(--text-secondary);
-          line-height: 1.4;
-        }
-
       `}</style>
     </>
   );

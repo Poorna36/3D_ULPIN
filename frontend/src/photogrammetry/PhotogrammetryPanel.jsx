@@ -92,10 +92,10 @@ export default function PhotogrammetryPanel({ onStatusChange, onBuildingGenerate
   const overallProgress = steps.reduce((a, s) => a + s.progress, 0) / steps.length;
 
   return (
-    <div className="ai-panel glass anim-fade-up" id="photogrammetry-panel" style={{ width: '580px', maxWidth: '95vw', maxHeight: '88vh', display: 'flex', flexDirection: 'column' }}>
+    <div className="process-panel glass anim-fade-up" id="photogrammetry-panel" style={{ width: '580px', maxWidth: '95vw', maxHeight: '88vh', display: 'flex', flexDirection: 'column' }}>
       
       {/* Header */}
-      <div className="ai-panel-header" style={{ padding: '14px 18px', borderBottom: '1px solid var(--border)' }}>
+      <div className="process-panel-header" style={{ padding: '14px 18px', borderBottom: '1px solid var(--border)' }}>
         <div style={{ flex: 1 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
             <span style={{ fontSize: '20px' }}>🚁</span>
@@ -183,7 +183,7 @@ export default function PhotogrammetryPanel({ onStatusChange, onBuildingGenerate
         {steps.map((s, idx) => (
           <div
             key={s.id}
-            className={`ai-step ${s.status}`}
+            className={`process-step ${s.status}`}
             style={{
               padding: '10px',
               borderRadius: '8px',

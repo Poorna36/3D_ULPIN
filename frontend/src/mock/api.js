@@ -15,21 +15,46 @@
 //   GET  /api/validation/:buildingId
 //   GET  /api/parcels
 
-import bengaluruBuildings    from './bengaluru_buildings.js';
-import mumbaiBuildings       from './mumbai_buildings.js';
-import netherlandsBuildings  from './netherlands_buildings.js';
-import singaporeBuildings    from './singapore_buildings.js';
-import { computeCheckSymbol, formatRID, verifyCheckSymbol, generateNaturalKey, encodeMorton3D, evaluateICT } from '../utils/grammar.js';
+import { formatRID, generateNaturalKey, evaluateICT } from '../utils/grammar.js';
 import { ensureBuildingULPIN, searchBuildingsQuery } from '../utils/ulpinGenerator.js';
 
 const BACKEND_BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000';
 
-export const FALLBACK_BUILDINGS = {
-  bengaluru:   bengaluruBuildings.map((b, i) => ensureBuildingULPIN(b, i + 1)),
-  mumbai:      mumbaiBuildings.map((b, i) => ensureBuildingULPIN(b, i + 1)),
-  netherlands: netherlandsBuildings.map((b, i) => ensureBuildingULPIN(b, i + 1)),
-  singapore:   singaporeBuildings.map((b, i) => ensureBuildingULPIN(b, i + 1)),
+const cityLoaders = {
+  bengaluru:   () => import('./bengaluru_buildings.js'),
+  mumbai:      () => import('./mumbai_buildings.js'),
+  netherlands: () => import('./netherlands_buildings.js'),
+  singapore:   () => import('./singapore_buildings.js'),
 };
+
+export const cityCache = {
+  bengaluru:   null,
+  mumbai:      null,
+  netherlands: null,
+  singapore:   null,
+};
+
+export async function loadCityBuildings(city) {
+  if (!cityLoaders[city]) return [];
+  if (cityCache[city]) return cityCache[city];
+  const mod = await cityLoaders[city]();
+  const raw = mod.default || mod;
+  const processed = raw.map((b, i) => ensureBuildingULPIN(b, i + 1));
+  cityCache[city] = processed;
+  return processed;
+}
+
+export async function loadAllPilotBuildings() {
+  const cities = Object.keys(cityLoaders);
+  const results = await Promise.all(cities.map(c => loadCityBuildings(c)));
+  return results.flat();
+}
+
+export const FALLBACK_BUILDINGS = new Proxy({}, {
+  get(target, prop) {
+    return cityCache[prop] ?? [];
+  }
+});
 
 const FALLBACK_PARCELS = {
   bengaluru: [
@@ -204,6 +229,13 @@ const FALLBACK_PARCELS = {
     }
   ]
 };
+
+export const ALL_FALLBACK_PARCELS = [
+  ...(FALLBACK_PARCELS.bengaluru || []),
+  ...(FALLBACK_PARCELS.mumbai || []),
+  ...(FALLBACK_PARCELS.netherlands || []),
+  ...(FALLBACK_PARCELS.singapore || []),
+];
 
 const delay = (ms = 150) => new Promise(r => setTimeout(r, ms));
 
@@ -631,7 +663,7 @@ export async function getBuildings(city) {
     }
   } catch {}
   await delay(100);
-  return (FALLBACK_BUILDINGS[city] ?? []).map((b, i) => ensureBuildingULPIN(b, i + 1));
+  return loadCityBuildings(city);
 }
 
 export async function getBuilding(buildingId) {
@@ -643,8 +675,9 @@ export async function getBuilding(buildingId) {
     }
   } catch {}
   await delay(60);
-  for (const buildings of Object.values(FALLBACK_BUILDINGS)) {
-    const found = buildings.find(b =>
+  for (const c of ['bengaluru', 'mumbai', 'netherlands', 'singapore']) {
+    const blds = await loadCityBuildings(c);
+    const found = blds.find(b =>
       b.building_id === buildingId ||
       b.canonical_rid === buildingId ||
       b.ulpin === buildingId ||
@@ -667,15 +700,10 @@ export async function searchBuildings(city, query, options = {}) {
   await delay(60);
   
   let pool = [];
-  if (city && city !== 'all' && FALLBACK_BUILDINGS[city]) {
-    pool = FALLBACK_BUILDINGS[city];
+  if (city && city !== 'all') {
+    pool = await loadCityBuildings(city);
   } else {
-    pool = [
-      ...FALLBACK_BUILDINGS.bengaluru,
-      ...FALLBACK_BUILDINGS.mumbai,
-      ...FALLBACK_BUILDINGS.netherlands,
-      ...FALLBACK_BUILDINGS.singapore,
-    ];
+    pool = await loadAllPilotBuildings();
   }
 
   return searchBuildingsQuery(pool, query, { city, ...options });
@@ -724,16 +752,15 @@ export const CITY_CAMERAS = {
 
 export function getAllPilotData() {
   const allBuildings = [
-    ...bengaluruBuildings,
-    ...mumbaiBuildings,
-    ...netherlandsBuildings,
-    ...singaporeBuildings,
+    ...(cityCache.bengaluru || []),
+    ...(cityCache.mumbai || []),
+    ...(cityCache.netherlands || []),
+    ...(cityCache.singapore || []),
   ];
-  const allParcels = [
-    ...(FALLBACK_PARCELS.bengaluru || []),
-    ...(FALLBACK_PARCELS.mumbai || []),
-    ...(FALLBACK_PARCELS.netherlands || []),
-    ...(FALLBACK_PARCELS.singapore || []),
-  ];
-  return { allBuildings, allParcels };
+  return { allBuildings, allParcels: ALL_FALLBACK_PARCELS };
+}
+
+export async function getAllPilotDataAsync() {
+  const allBuildings = await loadAllPilotBuildings();
+  return { allBuildings, allParcels: ALL_FALLBACK_PARCELS };
 }

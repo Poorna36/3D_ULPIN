@@ -12,11 +12,9 @@
 
 import {
   formatRID,
-  computeCheckSymbol,
   verifyCheckSymbol,
   generateNaturalKey,
   encodeMorton3D,
-  OBJECT_CLASSES,
 } from './grammar.js';
 
 // City code mapping for ISO 3166-2 / Cadastral Prefix

@@ -45,3 +45,4 @@ specialist_branch/
 .venv/
 .cache/
 .tmp/
+docs/perf-compare/

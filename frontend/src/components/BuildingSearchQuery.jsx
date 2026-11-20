@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import { searchBuildingsQuery, getFloorULPIN } from '../utils/ulpinGenerator.js';
-import { buildFullFloorList } from './InteriorWalkthrough.jsx';
+import { buildFullFloorList } from '../utils/floorLayouts.js';
 
 // Archetype classifier for clean subtitles and badges
 function getBuildingCategoryLabel(name = '', height = 0, floorCount = 0) {
@@ -20,7 +20,7 @@ function getBuildingCategoryLabel(name = '', height = 0, floorCount = 0) {
 
 export default function BuildingSearchQuery({
   buildings = [],
-  currentCity,
+  _currentCity,
   onSelectBuilding,
   placeholder = 'Search structure or 3D ULPIN… [/]',
 }) {
@@ -59,11 +59,6 @@ export default function BuildingSearchQuery({
       limit: 20,
     });
   }, [buildings, query, category]);
-
-  // Keep highlighted item in bounds
-  useEffect(() => {
-    setHighlightIdx(0);
-  }, [results]);
 
   // Click outside to close
   useEffect(() => {
@@ -198,6 +193,7 @@ export default function BuildingSearchQuery({
           value={query}
           onChange={(e) => {
             setQuery(e.target.value);
+            setHighlightIdx(0);
             setOpen(true);
           }}
           onFocus={() => setOpen(true)}
@@ -223,6 +219,7 @@ export default function BuildingSearchQuery({
           <button
             onClick={() => {
               setQuery('');
+              setHighlightIdx(0);
               inputRef.current?.focus();
             }}
             title="Clear search"
@@ -343,7 +340,10 @@ export default function BuildingSearchQuery({
               return (
                 <button
                   key={chip.id}
-                  onClick={() => setCategory(chip.id)}
+                  onClick={() => {
+                    setCategory(chip.id);
+                    setHighlightIdx(0);
+                  }}
                   style={{
                     padding: '3px 8px',
                     borderRadius: 5,
