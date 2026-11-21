@@ -146,10 +146,10 @@ export default function BuildingSearchQuery({
           alignItems: 'center',
           gap: 8,
           background: '#202024',
-          border: open ? '1px solid #38bdf8' : '1px solid #27272a',
+          border: open ? '1px solid #ffffff' : '1px solid #27272a',
           borderRadius: 8,
           padding: '6px 12px',
-          boxShadow: open ? '0 0 12px rgba(56, 189, 248, 0.25)' : '0 2px 8px rgba(0, 0, 0, 0.4)',
+          boxShadow: open ? '0 0 12px rgba(255, 255, 255, 0.2)' : '0 2px 8px rgba(0, 0, 0, 0.4)',
           transition: 'all 0.15s ease',
         }}
       >
@@ -161,7 +161,7 @@ export default function BuildingSearchQuery({
             style={{
               background: 'none',
               border: 'none',
-              color: '#38bdf8',
+              color: '#ffffff',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
@@ -298,7 +298,7 @@ export default function BuildingSearchQuery({
               style={{
                 background: 'none',
                 border: 'none',
-                color: '#38bdf8',
+                color: '#ffffff',
                 fontSize: '11.5px',
                 fontWeight: 600,
                 cursor: 'pointer',
@@ -432,7 +432,7 @@ export default function BuildingSearchQuery({
                       <span>{label}</span>
                       <span style={{ color: '#52525b' }}>•</span>
                       <span>{b.city}</span>
-                      <span style={{ marginLeft: 'auto', fontSize: 9.5, color: '#10b981', fontWeight: 500 }}>
+                      <span style={{ marginLeft: 'auto', fontSize: 9.5, color: '#ffffff', fontWeight: 500 }}>
                         Verified
                       </span>
                     </div>
@@ -455,7 +455,7 @@ export default function BuildingSearchQuery({
                         style={{
                           fontFamily: 'ui-monospace, SFMono-Regular, monospace',
                           fontSize: 10,
-                          color: '#38bdf8',
+                          color: '#ffffff',
                           overflow: 'hidden',
                           textOverflow: 'ellipsis',
                           whiteSpace: 'nowrap',
@@ -467,9 +467,9 @@ export default function BuildingSearchQuery({
                         onClick={(e) => copyULPIN(e, ulpin)}
                         title="Copy ULPIN"
                         style={{
-                          background: isCopied ? '#10b981' : 'transparent',
+                          background: isCopied ? '#ffffff' : 'transparent',
                           border: isCopied ? 'none' : '1px solid #3f3f46',
-                          color: isCopied ? '#ffffff' : '#a1a1aa',
+                          color: isCopied ? '#000000' : '#a1a1aa',
                           padding: '1px 6px',
                           borderRadius: 3,
                           fontSize: 9,
@@ -493,10 +493,10 @@ export default function BuildingSearchQuery({
                         style={{
                           flex: 1,
                           padding: '4px 8px',
-                          background: '#0284c7',
+                          background: '#ffffff',
                           border: 'none',
                           borderRadius: 4,
-                          color: '#ffffff',
+                          color: '#000000',
                           fontSize: 10,
                           fontWeight: 600,
                           cursor: 'pointer',
@@ -571,7 +571,7 @@ export default function BuildingSearchQuery({
                                 </div>
                                 <div
                                   style={{
-                                    color: '#38bdf8',
+                                    color: '#ffffff',
                                     fontFamily: 'monospace',
                                     fontSize: 9,
                                     marginTop: 1,
@@ -586,9 +586,9 @@ export default function BuildingSearchQuery({
                               <button
                                 onClick={(e) => copyFloorULPIN(e, floorUlpin)}
                                 style={{
-                                  background: isCopiedF ? '#10b981' : 'transparent',
+                                  background: isCopiedF ? '#ffffff' : 'transparent',
                                   border: '1px solid #3f3f46',
-                                  color: isCopiedF ? '#ffffff' : '#a1a1aa',
+                                  color: isCopiedF ? '#000000' : '#a1a1aa',
                                   padding: '1px 5px',
                                   borderRadius: 3,
                                   fontSize: 8,
@@ -634,7 +634,7 @@ export default function BuildingSearchQuery({
             }}
           >
             <span>↑↓ Navigate • ↵ Select • Esc Close</span>
-            <span style={{ color: '#38bdf8' }}>3D Cadastre Query</span>
+            <span style={{ color: '#ffffff' }}>3D Cadastre Query</span>
           </div>
         </div>
       )}

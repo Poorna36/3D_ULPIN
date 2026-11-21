@@ -256,7 +256,7 @@ export default function InteriorWalkthrough({ building, currentFloorIdx, onFloor
   // ── Viewport: Single Floor Perspective + All-Floors Stacked Section ────────
   const FloorPerspectiveViewport = isActive ? (() => {
     const floorLabel = currentFloor?.label || `Floor ${clampedIdx + 1}`;
-    const accentClr  = meta?.color || '#38bdf8';
+    const accentClr  = meta?.color || '#10b981';
     const elev = (currentFloor?.z_min != null
       ? Math.max(0, currentFloor.z_min - (building.ground_elevation || 0))
       : floorH * clampedIdx).toFixed(1);
@@ -272,10 +272,10 @@ export default function InteriorWalkthrough({ building, currentFloorIdx, onFloor
       stair: '#475569', service: '#1e293b', lobby: '#06b6d4', lounge: '#a855f7',
       exit: '#ef4444', pool: '#0ea5e9', gym: '#34d399', spa: '#f59e0b',
       parking: '#334155', ramp: '#1e293b', mech: '#94a3b8', elec: '#f59e0b',
-      fire: '#ef4444', water: '#0ea5e9', control: '#38bdf8', deck: '#f59e0b',
+      fire: '#ef4444', water: '#0ea5e9', control: '#10b981', deck: '#f59e0b',
       office: '#6366f1', meeting: '#a78bfa', dining: '#f472b6', play: '#f472b6',
-      sport: '#10b981', default: '#38bdf8',
-    }[type] || '#38bdf8');
+      sport: '#10b981', default: '#10b981',
+    }[type] || '#10b981');
 
     // ── Render a room div with 3D wall extrusion effect ─────────────────────
     const renderRoom = (room, ri, highlight = false) => {
@@ -370,16 +370,16 @@ export default function InteriorWalkthrough({ building, currentFloorIdx, onFloor
               style={{
                 padding: '5px 12px',
                 borderRadius: 7,
-                border: '1px solid rgba(56, 189, 248, 0.45)',
-                background: 'rgba(56, 189, 248, 0.20)',
-                color: '#38bdf8',
+                border: '1px solid rgba(16, 185, 129, 0.45)',
+                background: 'rgba(16, 185, 129, 0.20)',
+                color: '#10b981',
                 fontSize: 10.5,
                 fontWeight: 700,
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
                 gap: 6,
-                boxShadow: '0 0 15px rgba(56, 189, 248, 0.25)',
+                boxShadow: '0 0 15px rgba(16, 185, 129, 0.25)',
                 transition: 'all 0.15s',
               }}
             >
@@ -388,7 +388,7 @@ export default function InteriorWalkthrough({ building, currentFloorIdx, onFloor
                 <polyline points="2 17 12 22 22 17"/>
                 <polyline points="2 12 12 17 22 12"/>
               </svg>
-              <span>🏢 Whole Building 3D Dissection</span>
+              <span>Whole Building 3D Dissection</span>
             </button>
           </div>
 
@@ -556,8 +556,8 @@ export default function InteriorWalkthrough({ building, currentFloorIdx, onFloor
             transition: 'all 0.12s ease',
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.borderColor = '#38bdf8';
-            e.currentTarget.style.color = '#38bdf8';
+            e.currentTarget.style.borderColor = '#10b981';
+            e.currentTarget.style.color = '#10b981';
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.borderColor = '#27272a';
@@ -607,11 +607,11 @@ export default function InteriorWalkthrough({ building, currentFloorIdx, onFloor
                 title="Single floor plan view"
                 style={{
                   flex: 1, padding: '4px 8px', borderRadius: 6, border: 'none',
-                  background: viewMode === 'floor' ? 'rgba(56,189,248,0.20)' : 'transparent',
-                  color: viewMode === 'floor' ? '#38bdf8' : '#64748b',
+                  background: viewMode === 'floor' ? 'rgba(16,185,129,0.20)' : 'transparent',
+                  color: viewMode === 'floor' ? '#10b981' : '#64748b',
                   fontSize: 10, fontWeight: 700, fontFamily: 'inherit',
                   cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5,
-                  outline: viewMode === 'floor' ? '1px solid rgba(56,189,248,0.40)' : 'none',
+                  outline: viewMode === 'floor' ? '1px solid rgba(16,185,129,0.40)' : 'none',
                   transition: 'all 0.15s',
                 }}
               >
@@ -626,11 +626,11 @@ export default function InteriorWalkthrough({ building, currentFloorIdx, onFloor
                 title="3D Cuboid Building Dissection & Whole Building Interior"
                 style={{
                   flex: 1, padding: '4px 8px', borderRadius: 6, border: 'none',
-                  background: viewMode === 'section' ? 'rgba(56,189,248,0.20)' : 'transparent',
-                  color: viewMode === 'section' ? '#38bdf8' : '#64748b',
+                  background: viewMode === 'section' ? 'rgba(16,185,129,0.20)' : 'transparent',
+                  color: viewMode === 'section' ? '#10b981' : '#64748b',
                   fontSize: 10, fontWeight: 700, fontFamily: 'inherit',
                   cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5,
-                  outline: viewMode === 'section' ? '1px solid rgba(56,189,248,0.40)' : 'none',
+                  outline: viewMode === 'section' ? '1px solid rgba(16,185,129,0.40)' : 'none',
                   transition: 'all 0.15s',
                 }}
               >
@@ -706,8 +706,8 @@ export default function InteriorWalkthrough({ building, currentFloorIdx, onFloor
               <div style={{
                 marginTop: 6,
                 padding: '5px 9px',
-                background: 'rgba(56, 189, 248, 0.12)',
-                border: '1px solid rgba(56, 189, 248, 0.35)',
+                background: 'rgba(16, 185, 129, 0.15)',
+                border: '1px solid rgba(16, 185, 129, 0.35)',
                 borderRadius: 6,
                 display: 'flex',
                 alignItems: 'center',
@@ -718,8 +718,12 @@ export default function InteriorWalkthrough({ building, currentFloorIdx, onFloor
                   <span style={{ fontSize: 7.5, textTransform: 'uppercase', letterSpacing: '0.8px', color: '#94a3b8', fontWeight: 700 }}>
                     3D Floor ULPIN (Class L)
                   </span>
-                  <span style={{ fontSize: 10, color: '#38bdf8', fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, letterSpacing: '0.2px' }}>
-                    🔑 {currentFloor?.ulpin || currentFloor?.canonical_rid || getFloorULPIN(building, clampedIdx)}
+                  <span style={{ fontSize: 10, color: '#10b981', fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, letterSpacing: '0.2px', display: 'flex', alignItems: 'center', gap: 5 }}>
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2.5">
+                      <path d="M21 2l-2 2m-1.5 1.5L14 9l-1.5-1.5-2 2 1.5 1.5L9 14l-3-3L2 15l4 4 1-1 3 3 4-4-3-3 3-3 2 2 4-4z"/>
+                      <circle cx="7.5" cy="16.5" r="1.5"/>
+                    </svg>
+                    <span>{currentFloor?.ulpin || currentFloor?.canonical_rid || getFloorULPIN(building, clampedIdx)}</span>
                   </span>
                 </div>
                 <button
@@ -730,11 +734,11 @@ export default function InteriorWalkthrough({ building, currentFloorIdx, onFloor
                   }}
                   title="Copy Floor 3D-ULPIN"
                   style={{
-                    background: 'rgba(56,189,248,0.20)',
-                    border: '1px solid rgba(56,189,248,0.40)',
+                    background: 'rgba(16,185,129,0.20)',
+                    border: '1px solid rgba(16,185,129,0.40)',
                     borderRadius: 4,
                     padding: '3px 6px',
-                    color: '#38bdf8',
+                    color: '#10b981',
                     fontSize: 8.5,
                     fontWeight: 700,
                     cursor: 'pointer',
@@ -1079,9 +1083,9 @@ export default function InteriorWalkthrough({ building, currentFloorIdx, onFloor
           margin-top: 3px;
           padding: 2px 7px;
           border-radius: 4px;
-          background: rgba(168, 85, 247, 0.15);
-          border: 1px solid rgba(168, 85, 247, 0.40);
-          color: #c084fc;
+          background: rgba(16, 185, 129, 0.15);
+          border: 1px solid rgba(16, 185, 129, 0.40);
+          color: #10b981;
           font-size: 9.5px;
           font-weight: 700;
           letter-spacing: 0.3px;
@@ -1091,8 +1095,8 @@ export default function InteriorWalkthrough({ building, currentFloorIdx, onFloor
           width: 5px;
           height: 5px;
           border-radius: 50%;
-          background: #c084fc;
-          box-shadow: 0 0 6px #c084fc;
+          background: #10b981;
+          box-shadow: 0 0 6px #10b981;
         }
         .ihud-exit-btn {
           position: absolute; top: 12px; right: 10px;
@@ -1134,10 +1138,10 @@ export default function InteriorWalkthrough({ building, currentFloorIdx, onFloor
           background: rgba(255, 255, 255, 0.04);
         }
         .ihud-tab.active {
-          color: #38bdf8;
-          background: rgba(56, 189, 248, 0.12);
-          border-color: rgba(56, 189, 248, 0.35);
-          box-shadow: 0 0 8px rgba(56, 189, 248, 0.15);
+          color: #10b981;
+          background: rgba(16, 185, 129, 0.15);
+          border-color: rgba(16, 185, 129, 0.35);
+          box-shadow: 0 0 8px rgba(16, 185, 129, 0.25);
         }
 
         .ihud-floor-display {
@@ -1163,7 +1167,7 @@ export default function InteriorWalkthrough({ building, currentFloorIdx, onFloor
           max-height: 290px;
           overflow-y: auto;
           scrollbar-width: thin;
-          scrollbar-color: rgba(168, 85, 247, 0.35) transparent;
+          scrollbar-color: rgba(16, 185, 129, 0.35) transparent;
         }
         .ihud-bim-cadastre-meta {
           background: rgba(15, 23, 42, 0.65);
@@ -1203,19 +1207,19 @@ export default function InteriorWalkthrough({ building, currentFloorIdx, onFloor
           transition: all 0.15s;
         }
         .ihud-bim-unit-tab:hover {
-          color: #c084fc;
-          border-color: rgba(168, 85, 247, 0.4);
+          color: #10b981;
+          border-color: rgba(16, 185, 129, 0.4);
         }
         .ihud-bim-unit-tab.active {
-          background: rgba(168, 85, 247, 0.18);
-          border-color: rgba(168, 85, 247, 0.7);
-          color: #e9d5ff;
-          box-shadow: 0 0 8px rgba(168, 85, 247, 0.25);
+          background: rgba(16, 185, 129, 0.18);
+          border-color: rgba(16, 185, 129, 0.7);
+          color: #00ff88;
+          box-shadow: 0 0 8px rgba(16, 185, 129, 0.25);
         }
 
         .ihud-bim-card {
           background: rgba(15, 23, 42, 0.85);
-          border: 1px solid rgba(168, 85, 247, 0.25);
+          border: 1px solid rgba(16, 185, 129, 0.25);
           border-radius: 8px;
           padding: 8px 10px;
           display: flex;
@@ -1230,7 +1234,7 @@ export default function InteriorWalkthrough({ building, currentFloorIdx, onFloor
         .ihud-bim-lot-id {
           font-size: 12px;
           font-weight: 800;
-          color: #c084fc;
+          color: #10b981;
           letter-spacing: 0.5px;
           font-family: monospace;
         }
@@ -1238,10 +1242,10 @@ export default function InteriorWalkthrough({ building, currentFloorIdx, onFloor
           font-size: 9px;
           font-weight: 600;
           padding: 1px 5px;
-          background: rgba(56, 189, 248, 0.12);
-          border: 1px solid rgba(56, 189, 248, 0.3);
+          background: rgba(16, 185, 129, 0.15);
+          border: 1px solid rgba(16, 185, 129, 0.3);
           border-radius: 4px;
-          color: #38bdf8;
+          color: #10b981;
         }
         .ihud-bim-unit-name {
           font-size: 11px;
@@ -1275,7 +1279,7 @@ export default function InteriorWalkthrough({ building, currentFloorIdx, onFloor
           font-variant-numeric: tabular-nums;
         }
         .bim-m-val.highlight {
-          color: #38bdf8;
+          color: #10b981;
         }
         .ihud-bim-row {
           display: flex;
@@ -1322,7 +1326,7 @@ export default function InteriorWalkthrough({ building, currentFloorIdx, onFloor
           width: 4px;
           height: 4px;
           border-radius: 50%;
-          background: #a855f7;
+          background: #10b981;
           margin-right: 5px;
           flex-shrink: 0;
         }
@@ -1331,7 +1335,7 @@ export default function InteriorWalkthrough({ building, currentFloorIdx, onFloor
           flex: 1;
         }
         .ihud-bim-room-area {
-          color: #38bdf8;
+          color: #10b981;
           font-weight: 600;
           font-family: monospace;
         }
@@ -1402,9 +1406,9 @@ export default function InteriorWalkthrough({ building, currentFloorIdx, onFloor
         }
         .ihud-jump-input::placeholder { color: #334155; font-size: 11px; }
         .ihud-jump-input:focus {
-          border-color: rgba(6,182,212,0.55);
-          box-shadow: 0 0 0 2px rgba(6,182,212,0.12);
-          background: rgba(6,182,212,0.06);
+          border-color: rgba(16,185,129,0.55);
+          box-shadow: 0 0 0 2px rgba(16,185,129,0.12);
+          background: rgba(16,185,129,0.06);
         }
         .ihud-jump-btn {
           padding: 6px 10px;
@@ -1422,14 +1426,14 @@ export default function InteriorWalkthrough({ building, currentFloorIdx, onFloor
         .ihud-jump-btn:disabled { opacity: 0.25; cursor: not-allowed; }
         .ihud-jump-btn.ready,
         .ihud-jump-btn:not(:disabled):hover {
-          background: rgba(6,182,212,0.18);
-          border-color: rgba(6,182,212,0.55);
-          color: #06b6d4;
-          box-shadow: 0 0 10px rgba(6,182,212,0.25);
+          background: rgba(16,185,129,0.18);
+          border-color: rgba(16,185,129,0.55);
+          color: #00ff88;
+          box-shadow: 0 0 10px rgba(16,185,129,0.25);
         }
         .ihud-jump-preview {
           font-size: 10px;
-          color: #06b6d4;
+          color: #10b981;
           padding-left: 2px;
           font-weight: 500;
           animation: fadeIn 0.15s ease;
@@ -1464,15 +1468,15 @@ export default function InteriorWalkthrough({ building, currentFloorIdx, onFloor
           text-overflow: ellipsis;
         }
         .ihud-qjump-btn:hover {
-          background: rgba(6,182,212,0.12);
-          border-color: rgba(6,182,212,0.35);
-          color: #06b6d4;
+          background: rgba(16,185,129,0.12);
+          border-color: rgba(16,185,129,0.35);
+          color: #10b981;
         }
         .ihud-qjump-btn.active {
-          background: rgba(6,182,212,0.20);
-          border-color: rgba(6,182,212,0.60);
-          color: #06b6d4;
-          box-shadow: 0 0 6px rgba(6,182,212,0.25);
+          background: rgba(16,185,129,0.20);
+          border-color: rgba(16,185,129,0.60);
+          color: #00ff88;
+          box-shadow: 0 0 6px rgba(16,185,129,0.25);
         }
 
         .ihud-elevator-row { display: flex; gap: 10px; padding: 12px 14px; border-bottom: 1px solid rgba(255,255,255,0.06); }
@@ -1485,8 +1489,8 @@ export default function InteriorWalkthrough({ building, currentFloorIdx, onFloor
           transition: all 0.18s;
         }
         .ihud-nav-btn:not(:disabled):hover {
-          background: rgba(6,182,212,0.18); border-color: rgba(6,182,212,0.5);
-          color: #06b6d4; box-shadow: 0 0 10px rgba(6,182,212,0.25);
+          background: rgba(16,185,129,0.18); border-color: rgba(16,185,129,0.5);
+          color: #00ff88; box-shadow: 0 0 10px rgba(16,185,129,0.25);
         }
         .ihud-nav-btn:disabled { opacity: 0.25; cursor: not-allowed; }
 
@@ -1502,8 +1506,8 @@ export default function InteriorWalkthrough({ building, currentFloorIdx, onFloor
           background: rgba(255,255,255,0.15); border: none; cursor: pointer; padding: 0;
           transition: all 0.15s;
         }
-        .ihud-shaft-marker.active { background: #06b6d4; box-shadow: 0 0 6px rgba(6,182,212,0.8); }
-        .ihud-shaft-marker:hover { background: rgba(6,182,212,0.6); transform: translateX(-50%) scale(1.4); }
+        .ihud-shaft-marker.active { background: #10b981; box-shadow: 0 0 6px rgba(16,185,129,0.8); }
+        .ihud-shaft-marker:hover { background: rgba(16,185,129,0.6); transform: translateX(-50%) scale(1.4); }
         .ihud-cabin {
           position: absolute; left: 1px; right: 1px; height: 10px;
           border-radius: 4px; margin-bottom: -5px;
@@ -1523,11 +1527,11 @@ export default function InteriorWalkthrough({ building, currentFloorIdx, onFloor
           padding: 5px 8px; cursor: pointer; font-family: inherit;
           text-align: left; transition: all 0.18s; width: 100%;
         }
-        .ihud-list-toggle:hover { border-color: rgba(6,182,212,0.35); color: #94a3b8; }
+        .ihud-list-toggle:hover { border-color: rgba(16,185,129,0.35); color: #94a3b8; }
         .ihud-floor-list {
           flex: 1; overflow-y: auto; max-height: 80px;
           display: flex; flex-direction: column; gap: 2px;
-          scrollbar-width: thin; scrollbar-color: rgba(6,182,212,0.3) transparent;
+          scrollbar-width: thin; scrollbar-color: rgba(16,185,129,0.3) transparent;
         }
         .ihud-floor-item {
           display: flex; align-items: center; gap: 6px;
@@ -1537,7 +1541,7 @@ export default function InteriorWalkthrough({ building, currentFloorIdx, onFloor
           transition: all 0.15s; flex-shrink: 0;
         }
         .ihud-floor-item:hover { background: rgba(255,255,255,0.04); color: #94a3b8; }
-        .ihud-floor-item.active { background: rgba(6,182,212,0.08); font-weight: 600; }
+        .ihud-floor-item.active { background: rgba(16,185,129,0.12); font-weight: 600; color: #00ff88; }
         .ihud-fi-label { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .ihud-fi-elev { color: #334155; font-variant-numeric: tabular-nums; flex-shrink: 0; }
 

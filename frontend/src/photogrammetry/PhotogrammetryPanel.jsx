@@ -2,12 +2,12 @@ import { useState, useEffect } from 'react';
 import { getDroneSurveys, processDroneSurvey } from './api.js';
 
 const PHOTOGRAMMETRY_STEPS = [
-  { id: 'ingest',    label: 'Drone EXIF & Telemetry Ingestion', desc: 'GPS RTK, altitude & optical lens parameters', icon: '📡' },
-  { id: 'extract',   label: 'Structure-from-Motion (SfM/ODM)',  desc: 'Multi-view epipolar triangulation',             icon: '📸' },
-  { id: 'segment',   label: 'Envelope & Rooftop Extraction',   desc: 'Delineating ground & roof boundary elevation',   icon: '🏗' },
-  { id: 'delineate', label: '3D Vertical Property Slicing',     desc: 'Extruding 3D floor property volumes',            icon: '📦' },
-  { id: 'validate',  label: 'Cadastral Topology Validation',    desc: 'Watertightness, floor ordering & parcel bounds', icon: '✅' },
-  { id: 'identify',  label: 'Prototype 3D ULPIN Assignment',   desc: 'Deterministic vertical cadastral spatial ID',    icon: '🔑' },
+  { id: 'ingest',    label: 'Drone EXIF & Telemetry Ingestion', desc: 'GPS RTK, altitude & optical lens parameters' },
+  { id: 'extract',   label: 'Structure-from-Motion (SfM/ODM)',  desc: 'Multi-view epipolar triangulation' },
+  { id: 'segment',   label: 'Envelope & Rooftop Extraction',   desc: 'Delineating ground & roof boundary elevation' },
+  { id: 'delineate', label: '3D Vertical Property Slicing',     desc: 'Extruding 3D floor property volumes' },
+  { id: 'validate',  label: 'Cadastral Topology Validation',    desc: 'Watertightness, floor ordering & parcel bounds' },
+  { id: 'identify',  label: 'Prototype 3D ULPIN Assignment',   desc: 'Deterministic vertical cadastral spatial ID' },
 ];
 
 export default function PhotogrammetryPanel({ onStatusChange, onBuildingGenerated, onFlyToBuilding, currentCity, onClose }) {
@@ -98,7 +98,9 @@ export default function PhotogrammetryPanel({ onStatusChange, onBuildingGenerate
       <div className="ai-panel-header" style={{ padding: '14px 18px', borderBottom: '1px solid var(--border)' }}>
         <div style={{ flex: 1 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-            <span style={{ fontSize: '20px' }}>🚁</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" strokeWidth="2">
+              <path d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M4.93 19.07l14.14-14.14" />
+            </svg>
             <h2 style={{ margin: 0, fontSize: '16px', fontWeight: 600, color: '#38bdf8' }}>
               Photogrammetry & Drone Cadastral Ingestion
             </h2>
@@ -193,12 +195,11 @@ export default function PhotogrammetryPanel({ onStatusChange, onBuildingGenerate
               gap: '8px'
             }}
           >
-            <div style={{ fontSize: '20px' }}>{s.icon}</div>
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span style={{ fontSize: '12px', fontWeight: 600 }}>{idx + 1}. {s.label}</span>
                 <span className="mono" style={{ fontSize: '10px', color: s.status === 'done' ? '#10b981' : s.status === 'running' ? '#38bdf8' : 'var(--text-dim)' }}>
-                  {s.status === 'idle' ? '—' : s.status === 'running' ? '⏳' : '✓'}
+                  {s.status === 'idle' ? '—' : s.status === 'running' ? '...' : '✓'}
                 </span>
               </div>
               <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginTop: '2px' }}>{s.desc}</div>
@@ -267,7 +268,11 @@ export default function PhotogrammetryPanel({ onStatusChange, onBuildingGenerate
               onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 0 24px rgba(6, 182, 212, 0.7)'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
               onMouseLeave={e => { e.currentTarget.style.boxShadow = '0 0 16px rgba(6, 182, 212, 0.45)'; e.currentTarget.style.transform = 'translateY(0)'; }}
             >
-              <span>🌐</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="2" y1="12" x2="22" y2="12" />
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+              </svg>
               <span>Fly to Reconstructed 3D Building on Globe</span>
             </button>
           </div>

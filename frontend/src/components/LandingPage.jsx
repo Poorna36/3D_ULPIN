@@ -33,13 +33,6 @@ export default function LandingPage({ onEnter, isExiting = false }) {
           }}
         >
           TESSERACT
-          <span style={{
-            display: 'inline-block',
-            width: 14, height: 14,
-            borderRadius: '50%',
-            background: 'radial-gradient(circle at 35% 35%, #ffffff 0%, #38bdf8 40%, #0369a1 80%, #000 100%)',
-            boxShadow: '0 0 8px rgba(56,189,248,0.6)',
-          }} />
         </div>
 
         {/* Right actions */}

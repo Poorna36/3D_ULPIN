@@ -1,15 +1,16 @@
 // LayerPanel — floating left drawer with animated toggles, dynamic stats, and standards stack
+// Styled in strict monochrome (black, white, and shades of grey)
 import { useMemo } from 'react';
 
 const LAYER_DEFS = [
-  { id: 'google3d',   label: 'Google Photorealistic 3D', icon: '◒', tag: 'MESH',   desc: 'Global photogrammetric 3D tile mesh', color: '#38bdf8' },
-  { id: 'tileset3d',  label: '3D Buildings (LoD2 Geometry)', icon: '◈', tag: 'LOD2',   desc: 'OpenStreetMap & municipal LoD2 geometry', color: '#f59e0b' },
-  { id: 'parcels',    label: 'NAKSHA Cadastral Parcels (Class S)', icon: '◻', tag: 'DoLR',   desc: '2D cadastre plots & statutory tolerance anchors', color: '#10b981' },
-  { id: 'buildings',  label: 'LiDAR Envelopes (Class B)', icon: '⬡', tag: 'LiDAR',  desc: 'Airborne LiDAR (E1) extruded envelopes & ULPIN tags', color: '#00e5ff' },
-  { id: 'volumes',    label: 'Vertical Storey Slabs (Class L)', icon: '⬢', tag: 'STRATA', desc: 'Volumetric storey plates & strata division bands', color: '#818cf8' },
-  { id: 'interior',   label: 'BIM Interior Layout (Class U & C)', icon: '◫', tag: 'openBIM',desc: 'As-built BIM units, corridors & stairwells', color: '#c084fc' },
-  { id: 'underground',label: 'Subterranean & Utilities (Class T & I)', icon: '⊗', tag: 'GPR',   desc: 'Deep metro tunnels & underground utility networks', color: '#f43f5e' },
-  { id: 'shadows',    label: 'Sun & Shadow Analysis',    icon: '○', tag: 'SOLAR', desc: 'Real-time solar path & volumetric shadowing', color: '#facc15' },
+  { id: 'google3d',    label: 'Google Photorealistic 3D',            icon: '◒', tag: 'MESH',    desc: 'Global photogrammetric 3D tile mesh' },
+  { id: 'tileset3d',   label: '3D Buildings (LoD2 Geometry)',        icon: '◈', tag: 'LOD2',    desc: 'OpenStreetMap & municipal LoD2 geometry' },
+  { id: 'parcels',     label: 'NAKSHA Cadastral Parcels (Class S)',  icon: '◻', tag: 'DoLR',    desc: '2D cadastre plots & statutory tolerance anchors' },
+  { id: 'buildings',   label: 'LiDAR Envelopes (Class B)',           icon: '⬡', tag: 'LiDAR',   desc: 'Airborne LiDAR (E1) extruded envelopes & ULPIN tags' },
+  { id: 'volumes',     label: 'Vertical Storey Slabs (Class L)',     icon: '⬢', tag: 'STRATA',  desc: 'Volumetric storey plates & strata division bands' },
+  { id: 'interior',    label: 'BIM Interior Layout (Class U & C)',   icon: '◫', tag: 'openBIM', desc: 'As-built BIM units, corridors & stairwells' },
+  { id: 'underground', label: 'Subterranean & Utilities (Class T & I)', icon: '⊗', tag: 'GPR', desc: 'Deep metro tunnels & underground utility networks' },
+  { id: 'shadows',     label: 'Sun & Shadow Analysis',               icon: '○', tag: 'SOLAR',   desc: 'Real-time solar path & volumetric shadowing' },
 ];
 
 export default function LayerPanel({
@@ -51,7 +52,7 @@ export default function LayerPanel({
       <div className="lp-header">
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <div className="lp-header-icon">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
               <polygon points="12 2 2 7 12 12 22 7 12 2" />
               <polyline points="2 17 12 22 22 17" />
               <polyline points="2 12 12 17 22 12" />
@@ -126,11 +127,11 @@ export default function LayerPanel({
                 htmlFor={`layer-toggle-${l.id}`}
               >
                 <div className="lp-layer-info">
-                  <span className="lp-layer-icon" style={{ color: l.color }}>{l.icon}</span>
+                  <span className="lp-layer-icon" style={{ color: isChecked ? '#10b981' : '#71717a' }}>{l.icon}</span>
                   <div style={{ minWidth: 0, flex: 1 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                       <span className="lp-layer-label">{l.label}</span>
-                      <span className="lp-tag" style={{ color: l.color, borderColor: `${l.color}40`, background: `${l.color}15` }}>
+                      <span className="lp-tag">
                         {l.tag}
                       </span>
                     </div>
@@ -164,10 +165,10 @@ export default function LayerPanel({
 
         <div className="lp-city-grid">
           {[
-            { id: 'bengaluru', name: 'Bengaluru', code: 'BLR', desc: 'Urban High-Rise Cadastre', color: '#00d4ff' },
-            { id: 'mumbai',    name: 'Mumbai',    code: 'BOM', desc: 'Vertical Density & Podiums', color: '#10d97e' },
-            { id: 'netherlands', name: 'Rotterdam (NL)', code: 'RTM', desc: 'BAG 3D & AHN4 LiDAR', color: '#f59e0b' },
-            { id: 'singapore', name: 'Singapore', code: 'SIN', desc: 'Strata Benchmarks & Caverns', color: '#a855f7' },
+            { id: 'bengaluru',   name: 'Bengaluru',      code: 'BLR', desc: 'Urban High-Rise Cadastre' },
+            { id: 'mumbai',      name: 'Mumbai',         code: 'BOM', desc: 'Vertical Density & Podiums' },
+            { id: 'netherlands', name: 'Rotterdam (NL)', code: 'RTM', desc: 'BAG 3D & AHN4 LiDAR' },
+            { id: 'singapore',   name: 'Singapore',      code: 'SIN', desc: 'Strata Benchmarks & Caverns' },
           ].map(city => (
             <button
               key={city.id}
@@ -176,7 +177,7 @@ export default function LayerPanel({
               title={`Fly to ${city.name}`}
             >
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-                <span className="lp-pilot-code" style={{ color: city.color }}>{city.code}</span>
+                <span className="lp-pilot-code">{city.code}</span>
                 <span className="lp-pilot-name">{city.name}</span>
               </div>
               <div className="lp-pilot-desc">{city.desc}</div>
@@ -195,19 +196,19 @@ export default function LayerPanel({
 
             <div className="lp-stat-grid">
               <div className="lp-stat-card">
-                <div className="lp-stat-val" style={{ color: '#38bdf8' }}>{stats.total}</div>
+                <div className="lp-stat-val">{stats.total}</div>
                 <div className="lp-stat-lbl">Structures</div>
               </div>
               <div className="lp-stat-card">
-                <div className="lp-stat-val" style={{ color: '#34d399' }}>{stats.valid}</div>
+                <div className="lp-stat-val">{stats.valid}</div>
                 <div className="lp-stat-lbl">VALID</div>
               </div>
               <div className="lp-stat-card">
-                <div className="lp-stat-val" style={{ color: '#fbbf24' }}>{stats.review}</div>
+                <div className="lp-stat-val">{stats.review}</div>
                 <div className="lp-stat-lbl">REVIEW</div>
               </div>
               <div className="lp-stat-card">
-                <div className="lp-stat-val" style={{ color: '#c084fc' }}>{stats.underground}</div>
+                <div className="lp-stat-val">{stats.underground}</div>
                 <div className="lp-stat-lbl">Underground</div>
               </div>
             </div>
@@ -215,14 +216,14 @@ export default function LayerPanel({
             {/* Validation bar */}
             <div style={{ marginTop: '10px' }}>
               <div className="lp-val-bar">
-                <div className="lp-val-fill" style={{ width: `${(stats.valid / stats.total) * 100}%`, background: '#34d399' }} />
-                <div className="lp-val-fill" style={{ width: `${(stats.review / stats.total) * 100}%`, background: '#fbbf24' }} />
-                <div className="lp-val-fill" style={{ width: `${(stats.invalid / stats.total) * 100}%`, background: '#ef4444' }} />
+                <div className="lp-val-fill" style={{ width: `${(stats.valid / stats.total) * 100}%`, background: '#10b981' }} />
+                <div className="lp-val-fill" style={{ width: `${(stats.review / stats.total) * 100}%`, background: '#71717a' }} />
+                <div className="lp-val-fill" style={{ width: `${(stats.invalid / stats.total) * 100}%`, background: '#3f3f46' }} />
               </div>
               <div className="lp-val-legend">
-                <span><span className="lp-dot" style={{ background: '#34d399' }} />Valid</span>
-                <span><span className="lp-dot" style={{ background: '#fbbf24' }} />Review</span>
-                {stats.invalid > 0 && <span><span className="lp-dot" style={{ background: '#ef4444' }} />Invalid</span>}
+                <span><span className="lp-dot" style={{ background: '#10b981' }} />Valid</span>
+                <span><span className="lp-dot" style={{ background: '#71717a' }} />Review</span>
+                {stats.invalid > 0 && <span><span className="lp-dot" style={{ background: '#3f3f46' }} />Invalid</span>}
               </div>
             </div>
           </>
@@ -236,23 +237,23 @@ export default function LayerPanel({
         <div className="lp-evidence-list">
           <div className="lp-evidence-row">
             <span>NAKSHA 5% Precedent</span>
-            <span className="lp-evidence-mono" style={{ color: '#34d399' }}>2σ_c = 0.34m</span>
+            <span className="lp-evidence-mono">2σ_c = 0.34m</span>
           </div>
           <div className="lp-evidence-row">
             <span>Airborne LiDAR (E1)</span>
-            <span className="lp-evidence-mono" style={{ color: '#38bdf8' }}>KPConv / U-Net</span>
+            <span className="lp-evidence-mono">KPConv / U-Net</span>
           </div>
           <div className="lp-evidence-row">
             <span>BIM / As-Built (E4)</span>
-            <span className="lp-evidence-mono" style={{ color: '#a78bfa' }}>IFC 4.3 Space</span>
+            <span className="lp-evidence-mono">IFC 4.3 Space</span>
           </div>
           <div className="lp-evidence-row">
             <span>SoI CORS Covariance</span>
-            <span className="lp-evidence-mono" style={{ color: '#f59e0b' }}>σ_xy: 2.4cm</span>
+            <span className="lp-evidence-mono">σ_xy: 2.4cm</span>
           </div>
           <div className="lp-evidence-row">
             <span>Subsurface GPR (E5)</span>
-            <span className="lp-evidence-mono" style={{ color: '#f43f5e' }}>Tunnels & Drains</span>
+            <span className="lp-evidence-mono">Tunnels & Drains</span>
           </div>
         </div>
       </div>
@@ -267,14 +268,14 @@ export default function LayerPanel({
           max-width: calc(100vw - 32px);
           display: flex;
           flex-direction: column;
-          background: #18181b !important;
-          border: 1px solid #27272a !important;
+          background: #09090b !important;
+          border: 1px solid rgba(255, 255, 255, 0.15) !important;
           border-radius: 12px !important;
           z-index: 95;
-          box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6), 0 1px 2px rgba(0, 0, 0, 0.2);
+          box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8), 0 1px 2px rgba(255, 255, 255, 0.05);
           user-select: none;
           overflow: hidden;
-          font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+          font-family: 'Outfit', 'Chakra Petch', system-ui, sans-serif;
         }
 
         .lp-header {
@@ -282,16 +283,16 @@ export default function LayerPanel({
           align-items: center;
           justify-content: space-between;
           padding: 12px 14px;
-          border-bottom: 1px solid #27272a;
-          background: #141416;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+          background: #000000;
         }
 
         .lp-header-icon {
           width: 28px;
           height: 28px;
           border-radius: 6px;
-          background: rgba(56, 189, 248, 0.1);
-          border: 1px solid rgba(56, 189, 248, 0.25);
+          background: rgba(16, 185, 129, 0.12);
+          border: 1px solid rgba(16, 185, 129, 0.35);
           display: flex;
           align-items: center;
           justify-content: center;
@@ -300,7 +301,7 @@ export default function LayerPanel({
         .lp-title {
           font-size: 13.5px;
           font-weight: 700;
-          color: #f4f4f5;
+          color: #ffffff;
           margin: 0;
           line-height: 1.2;
         }
@@ -315,8 +316,8 @@ export default function LayerPanel({
           width: 26px;
           height: 26px;
           border-radius: 6px;
-          background: #27272a;
-          border: 1px solid #3f3f46;
+          background: #18181b;
+          border: 1px solid #27272a;
           color: #a1a1aa;
           cursor: pointer;
           display: flex;
@@ -327,9 +328,9 @@ export default function LayerPanel({
         }
 
         .lp-close-btn:hover {
-          background: #3f3f46;
+          background: #27272a;
           color: #ffffff;
-          border-color: #52525b;
+          border-color: rgba(255, 255, 255, 0.3);
         }
 
         .lp-quick-actions {
@@ -337,13 +338,13 @@ export default function LayerPanel({
           align-items: center;
           gap: 6px;
           padding: 8px 14px;
-          border-bottom: 1px solid #27272a;
-          background: #18181b;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+          background: #09090b;
         }
 
         .lp-btn-action {
-          background: #27272a;
-          border: 1px solid #3f3f46;
+          background: #18181b;
+          border: 1px solid #27272a;
           border-radius: 6px;
           color: #d4d4d8;
           font-size: 11px;
@@ -354,9 +355,10 @@ export default function LayerPanel({
         }
 
         .lp-btn-action:hover {
-          background: #38bdf8;
-          color: #09090b;
-          border-color: #38bdf8;
+          background: #10b981;
+          color: #000000;
+          border-color: #10b981;
+          box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
         }
 
         .lp-scroll-area {
@@ -364,14 +366,14 @@ export default function LayerPanel({
           overflow-y: auto;
           padding: 10px 14px;
           scrollbar-width: thin;
-          scrollbar-color: #3f3f46 transparent;
+          scrollbar-color: #27272a transparent;
         }
 
         .lp-scroll-area::-webkit-scrollbar {
           width: 5px;
         }
         .lp-scroll-area::-webkit-scrollbar-thumb {
-          background: #3f3f46;
+          background: #27272a;
           border-radius: 3px;
         }
 
@@ -388,18 +390,19 @@ export default function LayerPanel({
         }
 
         .lp-count-badge {
-          background: #27272a;
+          background: #18181b;
           color: #a1a1aa;
           padding: 1px 6px;
           border-radius: 4px;
           font-size: 9.5px;
           font-family: monospace;
+          border: 1px solid #27272a;
         }
 
         .lp-active-city-tag {
-          background: rgba(56, 189, 248, 0.15);
-          color: #38bdf8;
-          border: 1px solid rgba(56, 189, 248, 0.3);
+          background: rgba(16, 185, 129, 0.15);
+          color: #10b981;
+          border: 1px solid rgba(16, 185, 129, 0.4);
           padding: 1px 6px;
           border-radius: 4px;
           font-size: 9.5px;
@@ -418,19 +421,20 @@ export default function LayerPanel({
           justify-content: space-between;
           padding: 8px 10px;
           border-radius: 8px;
-          background: #1f1f23;
+          background: #121214;
           border: 1px solid #27272a;
           cursor: pointer;
           transition: all 0.15s ease;
         }
 
         .lp-toggle-row:hover {
-          background: #27272a;
-          border-color: #3f3f46;
+          background: #18181b;
+          border-color: rgba(255, 255, 255, 0.25);
         }
 
         .lp-toggle-row--active {
-          border-color: rgba(255, 255, 255, 0.15);
+          border-color: rgba(255, 255, 255, 0.3);
+          background: #141417;
         }
 
         .lp-layer-info {
@@ -446,6 +450,7 @@ export default function LayerPanel({
           width: 18px;
           text-align: center;
           flex-shrink: 0;
+          transition: color 0.15s ease;
         }
 
         .lp-layer-label {
@@ -460,9 +465,11 @@ export default function LayerPanel({
         .lp-tag {
           font-size: 8.5px;
           font-weight: 700;
-          padding: 0.5px 4px;
+          padding: 1px 5px;
           border-radius: 3px;
-          border: 1px solid transparent;
+          border: 1px solid rgba(16, 185, 129, 0.35);
+          background: rgba(16, 185, 129, 0.12);
+          color: #ffffff;
           text-transform: uppercase;
           letter-spacing: 0.4px;
         }
@@ -476,7 +483,7 @@ export default function LayerPanel({
           text-overflow: ellipsis;
         }
 
-        /* ── Switch Slider ─────────────────────────────────────────── */
+        /* ── Switch Slider (Strict Monochrome) ─────────────────────── */
         .lp-switch-wrapper {
           position: relative;
           width: 36px;
@@ -495,7 +502,7 @@ export default function LayerPanel({
         .lp-switch-slider {
           position: absolute;
           inset: 0;
-          background: #27272a;
+          background: #18181b;
           border: 1px solid #3f3f46;
           border-radius: 999px;
           transition: all 0.18s ease;
@@ -513,19 +520,19 @@ export default function LayerPanel({
         }
 
         .lp-switch-slider--on {
-          background: #0284c7;
-          border-color: #38bdf8;
-          box-shadow: 0 0 8px rgba(56, 189, 248, 0.4);
+          background: #10b981;
+          border-color: #00ff88;
+          box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
         }
 
         .lp-switch-slider--on .lp-switch-thumb {
           transform: translateX(16px);
-          background: #ffffff;
+          background: #000000;
         }
 
         .lp-divider {
           height: 1px;
-          background: #27272a;
+          background: rgba(255, 255, 255, 0.1);
           margin: 12px 0 10px 0;
         }
 
@@ -541,7 +548,7 @@ export default function LayerPanel({
           flex-direction: column;
           align-items: flex-start;
           text-align: left;
-          background: #1f1f23;
+          background: #121214;
           border: 1px solid #27272a;
           border-radius: 8px;
           padding: 7px 9px;
@@ -550,20 +557,21 @@ export default function LayerPanel({
         }
 
         .lp-pilot-card:hover {
-          background: #27272a;
-          border-color: #38bdf8;
+          background: #101c13;
+          border-color: rgba(16, 185, 129, 0.5);
         }
 
         .lp-pilot-card--active {
-          background: rgba(56, 189, 248, 0.12);
-          border-color: #38bdf8;
-          box-shadow: 0 0 10px rgba(56, 189, 248, 0.2);
+          background: rgba(16, 185, 129, 0.15);
+          border-color: #10b981;
+          box-shadow: 0 0 12px rgba(16, 185, 129, 0.3);
         }
 
         .lp-pilot-code {
-          font-family: monospace;
+          font-family: 'JetBrains Mono', monospace;
           font-size: 9.5px;
           font-weight: 700;
+          color: #10b981;
         }
 
         .lp-pilot-name {
@@ -590,7 +598,7 @@ export default function LayerPanel({
         }
 
         .lp-stat-card {
-          background: #1f1f23;
+          background: #121214;
           border: 1px solid #27272a;
           border-radius: 6px;
           padding: 6px 4px;
@@ -600,8 +608,9 @@ export default function LayerPanel({
         .lp-stat-val {
           font-size: 16px;
           font-weight: 700;
-          font-family: monospace;
+          font-family: 'JetBrains Mono', monospace;
           line-height: 1.1;
+          color: #10b981;
         }
 
         .lp-stat-lbl {
@@ -617,7 +626,8 @@ export default function LayerPanel({
           height: 4px;
           border-radius: 999px;
           overflow: hidden;
-          background: #27272a;
+          background: #18181b;
+          border: 1px solid #27272a;
         }
 
         .lp-val-fill {
@@ -653,7 +663,7 @@ export default function LayerPanel({
           justify-content: space-between;
           align-items: center;
           padding: 4px 7px;
-          background: #1f1f23;
+          background: #121214;
           border: 1px solid #27272a;
           border-radius: 4px;
           font-size: 10.5px;
@@ -661,9 +671,10 @@ export default function LayerPanel({
         }
 
         .lp-evidence-mono {
-          font-family: monospace;
+          font-family: 'JetBrains Mono', monospace;
           font-size: 10px;
           font-weight: 600;
+          color: #10b981;
         }
       `}</style>
     </aside>

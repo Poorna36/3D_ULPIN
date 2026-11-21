@@ -327,17 +327,18 @@ function BuildingListItem({ building, onSelect, onEnterInterior, onFloorClick, i
           style={{
             flex: 1,
             padding: '5px 8px',
-            background: '#0284c7',
+            background: '#10b981',
             border: 'none',
             borderRadius: '5px',
-            color: '#ffffff',
+            color: '#000000',
             fontSize: '10.5px',
-            fontWeight: 600,
+            fontWeight: 700,
             cursor: 'pointer',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             gap: '4px',
+            boxShadow: '0 2px 8px rgba(16, 185, 129, 0.35)',
           }}
         >
           <span>Walk Inside 3D</span>
@@ -729,21 +730,28 @@ function FloorUnitList({ building, explodedFloor, onFloorClick, onEnterInterior 
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '6px', marginTop: '3px' }}>
                   <div className="floor-ulpin mono" style={{
                     fontSize: '9.5px',
-                    color: '#38bdf8',
+                    color: '#10b981',
                     fontWeight: 700,
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
                     whiteSpace: 'nowrap',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px',
                   }}>
-                    🔑 {floorUlpin}
+                    <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2.5">
+                      <path d="M21 2l-2 2m-1.5 1.5L14 9l-1.5-1.5-2 2 1.5 1.5L9 14l-3-3L2 15l4 4 1-1 3 3 4-4-3-3 3-3 2 2 4-4z"/>
+                      <circle cx="7.5" cy="16.5" r="1.5"/>
+                    </svg>
+                    <span>{floorUlpin}</span>
                   </div>
                   <button
                     onClick={(e) => handleCopyFloor(e, floorUlpin)}
                     title="Copy Floor 3D-ULPIN"
                     style={{
-                      background: isCopied ? 'rgba(16, 185, 129, 0.25)' : 'rgba(56, 189, 248, 0.15)',
-                      border: `1px solid ${isCopied ? '#10b981' : 'rgba(56, 189, 248, 0.35)'}`,
-                      color: isCopied ? '#34d399' : '#38bdf8',
+                      background: isCopied ? 'rgba(16, 185, 129, 0.25)' : 'rgba(16, 185, 129, 0.15)',
+                      border: `1px solid ${isCopied ? '#10b981' : 'rgba(16, 185, 129, 0.35)'}`,
+                      color: isCopied ? '#00ff88' : '#10b981',
                       borderRadius: '4px',
                       padding: '2px 6px',
                       fontSize: '8px',
@@ -1046,9 +1054,9 @@ export default function DetailPanel({
                 width: '100%',
                 padding: '10px 14px',
                 borderRadius: '8px',
-                background: '#0284c7',
+                background: '#10b981',
                 border: 'none',
-                color: '#ffffff',
+                color: '#000000',
                 fontSize: '12.5px',
                 fontWeight: 700,
                 cursor: 'pointer',
@@ -1056,7 +1064,7 @@ export default function DetailPanel({
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: '7px',
-                boxShadow: '0 2px 8px rgba(2, 132, 199, 0.35)',
+                boxShadow: '0 2px 14px rgba(16, 185, 129, 0.45)',
               }}
             >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">

@@ -2177,7 +2177,7 @@ export default function CesiumViewer({
           const ulpinCode = b.canonical_rid || b.ulpin || b.prototype_3d_id || 'ULPIN-CADASTRE';
           const statusBadge = b.validation_status === 'VALID' ? '●' : '▲';
           const labelText = isSelected
-            ? `${b.name}\n🔑 ${ulpinCode}\n${isUnderground ? `Subsurface · -${absH.toFixed(0)}m` : `↑ ${absH.toFixed(0)}m · ${b.floor_count}F · [${statusBadge} ${b.validation_status}]`}`
+            ? `${b.name}\n${ulpinCode}\n${isUnderground ? `Subsurface · -${absH.toFixed(0)}m` : `↑ ${absH.toFixed(0)}m · ${b.floor_count}F · [${statusBadge} ${b.validation_status}]`}`
             : `${b.name}\n${ulpinCode}`;
 
           const labelHeight = isUnderground ? 6 : absH + 8;

@@ -74,6 +74,10 @@ export default function CitySelector({ city, onChange }) {
           background: rgba(255, 255, 255, 0.08);
         }
         .city-tab--active {
+          background: #091a10;
+          color: #ffffff;
+          box-shadow: 0 0 12px rgba(16, 185, 129, 0.25);
+          border: 1px solid rgba(16, 185, 129, 0.45);
           background: #0e0e11;
           color: #ffffff;
           box-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
@@ -90,13 +94,13 @@ export default function CitySelector({ city, onChange }) {
           color: rgba(255, 255, 255, 0.70);
         }
         .city-tab--active .city-code-tag {
-          background: rgba(255, 255, 255, 0.18);
-          color: #ffffff;
+          background: rgba(16, 185, 129, 0.25);
+          color: #10b981;
         }
         .city-active-dot {
           width: 5px; height: 5px; border-radius: 50%;
-          background: #ffffff;
-          box-shadow: 0 0 6px rgba(255, 255, 255, 0.85);
+          background: #10b981;
+          box-shadow: 0 0 8px #10b981;
           animation: pulse-dot 2s ease infinite;
         }
       `}</style>

@@ -149,11 +149,11 @@ export default function PhotogrammetryPage({ onBack, onBuildingGenerated, onFlyT
         {/* Center: Tabs */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
           {[
-            { id: 'studio', label: 'UAV INGESTION STUDIO', icon: '🚁' },
-            { id: 'slicer', label: '3D VERTICAL SLICER', icon: '📐' },
-            { id: 'crs', label: 'CRS & SVAMITVA ADAPTER', icon: '🛰️' },
-            { id: 'topology', label: 'TOPOLOGY VALIDATION', icon: '🛡️' },
-            { id: 'specs', label: 'API & CODE SPECS', icon: '📄' },
+            { id: 'studio', label: 'UAV INGESTION STUDIO' },
+            { id: 'slicer', label: '3D VERTICAL SLICER' },
+            { id: 'crs', label: 'CRS & SVAMITVA ADAPTER' },
+            { id: 'topology', label: 'TOPOLOGY VALIDATION' },
+            { id: 'specs', label: 'API & CODE SPECS' },
           ].map(tab => {
             const isActive = activeTab === tab.id;
             return (
@@ -175,7 +175,6 @@ export default function PhotogrammetryPage({ onBack, onBuildingGenerated, onFlyT
                   transition: 'all 0.15s'
                 }}
               >
-                <span>{tab.icon}</span>
                 <span>{tab.label}</span>
               </button>
             );

@@ -17,15 +17,15 @@
   --bg-card-hover: rgba(15, 18, 28, 0.95);
 
   /* Voyage accent — sky blue */
-  --cyan:          #38bdf8;
-  --cyan-bright:   #7dd3fc;
-  --cyan-dim:      rgba(56, 189, 248, 0.12);
-  --cyan-glow:     0 0 18px rgba(56, 189, 248, 0.3);
+  --cyan:          #10b981;
+  --cyan-bright:   #00ff88;
+  --cyan-dim:      rgba(16, 185, 129, 0.15);
+  --cyan-glow:     0 0 18px rgba(16, 185, 129, 0.45);
 
   /* Voyage CTA blue */
-  --blue:          #2563eb;
-  --blue-dim:      rgba(37, 99, 235, 0.15);
-  --blue-glow:     0 0 18px rgba(37, 99, 235, 0.4);
+  --blue:          #10b981;
+  --blue-dim:      rgba(16, 185, 129, 0.15);
+  --blue-glow:     0 0 18px rgba(16, 185, 129, 0.45);
 
   /* Secondary accent — kept subtle violet */
   --violet:        #6366f1;
@@ -33,8 +33,8 @@
   --violet-glow:   0 0 18px rgba(99, 102, 241, 0.35);
 
   /* Gradients */
-  --grad-primary:  linear-gradient(135deg, #2563eb 0%, #38bdf8 100%);
-  --grad-text:     linear-gradient(90deg, #ffffff 0%, #38bdf8 100%);
+  --grad-primary:  linear-gradient(135deg, #059669 0%, #10b981 100%);
+  --grad-text:     linear-gradient(90deg, #ffffff 0%, #00ff88 100%);
   --grad-card:     linear-gradient(135deg, rgba(37,99,235,0.06) 0%, rgba(56,189,248,0.04) 100%);
 
   /* Status */
@@ -46,18 +46,18 @@
   /* Borders — very subtle like Voyage */
   --border:        rgba(255, 255, 255, 0.07);
   --border-strong: rgba(255, 255, 255, 0.13);
-  --border-accent: rgba(56, 189, 248, 0.25);
+  --border-accent: rgba(16, 185, 129, 0.35);
 
   /* Text — white primary, gray secondary */
   --text-primary:   #F9FAFB;
   --text-secondary: #9ca3af;
   --text-dim:       #4b5563;
-  --text-mono:      #38bdf8;
+  --text-mono:      #10b981;
 
   /* Typography — Voyage fonts */
-  --font-display: 'Syne', 'Space Grotesk', system-ui, sans-serif;
-  --font-ui:      'Space Grotesk', 'Inter', system-ui, sans-serif;
-  --font-body:    'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-display: 'Outfit', 'Chakra Petch', system-ui, sans-serif;
+  --font-ui: 'Outfit', -apple-system, sans-serif;
+  --font-body: 'Outfit', sans-serif;
   --font-mono:    'JetBrains Mono', monospace;
 
   /* Spacing */
@@ -96,10 +96,10 @@ html, body, #root {
 ::-webkit-scrollbar { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
-  background: rgba(56, 189, 248, 0.25);
+  background: rgba(16, 185, 129, 0.35);
   border-radius: var(--r-pill);
 }
-::-webkit-scrollbar-thumb:hover { background: rgba(56, 189, 248, 0.45); }
+::-webkit-scrollbar-thumb:hover { background: rgba(0, 255, 136, 0.6); }
 
 /* ── Glassmorphism card ────────────────────────────────────── */
 .glass {
@@ -154,11 +154,17 @@ h3 {
   box-shadow: var(--cyan-glow);
 }
 .btn-primary {
-  background: var(--blue);
-  border-color: var(--blue);
-  color: #fff;
+  background: #10b981;
+  border-color: #10b981;
+  color: #000000;
   font-weight: 700;
-  box-shadow: 0 2px 14px rgba(37, 99, 235, 0.35);
+  box-shadow: 0 2px 14px rgba(16, 185, 129, 0.40);
+}
+.btn-primary:hover {
+  background: #00ff88;
+  border-color: #00ff88;
+  color: #000000;
+  box-shadow: 0 4px 24px rgba(0, 255, 136, 0.60);
 }
 .btn-primary:hover {
   background: #1d4ed8;
@@ -422,11 +428,11 @@ h3 {
   max-width: calc(100vw - 32px);
   display: flex;
   flex-direction: column;
-  background: #18181b !important;
-  border: 1px solid #27272a !important;
+  background: #09090b !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
   border-radius: 12px !important;
   z-index: 80;
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8), 0 1px 2px rgba(255, 255, 255, 0.05);
   user-select: none;
   overflow: hidden;
 }
@@ -439,21 +445,21 @@ h3 {
 }
 
 .panel-expand-btn {
-  background: #18181b !important;
-  border: 1px solid #27272a !important;
+  background: #09090b !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
   color: #f4f4f5;
   padding: 8px 12px;
   border-radius: 999px;
   cursor: pointer;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.15s ease;
 }
 .panel-expand-btn:hover {
-  border-color: #3f3f46 !important;
-  background: #27272a !important;
+  border-color: #ffffff !important;
+  background: #18181b !important;
 }
 
 .detail-panel .panel-header {
@@ -461,25 +467,25 @@ h3 {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #18181b;
-  border-bottom: 1px solid #27272a;
+  background: #000000;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .detail-panel .card {
-  background: #202024 !important;
+  background: #121214 !important;
   border: 1px solid #27272a !important;
   border-radius: 8px !important;
   transition: all 0.15s ease;
 }
 
 .detail-panel .card:hover {
-  background: #27272a !important;
-  border-color: #3f3f46 !important;
+  background: #18181b !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
 }
 
 .detail-panel .card--active {
-  background: #27272a !important;
-  border-color: #0284c7 !important;
+  background: #18181b !important;
+  border-color: #ffffff !important;
 }
 
 .panel-header {
@@ -549,7 +555,7 @@ h3 {
 
 .ai-step.running {
   border-color: #38bdf8 !important;
-  box-shadow: 0 0 12px rgba(56, 189, 248, 0.25);
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.35);
 }
 
 .ai-step.done {

@@ -113,14 +113,6 @@ export default function WorkbenchCockpit({
             }}
           >
             Tesseract
-            <span style={{
-              display: 'inline-block',
-              width: 8, height: 8,
-              borderRadius: '50%',
-              background: '#000000',
-              border: '1.5px solid rgba(255, 255, 255, 0.70)',
-              boxShadow: '0 0 8px rgba(0, 0, 0, 0.9)',
-            }} />
           </div>
 
           {/* Back Button to Earth Orbit (when a city is active) */}
@@ -144,8 +136,8 @@ export default function WorkbenchCockpit({
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.background = '#27272a';
-                e.currentTarget.style.borderColor = '#38bdf8';
-                e.currentTarget.style.color = '#38bdf8';
+                e.currentTarget.style.borderColor = '#10b981';
+                e.currentTarget.style.color = '#10b981';
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.background = '#202024';
@@ -192,7 +184,7 @@ export default function WorkbenchCockpit({
                   gap: 5,
                   transition: 'all 0.12s ease',
                 }}
-                onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#38bdf8'; e.currentTarget.style.color = '#ffffff'; }}
+                onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#10b981'; e.currentTarget.style.color = '#ffffff'; }}
                 onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#33343a'; e.currentTarget.style.color = '#d4d4d8'; }}
               >
                 <span>Disputes</span>
@@ -215,7 +207,7 @@ export default function WorkbenchCockpit({
                   gap: 5,
                   transition: 'all 0.12s ease',
                 }}
-                onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#38bdf8'; e.currentTarget.style.color = '#ffffff'; }}
+                onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#10b981'; e.currentTarget.style.color = '#ffffff'; }}
                 onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#33343a'; e.currentTarget.style.color = '#d4d4d8'; }}
               >
                 <span>Strata</span>
@@ -238,7 +230,7 @@ export default function WorkbenchCockpit({
                   gap: 5,
                   transition: 'all 0.12s ease',
                 }}
-                onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#38bdf8'; e.currentTarget.style.color = '#ffffff'; }}
+                onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#10b981'; e.currentTarget.style.color = '#ffffff'; }}
                 onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#33343a'; e.currentTarget.style.color = '#d4d4d8'; }}
               >
                 <span>OpenAPI</span>
@@ -261,7 +253,7 @@ export default function WorkbenchCockpit({
                   gap: 5,
                   transition: 'all 0.12s ease',
                 }}
-                onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#38bdf8'; e.currentTarget.style.color = '#ffffff'; }}
+                onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#10b981'; e.currentTarget.style.color = '#ffffff'; }}
                 onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#33343a'; e.currentTarget.style.color = '#d4d4d8'; }}
               >
                 <span>Export</span>
@@ -271,9 +263,10 @@ export default function WorkbenchCockpit({
                 onClick={onOpenPhotogrammetry}
                 title="Open UAV Survey & Photogrammetry Engine"
                 style={{
-                  background: '#0284c7',
+                  background: '#10b981',
                   border: 'none',
-                  color: '#ffffff',
+                  color: '#000000',
+                  fontWeight: 700,
                   padding: '5px 10px',
                   borderRadius: 6,
                   fontSize: 11.5,
@@ -284,8 +277,8 @@ export default function WorkbenchCockpit({
                   gap: 5,
                   transition: 'background 0.12s ease',
                 }}
-                onMouseEnter={(e) => { e.currentTarget.style.background = '#0369a1'; }}
-                onMouseLeave={(e) => { e.currentTarget.style.background = '#0284c7'; }}
+                onMouseEnter={(e) => { e.currentTarget.style.background = '#00ff88'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.background = '#10b981'; }}
               >
                 <span>UAV Drone</span>
               </button>
@@ -438,7 +431,7 @@ export default function WorkbenchCockpit({
             cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
             transition: 'color 0.12s',
           }}
-          onMouseEnter={e => { e.currentTarget.style.color = '#38bdf8'; }}
+          onMouseEnter={e => { e.currentTarget.style.color = '#10b981'; }}
           onMouseLeave={e => { e.currentTarget.style.color = '#a1a1aa'; }}
         >
           {/* Mountain / oblique angle icon */}
@@ -457,7 +450,7 @@ export default function WorkbenchCockpit({
             cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
             transition: 'color 0.12s',
           }}
-          onMouseEnter={e => { e.currentTarget.style.color = '#38bdf8'; }}
+          onMouseEnter={e => { e.currentTarget.style.color = '#10b981'; }}
           onMouseLeave={e => { e.currentTarget.style.color = '#a1a1aa'; }}
         >
           {/* Grid / top-down map icon */}
