@@ -1,0 +1,37 @@
+{
+  "type": "FeatureCollection",
+  "name": "MZ-2_Boundary",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "urn:ogc:def:crs:OGC:1.3:CRS84"
+    }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "zone_id": "MZ-2",
+        "name": "Dharavi / Mahim / BKC",
+        "city": "Mumbai",
+        "state": "Maharashtra",
+        "data_provenance": "REAL",
+        "source": "MCGM Open GIS / Overture Maps Boundary",
+        "crs": "EPSG:4326"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [72.8450, 19.0750],
+            [72.8780, 19.0750],
+            [72.8780, 19.0500],
+            [72.8520, 19.0400],
+            [72.8410, 19.0520],
+            [72.8450, 19.0750]
+          ]
+        ]
+      }
+    }
+  ]
+}

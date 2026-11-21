@@ -1,0 +1,21 @@
+{
+  "zone_id": "MZ-2",
+  "building_name": "BKC Finance Centre (Tower One)",
+  "rera_project_id": "P51800004521",
+  "rera_portal": "MahaRERA",
+  "project_type": "Commercial Complex with Deep Basement Parking",
+  "address": "G Block, Bandra-Kurla Complex, Bandra East, Mumbai 400051",
+  "lat": 19.0620,
+  "lon": 72.8650,
+  "ground_elevation_m": 5.2,
+  "floor_count": 14,
+  "unit_count": 56,
+  "units_per_floor": 4,
+  "basement_count": 3,
+  "has_metro_tunnel": true,
+  "metro_line": "MMRC Aqua Line 3 (BKC Station vicinity)",
+  "has_elevated_metro": false,
+  "carpet_area_total_sqm": 8400.0,
+  "data_provenance": "REAL",
+  "source_notes": "Disclosed MahaRERA public commercial disclosure & MMRDA master plan"
+}

@@ -1,0 +1,1056 @@
+{
+  "type": "FeatureCollection",
+  "name": "Overture_bz2_Footprints",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "bz2_001",
+        "height_m": 38.0,
+        "sources": [
+          {
+            "dataset": "OpenStreetMap",
+            "property": "height"
+          }
+        ],
+        "data_provenance": "REAL",
+        "license": "ODbL-1.0"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.727858,
+              12.986521
+            ],
+            [
+              77.728378,
+              12.986521
+            ],
+            [
+              77.728378,
+              12.987001
+            ],
+            [
+              77.727858,
+              12.987001
+            ],
+            [
+              77.727858,
+              12.986521
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "bz2_002",
+        "height_m": 16.0,
+        "sources": [
+          {
+            "dataset": "OpenStreetMap",
+            "property": "height"
+          }
+        ],
+        "data_provenance": "REAL",
+        "license": "ODbL-1.0"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.732005,
+              12.973055
+            ],
+            [
+              77.732522,
+              12.973055
+            ],
+            [
+              77.732522,
+              12.973637
+            ],
+            [
+              77.732005,
+              12.973637
+            ],
+            [
+              77.732005,
+              12.973055
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "bz2_003",
+        "height_m": 63.0,
+        "sources": [
+          {
+            "dataset": "OpenStreetMap",
+            "property": "height"
+          }
+        ],
+        "data_provenance": "REAL",
+        "license": "ODbL-1.0"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.725032,
+              12.975022
+            ],
+            [
+              77.725423,
+              12.975022
+            ],
+            [
+              77.725423,
+              12.97548
+            ],
+            [
+              77.725032,
+              12.97548
+            ],
+            [
+              77.725032,
+              12.975022
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "bz2_004",
+        "height_m": 29.0,
+        "sources": [
+          {
+            "dataset": "OpenStreetMap",
+            "property": "height"
+          }
+        ],
+        "data_provenance": "REAL",
+        "license": "ODbL-1.0"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.730215,
+              12.978202
+            ],
+            [
+              77.730529,
+              12.978202
+            ],
+            [
+              77.730529,
+              12.978794
+            ],
+            [
+              77.730215,
+              12.978794
+            ],
+            [
+              77.730215,
+              12.978202
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "bz2_005",
+        "height_m": 78.0,
+        "sources": [
+          {
+            "dataset": "OpenStreetMap",
+            "property": "height"
+          }
+        ],
+        "data_provenance": "REAL",
+        "license": "ODbL-1.0"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.729161,
+              12.984051
+            ],
+            [
+              77.729521,
+              12.984051
+            ],
+            [
+              77.729521,
+              12.984505
+            ],
+            [
+              77.729161,
+              12.984505
+            ],
+            [
+              77.729161,
+              12.984051
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "bz2_006",
+        "height_m": 32.0,
+        "sources": [
+          {
+            "dataset": "OpenStreetMap",
+            "property": "height"
+          }
+        ],
+        "data_provenance": "REAL",
+        "license": "ODbL-1.0"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.729249,
+              12.985182
+            ],
+            [
+              77.729753,
+              12.985182
+            ],
+            [
+              77.729753,
+              12.985617
+            ],
+            [
+              77.729249,
+              12.985617
+            ],
+            [
+              77.729249,
+              12.985182
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "bz2_007",
+        "height_m": 67.0,
+        "sources": [
+          {
+            "dataset": "OpenStreetMap",
+            "property": "height"
+          }
+        ],
+        "data_provenance": "REAL",
+        "license": "ODbL-1.0"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.736462,
+              12.986789
+            ],
+            [
+              77.737005,
+              12.986789
+            ],
+            [
+              77.737005,
+              12.98718
+            ],
+            [
+              77.736462,
+              12.98718
+            ],
+            [
+              77.736462,
+              12.986789
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "bz2_008",
+        "height_m": 22.0,
+        "sources": [
+          {
+            "dataset": "OpenStreetMap",
+            "property": "height"
+          }
+        ],
+        "data_provenance": "REAL",
+        "license": "ODbL-1.0"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.725711,
+              12.975874
+            ],
+            [
+              77.726216,
+              12.975874
+            ],
+            [
+              77.726216,
+              12.976357
+            ],
+            [
+              77.725711,
+              12.976357
+            ],
+            [
+              77.725711,
+              12.975874
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "bz2_009",
+        "height_m": 16.0,
+        "sources": [
+          {
+            "dataset": "OpenStreetMap",
+            "property": "height"
+          }
+        ],
+        "data_provenance": "REAL",
+        "license": "ODbL-1.0"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.722827,
+              12.98589
+            ],
+            [
+              77.723205,
+              12.98589
+            ],
+            [
+              77.723205,
+              12.986389
+            ],
+            [
+              77.722827,
+              12.986389
+            ],
+            [
+              77.722827,
+              12.98589
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "bz2_010",
+        "height_m": 32.0,
+        "sources": [
+          {
+            "dataset": "OpenStreetMap",
+            "property": "height"
+          }
+        ],
+        "data_provenance": "REAL",
+        "license": "ODbL-1.0"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.728642,
+              12.975464
+            ],
+            [
+              77.729112,
+              12.975464
+            ],
+            [
+              77.729112,
+              12.975774
+            ],
+            [
+              77.728642,
+              12.975774
+            ],
+            [
+              77.728642,
+              12.975464
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "bz2_011",
+        "height_m": 62.0,
+        "sources": [
+          {
+            "dataset": "OpenStreetMap",
+            "property": "height"
+          }
+        ],
+        "data_provenance": "REAL",
+        "license": "ODbL-1.0"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.733843,
+              12.986353
+            ],
+            [
+              77.734411,
+              12.986353
+            ],
+            [
+              77.734411,
+              12.986832
+            ],
+            [
+              77.733843,
+              12.986832
+            ],
+            [
+              77.733843,
+              12.986353
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "bz2_012",
+        "height_m": 67.0,
+        "sources": [
+          {
+            "dataset": "OpenStreetMap",
+            "property": "height"
+          }
+        ],
+        "data_provenance": "REAL",
+        "license": "ODbL-1.0"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.72717,
+              12.980762
+            ],
+            [
+              77.727626,
+              12.980762
+            ],
+            [
+              77.727626,
+              12.981351
+            ],
+            [
+              77.72717,
+              12.981351
+            ],
+            [
+              77.72717,
+              12.980762
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "bz2_013",
+        "height_m": 43.0,
+        "sources": [
+          {
+            "dataset": "OpenStreetMap",
+            "property": "height"
+          }
+        ],
+        "data_provenance": "REAL",
+        "license": "ODbL-1.0"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.73106,
+              12.986787
+            ],
+            [
+              77.731542,
+              12.986787
+            ],
+            [
+              77.731542,
+              12.98717
+            ],
+            [
+              77.73106,
+              12.98717
+            ],
+            [
+              77.73106,
+              12.986787
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "bz2_014",
+        "height_m": 22.0,
+        "sources": [
+          {
+            "dataset": "OpenStreetMap",
+            "property": "height"
+          }
+        ],
+        "data_provenance": "REAL",
+        "license": "ODbL-1.0"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.734235,
+              12.973352
+            ],
+            [
+              77.734831,
+              12.973352
+            ],
+            [
+              77.734831,
+              12.973884
+            ],
+            [
+              77.734235,
+              12.973884
+            ],
+            [
+              77.734235,
+              12.973352
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "bz2_015",
+        "height_m": 47.0,
+        "sources": [
+          {
+            "dataset": "OpenStreetMap",
+            "property": "height"
+          }
+        ],
+        "data_provenance": "REAL",
+        "license": "ODbL-1.0"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.722327,
+              12.984473
+            ],
+            [
+              77.722839,
+              12.984473
+            ],
+            [
+              77.722839,
+              12.984991
+            ],
+            [
+              77.722327,
+              12.984991
+            ],
+            [
+              77.722327,
+              12.984473
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "bz2_016",
+        "height_m": 26.0,
+        "sources": [
+          {
+            "dataset": "OpenStreetMap",
+            "property": "height"
+          }
+        ],
+        "data_provenance": "REAL",
+        "license": "ODbL-1.0"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.731342,
+              12.986107
+            ],
+            [
+              77.731837,
+              12.986107
+            ],
+            [
+              77.731837,
+              12.986682
+            ],
+            [
+              77.731342,
+              12.986682
+            ],
+            [
+              77.731342,
+              12.986107
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "bz2_017",
+        "height_m": 58.0,
+        "sources": [
+          {
+            "dataset": "OpenStreetMap",
+            "property": "height"
+          }
+        ],
+        "data_provenance": "REAL",
+        "license": "ODbL-1.0"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.727267,
+              12.973255
+            ],
+            [
+              77.72766,
+              12.973255
+            ],
+            [
+              77.72766,
+              12.973652
+            ],
+            [
+              77.727267,
+              12.973652
+            ],
+            [
+              77.727267,
+              12.973255
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "bz2_018",
+        "height_m": 17.0,
+        "sources": [
+          {
+            "dataset": "OpenStreetMap",
+            "property": "height"
+          }
+        ],
+        "data_provenance": "REAL",
+        "license": "ODbL-1.0"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.731843,
+              12.98564
+            ],
+            [
+              77.732284,
+              12.98564
+            ],
+            [
+              77.732284,
+              12.985976
+            ],
+            [
+              77.731843,
+              12.985976
+            ],
+            [
+              77.731843,
+              12.98564
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "bz2_019",
+        "height_m": 23.0,
+        "sources": [
+          {
+            "dataset": "OpenStreetMap",
+            "property": "height"
+          }
+        ],
+        "data_provenance": "REAL",
+        "license": "ODbL-1.0"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.733646,
+              12.980695
+            ],
+            [
+              77.734177,
+              12.980695
+            ],
+            [
+              77.734177,
+              12.981143
+            ],
+            [
+              77.733646,
+              12.981143
+            ],
+            [
+              77.733646,
+              12.980695
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "bz2_020",
+        "height_m": 66.0,
+        "sources": [
+          {
+            "dataset": "OpenStreetMap",
+            "property": "height"
+          }
+        ],
+        "data_provenance": "REAL",
+        "license": "ODbL-1.0"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.732944,
+              12.973983
+            ],
+            [
+              77.733376,
+              12.973983
+            ],
+            [
+              77.733376,
+              12.974344
+            ],
+            [
+              77.732944,
+              12.974344
+            ],
+            [
+              77.732944,
+              12.973983
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "bz2_021",
+        "height_m": 29.0,
+        "sources": [
+          {
+            "dataset": "OpenStreetMap",
+            "property": "height"
+          }
+        ],
+        "data_provenance": "REAL",
+        "license": "ODbL-1.0"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.730778,
+              12.982692
+            ],
+            [
+              77.73112,
+              12.982692
+            ],
+            [
+              77.73112,
+              12.983173
+            ],
+            [
+              77.730778,
+              12.983173
+            ],
+            [
+              77.730778,
+              12.982692
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "bz2_022",
+        "height_m": 42.0,
+        "sources": [
+          {
+            "dataset": "OpenStreetMap",
+            "property": "height"
+          }
+        ],
+        "data_provenance": "REAL",
+        "license": "ODbL-1.0"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.733672,
+              12.975739
+            ],
+            [
+              77.733995,
+              12.975739
+            ],
+            [
+              77.733995,
+              12.976125
+            ],
+            [
+              77.733672,
+              12.976125
+            ],
+            [
+              77.733672,
+              12.975739
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "bz2_023",
+        "height_m": 42.0,
+        "sources": [
+          {
+            "dataset": "OpenStreetMap",
+            "property": "height"
+          }
+        ],
+        "data_provenance": "REAL",
+        "license": "ODbL-1.0"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.7362,
+              12.984341
+            ],
+            [
+              77.73669,
+              12.984341
+            ],
+            [
+              77.73669,
+              12.984903
+            ],
+            [
+              77.7362,
+              12.984903
+            ],
+            [
+              77.7362,
+              12.984341
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "bz2_024",
+        "height_m": 76.0,
+        "sources": [
+          {
+            "dataset": "OpenStreetMap",
+            "property": "height"
+          }
+        ],
+        "data_provenance": "REAL",
+        "license": "ODbL-1.0"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.725494,
+              12.978549
+            ],
+            [
+              77.726059,
+              12.978549
+            ],
+            [
+              77.726059,
+              12.978946
+            ],
+            [
+              77.725494,
+              12.978946
+            ],
+            [
+              77.725494,
+              12.978549
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "bz2_025",
+        "height_m": 17.0,
+        "sources": [
+          {
+            "dataset": "OpenStreetMap",
+            "property": "height"
+          }
+        ],
+        "data_provenance": "REAL",
+        "license": "ODbL-1.0"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.723937,
+              12.975646
+            ],
+            [
+              77.724365,
+              12.975646
+            ],
+            [
+              77.724365,
+              12.976192
+            ],
+            [
+              77.723937,
+              12.976192
+            ],
+            [
+              77.723937,
+              12.975646
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

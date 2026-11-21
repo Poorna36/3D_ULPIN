@@ -1,0 +1,10 @@
+{
+  "benchmark": "Rotterdam AHN3/AHN4 Point Cloud",
+  "country": "Netherlands",
+  "data_provenance": "REAL-FOREIGN",
+  "source_url": "https://www.ahn.nl/ahn-viewer",
+  "format": "LAS/LAZ point cloud tiles",
+  "coverage": "500m x 500m benchmark tile",
+  "license": "CC0 1.0 Universal Public Domain",
+  "role": "H1 Building Extractor & D4 sensor-noise conformance testing (strictly segregated from Indian legal models)"
+}

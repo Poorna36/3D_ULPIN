@@ -1,0 +1,74 @@
+{
+  "type": "FeatureCollection",
+  "name": "BMRCL_Namma_Metro_Alignments",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "corridor_id": "BMRCL-PURPLE",
+        "line_name": "Purple Line (Challaghatta - Whitefield)",
+        "type": "ELEVATED_AND_UNDERGROUND",
+        "ps_class": "E",
+        "data_provenance": "REAL",
+        "license": "BMRCL Open Operational Route Map"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.56,
+            12.975
+          ],
+          [
+            77.585,
+            12.976
+          ],
+          [
+            77.608,
+            12.974
+          ],
+          [
+            77.635,
+            12.978
+          ],
+          [
+            77.728,
+            12.981
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "corridor_id": "BMRCL-GREEN",
+        "line_name": "Green Line (Nagasandra - Silk Institute)",
+        "type": "ELEVATED_AND_UNDERGROUND",
+        "ps_class": "E",
+        "data_provenance": "REAL",
+        "license": "BMRCL Open Operational Route Map"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.53,
+            13.04
+          ],
+          [
+            77.575,
+            12.975
+          ],
+          [
+            77.58,
+            12.93
+          ],
+          [
+            77.56,
+            12.87
+          ]
+        ]
+      }
+    }
+  ]
+}

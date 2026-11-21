@@ -16,48 +16,48 @@
   --bg-card:       rgba(11, 13, 20, 0.82);
   --bg-card-hover: rgba(15, 18, 28, 0.95);
 
-  /* Voyage accent — sky blue */
+  /* Professional GIS accents */
   --cyan:          #38bdf8;
   --cyan-bright:   #7dd3fc;
   --cyan-dim:      rgba(56, 189, 248, 0.12);
-  --cyan-glow:     0 0 18px rgba(56, 189, 248, 0.3);
+  --cyan-glow:     0 2px 8px rgba(0, 0, 0, 0.4);
 
-  /* Voyage CTA blue */
+  /* Primary action blue */
   --blue:          #2563eb;
   --blue-dim:      rgba(37, 99, 235, 0.15);
-  --blue-glow:     0 0 18px rgba(37, 99, 235, 0.4);
+  --blue-glow:     0 2px 8px rgba(0, 0, 0, 0.4);
 
-  /* Secondary accent — kept subtle violet */
-  --violet:        #6366f1;
-  --violet-dim:    rgba(99, 102, 241, 0.14);
-  --violet-glow:   0 0 18px rgba(99, 102, 241, 0.35);
+  /* Secondary neutral accent */
+  --violet:        #475569;
+  --violet-dim:    rgba(71, 85, 105, 0.15);
+  --violet-glow:   0 2px 8px rgba(0, 0, 0, 0.4);
 
   /* Gradients */
-  --grad-primary:  linear-gradient(135deg, #2563eb 0%, #38bdf8 100%);
-  --grad-text:     linear-gradient(90deg, #ffffff 0%, #38bdf8 100%);
-  --grad-card:     linear-gradient(135deg, rgba(37,99,235,0.06) 0%, rgba(56,189,248,0.04) 100%);
+  --grad-primary:  linear-gradient(135deg, #1d4ed8 0%, #0284c7 100%);
+  --grad-text:     linear-gradient(90deg, #ffffff 0%, #cbd5e1 100%);
+  --grad-card:     linear-gradient(135deg, rgba(30,41,59,0.4) 0%, rgba(15,23,42,0.6) 100%);
 
   /* Status */
-  --green:         #10d97e;
+  --green:         #10b981;
   --amber:         #f59e0b;
   --red:           #ef4444;
-  --synthetic:     #a855f7;
+  --synthetic:     #64748b;
 
-  /* Borders — very subtle like Voyage */
-  --border:        rgba(255, 255, 255, 0.07);
-  --border-strong: rgba(255, 255, 255, 0.13);
+  /* Borders — clean GIS structure */
+  --border:        #1e293b;
+  --border-strong: #334155;
   --border-accent: rgba(56, 189, 248, 0.25);
 
-  /* Text — white primary, gray secondary */
-  --text-primary:   #F9FAFB;
-  --text-secondary: #9ca3af;
-  --text-dim:       #4b5563;
+  /* Text — clean contrast */
+  --text-primary:   #F8FAFC;
+  --text-secondary: #94A3B8;
+  --text-dim:       #64748B;
   --text-mono:      #38bdf8;
 
-  /* Typography — Voyage fonts */
-  --font-display: 'Syne', 'Space Grotesk', system-ui, sans-serif;
-  --font-ui:      'Space Grotesk', 'Inter', system-ui, sans-serif;
-  --font-body:    'Plus Jakarta Sans', system-ui, sans-serif;
+  /* Typography — Professional GIS standards */
+  --font-display: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-ui:      'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body:    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono:    'JetBrains Mono', monospace;
 
   /* Spacing */
@@ -193,26 +193,28 @@ h3 {
 .toggle input { opacity: 0; width: 0; height: 0; }
 .toggle-track {
   position: absolute; inset: 0;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid var(--border);
+  background: #000000;
+  border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: var(--r-pill);
   transition: all var(--t-normal);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.8);
 }
 .toggle input:checked ~ .toggle-track {
-  background: rgba(37, 99, 235, 0.2);
-  border-color: var(--blue);
-  box-shadow: var(--blue-glow);
+  background: #09090b;
+  border-color: rgba(255, 255, 255, 0.35);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.9), inset 0 1px 3px rgba(0, 0, 0, 0.8);
 }
 .toggle-thumb {
   position: absolute; top: 2px; left: 2px;
   width: 14px; height: 14px;
-  background: var(--text-dim);
+  background: #4b5563;
   border-radius: 50%;
   transition: transform var(--t-normal), background var(--t-normal);
 }
 .toggle input:checked ~ .toggle-thumb {
   transform: translateX(18px);
-  background: var(--cyan);
+  background: #ffffff;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
 }
 
 /* ── Status badges ─────────────────────────────────────────── */
@@ -324,3 +326,234 @@ h3 {
   scrollbar-width: thin;
   scrollbar-color: rgba(56, 189, 248, 0.2) transparent;
 }
+
+/* ── Landing → Cesium: collapse inward ─────────────────────── */
+/* The landing page shrinks to its center point, corners rounding
+   into a pill then a dot, while Cesium is revealed around it.  */
+@keyframes collapse-inward {
+  0%   { transform: scale(1);    border-radius: 0;    opacity: 1;   }
+  50%  { transform: scale(0.38); border-radius: 24px; opacity: 1;   }
+  80%  { transform: scale(0.10); border-radius: 50%;  opacity: 0.6; }
+  100% { transform: scale(0);    border-radius: 50%;  opacity: 0;   }
+}
+
+.landing-collapse-inward {
+  animation: collapse-inward 0.60s cubic-bezier(0.55, 0, 0.1, 1) forwards !important;
+  pointer-events: none !important;
+  transition: none !important;
+  transform-origin: center center !important;
+}
+
+/* ── 3D ULPIN Registry Modals ───────────────────────────────── */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(16px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.modal-container {
+  background: #080a0f;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.95), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+  color: #ffffff;
+  max-height: 90vh;
+}
+
+.card {
+  background: #0a0c12;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 12px;
+  transition: all var(--t-fast);
+}
+.card:hover {
+  border-color: rgba(255, 255, 255, 0.16);
+  background: #0f121b;
+}
+.card--active {
+  border-color: #38bdf8 !important;
+  background: rgba(56, 189, 248, 0.08) !important;
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.15);
+}
+
+.modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.anim-fade-in {
+  animation: fadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.anim-scale-up {
+  animation: scaleUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleUp {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* ── Detail Panel Sidebar (Google Maps / Apple Maps style) ── */
+.detail-panel {
+  position: fixed;
+  top: 60px;
+  right: 16px;
+  bottom: 16px;
+  width: 380px;
+  max-width: calc(100vw - 32px);
+  display: flex;
+  flex-direction: column;
+  background: #18181b !important;
+  border: 1px solid #27272a !important;
+  border-radius: 12px !important;
+  z-index: 80;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(0, 0, 0, 0.2);
+  user-select: none;
+  overflow: hidden;
+}
+
+.detail-panel-collapsed {
+  position: fixed;
+  top: 68px;
+  right: 16px;
+  z-index: 85;
+}
+
+.panel-expand-btn {
+  background: #18181b !important;
+  border: 1px solid #27272a !important;
+  color: #f4f4f5;
+  padding: 8px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+.panel-expand-btn:hover {
+  border-color: #3f3f46 !important;
+  background: #27272a !important;
+}
+
+.detail-panel .panel-header {
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #18181b;
+  border-bottom: 1px solid #27272a;
+}
+
+.detail-panel .card {
+  background: #202024 !important;
+  border: 1px solid #27272a !important;
+  border-radius: 8px !important;
+  transition: all 0.15s ease;
+}
+
+.detail-panel .card:hover {
+  background: #27272a !important;
+  border-color: #3f3f46 !important;
+}
+
+.detail-panel .card--active {
+  background: #27272a !important;
+  border-color: #0284c7 !important;
+}
+
+.panel-header {
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.panel-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.panel-scroll {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.anim-slide-left {
+  animation: slideLeft 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideLeft {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+/* Glass & Floating Modals */
+.glass {
+  background: rgba(10, 13, 22, 0.90) !important;
+  backdrop-filter: blur(24px) saturate(1.6);
+  -webkit-backdrop-filter: blur(24px) saturate(1.6);
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.85) !important;
+  border-radius: 14px;
+}
+
+.process-panel {
+  position: relative;
+  overflow: hidden;
+  color: var(--text-primary);
+  z-index: 100;
+}
+
+.anim-fade-up {
+  animation: fadeUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.badge-valid {
+  background: rgba(16, 185, 129, 0.18) !important;
+  border: 1px solid #10b981 !important;
+  color: #34d399 !important;
+}
+
+.process-step {
+  transition: all 0.2s ease;
+}
+
+.process-step.running {
+  border-color: #38bdf8 !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+.process-step.done {
+  border-color: rgba(16, 185, 129, 0.4) !important;
+}
+
+

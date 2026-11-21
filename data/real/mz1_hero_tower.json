@@ -1,0 +1,21 @@
+{
+  "zone_id": "MZ-1",
+  "building_name": "Worli Horizon Heights (Tower A)",
+  "rera_project_id": "P51900008345",
+  "rera_portal": "MahaRERA",
+  "project_type": "Residential High-Rise with Underground Transit Interface",
+  "address": "Pandurang Budhkar Marg, Worli, Mumbai 400018",
+  "lat": 18.9925,
+  "lon": 72.8250,
+  "ground_elevation_m": 8.5,
+  "floor_count": 20,
+  "unit_count": 80,
+  "units_per_floor": 4,
+  "basement_count": 2,
+  "has_metro_tunnel": true,
+  "metro_line": "MMRC Aqua Line 3",
+  "has_elevated_metro": false,
+  "carpet_area_total_sqm": 7200.0,
+  "data_provenance": "REAL",
+  "source_notes": "Disclosed MahaRERA public project page & MCGM DP 2034 sanctioned layout"
+}

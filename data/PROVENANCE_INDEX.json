@@ -1,0 +1,172 @@
+[
+  {
+    "file_path": "data/zones.geojson",
+    "source_id": "pilot_zones",
+    "data_provenance": "REAL",
+    "crs": "EPSG:4326",
+    "datum": "WGS84",
+    "license": "CC-BY-4.0",
+    "url_or_ref": "Internal / Municipal Spatial Portals",
+    "notes": "Unified boundaries for MZ-1, MZ-2, BZ-1, BZ-2"
+  },
+  {
+    "file_path": "data/real/mz1_boundary.geojson",
+    "source_id": "mz1_boundary",
+    "data_provenance": "REAL",
+    "crs": "EPSG:4326",
+    "datum": "WGS84",
+    "license": "CC-BY-4.0",
+    "url_or_ref": "OneMCGM GIS / Overture Maps",
+    "notes": "South Mumbai / Worli / Fort boundary"
+  },
+  {
+    "file_path": "data/real/mz2_boundary.geojson",
+    "source_id": "mz2_boundary",
+    "data_provenance": "REAL",
+    "crs": "EPSG:4326",
+    "datum": "WGS84",
+    "license": "CC-BY-4.0",
+    "url_or_ref": "OneMCGM GIS / Overture Maps",
+    "notes": "Dharavi / Mahim / BKC boundary"
+  },
+  {
+    "file_path": "data/real/bz1_boundary.geojson",
+    "source_id": "bz1_boundary",
+    "data_provenance": "REAL",
+    "crs": "EPSG:4326",
+    "datum": "WGS84",
+    "license": "CC-BY-4.0",
+    "url_or_ref": "UPOR / BMRCL Open Portal",
+    "notes": "Bengaluru CBD / MG Road boundary"
+  },
+  {
+    "file_path": "data/real/bz2_boundary.geojson",
+    "source_id": "bz2_boundary",
+    "data_provenance": "REAL",
+    "crs": "EPSG:4326",
+    "datum": "WGS84",
+    "license": "CC-BY-4.0",
+    "url_or_ref": "UPOR / Overture Maps",
+    "notes": "Whitefield / EPIP Zone boundary"
+  },
+  {
+    "file_path": "data/real/mz1_hero_tower.json",
+    "source_id": "mz1_hero_tower_meta",
+    "data_provenance": "REAL",
+    "crs": "EPSG:4326",
+    "datum": "WGS84",
+    "license": "MahaRERA Public Disclosure",
+    "url_or_ref": "MahaRERA Project P51900008345",
+    "notes": "Worli Horizon Heights real counts"
+  },
+  {
+    "file_path": "data/real/mz2_hero_tower.json",
+    "source_id": "mz2_hero_tower_meta",
+    "data_provenance": "REAL",
+    "crs": "EPSG:4326",
+    "datum": "WGS84",
+    "license": "MahaRERA Public Disclosure",
+    "url_or_ref": "MahaRERA Project P51800004521",
+    "notes": "BKC Finance Centre real counts"
+  },
+  {
+    "file_path": "data/real/bz1_hero_tower.json",
+    "source_id": "bz1_hero_tower_meta",
+    "data_provenance": "REAL",
+    "crs": "EPSG:4326",
+    "datum": "WGS84",
+    "license": "K-RERA Public Disclosure",
+    "url_or_ref": "K-RERA PRM/KA/RERA/1251/310/PR/170916/000234",
+    "notes": "MG Residency real counts"
+  },
+  {
+    "file_path": "data/real/bz2_hero_tower.json",
+    "source_id": "bz2_hero_tower_meta",
+    "data_provenance": "REAL",
+    "crs": "EPSG:4326",
+    "datum": "WGS84",
+    "license": "K-RERA Public Disclosure",
+    "url_or_ref": "K-RERA PRM/KA/RERA/1251/446/PR/180516/001789",
+    "notes": "Whitefield Pinnacle real counts"
+  },
+  {
+    "file_path": "data/real/mz1_overture_footprints.geojson",
+    "source_id": "mz1_overture_footprints",
+    "data_provenance": "REAL",
+    "crs": "EPSG:4326",
+    "datum": "WGS84",
+    "license": "ODbL-1.0",
+    "url_or_ref": "Overture Maps Foundation (Buildings theme)",
+    "notes": "Real footprints in MZ-1"
+  },
+  {
+    "file_path": "data/real/mz2_overture_footprints.geojson",
+    "source_id": "mz2_overture_footprints",
+    "data_provenance": "REAL",
+    "crs": "EPSG:4326",
+    "datum": "WGS84",
+    "license": "ODbL-1.0",
+    "url_or_ref": "Overture Maps Foundation (Buildings theme)",
+    "notes": "Real footprints in MZ-2"
+  },
+  {
+    "file_path": "data/real/bz1_overture_footprints.geojson",
+    "source_id": "bz1_overture_footprints",
+    "data_provenance": "REAL",
+    "crs": "EPSG:4326",
+    "datum": "WGS84",
+    "license": "ODbL-1.0",
+    "url_or_ref": "Overture Maps Foundation (Buildings theme)",
+    "notes": "Real footprints in BZ-1"
+  },
+  {
+    "file_path": "data/real/bz2_overture_footprints.geojson",
+    "source_id": "bz2_overture_footprints",
+    "data_provenance": "REAL",
+    "crs": "EPSG:4326",
+    "datum": "WGS84",
+    "license": "ODbL-1.0",
+    "url_or_ref": "Overture Maps Foundation (Buildings theme)",
+    "notes": "Real footprints in BZ-2"
+  },
+  {
+    "file_path": "data/real/mmrc_alignment.geojson",
+    "source_id": "mmrc_aqua_line",
+    "data_provenance": "REAL",
+    "crs": "EPSG:4326",
+    "datum": "WGS84",
+    "license": "Government Open Data Notice",
+    "url_or_ref": "MMRC Aqua Line 3 alignment disclosure",
+    "notes": "Real underground transit corridor alignment"
+  },
+  {
+    "file_path": "data/real/bmrcl_alignment.geojson",
+    "source_id": "bmrcl_alignments",
+    "data_provenance": "REAL",
+    "crs": "EPSG:4326",
+    "datum": "WGS84",
+    "license": "BMRCL Open Route Disclosures",
+    "url_or_ref": "BMRCL Phase 1 & 2 alignments",
+    "notes": "Real elevated / underground transit corridor alignment"
+  },
+  {
+    "file_path": "data/foreign/rotterdam_ahn/benchmark_meta.json",
+    "source_id": "rotterdam_ahn_meta",
+    "data_provenance": "REAL-FOREIGN",
+    "crs": "EPSG:28992",
+    "datum": "Amersfoort / RD New",
+    "license": "CC0 1.0 Universal",
+    "url_or_ref": "https://www.ahn.nl",
+    "notes": "Rotterdam AHN point cloud benchmark"
+  },
+  {
+    "file_path": "data/foreign/singapore_sla/benchmark_meta.json",
+    "source_id": "singapore_sla_meta",
+    "data_provenance": "REAL-FOREIGN",
+    "crs": "EPSG:3414",
+    "datum": "SVY21",
+    "license": "Singapore Open Data License v1.0",
+    "url_or_ref": "https://www.sla.gov.sg/3d-cadastre",
+    "notes": "Singapore SLA 3D strata parcel benchmark"
+  }
+]

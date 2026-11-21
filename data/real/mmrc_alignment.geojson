@@ -1,0 +1,51 @@
+{
+  "type": "FeatureCollection",
+  "name": "MMRC_Aqua_Line_3_Corridor",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "corridor_id": "MMRC-L3",
+        "line_name": "Aqua Line 3 (Colaba-Bandra-SEEPZ)",
+        "type": "UNDERGROUND_TUNNEL",
+        "ps_class": "T",
+        "buffer_zone_m": 50.0,
+        "data_provenance": "REAL",
+        "license": "Public Government Notice / MMRC"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            72.825,
+            18.91
+          ],
+          [
+            72.828,
+            18.935
+          ],
+          [
+            72.832,
+            18.96
+          ],
+          [
+            72.825,
+            18.9925
+          ],
+          [
+            72.855,
+            19.045
+          ],
+          [
+            72.865,
+            19.062
+          ],
+          [
+            72.875,
+            19.12
+          ]
+        ]
+      }
+    }
+  ]
+}

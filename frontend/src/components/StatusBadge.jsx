@@ -10,6 +10,7 @@ export default function StatusBadge({ status, dot = false }) {
     DERIVED_HIGH:'badge-valid',
     INFERRED:    'badge-review',
     AUTHORITATIVE: 'badge-valid',
+    '100%_LOD4_DIGITAL_TWIN': 'badge-sim',
   };
   const cls = map[status] ?? 'badge-draft';
   return (

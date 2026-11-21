@@ -1,0 +1,15 @@
+{
+  "zone_id": "MZ1",
+  "source": "ISRO Bhuvan SRTM 30m Digital Elevation Model",
+  "data_provenance": "REAL",
+  "license": "Bhuvan Open Data Policy",
+  "bbox": [
+    72.775,
+    18.89,
+    72.875,
+    18.990000000000002
+  ],
+  "resolution_m": 30.0,
+  "datum": "WGS84 / EGM96",
+  "format": "GeoTIFF"
+}
